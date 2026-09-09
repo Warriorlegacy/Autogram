@@ -1,0 +1,22 @@
+{
+  "name": "autogram",
+  "version": "1.0.0",
+  "description": "Instagram AI Autopilot & Content Engine",
+  "main": "renderer/render.py",
+  "scripts": {
+    "setup": "uv pip install -r requirements.txt && playwright install chromium",
+    "test": "pytest tests -v",
+    "generate": "python orchestrator.py --run-all",
+    "dry-run": "python orchestrator.py --dry-run",
+    "render-test": "python orchestrator.py --render-only"
+  },
+  "keywords": [
+    "instagram",
+    "automation",
+    "ai",
+    "playwright",
+    "carousels"
+  ],
+  "author": "",
+  "license": "MIT"
+}

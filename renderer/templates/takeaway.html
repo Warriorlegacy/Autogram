@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slide {{ slide.slide_number }} - Takeaway</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body>
+  <div class="slide-canvas">
+    <div class="progress-container">
+      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
+    </div>
+
+    <header class="slide-header">
+      <div class="pillar-badge">
+        <span class="pillar-dot"></span>
+        The Distilled Rule
+      </div>
+      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+    </header>
+
+    <main class="slide-body">
+      <div class="glass-card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(18, 24, 38, 0.9));">
+        <div class="hook-tag" style="background: rgba(56, 189, 248, 0.15); border-color: var(--accent-cyan); color: var(--accent-cyan);">Key Takeaway</div>
+        <h2 class="headline-large text-gradient">{{ slide.headline }}</h2>
+        <p class="subtext-body" style="font-size: 26px; line-height: 1.6;">{{ slide.body }}</p>
+
+        {% if slide.proof_or_example %}
+        <div class="proof-box" style="margin-top: 32px;">
+          <span class="proof-icon">⚡</span>
+          <div>{{ slide.proof_or_example }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </main>
+
+    <footer class="slide-footer">
+      <div class="footer-brand">
+        <div class="brand-avatar">A</div>
+        <div class="brand-meta">
+          <div class="brand-name">{{ brand.brand_name }}</div>
+          <div class="brand-handle">{{ brand.handle }}</div>
+        </div>
+      </div>
+      <div class="footer-swipe">
+        Next <span class="swipe-arrow">→</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

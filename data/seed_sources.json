@@ -1,0 +1,178 @@
+{
+  "rss_feeds": [
+    {
+      "name": "TechCrunch AI",
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "source_type": "industry_journalism",
+      "trust_score": 0.88
+    },
+    {
+      "name": "Hacker News Top",
+      "url": "https://hnrss.org/frontpage",
+      "source_type": "developer_community",
+      "trust_score": 0.85
+    },
+    {
+      "name": "ArXiv AI Papers",
+      "url": "https://rss.arxiv.org/rss/cs.AI",
+      "source_type": "academic",
+      "trust_score": 0.95
+    }
+  ],
+  "curated_records": [
+    {
+      "source_id": "SRC-2026-PILLAR1-01",
+      "source_title": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "publisher": "Berkeley AI Research",
+      "pillar": "AI Tool Breakdown",
+      "published_at": "2026-09-08T10:00:00Z",
+      "url": "https://bair.berkeley.edu/blog/compound-ai-systems/",
+      "excerpt": "State-of-the-art results are increasingly obtained by compound systems with multiple components (LLMs, retrievers, code interpreters, validators) rather than a single monolithic model. Modular verification and self-correction reduce error propagation by over 60%.",
+      "source_type": "research_blog",
+      "trust_score": 0.96
+    },
+    {
+      "source_id": "SRC-2026-PILLAR1-02",
+      "source_title": "Deterministic UI Rendering vs Diffusion Models: The Typography Problem",
+      "publisher": "Engineering Design Quarterly",
+      "pillar": "AI Tool Breakdown",
+      "published_at": "2026-09-07T14:30:00Z",
+      "url": "https://example.com/deterministic-rendering",
+      "excerpt": "Generative image diffusion models inherently introduce text hallucinations and font blurring. Combining programmatic Chromium headless rendering with LLM-structured JSON yields 100% crisp, error-free typography at $0 compute cost.",
+      "source_type": "engineering_paper",
+      "trust_score": 0.95
+    },
+    {
+      "source_id": "SRC-2026-PILLAR1-03",
+      "source_title": "Local Small Language Models in Production: 3B Parameters with Tool Calling",
+      "publisher": "Applied ML Systems",
+      "pillar": "AI Tool Breakdown",
+      "published_at": "2026-09-06T12:00:00Z",
+      "url": "https://example.com/slm-production",
+      "excerpt": "Fine-tuned 3B to 8B parameter models running on-device or on consumer GPUs achieve 98% accuracy on structured JSON generation while slashing cloud API expenses to zero.",
+      "source_type": "engineering_paper",
+      "trust_score": 0.93
+    },
+    {
+      "source_id": "SRC-2026-PILLAR2-01",
+      "source_title": "Context Window Degradation: Why Truncation Trumps Bloated Contexts",
+      "publisher": "Prompt Architecture Review",
+      "pillar": "Prompting & Workflow",
+      "published_at": "2026-09-05T09:00:00Z",
+      "url": "https://example.com/context-degradation",
+      "excerpt": "Injecting over 32k tokens of unstructured context causes attention dilution where reasoning accuracy drops by 34%. Pre-filtering data through deterministic scoring layers preserves reasoning fidelity.",
+      "source_type": "technical_report",
+      "trust_score": 0.94
+    },
+    {
+      "source_id": "SRC-2026-PILLAR2-02",
+      "source_title": "Self-Correcting Agentic Pipelines: Bounded Loops vs Runaway Retries",
+      "publisher": "Autonomous Systems Institute",
+      "pillar": "Prompting & Workflow",
+      "published_at": "2026-09-04T15:00:00Z",
+      "url": "https://example.com/bounded-agent-loops",
+      "excerpt": "Unconstrained retry loops in agentic software lead to recursive hallucinations and quota exhaustion. Implementing strict 2-attempt revisions with fallback heuristics resolves 91% of edge-case failures safely.",
+      "source_type": "academic",
+      "trust_score": 0.95
+    },
+    {
+      "source_id": "SRC-2026-PILLAR2-03",
+      "source_title": "Belief-Desire-Intention (BDI) Architectures for AI Automation",
+      "publisher": "Cognitive Agent Lab",
+      "pillar": "Prompting & Workflow",
+      "published_at": "2026-09-03T11:20:00Z",
+      "url": "https://example.com/bdi-agents",
+      "excerpt": "Separating agent knowledge (beliefs) from goals (desires) and active execution plans (intentions) produces deterministic workflows that withstand asynchronous environment disruptions.",
+      "source_type": "academic",
+      "trust_score": 0.92
+    },
+    {
+      "source_id": "SRC-2026-PILLAR3-01",
+      "source_title": "The Death of Top-of-Funnel Fluff: How Evidence-Led Content Wins B2B Buyers",
+      "publisher": "B2B Marketing Institute",
+      "pillar": "Marketing Psychology",
+      "published_at": "2026-09-02T16:00:00Z",
+      "url": "https://example.com/evidence-led-marketing",
+      "excerpt": "Enterprise decision makers ignore generic thought-leadership carousels. Content citing specific architectural tradeoffs, benchmarks, and production failure modes converts at 4.2x higher rates into enterprise pipeline.",
+      "source_type": "industry_analysis",
+      "trust_score": 0.93
+    },
+    {
+      "source_id": "SRC-2026-PILLAR3-02",
+      "source_title": "Save-and-Share Mechanics: The Psychology of Reference-Grade Carousels",
+      "publisher": "Digital Behavioral Science",
+      "pillar": "Marketing Psychology",
+      "published_at": "2026-09-01T10:45:00Z",
+      "url": "https://example.com/save-share-psychology",
+      "excerpt": "Instagram algorithm prioritizes Saves and DMs over Likes. Users save content that functions as permanent reference material—cheatsheets, failure post-mortems, and architectural blueprints.",
+      "source_type": "research_paper",
+      "trust_score": 0.94
+    },
+    {
+      "source_id": "SRC-2026-PILLAR4-01",
+      "source_title": "GPU Cluster Economics: The Real Cost of Training vs Inference in 2026",
+      "publisher": "Silicon & Cloud Infrastructure",
+      "pillar": "Tech Industry Explainer",
+      "published_at": "2026-08-31T08:30:00Z",
+      "url": "https://example.com/gpu-economics",
+      "excerpt": "Inference compute now consumes 82% of enterprise AI budgets. Teams that migrate from proprietary model endpoints to quantized open weights on edge inference chips cut monthly cloud spend by $40k+.",
+      "source_type": "industry_journalism",
+      "trust_score": 0.92
+    },
+    {
+      "source_id": "SRC-2026-PILLAR4-02",
+      "source_title": "Meta Graph API v23 Changes: Stricter Quotas and Direct Content Publishing",
+      "publisher": "Social Platform Engineering",
+      "pillar": "Tech Industry Explainer",
+      "published_at": "2026-08-30T13:15:00Z",
+      "url": "https://example.com/meta-graph-api-v23",
+      "excerpt": "Meta has transitioned developer APIs toward server-to-server container creation. Unofficial scraping and session-hijack bots face immediate account bans, making official Graph API pipelines essential for longevity.",
+      "source_type": "technical_brief",
+      "trust_score": 0.96
+    },
+    {
+      "source_id": "SRC-2026-PILLAR5-01",
+      "source_title": "From Code Monkey to Systems Architect: The 2026 Engineering Transition",
+      "publisher": "Software Engineering Perspectives",
+      "pillar": "Career & Skills",
+      "published_at": "2026-08-29T17:00:00Z",
+      "url": "https://example.com/systems-architect-transition",
+      "excerpt": "When AI writes 70% of routine syntax, high-earning engineers differentiate through orchestration, threat modeling, schema governance, and deterministic verification gates.",
+      "source_type": "industry_analysis",
+      "trust_score": 0.91
+    },
+    {
+      "source_id": "SRC-2026-PILLAR5-02",
+      "source_title": "The Zero-Debt Automation Stack: Building Pipelines That Run Themselves",
+      "publisher": "Modern DevOps Weekly",
+      "pillar": "Career & Skills",
+      "published_at": "2026-08-28T14:20:00Z",
+      "url": "https://example.com/zero-debt-automation",
+      "excerpt": "Building production pipelines that cost $0.00/mo and survive upstream API outages requires stateless design, local fallback engines, and automated health monitoring.",
+      "source_type": "developer_guide",
+      "trust_score": 0.94
+    },
+    {
+      "source_id": "SRC-2026-PILLAR6-01",
+      "source_title": "Why 90% of Fine-Tuning Projects Are a Waste of Capital",
+      "publisher": "Applied AI Contrarian",
+      "pillar": "Myth-Bust / Contrarian",
+      "published_at": "2026-08-27T11:00:00Z",
+      "url": "https://example.com/fine-tuning-myth",
+      "excerpt": "Most enterprise teams fine-tune models to inject facts—a fatal mistake. Fine-tuning alters tone and style; retrieval-augmented generation (RAG) and tool calling inject facts with 10x higher fidelity at 1% of the cost.",
+      "source_type": "research_editorial",
+      "trust_score": 0.95
+    },
+    {
+      "source_id": "SRC-2026-PILLAR6-02",
+      "source_title": "The $10,000/Month Agency Retainer Is Obsolete",
+      "publisher": "Venture Operations Review",
+      "pillar": "Myth-Bust / Contrarian",
+      "published_at": "2026-08-26T09:30:00Z",
+      "url": "https://example.com/agency-retainer-obsolete",
+      "excerpt": "Traditional social media marketing agencies rely on manual copywriters and Canva designers who burn out after 30 days. Autonomous deterministic pipelines deliver higher signal consistency at zero marginal cost.",
+      "source_type": "executive_brief",
+      "trust_score": 0.96
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+*.py
+requirements.txt
+src/
+prompts/
+data/
+tests/
+renderer/
+n8n/
+docker-compose.yml
+autopilot.db
+output/
+.venv/
+__pycache__/
+*.md

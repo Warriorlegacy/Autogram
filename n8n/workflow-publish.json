@@ -1,0 +1,70 @@
+{
+  "name": "Autogram - Publishing Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 19 * * *"
+            }
+          ]
+        }
+      },
+      "id": "schedule-publish",
+      "name": "Schedule - 19:30 IST",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "python orchestrator.py --run-all"
+      },
+      "id": "execute-publish",
+      "name": "Publish to Meta",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "🚀 Autogram: Live Instagram carousel published to feed! Output logged."
+      },
+      "id": "notify-published",
+      "name": "Publish Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [720, 300]
+    }
+  ],
+  "connections": {
+    "Schedule - 19:30 IST": {
+      "main": [
+        [
+          {
+            "node": "Publish to Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish to Meta": {
+      "main": [
+        [
+          {
+            "node": "Publish Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

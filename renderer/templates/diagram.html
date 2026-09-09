@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slide {{ slide.slide_number }} - Diagram</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body>
+  <div class="slide-canvas">
+    <div class="progress-container">
+      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
+    </div>
+
+    <header class="slide-header">
+      <div class="pillar-badge">
+        <span class="pillar-dot"></span>
+        System Architecture
+      </div>
+      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+    </header>
+
+    <main class="slide-body">
+      <h2 class="headline-medium">{{ slide.headline }}</h2>
+      {% if slide.body %}
+      <p class="subtext-lead" style="margin-bottom: 24px;">{{ slide.body }}</p>
+      {% endif %}
+
+      <div class="diagram-steps">
+        <div class="step-node">
+          <div class="step-number">01</div>
+          <div>
+            <div style="font-weight: 800; font-size: 23px; color: #FFF; margin-bottom: 4px;">Ingest & Filter</div>
+            <div style="font-size: 20px; color: var(--text-secondary);">Raw feeds validated against trusted domain whitelist</div>
+          </div>
+        </div>
+
+        <div class="step-node">
+          <div class="step-number">02</div>
+          <div>
+            <div style="font-weight: 800; font-size: 23px; color: #FFF; margin-bottom: 4px;">Reason & Structure</div>
+            <div style="font-size: 20px; color: var(--text-secondary);">LLM drafts strict JSON carousel mapped to source evidence</div>
+          </div>
+        </div>
+
+        <div class="step-node">
+          <div class="step-number">03</div>
+          <div>
+            <div style="font-weight: 800; font-size: 23px; color: #FFF; margin-bottom: 4px;">Deterministic Render</div>
+            <div style="font-size: 20px; color: var(--text-secondary);">Headless Chromium captures pixel-perfect 1080×1350 JPEG</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="slide-footer">
+      <div class="footer-brand">
+        <div class="brand-avatar">A</div>
+        <div class="brand-meta">
+          <div class="brand-name">{{ brand.brand_name }}</div>
+          <div class="brand-handle">{{ brand.handle }}</div>
+        </div>
+      </div>
+      <div class="footer-swipe">
+        Next <span class="swipe-arrow">→</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

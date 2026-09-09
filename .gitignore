@@ -1,0 +1,23 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment secrets
+.env
+!.env.example
+
+# Runtime DB & outputs
+*.db
+output/
+scratch/
+.pytest_cache/
+
+# Node
+node_modules/
+npm-debug.log
+
+.vercel

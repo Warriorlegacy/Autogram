@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slide {{ slide.slide_number }} - Hook</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body>
+  <div class="slide-canvas">
+    <div class="progress-container">
+      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
+    </div>
+
+    <header class="slide-header">
+      <div class="pillar-badge">
+        <span class="pillar-dot"></span>
+        {{ meta.pillar | default('AI & Technology') }}
+      </div>
+      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+    </header>
+
+    <main class="slide-body">
+      <div class="hook-tag">Critical Operational Shift</div>
+      <h1 class="headline-huge text-gradient">{{ slide.headline }}</h1>
+      {% if slide.body %}
+      <p class="subtext-lead">{{ slide.body }}</p>
+      {% endif %}
+
+      {% if slide.proof_or_example %}
+      <div class="proof-box">
+        <span class="proof-icon">⚡</span>
+        <div>{{ slide.proof_or_example }}</div>
+      </div>
+      {% endif %}
+    </main>
+
+    <footer class="slide-footer">
+      <div class="footer-brand">
+        <div class="brand-avatar">A</div>
+        <div class="brand-meta">
+          <div class="brand-name">{{ brand.brand_name }}</div>
+          <div class="brand-handle">{{ brand.handle }}</div>
+        </div>
+      </div>
+      <div class="footer-swipe">
+        Swipe to learn <span class="swipe-arrow">→</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

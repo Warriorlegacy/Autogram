@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slide {{ slide.slide_number }} - CTA</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body>
+  <div class="slide-canvas">
+    <div class="progress-container">
+      <div class="progress-fill" style="width: 100%;"></div>
+    </div>
+
+    <header class="slide-header">
+      <div class="pillar-badge">
+        <span class="pillar-dot"></span>
+        Action Step
+      </div>
+      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+    </header>
+
+    <main class="slide-body" style="text-align: center; align-items: center;">
+      <div class="brand-avatar" style="width: 88px; height: 88px; font-size: 38px; border-radius: 24px; margin-bottom: 28px;">A</div>
+      <h2 class="headline-huge text-gradient" style="font-size: 56px;">{{ slide.headline }}</h2>
+      <p class="subtext-lead" style="max-width: 820px; font-size: 26px;">{{ slide.body }}</p>
+
+      <div class="cta-button">
+        <span>💾 Save this for reference</span>
+      </div>
+
+      <div style="margin-top: 36px; display: flex; gap: 32px; font-family: var(--font-mono); font-size: 18px; color: var(--text-secondary);">
+        <div>🔁 Share with team</div>
+        <div>•</div>
+        <div>💬 Drop your question</div>
+      </div>
+    </main>
+
+    <footer class="slide-footer">
+      <div class="footer-brand">
+        <div class="brand-avatar">A</div>
+        <div class="brand-meta">
+          <div class="brand-name">{{ brand.brand_name }}</div>
+          <div class="brand-handle">{{ brand.handle }}</div>
+        </div>
+      </div>
+      <div class="footer-swipe">
+        Follow {{ brand.handle }}
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

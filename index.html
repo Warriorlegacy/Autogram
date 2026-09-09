@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autogram AI — Autonomous B2B Instagram Content Engine & Agency System</title>
+  <meta name="description" content="Turn your Instagram into an autonomous high-ticket B2B acquisition channel. 100% automated research, writing, deterministic rendering, and official Meta publishing.">
+  <meta name="keywords" content="Instagram automation, AI carousels, B2B marketing, tech marketing, autonomous content engine, Meta Graph API">
+  
+  <!-- Social Graph Meta -->
+  <meta property="og:title" content="Autogram AI — The Autonomous Instagram Content Engine">
+  <meta property="og:description" content="Zero-touch daily carousels written by editorial intelligence, rendered with deterministic typography, and published via Meta's official API.">
+  <meta property="og:type" content="website">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- Three.js CDN for 3D WebGL Hologram -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <!-- Scripts -->
+  <script src="js/three-scene.js" defer></script>
+  <script src="js/carousel-simulator.js" defer></script>
+  <script src="js/roi-calculator.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/auth.js" defer></script>
+</head>
+<body>
+
+  <!-- 3D Interactive WebGL Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- HUD Top Header -->
+  <header class="hud-header">
+    <div class="hud-topbar">
+      <div class="hud-telemetry">
+        <span id="hud-auth-badge" class="hud-auth-tag guest-tag"><span class="badge-dot lock"></span> 🔒 CLIENT ACCESS GATED</span>
+        <span><span class="hud-status-dot"></span>CORE ENGINE: ONLINE [v2.4]</span>
+        <span>META GRAPH API: CONNECTED</span>
+        <span>ZERO-TOUCH: ENGAGED</span>
+      </div>
+      <div style="display: flex; gap: 16px;">
+        <span>SYS LATENCY: 18MS</span>
+        <span style="color: var(--neon-cyan);">COST: $0.00 / MO</span>
+      </div>
+    </div>
+
+    <div class="container">
+      <nav class="hud-nav">
+        <a href="#" class="brand-logo">
+          <div class="brand-glyph">A</div>
+          <div class="brand-text">AUTOGRAM<span>.AI</span></div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#simulator" class="nav-link">Live Simulator</a></li>
+          <li><a href="#architecture" class="nav-link">Architecture</a></li>
+          <li><a href="#roi" class="nav-link">ROI Calculator</a></li>
+          <li><a href="#pricing" class="nav-link">Pricing Plans</a></li>
+          <li><a href="#terminal" class="nav-link">CLI Console</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="#" id="open-portal-btn" class="btn btn-secondary trigger-portal-modal" style="padding: 10px 18px; font-size: 13px;">
+            <span>⚡ Client Portal & Studio</span>
+          </a>
+          <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot">
+            <span>Deploy Autopilot</span>
+            <span>→</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-pill">
+          <span>⚡ Official Meta Content Publishing Platform</span>
+        </div>
+
+        <h1 class="hero-title">
+          Turn Instagram Into An <br>
+          <span class="text-gradient">Autonomous B2B Acquisition</span> Engine
+        </h1>
+
+        <p class="hero-subtext">
+          Zero-touch daily carousels written by editorial intelligence, fact-checked against research sources, rendered with deterministic typography, and published via Meta's official API. 100% automated.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 18px 38px; font-size: 17px;">
+            <span>Deploy My Autopilot</span>
+            <span>→</span>
+          </a>
+          <a href="#simulator" class="btn btn-secondary" style="padding: 18px 34px; font-size: 17px;">
+            <span>Interactive Live Demo</span>
+            <span>👁</span>
+          </a>
+        </div>
+
+        <div class="hero-trust-bar">
+          <div class="trust-item">
+            <span>✓</span> <strong>0 Human Hours</strong> Routine Effort
+          </div>
+          <div class="trust-item">
+            <span>✓</span> <strong>1080×1350</strong> Pixel-Perfect Format
+          </div>
+          <div class="trust-item">
+            <span>✓</span> <strong>Official Meta API</strong> 100% Policy Compliant
+          </div>
+          <div class="trust-item">
+            <span>✓</span> <strong>$0.00</strong> API/Hosting Overhead
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive 3D Carousel Simulator Deck -->
+  <section id="simulator" class="section" style="background: rgba(4, 6, 10, 0.7);">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-tag">Interactive Simulator</div>
+        <h2 class="section-title">Live 3D Carousel Deck Inspector</h2>
+        <p class="section-desc">
+          Interact with the actual 8-slide high-signal carousel rendered by our autonomous engine. Flip through slides, inspect typography rules, and review verified evidence.
+        </p>
+      </div>
+
+      <div class="simulator-wrapper">
+        <div class="simulator-controls">
+          <div class="pillar-tabs">
+            <button class="pillar-tab active">AI Tool Breakdown</button>
+            <button class="pillar-tab">Prompting & Workflow</button>
+            <button class="pillar-tab">Marketing Psychology</button>
+            <button class="pillar-tab">Tech Explainer</button>
+            <button class="pillar-tab">Career & Skills</button>
+            <button class="pillar-tab">Contrarian</button>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--neon-cyan);">
+            ASPECT RATIO: 1080×1350 (4:5 PORTRAIT)
+          </div>
+        </div>
+
+        <div class="simulator-grid">
+          <!-- 3D Mobile Viewport -->
+          <div class="deck-viewport-container">
+            <div class="phone-mockup">
+              <div class="phone-notch"></div>
+              <div class="slide-screen">
+                <img id="simulator-slide-img" src="public/assets/slides/slide_01.jpg" alt="Active Carousel Slide" class="active-slide-img">
+              </div>
+            </div>
+
+            <div class="deck-navigation">
+              <button id="deck-prev-btn" class="deck-nav-btn" aria-label="Previous Slide">←</button>
+              <div id="slide-dots-container" class="slide-dots"></div>
+              <button id="deck-next-btn" class="deck-nav-btn" aria-label="Next Slide">→</button>
+            </div>
+          </div>
+
+          <!-- Real-Time Slide Telemetry Inspector -->
+          <div class="simulator-inspector">
+            <div class="telemetry-card">
+              <div class="telemetry-header">
+                <span id="slide-role-badge">Hook Billboard</span>
+                <span id="slide-num-display">SLIDE 01 / 08</span>
+              </div>
+              <h3 id="slide-headline" class="telemetry-title">Compound AI Systems: Why Multi-Agent Orchestration</h3>
+              <p id="slide-body" class="telemetry-body">
+                State management and modular verification cut failure rates by over 60%.
+              </p>
+              <div class="telemetry-badges">
+                <span class="badge-pill verified">✓ Evidence Verified</span>
+                <span class="badge-pill">Playwright 4:5 JPEG</span>
+                <span class="badge-pill">Zero Text Overflow</span>
+              </div>
+            </div>
+
+            <div class="telemetry-card">
+              <div class="telemetry-header">
+                <span>Verified Proof / Benchmark Metric</span>
+                <span style="color: var(--neon-emerald);">CONFIDENCE: 98%</span>
+              </div>
+              <p id="slide-proof" class="telemetry-body" style="font-family: var(--font-mono); font-size: 15px; color: #E2E8F0;">
+                Benchmarked across 1.2M automated agent operations.
+              </p>
+            </div>
+
+            <div class="telemetry-card" style="border-left: 4px solid var(--neon-cyan);">
+              <div class="telemetry-header">
+                <span>Instagram Caption Preview</span>
+                <span>FRONT-LOADED HOOK</span>
+              </div>
+              <p class="telemetry-body" style="font-size: 14px; line-height: 1.6;">
+                "The biggest misconception in AI automation is asking a single prompt to do everything. When you separate research, drafting, verification, and design into distinct layers, failure rates drop by 60%..."
+              </p>
+              <div style="margin-top: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan);">
+                #AIAutomation #SystemDesign #SoftwareArchitecture #BuildInPublic
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5-Layer Autonomous Architecture Teardown -->
+  <section id="architecture" class="section">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-tag">System Architecture</div>
+        <h2 class="section-title">The 5-Layer Autonomous Pipeline</h2>
+        <p class="section-desc">
+          Automate the mechanics aggressively; automate judgment conservatively. Why compound architecture beats fragile single-prompt scripts.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; margin-top: 60px;">
+        <div class="telemetry-card" style="border-top: 4px solid var(--neon-cyan);">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); margin-bottom: 8px;">LAYER A</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Knowledge Ingestion</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Continuously ingests RSS, engineering whitepapers, and curated industry sources. Validates sources and deduplicates content into persistent database records.
+          </p>
+        </div>
+
+        <div class="telemetry-card" style="border-top: 4px solid var(--neon-indigo);">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-indigo); margin-bottom: 8px;">LAYER B</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Content Intelligence</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Scores 10–20 candidates across novelty, evidence strength, utility, and save/share potential. Checks anti-repetition memory to prevent topic recycling.
+          </p>
+        </div>
+
+        <div class="telemetry-card" style="border-top: 4px solid var(--neon-violet);">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-violet); margin-bottom: 8px;">LAYER C</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Fact-Checking & QA Gate</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Compares claims against evidence. Enforces the banned cliché filter and runs an automated 0–100 editorial scoring gate with bounded 2-pass retries.
+          </p>
+        </div>
+
+        <div class="telemetry-card" style="border-top: 4px solid var(--neon-emerald);">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-emerald); margin-bottom: 8px;">LAYER D</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Deterministic Slide Renderer</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Playwright headless Chromium renders 8 bespoke HTML/CSS templates into pixel-perfect 1080×1350 JPEG slides with zero font shifts or AI image glitches.
+          </p>
+        </div>
+
+        <div class="telemetry-card" style="border-top: 4px solid var(--neon-amber);">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-amber); margin-bottom: 8px;">LAYER E</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Meta Publishing & Feedback</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Container-based official Meta Graph API publishing with auto-refreshing 60-day tokens and rolling analytics optimization for saves and shares.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive ROI & Agency Savings Calculator -->
+  <section id="roi" class="section" style="background: rgba(8, 13, 24, 0.6);">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-tag">Economics & ROI</div>
+        <h2 class="section-title">Calculate Your Monthly Savings</h2>
+        <p class="section-desc">
+          Compare the cost of traditional design agencies ($3,500/mo + endless revision delays) against Autogram's automated zero-touch content engine.
+        </p>
+      </div>
+
+      <div class="roi-container">
+        <div class="roi-grid">
+          <div>
+            <div class="slider-group">
+              <div class="slider-header">
+                <span class="slider-label">Monthly Carousels Needed</span>
+                <span id="posts-val" class="slider-value">30 Carousels / mo</span>
+              </div>
+              <input type="range" id="posts-slider" class="range-slider" min="15" max="60" value="30" step="5">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono);">
+                <span>15 Posts</span>
+                <span>30 Posts (Daily)</span>
+                <span>60 Posts</span>
+              </div>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span class="slider-label">Current Monthly Agency / Freelancer Spend</span>
+                <span id="spend-val" class="slider-value">$3,500 / mo</span>
+              </div>
+              <input type="range" id="spend-slider" class="range-slider" min="1000" max="8000" value="3500" step="250">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono);">
+                <span>$1,000/mo</span>
+                <span>$3,500/mo</span>
+                <span>$8,000/mo</span>
+              </div>
+            </div>
+
+            <div style="background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 20px; border: 1px solid var(--border-subtle);">
+              <div style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+                💡 <strong>The Opportunity Cost:</strong> Creating 30 high-signal carousels manually requires ~105 hours of founder or senior operator time. Autogram cuts this to 10 minutes of weekly review.
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculated Output -->
+          <div class="roi-results-box">
+            <div id="roi-annual-savings" class="roi-metric-main">$30,036</div>
+            <div class="roi-metric-sub">Net Annual Savings With Autogram</div>
+
+            <div class="roi-stats-row">
+              <div class="roi-stat-item">
+                <strong id="roi-hours-saved">105 hrs</strong>
+                <span>Founder Hours Saved / Mo</span>
+              </div>
+              <div class="roi-stat-item">
+                <strong id="roi-cost-per-post">$33</strong>
+                <span>Effective Cost Per Slide Deck</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 28px;">
+              <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%;">
+                <span>Lock In This ROI Today</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client-Ready Pricing Section (Explicitly Requested by User) -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-tag">Investment & Plans</div>
+        <h2 class="section-title">Ready-to-Deploy Service Tiers</h2>
+        <p class="section-desc">
+          Transform your Instagram into a compounding B2B acquisition channel. Transparent pricing with zero surprise charges.
+        </p>
+      </div>
+
+      <!-- Billing Toggle Switch -->
+      <div class="pricing-toggle-container">
+        <span id="monthly-toggle-label" class="toggle-btn active">Monthly Billing</span>
+        <div id="pricing-switch" class="switch-pill">
+          <div class="switch-circle"></div>
+        </div>
+        <span id="annual-toggle-label" class="toggle-btn">
+          Annual Billing <span class="save-badge">Save 20%</span>
+        </span>
+      </div>
+
+      <!-- 3 Tiered Cards -->
+      <div class="pricing-grid">
+        <!-- Tier 1: Starter -->
+        <div class="pricing-card">
+          <div>
+            <div class="plan-name">Starter Autopilot</div>
+            <p class="plan-desc">Ideal for solo founders establishing initial authority in one key content pillar.</p>
+            <div class="plan-price">
+              <span id="price-starter" class="price-num">$497</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <ul class="plan-features">
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 15 High-Signal Carousels / month</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 1 Core Content Pillar Focus</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Automated Fact-Check Audit</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 1080×1350 Playwright Slide Renderer</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Pre-Publish Staging Dashboard</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Email & Slack Exception Alerts</li>
+            </ul>
+          </div>
+          <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Starter Autopilot" style="width: 100%;">
+            <span>Deploy Starter</span>
+          </a>
+        </div>
+
+        <!-- Tier 2: Growth Autopilot (Featured) -->
+        <div class="pricing-card featured">
+          <div class="featured-pill">Most Popular · Full Autopilot</div>
+          <div>
+            <div class="plan-name">Growth Autopilot</div>
+            <p class="plan-desc">Complete daily zero-touch publishing system for tech companies and modern agencies.</p>
+            <div class="plan-price">
+              <span id="price-growth" class="price-num">$997</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <ul class="plan-features">
+              <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>30 Daily Carousels / month</strong></li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>Full 6-Pillar Strategic Rotation</strong></li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Bespoke Brand Design System & CSS Tokens</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Direct Meta Instagram Graph API Publishing</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Automatic 60-Day Token Auto-Refresh</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Anti-Repetition Content Memory Ledger</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Weekly Analytics Learning & Score Optimization</li>
+            </ul>
+          </div>
+          <a href="#" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%;">
+            <span>Deploy Growth Autopilot</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Tier 3: Enterprise Swarm -->
+        <div class="pricing-card">
+          <div>
+            <div class="plan-name">Enterprise Swarm</div>
+            <p class="plan-desc">For venture portfolios, multi-brand holding companies, and high-volume media operations.</p>
+            <div class="plan-price">
+              <span id="price-enterprise" class="price-num">$2,497</span>
+              <span class="price-period">/ month</span>
+            </div>
+            <ul class="plan-features">
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Up to 3 Distinct Brand Accounts</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 90 Carousels / month Total</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Custom Internal MCP Connectors & Knowledge Feeds</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Dedicated Cloudflare R2 Edge CDN Hosting</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Real-Time Telegram & Slack Executive Alerts</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Dedicated Solutions Engineer & Custom SLAs</li>
+            </ul>
+          </div>
+          <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Enterprise Swarm" style="width: 100%;">
+            <span>Talk to Enterprise</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Sci-Fi Terminal Emulator -->
+  <section id="terminal" class="section" style="background: rgba(4, 6, 10, 0.8);">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-tag">Interactive Console</div>
+        <h2 class="section-title">Test The Autogram CLI</h2>
+        <p class="section-desc">
+          Click any command to run live diagnostic audits across our autonomous production kernel.
+        </p>
+      </div>
+
+      <div class="terminal-container">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="t-dot red"></span>
+            <span class="t-dot yellow"></span>
+            <span class="t-dot green"></span>
+          </div>
+          <div class="terminal-title">bash — autogram-cli@engine-v2.4</div>
+          <div class="terminal-quick-cmds">
+            <button class="t-cmd-btn" data-cmd="status">--status</button>
+            <button class="t-cmd-btn" data-cmd="generate">--generate</button>
+            <button class="t-cmd-btn" data-cmd="verify">--verify</button>
+            <button class="t-cmd-btn" data-cmd="pricing">--pricing</button>
+          </div>
+        </div>
+
+        <div id="terminal-body" class="terminal-body">
+          <div class="terminal-line info">Autogram Autonomous Kernel v2.4 initialized. Ready for instructions.</div>
+          <div class="terminal-line">Type or click the commands above to inspect system telemetry...</div>
+          <div class="terminal-line info">> autogram --status</div>
+          <div class="terminal-line">[SYS] System Kernel: v2.4-STABLE</div>
+          <div class="terminal-line">[NET] Meta Graph API: CONNECTED (Quota: 1/50)</div>
+          <div class="terminal-line">[AI] LLM Pipeline: READY (Gemini Free / Groq / Free Engine)</div>
+          <div class="terminal-line success">[OK] All 7 automated quality tests passing. Zero operational debt.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client FAQ Section -->
+  <section class="section">
+    <div class="container" style="max-width: 860px;">
+      <div class="text-center">
+        <div class="section-tag">FAQ</div>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 48px;">
+        <div class="telemetry-card">
+          <h3 style="font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 8px;">Does this comply with Meta and Instagram's policies?</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Yes, 100%. We publish strictly through Meta's official Content Publishing Graph API for Professional Creator/Business accounts. We do NOT perform any banned engagement botting (like auto-following or comment pods). Growth is driven purely by high-signal content retention.
+          </p>
+        </div>
+
+        <div class="telemetry-card">
+          <h3 style="font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 8px;">What if the AI generates a factual error?</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Autogram features a strict 2-tier safety gate: Layer C cross-checks all factual statements against verified sources and applies a fail-closed rule. Plus, you have an optional 10-minute weekly staging review window before any scheduled carousel goes live.
+          </p>
+        </div>
+
+        <div class="telemetry-card">
+          <h3 style="font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 8px;">Will this cost me anything in API or server bills?</h3>
+          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+            Zero dollars. The engine is architected to utilize free AI tiers (Google Gemini 1,500 req/day free, Groq, or our built-in offline knowledge engine), free image rendering with local Chromium, free asset hosting tunnels, and free GitHub Actions runner minutes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid var(--border-subtle); padding: 60px 0; position: relative; z-index: 10;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
+      <div class="brand-logo">
+        <div class="brand-glyph">A</div>
+        <div class="brand-text">AUTOGRAM<span>.AI</span></div>
+      </div>
+
+      <div style="font-family: var(--font-mono); font-size: 13px; color: var(--text-dim);">
+        Autonomous Content Engine & Infrastructure © 2026. All rights reserved.
+      </div>
+
+      <div style="display: flex; gap: 20px;">
+        <a href="#simulator" class="nav-link">Live Demo</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="https://github.com" target="_blank" class="nav-link">GitHub Repository</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Client UPI Payment & WhatsApp Confirmation Modal -->
+  <div id="booking-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 640px;">
+      <button id="modal-close-btn" class="modal-close">✕</button>
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan); margin-bottom: 8px; letter-spacing: 0.05em;">
+        ⚡ INSTANT UPI PAYMENT & ONBOARDING
+      </div>
+      <h2 style="font-family: var(--font-display); font-size: 26px; font-weight: 800; color: #FFF; margin-bottom: 6px;">
+        Activate Autogram AI Subscription
+      </h2>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">
+        Complete your payment via official UPI ID or QR code, then send your payment screenshot on WhatsApp to receive your client license key within 15 minutes.
+      </p>
+
+      <!-- Selected Plan & Price Badge -->
+      <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">SELECTED TIER:</div>
+          <div id="modal-plan-title" style="font-size: 17px; font-weight: 800; color: #FFF;">Growth Autopilot</div>
+        </div>
+        <div style="text-align: right;">
+          <div id="modal-plan-price-inr" style="font-size: 20px; font-weight: 800; color: var(--neon-cyan);">₹79,999<span style="font-size: 12px; color: var(--text-muted);"> / mo</span></div>
+          <div id="modal-plan-price-usd" style="font-size: 12px; color: var(--text-muted);">$997 USD equivalent</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Pay via UPI -->
+      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+        <div style="font-size: 13px; font-weight: 700; color: #FFF; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="background: var(--neon-cyan); color: #000; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;">1</span>
+          Scan QR or Pay via Official UPI ID:
+        </div>
+
+        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <!-- QR Code Container -->
+          <div style="background: #FFFFFF; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);">
+            <img id="upi-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3D6202442690%40jio%26pn%3DAutogram%2520AI%26cu%3DINR" alt="Autogram UPI QR Code" style="width: 140px; height: 140px; display: block;">
+          </div>
+
+          <div style="flex: 1; min-width: 220px;">
+            <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 4px;">OFFICIAL BUSINESS UPI ID:</div>
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 10px;">
+              <input type="text" id="upi-id-input" class="form-input" readonly value="6202442690@jio" style="font-weight: 800; font-family: var(--font-mono); color: var(--neon-cyan); letter-spacing: 0.05em;">
+              <button type="button" id="copy-upi-btn" class="btn btn-secondary" style="padding: 12px 16px; font-size: 12px; white-space: nowrap;">Copy</button>
+            </div>
+            <div style="font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+              Supported apps: <strong>Google Pay, PhonePe, Paytm, BHIM, Cred</strong>, or any banking UPI app.
+            </div>
+            <div style="margin-top: 8px;">
+              <a href="upi://pay?pa=6202442690@jio&pn=Autogram%20AI&cu=INR" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px;">📱 Direct Mobile UPI Link</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Send Screenshot on WhatsApp -->
+      <div style="background: rgba(37, 211, 102, 0.04); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+        <div style="font-size: 13px; font-weight: 700; color: #FFF; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="background: #25D366; color: #000; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;">2</span>
+          Send Payment Screenshot on WhatsApp for Verification:
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label" style="font-size: 11px;">Your Name / Company</label>
+            <input type="text" id="checkout-client-name" class="form-input" placeholder="e.g. Alex Rivera, Acme Labs" required>
+          </div>
+          <div>
+            <label class="form-label" style="font-size: 11px;">Instagram Handle</label>
+            <input type="text" id="checkout-ig-handle" class="form-input" placeholder="@yourcompany" required>
+          </div>
+        </div>
+
+        <button type="button" id="whatsapp-submit-btn" class="btn btn-whatsapp" style="width: 100%; padding: 15px; font-size: 15px; font-weight: 700; background: #25D366; color: #021408; border: none; border-radius: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 0 25px rgba(37, 211, 102, 0.4);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.073-2.115-.515-1.782-.736-2.909-2.55-3.001-2.671-.088-.121-.722-.962-.722-1.835 0-.872.456-1.301.618-1.478.163-.177.355-.221.474-.221.119 0 .237.002.341.007.108.005.253-.041.396.301.144.347.494 1.206.537 1.295.044.088.073.192.015.308-.059.117-.088.19-.176.293-.088.104-.185.231-.264.31-.088.088-.18.184-.078.36.103.175.457.755.981 1.222.674.601 1.242.787 1.417.874.176.088.278.073.382-.045.103-.117.442-.516.56-.692.118-.177.236-.148.397-.089.162.059 1.026.484 1.203.573.177.089.295.133.339.207.044.074.044.428-.1 1.033z"/></svg>
+          <span>Send Payment Screenshot on WhatsApp</span>
+        </button>
+      </div>
+
+      <!-- Guarantee & Timeline -->
+      <div style="font-size: 12px; color: var(--text-dim); text-align: center; line-height: 1.5;">
+        🛡️ <strong>Instant Onboarding Guarantee:</strong> Piyush will verify your screenshot and dispatch your cryptographic Client License Key directly on WhatsApp (<strong>+91 6202442690</strong>) within 15 minutes.
+      </div>
+    </div>
+  </div>
+
+  <!-- Client Portal & Studio Access Modal (Paywall vs Owner VIP Cockpit) -->
+  <div id="portal-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 800px;">
+      <button id="portal-modal-close" class="modal-close">✕</button>
+
+      <!-- Paywall View (Default for Unpaid / Guests) -->
+      <div id="studio-paywall-view">
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); margin-bottom: 8px;">
+          🔒 CLIENT ACCESS CONTROL & MONETIZATION GATE
+        </div>
+        <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #FFF; margin-bottom: 8px;">
+          Paid Subscription Required
+        </h2>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6;">
+          Autogram is an enterprise-grade autonomous B2B content infrastructure. Live generation, brand customization, and Meta publishing are restricted to active paid accounts.
+        </p>
+
+        <!-- Banner for UPI & WhatsApp -->
+        <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--neon-cyan); border-radius: 10px; padding: 10px 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div style="font-size: 12px; color: #FFF;">
+            ⚡ <strong>UPI ID:</strong> <code style="color: var(--neon-cyan); font-weight: 700;">6202442690@jio</code>
+          </div>
+          <div style="font-size: 12px; color: #FFF;">
+            📱 <strong>WhatsApp Verification:</strong> <span style="color: #25D366; font-weight: 700;">+91 6202442690</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="portal-paywall-card">
+            <div style="font-size: 16px; font-weight: 700; color: #FFF;">Starter Autopilot</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;">₹39,999<span style="font-size: 12px; color: var(--text-muted);">/mo ($497)</span></div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">15 Carousels/mo · 1 Core Pillar</div>
+            <button class="btn btn-secondary trigger-booking-modal" data-plan="Starter Autopilot" style="width: 100%; font-size: 12px; padding: 8px 12px;">Pay via UPI & WhatsApp</button>
+          </div>
+
+          <div class="portal-paywall-card featured">
+            <div style="font-size: 11px; font-family: var(--font-mono); color: var(--neon-cyan); margin-bottom: 2px;">MOST POPULAR</div>
+            <div style="font-size: 16px; font-weight: 700; color: #FFF;">Growth Autopilot</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;">₹79,999<span style="font-size: 12px; color: var(--text-muted);">/mo ($997)</span></div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">30 Daily Carousels · Full Rotation</div>
+            <button class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%; font-size: 12px; padding: 8px 12px;">Pay via UPI & WhatsApp</button>
+          </div>
+
+          <div class="portal-paywall-card">
+            <div style="font-size: 16px; font-weight: 700; color: #FFF;">Enterprise Swarm</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;">₹1,99,999<span style="font-size: 12px; color: var(--text-muted);">/mo ($2,497)</span></div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Multi-Account · Dedicated SLA</div>
+            <button class="btn btn-secondary trigger-booking-modal" data-plan="Enterprise Swarm" style="width: 100%; font-size: 12px; padding: 8px 12px;">Talk to Enterprise</button>
+          </div>
+        </div>
+
+        <!-- License Key Unlock Form -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 18px;">
+          <div style="font-weight: 700; font-size: 14px; color: #FFF; margin-bottom: 6px;">Already a Client or Licensee?</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Enter your cryptographic client license key to activate your workspace:</div>
+          <form id="license-unlock-form" style="display: flex; gap: 10px;">
+            <input type="text" id="client-key-input" class="form-input" placeholder="e.g. AG-GROWTH-2026-XXXX-XXXX" style="flex: 1;" required>
+            <button type="submit" class="btn btn-primary" style="padding: 10px 18px; font-size: 13px;">Activate Key</button>
+          </form>
+        </div>
+
+        <!-- Discreet Owner Passcode Link -->
+        <div style="margin-top: 24px; text-align: center; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+          <span style="font-size: 12px; color: var(--text-dim);">System Owner / Admin? </span>
+          <a href="#" id="trigger-owner-login" style="font-size: 12px; color: var(--neon-cyan); font-weight: 600; text-decoration: underline;">
+            Enter Master Owner Passcode for Free Access
+          </a>
+        </div>
+      </div>
+
+      <!-- Studio Workspace View (Unlocked for Owner & Paid Clients) -->
+      <div id="studio-workspace-view" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px; margin-bottom: 20px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--neon-cyan);">PORTAL WORKSPACE ACTIVE</div>
+            <h2 style="font-family: var(--font-display); font-size: 24px; font-weight: 800; color: #FFF; margin-top: 4px;">
+              Autogram Generation Studio
+            </h2>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="hud-auth-tag owner-tag">👑 OWNER VIP ACCESS ($0.00)</span>
+            <button id="studio-logout-btn" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px;">Logout</button>
+          </div>
+        </div>
+
+        <!-- Tool 1: Interactive Topic & Carousel Builder -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+          <div style="font-weight: 700; font-size: 15px; color: #FFF; margin-bottom: 4px;">1. Instant Carousel Generator</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Draft an 8-slide structured narrative and immediately preview it in the 3D phone simulator.</div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <input type="text" id="studio-deck-topic" class="form-input" placeholder="Topic: e.g. Autonomous AI Agents in Production">
+            <input type="text" id="studio-deck-hook" class="form-input" placeholder="Hook: e.g. The $10k/mo Agency Trap">
+          </div>
+          <button id="studio-gen-deck-btn" class="btn btn-primary" style="padding: 10px 20px; font-size: 13px;">
+            <span>Generate & Preview in 3D Simulator</span>
+            <span>⚡</span>
+          </button>
+        </div>
+
+        <!-- Tool 2: FLUX.1 Real-Time Image Synthesis -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+          <div style="font-weight: 700; font-size: 15px; color: #FFF; margin-bottom: 4px;">2. FLUX.1 Visual AI Generator ($0.00 Free)</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Generate 1080×1080 dark luxury conceptual visuals directly in your browser.</div>
+          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="text" id="studio-img-prompt" class="form-input" placeholder="Prompt: Glowing isometric glass neural network cube with data streams" style="flex: 1;">
+            <button id="studio-gen-img-btn" class="btn btn-secondary" style="padding: 10px 18px; font-size: 13px;">Generate Visual Asset</button>
+          </div>
+          <div id="studio-img-result"></div>
+        </div>
+
+        <!-- Tool 3: Owner Client License Dispenser (Owner Only) -->
+        <div class="owner-only-tool" style="background: rgba(0, 240, 255, 0.04); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 12px; padding: 18px;">
+          <div style="font-weight: 700; font-size: 15px; color: var(--neon-cyan); margin-bottom: 4px;">👑 Owner License Dispenser</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Issue cryptographic license keys for new paying clients.</div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: center;">
+            <input type="text" id="issue-client-name" class="form-input" placeholder="Client / Company Name">
+            <select id="issue-tier-select" class="form-input" style="background: #0D121F; color: #FFF;">
+              <option value="starter">Starter ($497)</option>
+              <option value="growth" selected>Growth ($997)</option>
+              <option value="enterprise">Enterprise ($2,497)</option>
+            </select>
+            <input type="number" id="issue-days-input" class="form-input" value="30" title="Days Active">
+            <button id="owner-issue-key-btn" class="btn btn-primary" style="padding: 10px 18px; font-size: 12px;">Issue Key</button>
+          </div>
+          <div id="issued-key-display"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

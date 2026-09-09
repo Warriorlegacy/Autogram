@@ -1,0 +1,48 @@
+{
+  "name": "Autogram - Analytics & Self-Optimization",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 23 * * *"
+            }
+          ]
+        }
+      },
+      "id": "schedule-analytics",
+      "name": "Schedule - 23:00 Nightly",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "python -c \"from src.analytics.optimizer import optimizer; print('Analytics cycle complete.')\""
+      },
+      "id": "execute-optimizer",
+      "name": "Run Analytics Optimizer",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 300]
+    }
+  ],
+  "connections": {
+    "Schedule - 23:00 Nightly": {
+      "main": [
+        [
+          {
+            "node": "Run Analytics Optimizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "brand_name": "Autogram AI",
+  "handle": "@autogram.ai",
+  "positioning": "The practical intelligence account for AI, technology, marketing, automation, and modern business.",
+  "audience": [
+    "founders",
+    "developers",
+    "marketers",
+    "operators",
+    "tech professionals",
+    "students",
+    "ambitious creators"
+  ],
+  "voice": [
+    "intelligent",
+    "clear",
+    "practical",
+    "modern",
+    "evidence-led",
+    "slightly contrarian"
+  ],
+  "avoid": [
+    "generic hype",
+    "fake urgency",
+    "unsupported statistics",
+    "overused motivational language",
+    "keyword stuffing",
+    "excessive emojis",
+    "game-changer",
+    "unlock the power of",
+    "in today's fast-paced world",
+    "dive into",
+    "let's explore",
+    "at its core",
+    "stands as a testament to",
+    "in conclusion",
+    "it's important to note",
+    "seamless",
+    "robust",
+    "unleash",
+    "not just X, it's Y",
+    "faster, smarter, better"
+  ],
+  "design": {
+    "colors": {
+      "bg": "#0B0F17",
+      "card_bg": "#131C2E",
+      "card_border": "#1E293B",
+      "primary": "#38BDF8",
+      "accent": "#818CF8",
+      "highlight": "#F59E0B",
+      "text": "#F8FAFC",
+      "text_muted": "#94A3B8"
+    },
+    "fonts": {
+      "headline": "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+      "body": "Inter, system-ui, sans-serif",
+      "code": "JetBrains Mono, monospace"
+    }
+  },
+  "default_carousel_size": 9,
+  "default_posting_time": "19:30",
+  "timezone": "Asia/Kolkata"
+}
