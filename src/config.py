@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     gemini_api_key: str | None = Field(default=None, alias="GEMINI_API_KEY")
     groq_api_key: str | None = Field(default=None, alias="GROQ_API_KEY")
     huggingface_api_key: str | None = Field(default=None, alias="HUGGINGFACE_API_KEY")
+    openrouter_api_key: str | None = Field(default=None, alias="OPENROUTER_API_KEY")
     ollama_base_url: str = Field(default="http://localhost:11434", alias="OLLAMA_BASE_URL")
     ollama_model: str = Field(default="llama3.2", alias="OLLAMA_MODEL")
     llm_provider: str = Field(default="auto", alias="LLM_PROVIDER") # auto, gemini, groq, ollama, openai, claude, builtin

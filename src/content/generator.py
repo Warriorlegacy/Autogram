@@ -144,7 +144,7 @@ Return ONLY valid JSON.
             "X-Title": "Autogram AI",
             "Content-Type": "application/json"
         }
-        for model in ["meta-llama/llama-3.3-70b-instruct:free", "google/gemini-2.0-flash-exp:free", "deepseek/deepseek-r1:free"]:
+        for model in ["nvidia/nemotron-3.5-lightning:free", "google/gemini-2.0-flash-exp:free", "liquid/lfm-2.5-2.6b:free", "deepseek/deepseek-r1:free"]:
             payload = {
                 "model": model,
                 "messages": [
