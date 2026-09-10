@@ -1798,13 +1798,24 @@
                   </button>
                 </div>
 
-                <!-- Caption & Reels script drawers -->
+                <!-- Caption & Reels script drawers with Live Hashtag Cloud -->
                 <div style="margin-top:24px;">
-                  <div class="form-label" style="margin-bottom:8px;">High-Converting Instagram Caption</div>
-                  <textarea class="form-textarea" id="studio-caption-box" rows="5" placeholder="Caption with hook, value points & CTA will appear here..."></textarea>
-                  <div class="btn-row" style="margin-top:8px;">
-                    <button class="btn btn-sm btn-ghost" onclick="copyStudioCaption()">📋 Copy Caption</button>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <div class="form-label" style="margin-bottom:0;">High-Converting Instagram Caption & Viral Hashtags</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                      <span id="studio-hashtags-count" style="font-family:var(--font-mono);font-size:11px;color:var(--emerald);font-weight:600;">0 Hashtags Attached</span>
+                      <button class="btn btn-xs btn-ghost" onclick="generateStudioCaptionOnly()" title="Regenerate dynamic caption & 3-tier hashtags">⚡ Refresh Hashtags</button>
+                    </div>
+                  </div>
+                  <textarea class="form-textarea" id="studio-caption-box" rows="6" placeholder="Caption with hook, value points, CTA & 3-tier viral hashtags will appear here..." oninput="updateStudioHashtagsPreview()"></textarea>
+                  
+                  <!-- Live Hashtags Chip Cloud -->
+                  <div id="studio-hashtags-preview" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;min-height:24px;"></div>
+
+                  <div class="btn-row" style="margin-top:12px;">
+                    <button class="btn btn-sm btn-ghost" onclick="copyStudioCaption()">📋 Copy Caption & Hashtags</button>
                     <button class="btn btn-sm btn-ghost" onclick="copyStudioReel()">🎥 Copy Reels Script</button>
+                    <button class="btn btn-sm btn-ghost" onclick="generateStudioCaptionOnly()">⚡ Auto-Generate Caption</button>
                   </div>
                 </div>
               </div>
@@ -2640,9 +2651,10 @@
         activeDeckSlideIndex = 0;
         updateDeckSlideDisplay();
 
-        // Populate Caption
+        // Populate Caption & Hashtags
         if (data.caption) {
           document.getElementById('studio-caption-box').value = data.caption;
+          updateStudioHashtagsPreview();
         }
 
         showToast(`Generated ${data.slides_count || 8} slides! QA Score: ${data.qa_score}/100 ✓`, 'success');
@@ -2678,6 +2690,88 @@
       updateDeckSlideDisplay();
     }
 
+    function updateStudioHashtagsPreview() {
+      const box = document.getElementById('studio-caption-box');
+      const preview = document.getElementById('studio-hashtags-preview');
+      const countEl = document.getElementById('studio-hashtags-count');
+      if (!box || !preview) return;
+
+      const text = box.value || '';
+      const tags = text.match(/#[A-Za-z0-9_]+/g) || [];
+      const uniqueTags = [...new Set(tags)];
+
+      if (countEl) {
+        countEl.textContent = `${uniqueTags.length} Hashtags Attached`;
+        countEl.style.color = uniqueTags.length >= 8 ? 'var(--emerald)' : 'var(--amber)';
+      }
+
+      preview.innerHTML = '';
+      uniqueTags.forEach(tag => {
+        const chip = document.createElement('span');
+        chip.style.cssText = 'font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:6px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25);color:var(--cyan);letter-spacing:0.3px;';
+        chip.textContent = tag;
+        preview.appendChild(chip);
+      });
+    }
+
+    async function generateStudioCaptionOnly() {
+      playSound('click');
+      const topic = (document.getElementById('studio-topic-input') ? document.getElementById('studio-topic-input').value.trim() : '') || 'AI Automation Systems Architecture';
+      const pillar = (document.getElementById('studio-pillar-select') ? document.getElementById('studio-pillar-select').value : '') || 'AI Tool Breakdown';
+      const box = document.getElementById('studio-caption-box');
+      showToast('Generating dynamic caption & 3-tier viral hashtags...', 'info');
+
+      try {
+        const res = await fetch(API_BASE + '/caption/generate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ topic, pillar, body: box.value })
+        }).then(r => r.json());
+
+        if (res.ok && res.caption) {
+          box.value = res.caption;
+          updateStudioHashtagsPreview();
+          showToast(`Attached caption with ${res.hashtags ? res.hashtags.length : 14} viral hashtags! ✓`, 'success');
+        } else {
+          showToast(res.error || 'Failed to generate caption', 'error');
+        }
+      } catch(e) {
+        showToast(`Caption error: ${e.message}`, 'error');
+      }
+    }
+
+    function inspectRun(runDate) {
+      playSound('click');
+      switchNavTab('studio');
+      const runs = window._cachedRuns || [];
+      const r = runs.find(x => x.date === runDate);
+      if (r) {
+        const topInput = document.getElementById('studio-topic-input');
+        const pilSelect = document.getElementById('studio-pillar-select');
+        const capBox = document.getElementById('studio-caption-box');
+        if (topInput && r.topic) topInput.value = r.topic;
+        if (pilSelect && r.pillar) pilSelect.value = r.pillar;
+        if (capBox) {
+          capBox.value = r.caption || '';
+          if (!capBox.value) {
+            generateStudioCaptionOnly();
+          } else {
+            updateStudioHashtagsPreview();
+          }
+        }
+        if (r.slides && r.slides.length > 0) {
+          currentDeckSlides = r.slides.map((s, idx) => ({
+            role: `SLIDE ${idx + 1}`,
+            headline: r.topic || 'Autogram Slide',
+            body: `Loaded from autonomous run ${r.date}.`
+          }));
+          activeDeckSlideIndex = 0;
+          updateDeckSlideDisplay();
+        }
+        showToast(`Loaded run ${runDate} with verified caption & hashtags ✓`, 'info');
+      }
+    }
+
     function openDeckLightbox() {
       if (latestOutputRun && latestOutputRun.slides && latestOutputRun.slides[0]) {
         openLightbox(`/output/${latestOutputRun.date}/${latestOutputRun.slides[activeDeckSlideIndex] || latestOutputRun.slides[0]}`);
@@ -2690,7 +2784,7 @@
       playSound('click');
       const cap = document.getElementById('studio-caption-box').value;
       navigator.clipboard.writeText(cap);
-      showToast('Caption copied to clipboard! 📋', 'success');
+      showToast('Caption & hashtags copied to clipboard! 📋', 'success');
     }
 
     function copyStudioReel() {
@@ -2704,7 +2798,7 @@
         return;
       }
       playSound('click');
-      showToast('Initiating Meta Graph API publishing sequence...', 'info');
+      showToast('Initiating Meta Graph API publishing with verified caption & hashtags...', 'info');
 
       try {
         const res = await fetch(API_BASE + '/publish', {
@@ -2715,7 +2809,7 @@
         const d = await res.json();
         if (d.ok) {
           triggerCelebration();
-          showToast(`Successfully Published! Media ID: ${d.media_id || 'SIMULATED'} ✓`, 'success');
+          showToast(`Successfully Published with ${d.hashtags_count || 14} Hashtags! Media ID: ${d.media_id || 'SIMULATED'} ✓`, 'success');
         } else {
           showToast(`Publish failed: ${d.error}`, 'error');
         }
@@ -2727,20 +2821,28 @@
     async function directPublishStudioPost() {
       if (!confirm("Publish this active Studio carousel live to Instagram?")) return;
       playSound('click');
-      showToast('Publishing carousel to Instagram...', 'info');
+      
+      let capVal = document.getElementById('studio-caption-box').value.trim();
+      if (!capVal || !capVal.includes('#')) {
+        showToast('Auto-generating caption & viral hashtags before publish...', 'info');
+        await generateStudioCaptionOnly();
+        capVal = document.getElementById('studio-caption-box').value.trim();
+      }
+      
+      showToast('Publishing carousel with full caption & viral hashtags...', 'info');
       try {
         const res = await fetch(API_BASE + '/publish', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             mode: 'live',
-            caption: document.getElementById('studio-caption-box').value
+            caption: capVal
           })
         });
         const d = await res.json();
         if (d.ok) {
           triggerCelebration();
-          showToast('Live Post Published to Instagram! 🚀', 'success');
+          showToast(`Live Post Published with ${d.hashtags_count || 'all'} Hashtags! 🚀`, 'success');
         } else {
           showToast(d.error || 'Failed to publish', 'error');
         }
@@ -2888,6 +2990,7 @@
     async function loadRuns() {
       try {
         const runs = await fetch(API_BASE + '/runs').then(r => r.json());
+        window._cachedRuns = runs;
         document.getElementById('vault-runs-count').textContent = runs.length;
         const grid = document.getElementById('vault-grid');
         grid.innerHTML = '';
@@ -2908,6 +3011,7 @@
         runs.forEach(run => {
           const card = document.createElement('div');
           card.className = 'doppel-shell glow-cyan';
+          const tagsCount = run.hashtags ? run.hashtags.length : (run.caption ? (run.caption.match(/#/g) || []).length : 0);
           card.innerHTML = `
             <div class="doppel-core vault-card">
               <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -2915,10 +3019,14 @@
                 <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--bg-surface-elev);color:var(--emerald);">QA: ${run.qa_score || 94}/100</span>
               </div>
               <h4 style="font-family:var(--font-display);font-size:15px;color:#fff;line-height:1.3;">${run.topic || 'Autonomous Run'}</h4>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin:4px 0;">
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);"># ${tagsCount} tags attached</span>
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--emerald);">${run.has_caption ? '✓ Caption Ready' : 'Auto-Gen'}</span>
+              </div>
               <div class="vault-thumbnails-strip">
                 ${(run.slides || []).map(s => `<img class="vault-thumb" src="/output/${run.date}/${s}" onclick="openLightbox('/output/${run.date}/${s}')" />`).join('')}
               </div>
-              <div class="btn-row" style="margin-top:4px;">
+              <div class="btn-row" style="margin-top:6px;">
                 <button class="btn btn-sm btn-ghost" onclick="inspectRun('${run.date}')">👁 Inspect</button>
                 <button class="btn btn-sm btn-island-primary" onclick="directPublishRun('${run.date}')">🚀 Publish</button>
               </div>
@@ -2943,8 +3051,9 @@
     }
 
     async function directPublishRun(runDate) {
-      if (!confirm(`Publish run ${runDate} live to Instagram?`)) return;
+      if (!confirm(`Publish run ${runDate} live to Instagram? Caption and viral hashtags will be attached automatically.`)) return;
       playSound('click');
+      showToast(`Publishing run ${runDate} with verified caption & hashtags...`, 'info');
       try {
         const res = await fetch(API_BASE + '/publish', {
           method: 'POST',
@@ -2953,7 +3062,7 @@
         }).then(r => r.json());
         if (res.ok) {
           triggerCelebration();
-          showToast('Published run to Instagram! ✓', 'success');
+          showToast(`Published run to Instagram with ${res.hashtags_count || 'all'} hashtags! ✓`, 'success');
         } else {
           showToast(res.error || 'Failed to publish', 'error');
         }

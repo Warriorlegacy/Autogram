@@ -53,11 +53,27 @@ class ViralGrowthEngine:
         "#SoloBuilder", "#AIEngineering", "#IndieDev"
     ]
 
-    def build_viral_hashtags(self, pillar: str, max_tags: int = 15) -> List[str]:
+    TOPIC_KEYWORD_MAP = {
+        "agent": ["#MultiAgentSystems", "#AutonomousAgents", "#AgenticAI"],
+        "rag": ["#RAG", "#VectorDatabase", "#RetrievalAugmentedGeneration"],
+        "llm": ["#LargeLanguageModels", "#OpenSourceLLM", "#GenerativeAI"],
+        "prompt": ["#PromptEngineering", "#ContextEngineering"],
+        "python": ["#PythonDeveloper", "#PythonAutomation", "#PyTorch"],
+        "cloud": ["#CloudArchitecture", "#DevOps", "#Serverless"],
+        "docker": ["#Docker", "#Kubernetes", "#InfrastructureAsCode"],
+        "b2b": ["#B2BMarketing", "#SaaSGrowth", "#ContentStrategy"],
+        "workflow": ["#WorkflowAutomation", "#ProcessEngineering"],
+        "scale": ["#ScalableSystems", "#HighThroughput"],
+        "compound": ["#CompoundAI", "#SystemDesign", "#SoftwareArchitecture"],
+        "cost": ["#DevEfficiency", "#FinOps", "#CloudEconomics"]
+    }
+
+    def build_viral_hashtags(self, pillar: str, topic: str = "", max_tags: int = 15) -> List[str]:
         """
         Constructs an optimal 3-tier hashtag cluster:
         - 4 Macro Explore tags (500k-2M+ reach)
         - 5-6 Intent mid-volume tags (50k-500k reach)
+        - Topic-specific dynamic tags (extracted from topic keywords)
         - 4-5 Niche high-engagement tags (<50k reach)
         """
         macro = random.sample(self.MACRO_EXPLORE_TAGS, min(4, len(self.MACRO_EXPLORE_TAGS)))
@@ -67,17 +83,66 @@ class ViralGrowthEngine:
         ])
         intent = random.sample(pillar_tags, min(5, len(pillar_tags)))
         
+        # Extract contextual topic tags
+        topic_tags = []
+        if topic:
+            topic_lower = topic.lower()
+            for kw, tags in self.TOPIC_KEYWORD_MAP.items():
+                if kw in topic_lower:
+                    topic_tags.extend(tags)
+        
         niche = random.sample(self.NICHE_COMMUNITY_TAGS, min(4, len(self.NICHE_COMMUNITY_TAGS)))
         
         # Combine without duplicates while maintaining order
         seen = set()
         combined = []
-        for tag in macro + intent + niche:
-            if tag.lower() not in seen:
-                seen.add(tag.lower())
-                combined.append(tag)
+        # Priority order: Core mandatory, Topic specific, Intent, Macro, Niche
+        core_anchors = ["#AIEngineering", "#AutogramAI", "#AIAutomation", "#AgenticAI", "#SignhifyStudio"]
+        for tag in core_anchors + topic_tags + intent + macro + niche:
+            clean = tag.strip()
+            if not clean.startswith("#"):
+                clean = f"#{clean}"
+            if clean.lower() not in seen:
+                seen.add(clean.lower())
+                combined.append(clean)
         
         return combined[:max_tags]
+
+    def format_caption_with_hashtags(self, caption_text: str, hashtags: List[str]) -> str:
+        """Appends hashtags cleanly to the caption with spacer lines."""
+        text = caption_text.strip()
+        tags_str = " ".join(hashtags)
+        if not text:
+            return tags_str
+        if "#" in text:
+            return text
+        return f"{text}\n\n.\n.\n{tags_str}"
+
+    def generate_default_caption(self, topic: str = "AI Automation Systems Architecture", pillar: str = "AI Tool Breakdown") -> Dict[str, Any]:
+        """Generates a complete high-converting caption with 3-tier viral hashtags."""
+        tags = self.build_viral_hashtags(pillar, topic=topic)
+        caption_body = (
+            f"⚡ {topic}\n\n"
+            "Swipe through the complete slide deck for the exact implementation diagrams and architectural blueprint.\n\n"
+            "Key takeaways inside:\n"
+            "• Deterministic multi-agent workflows over brittle single prompts\n"
+            "• Memory and state isolation across production runs\n"
+            "• Measurable efficiency gains and cost reduction\n\n"
+            "👉 Swipe to see all slides.\n\n"
+            "⚡ Want the runnable blueprint? Comment 'BLUEPRINT' below and I'll send it straight to your DMs.\n\n"
+            "📌 Save this post before your next architecture sprint.\n"
+            "🚀 Follow @signhify.studio for daily battle-tested AI engineering & automation blueprints.\n\n"
+            "— My name is Piyush. Stop posting. Start shipping.\n\n"
+            "💬 Which part of this architecture is your biggest bottleneck right now?"
+        )
+        full_caption = self.format_caption_with_hashtags(caption_body, tags)
+        return {
+            "caption": full_caption,
+            "body": caption_body,
+            "hashtags": tags,
+            "topic": topic,
+            "pillar": pillar
+        }
 
     def generate_first_comment(self, carousel: Dict[str, Any]) -> str:
         """
@@ -113,11 +178,6 @@ class ViralGrowthEngine:
         """
         Ensures high-retention save cues and follow prompts are seamlessly embedded.
         """
-        # Ensure high-conversion hooks
-        save_callout = "📌 Save this blueprint before your next sprint — reference-grade architecture inside."
-        share_callout = "🔄 Share this with an engineer or founder scaling autonomous workflows."
-        follow_callout = f"🚀 Follow {handle} for daily battle-tested AI systems & compound automation architectures."
-        
         return caption_text
 
 viral_engine = ViralGrowthEngine()

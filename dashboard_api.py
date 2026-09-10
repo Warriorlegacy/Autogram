@@ -168,15 +168,20 @@ def get_output_runs() -> list[dict]:
             continue
         manifest_f = d / "manifest.json"
         caption_f  = d / "caption.txt"
+        hashtags_f = d / "hashtags.txt"
         reels_f    = d / "reels_script.md"
         content_f  = d / "content.json"
         slides = sorted(d.glob("slide_*.jpg"))
+        cap_text = caption_f.read_text(encoding="utf-8") if caption_f.exists() else ""
+        extracted_tags = hashtags_f.read_text(encoding="utf-8").split() if hashtags_f.exists() else [w for w in cap_text.split() if w.startswith("#")]
         entry = {
             "date": d.name,
             "slides": [s.name for s in slides],
             "slides_count": len(slides),
             "has_caption": caption_f.exists(),
-            "caption": caption_f.read_text(encoding="utf-8") if caption_f.exists() else "",
+            "caption": cap_text,
+            "has_hashtags": bool(extracted_tags),
+            "hashtags": extracted_tags,
             "has_reels": reels_f.exists(),
             "reels_script": reels_f.read_text(encoding="utf-8") if reels_f.exists() else "",
             "has_manifest": manifest_f.exists(),
@@ -471,10 +476,81 @@ def api_publish():
         return jsonify({"ok": False, "error": "No rendered slide_*.jpg images found in run"}), 400
 
     caption_file = folder / "caption.txt"
-    caption = custom_caption or (caption_file.read_text(encoding="utf-8") if caption_file.exists() else "Autogram Autonomous Carousel")
+    hashtags_file = folder / "hashtags.txt"
+    content_file = folder / "content.json"
+    manifest_file = folder / "manifest.json"
+    first_comment_file = folder / "first_comment.txt"
+
+    # Determine topic and pillar from manifest or content
+    topic = "AI Automation Systems Architecture"
+    pillar = "AI Tool Breakdown"
+    if content_file.exists():
+        try:
+            c_data = json.loads(content_file.read_text(encoding="utf-8"))
+            topic = c_data.get("topic", topic)
+            pillar = c_data.get("pillar", pillar)
+        except Exception:
+            pass
+    elif manifest_file.exists():
+        try:
+            m_data = json.loads(manifest_file.read_text(encoding="utf-8"))
+            topic = m_data.get("topic", topic)
+            pillar = m_data.get("pillar", pillar)
+        except Exception:
+            pass
+
+    # Ensure caption & hashtags are 100% generated and validated
+    from src.growth.viral_engine import viral_engine
+    from src.content.script_writer import script_writer
+
+    caption = ""
+    if custom_caption and custom_caption.strip():
+        caption = custom_caption.strip()
+        if "#" not in caption:
+            tags = viral_engine.build_viral_hashtags(pillar, topic=topic)
+            caption = f"{caption}\n\n.\n.\n{' '.join(tags)}"
+    elif caption_file.exists() and caption_file.read_text(encoding="utf-8").strip():
+        caption = caption_file.read_text(encoding="utf-8").strip()
+        if "#" not in caption:
+            tags = viral_engine.build_viral_hashtags(pillar, topic=topic)
+            caption = f"{caption}\n\n.\n.\n{' '.join(tags)}"
+            caption_file.write_text(caption, encoding="utf-8")
+    else:
+        # Generate complete caption with hook, CTAs, sign-off and viral hashtags
+        if content_file.exists():
+            try:
+                c_data = json.loads(content_file.read_text(encoding="utf-8"))
+                cap_meta = script_writer.generate_caption(c_data)
+                caption = cap_meta["caption"]
+            except Exception:
+                caption = ""
+        if not caption:
+            def_cap = viral_engine.generate_default_caption(topic=topic, pillar=pillar)
+            caption = def_cap["caption"]
+        caption_file.write_text(caption, encoding="utf-8")
+
+    # Extract tags from caption and ensure hashtags.txt is saved
+    extracted_tags = [w for w in caption.split() if w.startswith("#")]
+    if extracted_tags and not hashtags_file.exists():
+        hashtags_file.write_text(" ".join(extracted_tags), encoding="utf-8")
+
+    # Prepare first comment discussion spark
+    first_comment_text = ""
+    if first_comment_file.exists():
+        first_comment_text = first_comment_file.read_text(encoding="utf-8").strip()
+    elif content_file.exists():
+        try:
+            c_data = json.loads(content_file.read_text(encoding="utf-8"))
+            first_comment_text = script_writer.generate_first_comment(c_data)
+            first_comment_file.write_text(first_comment_text, encoding="utf-8")
+        except Exception:
+            pass
+    if not first_comment_text:
+        first_comment_text = viral_engine.generate_first_comment({"slides": [], "trigger_word": "SYSTEM"})
 
     with pipeline_lock:
         pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [PUBLISHER] Direct publish initiated for {run_date} ({'DRY-RUN' if dry_run else 'LIVE PRODUCTION'})...")
+        pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [PUBLISHER] Attached verified caption ({len(caption)} chars) with {len(extracted_tags)} hashtags.")
 
     try:
         from src.storage.uploader import uploader
@@ -501,8 +577,17 @@ def api_publish():
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [META GRAPH] Published successfully! Media ID: {media_id} ✓")
 
+        # Post first-comment velocity spark
+        if media_id and not dry_run and not str(media_id).startswith("mock"):
+            try:
+                publisher.post_comment(media_id, first_comment_text)
+                with pipeline_lock:
+                    pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [FIRST-COMMENT] Published viral discussion prompt to post feed ✓")
+            except Exception as fc_err:
+                with pipeline_lock:
+                    pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [FIRST-COMMENT NOTE] {fc_err}")
+
         # Update manifest.json
-        manifest_file = folder / "manifest.json"
         manifest = {}
         if manifest_file.exists():
             try:
@@ -510,6 +595,8 @@ def api_publish():
             except Exception:
                 pass
         manifest["media_id"] = media_id
+        manifest["caption"] = caption
+        manifest["hashtags"] = extracted_tags
         manifest["status"] = "PUBLISHED" if not dry_run else "SIMULATED_PUBLISH"
         manifest["published_at"] = datetime.now().isoformat()
         manifest_file.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -519,12 +606,39 @@ def api_publish():
             "media_id": media_id,
             "status": manifest["status"],
             "slides_count": len(slide_paths),
-            "date": run_date
+            "date": run_date,
+            "caption": caption,
+            "hashtags_count": len(extracted_tags)
         })
 
     except Exception as e:
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [PUBLISH ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+@app.route("/api/caption/generate", methods=["POST"])
+def api_caption_generate():
+    """
+    On-demand caption and 3-tier viral hashtag generation for any topic/pillar.
+    """
+    data = request.json or {}
+    topic = data.get("topic", "AI Automation Systems Architecture").strip()
+    pillar = data.get("pillar", "AI Tool Breakdown").strip()
+    custom_body = data.get("body", "").strip()
+
+    try:
+        from src.content.script_writer import script_writer
+        res = script_writer.generate_caption_for_topic(topic=topic, pillar=pillar, custom_body=custom_body)
+        return jsonify({
+            "ok": True,
+            "caption": res["caption"],
+            "body": res.get("body", ""),
+            "hashtags": res.get("hashtags", []),
+            "first_comment": res.get("first_comment", ""),
+            "topic": topic,
+            "pillar": pillar
+        })
+    except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 
 @app.route("/api/generate", methods=["POST"])
@@ -574,8 +688,12 @@ def api_generate():
         reels_meta = script_writer.generate_reels_script(carousel)
 
         # Save files
+        hashtags_list = caption_meta.get("hashtags", [])
         (out_dir / "content.json").write_text(json.dumps(carousel, indent=2), encoding="utf-8")
         (out_dir / "caption.txt").write_text(caption_meta["caption"], encoding="utf-8")
+        (out_dir / "hashtags.txt").write_text(" ".join(hashtags_list), encoding="utf-8")
+        first_comment_text = caption_meta.get("first_comment") or script_writer.generate_first_comment(carousel)
+        (out_dir / "first_comment.txt").write_text(first_comment_text, encoding="utf-8")
         (out_dir / "reels_script.md").write_text(reels_meta["formatted_text"], encoding="utf-8")
 
         rendered_slides = []
@@ -596,6 +714,8 @@ def api_generate():
             "topic": topic_text,
             "pillar": pillar,
             "slides_count": len(carousel.get("slides", [])),
+            "caption": caption_meta["caption"],
+            "hashtags": hashtags_list,
             "qa_score": qa.get("score", 92),
             "status": "STAGED",
             "image_files": rendered_slides
@@ -603,12 +723,14 @@ def api_generate():
         (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
         with pipeline_lock:
-            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [STUDIO] Synthesis complete! QA Score: {qa.get('score')}/100 ✓")
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [STUDIO] Synthesis complete! QA Score: {qa.get('score')}/100 with {len(hashtags_list)} hashtags ✓")
 
         return jsonify({
             "ok": True,
             "carousel": carousel,
             "caption": caption_meta["caption"],
+            "hashtags": hashtags_list,
+            "first_comment": first_comment_text,
             "reels_script": reels_meta["formatted_text"],
             "qa_score": qa.get("score"),
             "slides_count": len(carousel.get("slides", [])),

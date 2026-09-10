@@ -84,17 +84,17 @@ class ScriptWriter:
         caption_lines.extend(["", f"💬 {cta_question}"])
         caption_text = "\n".join(caption_lines)
 
-        # Build dynamic 3-tier viral hashtags (Macro Explore + Intent + Community)
+        # Build dynamic 3-tier viral hashtags (Macro Explore + Intent + Community + Topic)
         try:
             from src.growth.viral_engine import viral_engine
-            selected_tags = viral_engine.build_viral_hashtags(pillar)
+            selected_tags = viral_engine.build_viral_hashtags(pillar, topic=topic)
             # Ensure mandatory core tags for consistency & test suite
             for req in ["#AIEngineering", "#AutogramAI", "#AIAutomation", "#AgenticAI"]:
                 if req not in selected_tags:
                     selected_tags.append(req)
             first_comment = viral_engine.generate_first_comment(carousel)
         except Exception:
-            selected_tags = ["#AIAutomation", "#AgenticAI", "#AIEngineering", "#AutogramAI", "#BuildInPublic", "#SoloBuilder"]
+            selected_tags = ["#AIAutomation", "#AgenticAI", "#AIEngineering", "#AutogramAI", "#BuildInPublic", "#SoloBuilder", "#SignhifyStudio"]
             first_comment = f"📌 Follow {handle} for daily AI systems architecture breakdowns.\n\n⚡ Comment \"{trigger_word}\" for the free runnable blueprint!"
 
         hashtags_str = " ".join(selected_tags)
@@ -102,11 +102,48 @@ class ScriptWriter:
 
         return {
             "caption": full_caption,
+            "body": caption_text,
             "hook": hook_text,
             "hashtags": selected_tags,
             "char_count": len(full_caption),
             "first_comment": first_comment
         }
+
+    def generate_caption_for_topic(self, topic: str, pillar: str = "AI Tool Breakdown", custom_body: str = "") -> Dict[str, Any]:
+        """
+        On-demand caption and viral hashtag synthesis for any topic or pillar.
+        """
+        try:
+            from src.growth.viral_engine import viral_engine
+            default_meta = viral_engine.generate_default_caption(topic=topic, pillar=pillar)
+            if custom_body:
+                tags = default_meta["hashtags"]
+                full_caption = viral_engine.format_caption_with_hashtags(custom_body, tags)
+                return {
+                    "caption": full_caption,
+                    "body": custom_body,
+                    "hashtags": tags,
+                    "hook": topic,
+                    "first_comment": f"📌 Follow @signhify.studio for daily AI systems architecture breakdowns.\n\n⚡ Comment 'BLUEPRINT' for the free runnable setup!"
+                }
+            return {
+                "caption": default_meta["caption"],
+                "body": default_meta["body"],
+                "hashtags": default_meta["hashtags"],
+                "hook": topic,
+                "first_comment": f"📌 Follow @signhify.studio for daily AI systems architecture breakdowns.\n\n⚡ Comment 'BLUEPRINT' for the free runnable setup!"
+            }
+        except Exception as e:
+            logger.error(f"Error in generate_caption_for_topic: {e}")
+            tags = ["#AIAutomation", "#AgenticAI", "#AIEngineering", "#AutogramAI", "#SignhifyStudio"]
+            fallback_cap = f"⚡ {topic}\n\nArchitecture breakdown and implementation details.\n\n👉 Swipe through all slides.\n\n.\n.\n{' '.join(tags)}"
+            return {
+                "caption": fallback_cap,
+                "body": topic,
+                "hashtags": tags,
+                "hook": topic,
+                "first_comment": "📌 Drop a comment below for the full architecture breakdown!"
+            }
 
     def generate_first_comment(self, carousel: Dict[str, Any]) -> str:
         """Helper to generate conversational first comment for the carousel."""

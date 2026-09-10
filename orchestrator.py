@@ -146,11 +146,17 @@ def run_pipeline(dry_run: bool = False) -> dict:
     content_file = out_dir / "content.json"
     content_file.write_text(json.dumps(carousel, indent=2), encoding="utf-8")
 
-    # Generate high-converting caption with hook, value points & CTA
+    # Generate high-converting caption with hook, value points, CTA & 3-tier viral hashtags
     caption_meta = script_writer.generate_caption(carousel)
     caption_text = caption_meta["caption"]
     caption_file = out_dir / "caption.txt"
     caption_file.write_text(caption_text, encoding="utf-8")
+    
+    # Save dedicated hashtags file for easy access & reference
+    hashtags_file = out_dir / "hashtags.txt"
+    hashtags_list = caption_meta.get("hashtags", [])
+    hashtags_file.write_text(" ".join(hashtags_list), encoding="utf-8")
+    logger.info(f"Generated high-converting caption ({len(caption_text)} chars) with {len(hashtags_list)} viral hashtags attached")
 
     # Generate viral discussion first-comment to maximize initial engagement velocity
     first_comment_text = caption_meta.get("first_comment") or script_writer.generate_first_comment(carousel)
@@ -199,6 +205,8 @@ def run_pipeline(dry_run: bool = False) -> dict:
         "hero_visual": hero_asset_file,
         "media_id": media_id,
         "slides_count": len(rendered_image_paths),
+        "caption": caption_text,
+        "hashtags": hashtags_list,
         "image_files": [Path(p).name for p in rendered_image_paths],
         "image_urls": public_image_urls,
         "qa_score": qa_result.get("score"),

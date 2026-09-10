@@ -4,6 +4,20 @@
       "date": "2026-09-10",
       "pillar": "AI Tool Breakdown",
       "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Monolithic LLMs are 60% more prone to error propagation",
+      "score": 100
+    },
+    {
+      "date": "2026-09-10",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Monolithic LLMs are 60% more error-prone than compound AI systems",
+      "score": 100
+    },
+    {
+      "date": "2026-09-10",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
       "hook": "Monolithic LLMs are 60% more error-prone than compound AI systems",
       "score": 100
     },

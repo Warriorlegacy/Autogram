@@ -135,6 +135,37 @@ class InstagramPublisher:
         """End-to-end carousel publishing flow."""
         logger.info(f"Starting Instagram publish sequence for {len(image_urls)} slides...")
 
+        # Ensure caption and hashtags are ALWAYS present while posting
+        caption = (caption or "").strip()
+        if not caption:
+            logger.warning("No caption provided to publish_carousel; generating default viral caption & hashtags...")
+            try:
+                from src.growth.viral_engine import viral_engine
+                default_meta = viral_engine.generate_default_caption("AI Automation Systems Architecture", "AI Tool Breakdown")
+                caption = default_meta["caption"]
+            except Exception:
+                tags = "#AIEngineering #AutogramAI #AIAutomation #AgenticAI #BuildInPublic #SystemDesign #SignhifyStudio"
+                caption = (
+                    "New AI Automation Systems Breakdown.\n\n"
+                    "👉 Swipe through all slides to see the exact implementation blueprint.\n\n"
+                    "📌 Save this post before your next architecture sprint.\n"
+                    "🚀 Follow @signhify.studio for battle-tested AI automation & systems design.\n\n"
+                    "— My name is Piyush. Stop posting. Start shipping.\n\n"
+                    ".\n.\n"
+                    f"{tags}"
+                )
+        elif "#" not in caption:
+            logger.info("Caption missing hashtags; dynamically generating and appending viral hashtag cluster...")
+            try:
+                from src.growth.viral_engine import viral_engine
+                tags = " ".join(viral_engine.build_viral_hashtags("AI Tool Breakdown"))
+            except Exception:
+                tags = "#AIEngineering #AutogramAI #AIAutomation #AgenticAI #BuildInPublic #SystemDesign #SignhifyStudio"
+            caption = f"{caption}\n\n.\n.\n{tags}"
+
+        hashtag_count = caption.count("#")
+        logger.info(f"Verified post caption: {len(caption)} characters with {hashtag_count} hashtags attached.")
+
         # 1. Child containers
         child_ids = []
         for i, url in enumerate(image_urls):
