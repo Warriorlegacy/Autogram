@@ -221,6 +221,32 @@ Return ONLY valid JSON.
         for s in data.get("slides", []):
             if s.get("layout") == "cta":
                 s["trigger_word"] = data["trigger_word"]
+
+        # Automatically scrub banned marketing clichés
+        banned_replacements = {
+            "robust": "reliable",
+            "seamless": "frictionless",
+            "game-changer": "step-function shift",
+            "unlock the power of": "leverage",
+            "in today's fast-paced world": "in modern production",
+            "dive into": "examine",
+            "at its core": "fundamentally",
+            "unleash": "activate",
+        }
+        import re
+        for s in data.get("slides", []):
+            for field in ["headline", "body", "proof_or_example", "meta_chips"]:
+                val = s.get(field)
+                if val and isinstance(val, str):
+                    for banned, repl in banned_replacements.items():
+                        pattern = re.compile(re.escape(banned), re.IGNORECASE)
+                        s[field] = pattern.sub(repl, s[field])
+
+        if data.get("caption") and isinstance(data["caption"], str):
+            for banned, repl in banned_replacements.items():
+                pattern = re.compile(re.escape(banned), re.IGNORECASE)
+                data["caption"] = pattern.sub(repl, data["caption"])
+
         return data
 
     def generate_with_huggingface(self, topic: dict, sources: list[dict]) -> dict:
