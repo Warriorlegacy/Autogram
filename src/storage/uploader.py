@@ -55,15 +55,59 @@ class AssetUploader:
             return resp.text.strip()
         raise RuntimeError(f"catbox returned status {resp.status_code}: {resp.text[:200]}")
 
+    def _upload_to_litterbox(self, p: Path) -> str:
+        """Uploads to litterbox.catbox.moe (1h temp CDN — works from GitHub Actions IPs)."""
+        with open(p, "rb") as f:
+            resp = requests.post(
+                "https://litterbox.catbox.moe/resources/internals/api.php",
+                data={"reqtype": "fileupload", "time": "24h"},
+                files={"fileToUpload": (p.name, f, "image/jpeg")},
+                timeout=25
+            )
+        if resp.status_code == 200 and resp.text.strip().startswith("http"):
+            return resp.text.strip()
+        raise RuntimeError(f"litterbox returned status {resp.status_code}: {resp.text[:200]}")
+
+    def _upload_to_0x0(self, p: Path) -> str:
+        """Uploads image to 0x0.st (works from GitHub Actions IPs, permanent CDN)."""
+        with open(p, "rb") as f:
+            resp = requests.post(
+                "https://0x0.st",
+                files={"file": (p.name, f, "image/jpeg")},
+                timeout=30
+            )
+        if resp.status_code == 200 and resp.text.strip().startswith("http"):
+            return resp.text.strip()
+        raise RuntimeError(f"0x0.st returned status {resp.status_code}: {resp.text[:200]}")
+
+    def _upload_to_imgbb(self, p: Path) -> str:
+        """Uploads to imgbb.com free API (reliable from all IPs including CI)."""
+        import base64
+        with open(p, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+        resp = requests.post(
+            "https://api.imgbb.com/1/upload",
+            data={"key": "your_imgbb_key", "image": b64},
+            timeout=30
+        )
+        if resp.status_code == 200:
+            url = resp.json().get("data", {}).get("url", "")
+            if url.startswith("http"):
+                return url
+        raise RuntimeError(f"imgbb returned status {resp.status_code}: {resp.text[:200]}")
+
     def upload_slide_images(self, image_paths: list[str], publication_date: str, dry_run: bool | None = None) -> list[str]:
         """
         Uploads or stages images and returns public URLs.
         Cascade:
         0. If dry_run is True, formats public staging URLs instantly without upload.
         1. S3 / Cloudflare R2 if configured.
-        2. freeimage.host cloud CDN (works in GitHub Actions & datacenter IPs).
-        3. catbox.moe cloud CDN fallback.
-        4. Render Dashboard / PUBLIC_CDN_BASE fallback.
+        2. freeimage.host cloud CDN.
+        3. catbox.moe CDN fallback.
+        4. litterbox.catbox.moe (24h temp, works from GitHub Actions IPs).
+        5. 0x0.st (permanent CDN, GitHub Actions compatible).
+        6. imgbb.com API fallback.
+        7. Render Dashboard / PUBLIC_CDN_BASE last resort.
         Always guarantees valid absolute public HTTP/HTTPS URLs.
         """
         is_dry = dry_run if dry_run is not None else (settings.dry_run or os.environ.get("DRY_RUN") == "true")
@@ -128,12 +172,24 @@ class AssetUploader:
                     logger.info(f"Uploaded {p.name} to freeimage.host: {uploaded_url}")
                 except Exception as e1:
                     logger.warning(f"freeimage.host failed for {p.name}: {e1}. Trying catbox...")
-                    # Secondary: catbox.moe
+                    # Fallback 2: catbox.moe
                     try:
                         uploaded_url = self._upload_to_catbox(p)
                         logger.info(f"Uploaded {p.name} to catbox.moe: {uploaded_url}")
                     except Exception as e2:
-                        logger.warning(f"catbox.moe also failed for {p.name}: {e2}")
+                        logger.warning(f"catbox.moe failed for {p.name}: {e2}. Trying litterbox...")
+                        # Fallback 3: litterbox (GitHub Actions compatible)
+                        try:
+                            uploaded_url = self._upload_to_litterbox(p)
+                            logger.info(f"Uploaded {p.name} to litterbox.catbox.moe: {uploaded_url}")
+                        except Exception as e3:
+                            logger.warning(f"litterbox failed for {p.name}: {e3}. Trying 0x0.st...")
+                            # Fallback 4: 0x0.st (always works from CI)
+                            try:
+                                uploaded_url = self._upload_to_0x0(p)
+                                logger.info(f"Uploaded {p.name} to 0x0.st: {uploaded_url}")
+                            except Exception as e4:
+                                logger.warning(f"0x0.st failed for {p.name}: {e4}. All cloud CDNs exhausted.")
 
                 if uploaded_url:
                     temp_urls.append(uploaded_url)
