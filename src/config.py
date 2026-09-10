@@ -23,9 +23,11 @@ class Settings(BaseSettings):
     llm_provider: str = Field(default="auto", alias="LLM_PROVIDER") # auto, gemini, groq, ollama, openai, claude, builtin
     llm_model: str = Field(default="gemini-2.5-flash", alias="LLM_MODEL")
 
-    # Image Generation Settings (Pollinations FLUX.1 free, Google Imagen 3, or OpenAI DALL-E 3)
-    image_provider: str = Field(default="pollinations", alias="IMAGE_PROVIDER") # pollinations, imagen, dalle, none
+    # Image Generation Settings (Pollinations FLUX.1 free, Cloudflare Workers AI, Google Imagen 3, or OpenAI DALL-E 3)
+    image_provider: str = Field(default="pollinations", alias="IMAGE_PROVIDER") # pollinations, cloudflare, imagen, dalle, none
     image_style: str = Field(default="cyber-minimalist", alias="IMAGE_STYLE") # cyber-minimalist, 3d-isometric, photorealistic-dark, conceptual-ai
+    cloudflare_account_id: str | None = Field(default=None, alias="CLOUDFLARE_ACCOUNT_ID")
+    cloudflare_api_token: str | None = Field(default=None, alias="CLOUDFLARE_API_TOKEN")
 
     # Meta Instagram Graph API
     ig_user_id: str | None = Field(default=None, alias="IG_USER_ID")
