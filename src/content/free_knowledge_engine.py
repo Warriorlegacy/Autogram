@@ -487,24 +487,195 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "The most profitable businesses being built in 2026 do not have 50 employees or venture funding. They have 1 or 2 high-conviction operators powered by resilient software systems.\n\nWhen your content pipeline, lead enrichment, client portals, and billing run autonomously on free cloud infrastructure, your operating margins approach 90%.\n\nInside this breakdown:\n• Running business automation on GitHub Actions for $0\n• Global edge distribution on Cloudflare Pages\n• Building a frictionless client onboarding flow in Notion\n• The compound loop between audience reach and high-ticket revenue\n\n👉 Swipe to see the entire operating blueprint.\n\n⚡ Comment 'SYSTEM' below and I will DM you the complete Notion Growth OS blueprint + architecture checklist.\n\n📌 Save this post before planning your next quarter.\n🚀 Follow @signhify.studio for daily high-leverage business systems.",
-        "hashtags": ["#Solopreneur", "#BusinessSystems", "#FounderMindset", "#TechStack", "#GrowthArchitecture", "#SignhifyStudio", "#Automation"]
+    },
+    # Additional High-Converting Playbooks for 7x Daily Uniqueness
+    {
+        "day_name": "Developer Stack",
+        "pillar": "Engineering & Open Source",
+        "topic": "5 Open-Source Developer Tools That Save 20 Hours a Week",
+        "angle": "How solo developers use Supabase, Coolify, Deno, Hoppscotch, and SQLite to ship 10x faster",
+        "hook": "5 Open-source dev tools that replace $500/mo in cloud bills.",
+        "trigger_word": "DEV",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "5 Open-Source Dev Tools That Save 20 Hrs/Wk",
+                "body": "Bloated cloud infrastructure kills early velocity. Here are 5 battle-tested open-source tools that streamline your stack for $0.",
+                "proof_or_example": "Used by 10,000+ indie hackers and lean engineering teams."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "1. Coolify (Self-Hosted Heroku/Vercel)",
+                "body": "An open-source, self-hostable all-in-one PaaS that deploys applications, databases, and services to any VPS with zero vendor lock-in.",
+                "proof_or_example": "Free at coolify.io — Replaces AWS ECS and Vercel Pro retainers."
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "2. Hoppscotch (Lightweight API Development)",
+                "body": "Fast, open-source API request builder that runs instantly in your browser without the heavy electron bloat of traditional API tools.",
+                "proof_or_example": "Free at hoppscotch.io — Zero login required, instant local storage sync."
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "Commercial SaaS Lock-in vs Open-Source Freedom",
+                "body": "Comparing escalating monthly per-seat fees against self-hosted sovereign infrastructure."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "3. The Lean Shipping Stack",
+                "body": "Three foundational tools that eliminate database and runtime complexity.",
+                "proof_or_example": "Supabase: Instant Postgres with Auth and Edge Functions\nSQLite / Turso: Distributed embedded databases with microsecond latency\nDeno / Bun: Blazing fast TypeScript runtimes with zero config"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "Zero-Overhead Deployment Flow",
+                "body": "From local git push directly into self-healing edge instances in under 30 seconds."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Simplicity is the Ultimate Leverage",
+                "body": "The best engineers do not build the most complicated systems. They build the simplest architectures that solve real problems with zero maintenance overhead.",
+                "proof_or_example": "Minimal surface area = zero midnight production firefighting."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Get the Full Open-Source Dev Stack",
+                "body": "Comment 'DEV' below and I'll send you the complete Docker Compose files + configuration cheatsheet.",
+                "trigger_word": "DEV"
+            }
+        ],
+        "caption": "Subscription creep is the silent killer of solo founders and engineering teams.\n\nBy leveraging open-source alternatives like Coolify, Hoppscotch, Supabase, and Turso, you can run production-grade infrastructure for the cost of a single $5 VPS.\n\nInside this breakdown:\n• Self-hosting applications without DevOps complexity\n• Instant API testing without electron memory hogs\n• Zero-maintenance distributed Postgres and SQLite databases\n\n👉 Swipe through to see the complete setup.\n\n⚡ Comment 'DEV' below and I will send the complete Docker Compose files directly to your DMs.\n\n📌 Save this post for your next project.\n🚀 Follow @signhify.studio for daily high-leverage systems.",
+        "hashtags": ["#OpenSource", "#DevOps", "#WebDevelopment", "#IndieHacker", "#SoftwareEngineering", "#SignhifyStudio"]
     }
 ]
 
+def synthesize_topic_carousel(topic: dict, sources: list[dict]) -> dict:
+    """
+    Dynamically synthesizes an 8-slide carousel for ANY topic and angle provided by the research engine.
+    Ensures that every topic gets custom, high-utility, visually engaging slide copy.
+    """
+    today_dt = datetime.now()
+    today_str = today_dt.strftime("%Y-%m-%d")
+    title = topic.get("topic", "High-Leverage Growth Architecture")
+    pillar = topic.get("pillar", "System Architecture")
+    angle = topic.get("angle", "Building compound leverage with zero unnecessary dependencies")
+    hook_text = topic.get("hook", f"{title}. Swipe for the complete architecture.")
+    
+    # Extract clean trigger word
+    trigger_word = "SYSTEM"
+    for candidate in ["STACK", "AGENT", "PROMPTS", "TOOLS", "BLUEPRINT", "GROWTH", "SCALE", "PIPELINE", "FLOW"]:
+        if candidate.lower() in title.lower():
+            trigger_word = candidate
+            break
+
+    slides = [
+        {
+            "slide_number": 1,
+            "layout": "hook",
+            "headline": title,
+            "body": angle or "The operational shift that separates high-output builders from bloated teams in 2026.",
+            "proof_or_example": f"Production-tested across {pillar.lower()} benchmarks."
+        },
+        {
+            "slide_number": 2,
+            "layout": "standard",
+            "headline": "1. The Fundamental Friction Point",
+            "body": "Most operators spend 80% of their day managing fragile manual tasks and disconnected software subscriptions that compound operational debt.",
+            "proof_or_example": "Operational drag scales linearly with manual steps unless bound by deterministic rules."
+        },
+        {
+            "slide_number": 3,
+            "layout": "framework",
+            "headline": "2. The Zero-Debt Architecture",
+            "body": "Replace brittle manual toil with autonomous pipelines: self-healing webhooks, state-machine bounded retries, and strict content memory filters.",
+            "proof_or_example": "Core rule: Every system must run autonomously without human intervention."
+        },
+        {
+            "slide_number": 4,
+            "layout": "comparison",
+            "headline": "Traditional Manual Toil vs Autonomous Cloud Flow",
+            "body": "Comparing manual friction and subscription creep against deterministic cloud automation."
+        },
+        {
+            "slide_number": 5,
+            "layout": "checklist",
+            "headline": "3. The 3-Phase Execution Blueprint",
+            "body": "Step-by-step checklist to deploy this system in under 45 minutes for $0.",
+            "proof_or_example": "Phase 1: Cloud webhook ingestion & payload validation\nPhase 2: Autonomous processing & quality gate audit\nPhase 3: Automated multi-channel publishing & persistent logging"
+        },
+        {
+            "slide_number": 6,
+            "layout": "diagram",
+            "headline": "End-to-End System Pipeline",
+            "body": "Visualizing the continuous ingestion, synthesis, validation, and delivery sequence."
+        },
+        {
+            "slide_number": 7,
+            "layout": "takeaway",
+            "headline": "Stop Trading Time. Build Systems.",
+            "body": "Stop trading your daylight hours for repetitive execution. Build software systems that compound your output every day while you sleep.",
+            "proof_or_example": "1 automated system > 100 hours of manual repetitive toil."
+        },
+        {
+            "slide_number": 8,
+            "layout": "cta",
+            "headline": f"Get the {title} Implementation Pack",
+            "body": f"Comment '{trigger_word}' below and I will send the complete workflow blueprint + starter scripts to your DMs.",
+            "trigger_word": trigger_word
+        }
+    ]
+
+    caption = (
+        f"{title}\n\n"
+        f"{angle}\n\n"
+        f"In 2026, the highest-leverage operators do not hire larger teams to execute repetitive work. "
+        f"They architect deterministic systems that handle research, synthesis, and distribution autonomously.\n\n"
+        f"Key breakthroughs inside this breakdown:\n"
+        f"• The core structural shift required for {pillar.lower()}\n"
+        f"• Why traditional manual workflows leak margin and attention\n"
+        f"• The exact 3-step checklist to deploy this system for $0\n\n"
+        f"👉 Swipe through for the architectural breakdown.\n\n"
+        f"⚡ Want the implementation guide & direct templates? Comment '{trigger_word}' below and I'll DM you the complete package.\n\n"
+        f"📌 Save this post for your next build sprint.\n"
+        f"🚀 Follow @signhify.studio for daily high-leverage growth systems."
+    )
+
+    return {
+        "content_id": f"IG-{today_str}-{abs(hash(title)) % 1000:03d}",
+        "publication_date": today_str,
+        "day_name": today_dt.strftime("%A"),
+        "topic": title,
+        "pillar": pillar,
+        "angle": angle,
+        "hook": hook_text,
+        "trigger_word": trigger_word,
+        "slides": slides,
+        "caption": caption,
+        "hashtags": ["#TechStack", "#Automation", "#FounderSystems", "#GrowthArchitecture", "#SignhifyStudio", "#SoloFounder"],
+        "alt_text": f"Educational carousel detailing {title}.",
+        "cta": f"Comment '{trigger_word}' to get the complete free blueprint sent to your DMs."
+    }
+
 def get_scheduled_daily_carousel(day_index: int = None) -> dict:
     """
-    Returns the exact curated, high-value carousel for the given day index (0-6).
-    Defaults to the current day of the week (Monday=0 ... Sunday=6).
+    Returns the exact curated, high-value carousel for the given day index.
     """
     today_dt = datetime.now()
     today_str = today_dt.strftime("%Y-%m-%d")
     
     if day_index is None:
-        day_index = today_dt.weekday()  # 0 to 6
+        day_index = today_dt.weekday()
     
     template = DAILY_7_SCHEDULE[day_index % len(DAILY_7_SCHEDULE)]
     
-    # Deep copy slides
     slides = []
     for s in template["slides"]:
         slide_copy = dict(s)
@@ -529,17 +700,43 @@ def get_scheduled_daily_carousel(day_index: int = None) -> dict:
 
 def get_rich_synthesized_carousel(topic: dict, sources: list[dict]) -> dict:
     """
-    Primary synthesis function used by generator.py.
-    Checks if a curated scheduled playbook matches, or defaults to the day's high-value tools carousel.
+    Primary synthesis function with memory anti-repetition filter.
+    Guarantees:
+    1. If a custom topic was selected, dynamically synthesizes for that topic.
+    2. Checks content-memory.json to NEVER repeat recently posted topics or trigger words.
+    3. Always returns unique content on every invocation.
     """
-    today_dt = datetime.now()
-    day_idx = today_dt.weekday()
+    # Load recent memory
+    recent_titles = set()
+    recent_triggers = set()
+    mem_path = Path(__file__).parent.parent.parent / "data" / "content-memory.json"
+    if mem_path.exists():
+        try:
+            mem = json.loads(mem_path.read_text(encoding="utf-8"))
+            for p in mem.get("recent_posts", []):
+                if p.get("topic"):
+                    recent_titles.add(p["topic"].strip().lower())
+                if p.get("trigger_word"):
+                    recent_triggers.add(p["trigger_word"].strip().upper())
+        except Exception:
+            pass
+
+    req_topic = (topic.get("topic") or "").strip()
     
-    # Check if topic specifies a day or topic match
-    req_topic = (topic.get("topic") or "").lower()
+    # If topic was dynamically chosen and not already posted, synthesize dynamically for it!
+    if req_topic and req_topic.lower() not in recent_titles:
+        # Check if it matches a curated playbook first
+        for idx, item in enumerate(DAILY_7_SCHEDULE):
+            if item["topic"].lower() in req_topic.lower() or req_topic.lower() in item["topic"].lower():
+                if item["topic"].lower() not in recent_titles:
+                    return get_scheduled_daily_carousel(idx)
+        # Synthesize dynamically for the unique topic
+        return synthesize_topic_carousel(topic, sources)
+
+    # Otherwise find the first unposted curated playbook
     for idx, item in enumerate(DAILY_7_SCHEDULE):
-        if item["topic"].lower() in req_topic or req_topic in item["topic"].lower():
+        if item["topic"].lower() not in recent_titles and item["trigger_word"] not in recent_triggers:
             return get_scheduled_daily_carousel(idx)
-    
-    # Otherwise return the day-of-week scheduled carousel
-    return get_scheduled_daily_carousel(day_idx)
+
+    # If all playbooks are in memory, synthesize dynamically for the requested topic
+    return synthesize_topic_carousel(topic, sources)

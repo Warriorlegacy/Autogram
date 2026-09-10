@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     ollama_base_url: str = Field(default="http://localhost:11434", alias="OLLAMA_BASE_URL")
     ollama_model: str = Field(default="llama3.2", alias="OLLAMA_MODEL")
     llm_provider: str = Field(default="auto", alias="LLM_PROVIDER") # auto, gemini, groq, ollama, openai, claude, builtin
-    llm_model: str = Field(default="gemini-2.0-flash", alias="LLM_MODEL")
+    llm_model: str = Field(default="gemini-2.5-flash", alias="LLM_MODEL")
 
     # Image Generation Settings (Pollinations FLUX.1 free, Google Imagen 3, or OpenAI DALL-E 3)
     image_provider: str = Field(default="pollinations", alias="IMAGE_PROVIDER") # pollinations, imagen, dalle, none

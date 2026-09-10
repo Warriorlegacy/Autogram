@@ -56,12 +56,18 @@ Return ONLY valid JSON.
     def generate_with_gemini(self, topic: dict, sources: list[dict]) -> dict:
         """
         100% Free Google Gemini API (1,500 free requests/day).
+        Tries active Google models: gemini-2.5-flash, gemini-flash-latest, gemini-2.5-flash-lite, gemini-2.5-pro.
         """
-        model = settings.llm_model if "gemini" in settings.llm_model else "gemini-2.0-flash"
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={settings.gemini_api_key}"
+        candidate_models = []
+        if settings.llm_model and "gemini" in settings.llm_model:
+            candidate_models.append(settings.llm_model)
+        candidate_models.extend(["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite", "gemini-2.5-pro"])
         
+        # Deduplicate while preserving order
+        seen = set()
+        models = [m for m in candidate_models if not (m in seen or seen.add(m))]
+
         prompt_text = f"{self.system_prompt}\n\n{self.architect_prompt}\n\n{self._build_user_prompt(topic, sources)}"
-        
         payload = {
             "contents": [{
                 "parts": [{"text": prompt_text}]
@@ -72,34 +78,90 @@ Return ONLY valid JSON.
             }
         }
 
-        resp = requests.post(url, json=payload, timeout=45)
-        resp.raise_for_status()
-        candidates = resp.json().get("candidates", [])
-        raw_text = candidates[0]["content"]["parts"][0]["text"]
-        return json.loads(raw_text)
+        last_err = None
+        for model in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={settings.gemini_api_key}"
+            try:
+                logger.info(f"Attempting Gemini generation with model: {model}...")
+                resp = requests.post(url, json=payload, timeout=60)
+                if resp.status_code == 200:
+                    candidates = resp.json().get("candidates", [])
+                    raw_text = candidates[0]["content"]["parts"][0]["text"]
+                    data = json.loads(raw_text)
+                    if "slides" in data and len(data["slides"]) >= 5:
+                        logger.info(f"Gemini generation successful with {model} ({len(data['slides'])} slides).")
+                        return data
+                resp.raise_for_status()
+            except Exception as e:
+                last_err = e
+                logger.warning(f"Gemini model '{model}' failed: {e}. Trying fallback...")
+                continue
+        raise last_err or RuntimeError("All Gemini models failed")
 
     def generate_with_groq(self, topic: dict, sources: list[dict]) -> dict:
         """
-        100% Free Groq Cloud API (Llama 3.3 70B).
+        100% Free Groq Cloud API (Llama 3.3 70B / Llama 3.1 8B).
         """
         url = "https://api.groq.com/openai/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {settings.groq_api_key}",
             "Content-Type": "application/json"
         }
-        payload = {
-            "model": "llama-3.3-70b-versatile",
-            "messages": [
-                {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}"},
-                {"role": "user", "content": self._build_user_prompt(topic, sources)}
-            ],
-            "response_format": {"type": "json_object"},
-            "temperature": 0.7
+        models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"]
+        last_err = None
+        for model in models:
+            payload = {
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}"},
+                    {"role": "user", "content": self._build_user_prompt(topic, sources)}
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0.7
+            }
+            try:
+                resp = requests.post(url, headers=headers, json=payload, timeout=45)
+                if resp.status_code == 200:
+                    raw_text = resp.json()["choices"][0]["message"]["content"]
+                    return json.loads(raw_text)
+                resp.raise_for_status()
+            except Exception as e:
+                last_err = e
+                continue
+        raise last_err or RuntimeError("All Groq models failed")
+
+    def generate_with_openrouter(self, topic: dict, sources: list[dict]) -> dict:
+        """
+        100% Free OpenRouter Tier (DeepSeek R1, LLaMA 3.3, Gemini Exp).
+        """
+        api_key = getattr(settings, "openrouter_api_key", None) or os.environ.get("OPENROUTER_API_KEY", "")
+        if not api_key:
+            raise ValueError("No OPENROUTER_API_KEY configured")
+        url = "https://openrouter.ai/api/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "HTTP-Referer": "https://signhify.studio",
+            "X-Title": "Autogram AI",
+            "Content-Type": "application/json"
         }
-        resp = requests.post(url, headers=headers, json=payload, timeout=45)
-        resp.raise_for_status()
-        raw_text = resp.json()["choices"][0]["message"]["content"]
-        return json.loads(raw_text)
+        for model in ["meta-llama/llama-3.3-70b-instruct:free", "google/gemini-2.0-flash-exp:free", "deepseek/deepseek-r1:free"]:
+            payload = {
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}"},
+                    {"role": "user", "content": self._build_user_prompt(topic, sources)}
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0.7
+            }
+            try:
+                resp = requests.post(url, headers=headers, json=payload, timeout=50)
+                if resp.status_code == 200:
+                    raw_text = resp.json()["choices"][0]["message"]["content"]
+                    return json.loads(raw_text)
+            except Exception:
+                continue
+        raise RuntimeError("OpenRouter free models failed")
 
     def generate_with_ollama(self, topic: dict, sources: list[dict]) -> dict:
         """
@@ -143,22 +205,27 @@ Return ONLY valid JSON.
 
     def generate_carousel(self, topic: dict, sources: list[dict]) -> dict:
         """
-        Master generation method.
-        Automatically selects the best available FREE or configured provider.
-        Always fails closed to the built-in free intelligence engine to guarantee $0.00 cost and zero error.
+        Master generation method with multi-provider auto-fallback.
+        Order of evaluation:
+        1. Google Gemini (Free Tier)
+        2. Groq Cloud (Free Tier)
+        3. OpenRouter (Free Tier)
+        4. Local Ollama
+        5. OpenAI (if configured)
+        6. Free Built-In Anti-Repetition Synthesis Engine (Guaranteed zero-failure, never duplicates)
         """
-        provider = settings.llm_provider.lower()
+        provider = (settings.llm_provider or "auto").lower()
 
-        # 1. Google Gemini (100% Free Tier)
+        # 1. Google Gemini (100% Free Tier: 1500 req/day)
         if "gemini" not in self._disabled_providers and (provider in ["auto", "gemini"]) and settings.gemini_api_key and settings.gemini_api_key.strip():
             try:
                 logger.info("Generating carousel with Google Gemini (Free Tier)...")
                 return self.generate_with_gemini(topic, sources)
             except Exception as e:
-                logger.warning(f"Gemini generation error ({e}). Falling back.")
+                logger.warning(f"Gemini generation error ({e}). Falling back to next provider.")
                 self._disabled_providers.add("gemini")
 
-        # 2. Groq Cloud (100% Free Tier)
+        # 2. Groq Cloud (100% Free Tier: Llama 3.3 70B)
         if "groq" not in self._disabled_providers and (provider in ["auto", "groq"]) and settings.groq_api_key and settings.groq_api_key.strip():
             try:
                 logger.info("Generating carousel with Groq Cloud (Free Tier)...")
@@ -167,8 +234,18 @@ Return ONLY valid JSON.
                 logger.warning(f"Groq generation error ({e}). Falling back.")
                 self._disabled_providers.add("groq")
 
-        # 3. Local Ollama (100% Free Local)
-        if "ollama" not in self._disabled_providers and provider in ["ollama"]:
+        # 3. OpenRouter (100% Free Tier models)
+        openrouter_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+        if "openrouter" not in self._disabled_providers and (provider in ["auto", "openrouter"]) and openrouter_key:
+            try:
+                logger.info("Generating carousel with OpenRouter (Free Tier)...")
+                return self.generate_with_openrouter(topic, sources)
+            except Exception as e:
+                logger.warning(f"OpenRouter generation error ({e}). Falling back.")
+                self._disabled_providers.add("openrouter")
+
+        # 4. Local Ollama (100% Free Local)
+        if "ollama" not in self._disabled_providers and provider in ["ollama", "auto"]:
             try:
                 logger.info(f"Attempting local Ollama generation ({settings.ollama_model})...")
                 return self.generate_with_ollama(topic, sources)
@@ -176,7 +253,7 @@ Return ONLY valid JSON.
                 logger.debug(f"Ollama local not reachable: {e}")
                 self._disabled_providers.add("ollama")
 
-        # 4. OpenAI (Optional Paid)
+        # 5. OpenAI (Optional Paid)
         if "openai" not in self._disabled_providers and (provider in ["auto", "openai"]) and settings.openai_api_key and settings.openai_api_key.strip():
             try:
                 logger.info("Generating carousel with OpenAI...")
@@ -185,8 +262,8 @@ Return ONLY valid JSON.
                 logger.warning(f"OpenAI generation error ({e}). Falling back.")
                 self._disabled_providers.add("openai")
 
-        # 5. Built-In 100% Free Autonomous Knowledge Engine (Guaranteed 0-cost, 0-error)
-        logger.info("Generating carousel using Free Built-In Knowledge Engine (Zero Cost, Zero Dependency).")
+        # 6. Built-In 100% Free Autonomous Knowledge Engine (Guaranteed 0-cost, 0-error, anti-repetition)
+        logger.info("Generating carousel using Free Built-In Anti-Repetition Synthesis Engine.")
         return get_rich_synthesized_carousel(topic, sources)
 
 generator = ContentGenerator()
