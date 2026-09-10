@@ -202,29 +202,40 @@ def run_pipeline(dry_run: bool = False) -> dict:
     return manifest
 
 def run_scheduler(dry_run: bool = False):
-    """Runs a local daily cron scheduler daemon based on settings.posting_time."""
+    """Runs a local continuous scheduler daemon for the 7 daily posting slots."""
     import time
+    DAILY_SLOTS = ["08:00", "10:30", "13:00", "15:30", "18:00", "20:30", "22:30"]
+
     logger.info("==================================================")
-    logger.info(f" Autogram Autonomous Local Scheduler Daemon Active")
-    logger.info(f" Target Daily Posting Window: {settings.posting_time} ({settings.timezone})")
+    logger.info(" Autogram Autonomous 7x Daily Scheduler Active")
+    logger.info(f" Daily Target Slots: {', '.join(DAILY_SLOTS)} ({settings.timezone})")
     logger.info(f" Operating Mode: {'DRY RUN / SIMULATION' if dry_run or settings.dry_run else 'LIVE PRODUCTION'}")
     logger.info("==================================================")
     logger.info("Scheduler daemon running. Press Ctrl+C to terminate.")
 
-    last_run_date = None
+    triggered_today_slots = set()
+    last_day_str = None
+
     while True:
         now_dt = datetime.now()
         current_time_str = now_dt.strftime("%H:%M")
         current_date_str = now_dt.strftime("%Y-%m-%d")
 
-        if current_time_str == settings.posting_time and last_run_date != current_date_str:
-            logger.info(f"Triggering scheduled daily publishing run for {current_date_str} at {current_time_str}...")
+        # Reset triggered slots on a new day
+        if current_date_str != last_day_str:
+            triggered_today_slots = set()
+            last_day_str = current_date_str
+
+        # Check if current minute matches any of our 7 slots and hasn't run yet
+        if current_time_str in DAILY_SLOTS and current_time_str not in triggered_today_slots:
+            logger.info(f"Triggering scheduled autonomous publishing run for slot {current_time_str}...")
+            triggered_today_slots.add(current_time_str)
             try:
                 run_pipeline(dry_run=dry_run)
-                last_run_date = current_date_str
             except Exception as e:
-                logger.error(f"Scheduled pipeline run encountered error: {e}")
-        time.sleep(30)
+                logger.error(f"Scheduled pipeline run error on slot {current_time_str}: {e}")
+
+        time.sleep(20)
 
 def main():
     parser = argparse.ArgumentParser(description="Autogram: Autonomous Instagram Content Engine")
