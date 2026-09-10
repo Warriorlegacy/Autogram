@@ -4,45 +4,108 @@
   <meta charset="UTF-8">
   <title>Slide {{ slide.slide_number }} - Standard</title>
   <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .standard-content-box {
+      background: #FFFFFF;
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--card-shadow);
+      margin-top: 16px;
+    }
+    .tool-squircle-hero {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .hero-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 20px;
+      background: #FAF8F4;
+      border: 2px solid var(--accent-orange-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+    }
+    .hero-title-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text-primary);
+    }
+    .hero-subtitle {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-orange);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .resource-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      background: var(--bg-paper-warm);
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
   <div class="slide-canvas">
-    <div class="progress-container">
-      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
-    </div>
-
     <header class="slide-header">
-      <div class="pillar-badge">
-        <span class="pillar-dot"></span>
-        {{ meta.pillar | default('Insight') }}
-      </div>
-      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+      <div class="header-copyright">© 2026</div>
+      <div class="header-watermark">@SIGNHIFY.STUDIO</div>
+      <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
-      <div class="glass-card">
-        <h2 class="headline-large">{{ slide.headline }}</h2>
-        <p class="subtext-body">{{ slide.body }}</p>
+      {% if slide.step_label %}
+      <div class="step-badge">{{ slide.step_label }}</div>
+      {% else %}
+      <div class="sub-eyebrow">{{ slide.eyebrow | default('STEP BREAKDOWN') }}</div>
+      {% endif %}
+
+      <div class="standard-content-box">
+        <div class="tool-squircle-hero">
+          <div class="hero-icon">🛠</div>
+          <div class="hero-title-group">
+            <div class="hero-title">{{ slide.headline }}</div>
+            <div class="hero-subtitle">VERIFIED FREE TOOL / RESOURCE</div>
+          </div>
+        </div>
+
+        {% if slide.body %}
+        <p class="subtext-lead" style="font-size: 24px; line-height: 1.55; margin-bottom: 20px;">{{ slide.body }}</p>
+        {% endif %}
 
         {% if slide.proof_or_example %}
-        <div class="proof-box">
-          <span class="proof-icon">📌</span>
-          <div>{{ slide.proof_or_example }}</div>
+        <div class="resource-link-pill">
+          <span>🔗</span>
+          <span><b>HOW TO USE:</b> {{ slide.proof_or_example }}</span>
         </div>
         {% endif %}
       </div>
     </main>
 
-    <footer class="slide-footer">
-      <div class="footer-brand">
-        <div class="brand-avatar">A</div>
-        <div class="brand-meta">
-          <div class="brand-name">{{ brand.brand_name }}</div>
-          <div class="brand-handle">{{ brand.handle }}</div>
-        </div>
-      </div>
-      <div class="footer-swipe">
-        Next <span class="swipe-arrow">→</span>
+    <footer class="slide-footer-editorial">
+      <div class="footer-handle-row">@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS</div>
+      <div class="pagination-dots">
+        {% for i in range(1, meta.total_slides + 1) %}
+        <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>
+        {% endfor %}
       </div>
     </footer>
   </div>

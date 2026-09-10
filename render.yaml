@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: autogram-dashboard
+    runtime: python
+    buildCommand: pip install -r requirements.txt && playwright install --with-deps chromium
+    startCommand: python dashboard_api.py
+    envVars:
+      - key: PORT
+        value: 5050
+      - key: AUTOGRAM_OWNER_KEY
+        value: autogram_owner_vip_2026
+      - key: IG_USER_ID
+        sync: false
+      - key: IG_ACCESS_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: DRY_RUN
+        value: false

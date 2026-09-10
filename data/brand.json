@@ -1,24 +1,35 @@
 {
-  "brand_name": "Autogram AI",
-  "handle": "@autogram.ai",
-  "positioning": "The practical intelligence account for AI, technology, marketing, automation, and modern business.",
-  "audience": [
-    "founders",
-    "developers",
-    "marketers",
-    "operators",
-    "tech professionals",
-    "students",
-    "ambitious creators"
+  "brand_name": "Piyush | Growth Systems",
+  "handle": "@signhify.studio",
+  "avatar_letter": "S",
+  "positioning": "Engineering compound growth systems, AI workflows, and scalable acquisition architecture for high-output founders and builders.",
+  "target_audience": [
+    "Tech Founders & Solopreneurs",
+    "Growth Engineers & Marketers",
+    "SaaS Operators & Developers",
+    "High-Performance Agency Owners"
   ],
   "voice": [
-    "intelligent",
-    "clear",
-    "practical",
-    "modern",
-    "evidence-led",
-    "slightly contrarian"
+    "authoritative",
+    "architectural",
+    "hyper-practical",
+    "metrics-driven",
+    "zero-fluff",
+    "contrarian"
   ],
+  "content_pillars": [
+    "AI Architecture & Agentic Workflows",
+    "Compound Growth & Acquisition Engines",
+    "Automated Operations & Tool Stacks",
+    "System Design & Developer Productivity",
+    "Founder Psychology & Scaling Frameworks"
+  ],
+  "follow_triggers": {
+    "cta_headline": "Build Systems, Not Just Tasks",
+    "cta_subtext": "I deconstruct production AI architectures and high-converting growth engines every week.",
+    "button_text": "Follow @signhify.studio",
+    "comment_lead_magnet": "Comment 'SYSTEM' to get the full architecture playbook sent to your DMs."
+  },
   "avoid": [
     "generic hype",
     "fake urgency",
@@ -43,22 +54,22 @@
   ],
   "design": {
     "colors": {
-      "bg": "#0B0F17",
-      "card_bg": "#131C2E",
-      "card_border": "#1E293B",
-      "primary": "#38BDF8",
-      "accent": "#818CF8",
-      "highlight": "#F59E0B",
-      "text": "#F8FAFC",
-      "text_muted": "#94A3B8"
+      "bg": "#F8F6F0",
+      "card_bg": "#FFFFFF",
+      "card_border": "rgba(0, 0, 0, 0.08)",
+      "primary": "#111111",
+      "accent": "#E05A36",
+      "highlight": "#16A34A",
+      "text": "#111111",
+      "text_muted": "#666666"
     },
     "fonts": {
-      "headline": "Plus Jakarta Sans, Inter, system-ui, sans-serif",
+      "headline": "Plus Jakarta Sans, system-ui, sans-serif",
       "body": "Inter, system-ui, sans-serif",
       "code": "JetBrains Mono, monospace"
     }
   },
-  "default_carousel_size": 9,
-  "default_posting_time": "19:30",
+  "default_carousel_size": 8,
+  "default_posting_time": "20:00",
   "timezone": "Asia/Kolkata"
 }

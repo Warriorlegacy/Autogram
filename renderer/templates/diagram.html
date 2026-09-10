@@ -4,64 +4,116 @@
   <meta charset="UTF-8">
   <title>Slide {{ slide.slide_number }} - Diagram</title>
   <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .diagram-pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .pipeline-node {
+      background: #FFFFFF;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }
+    .node-icon-box {
+      width: 56px;
+      height: 56px;
+      background: var(--accent-orange-soft);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .node-text-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .node-text-sub {
+      font-family: var(--font-body);
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .pipeline-arrow {
+      display: flex;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--accent-orange);
+      margin: -6px 0;
+      font-weight: 900;
+    }
+  </style>
 </head>
 <body>
   <div class="slide-canvas">
-    <div class="progress-container">
-      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
-    </div>
-
     <header class="slide-header">
-      <div class="pillar-badge">
-        <span class="pillar-dot"></span>
-        System Architecture
-      </div>
-      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+      <div class="header-copyright">© 2026</div>
+      <div class="header-watermark">@SIGNHIFY.STUDIO</div>
+      <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
-      <h2 class="headline-medium">{{ slide.headline }}</h2>
-      {% if slide.body %}
-      <p class="subtext-lead" style="margin-bottom: 24px;">{{ slide.body }}</p>
+      {% if slide.step_label %}
+      <div class="step-badge">{{ slide.step_label }}</div>
+      {% else %}
+      <div class="sub-eyebrow">{{ slide.eyebrow | default('SYSTEM ARCHITECTURE') }}</div>
       {% endif %}
 
-      <div class="diagram-steps">
-        <div class="step-node">
-          <div class="step-number">01</div>
+      <h2 class="headline-large">{{ slide.headline }}</h2>
+
+      {% if slide.body %}
+      <p class="subtext-lead">{{ slide.body }}</p>
+      {% endif %}
+
+      <div class="diagram-pipeline">
+        <div class="pipeline-node">
+          <div class="node-icon-box">🔍</div>
           <div>
-            <div style="font-weight: 800; font-size: 23px; color: #FFF; margin-bottom: 4px;">Ingest & Filter</div>
-            <div style="font-size: 20px; color: var(--text-secondary);">Raw feeds validated against trusted domain whitelist</div>
+            <div class="node-text-title">1. Market Intelligence & Topic Discovery</div>
+            <div class="node-text-sub">Researches trending pain points, viral hooks, and high-demand free tools</div>
           </div>
         </div>
 
-        <div class="step-node">
-          <div class="step-number">02</div>
+        <div class="pipeline-arrow">↓</div>
+
+        <div class="pipeline-node">
+          <div class="node-icon-box">⚡</div>
           <div>
-            <div style="font-weight: 800; font-size: 23px; color: #FFF; margin-bottom: 4px;">Reason & Structure</div>
-            <div style="font-size: 20px; color: var(--text-secondary);">LLM drafts strict JSON carousel mapped to source evidence</div>
+            <div class="node-text-title">2. Value-Packed Slide Drafting</div>
+            <div class="node-text-sub">Transforms raw insights into actionable playbooks and Gary Vee carousel slides</div>
           </div>
         </div>
 
-        <div class="step-node">
-          <div class="step-number">03</div>
+        <div class="pipeline-arrow">↓</div>
+
+        <div class="pipeline-node">
+          <div class="node-icon-box">🚀</div>
           <div>
-            <div style="font-weight: 800; font-size: 23px; color: #FFF; margin-bottom: 4px;">Deterministic Render</div>
-            <div style="font-size: 20px; color: var(--text-secondary);">Headless Chromium captures pixel-perfect 1080×1350 JPEG</div>
+            <div class="node-text-title">3. Headless Rendering & Direct Publishing</div>
+            <div class="node-text-sub">Playwright produces 1080×1350 JPEGs & delivers via Meta Graph API</div>
           </div>
         </div>
       </div>
     </main>
 
-    <footer class="slide-footer">
-      <div class="footer-brand">
-        <div class="brand-avatar">A</div>
-        <div class="brand-meta">
-          <div class="brand-name">{{ brand.brand_name }}</div>
-          <div class="brand-handle">{{ brand.handle }}</div>
-        </div>
-      </div>
-      <div class="footer-swipe">
-        Next <span class="swipe-arrow">→</span>
+    <footer class="slide-footer-editorial">
+      <div class="footer-handle-row">@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS</div>
+      <div class="pagination-dots">
+        {% for i in range(1, meta.total_slides + 1) %}
+        <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>
+        {% endfor %}
       </div>
     </footer>
   </div>

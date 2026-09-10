@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autogram — Owner Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0a0b0f;
+      --bg2:       #0f1117;
+      --bg3:       #13151d;
+      --surface:   #161820;
+      --surface2:  #1c1f2b;
+      --border:    #ffffff0f;
+      --border2:   #ffffff1a;
+      --text:      #e8eaf0;
+      --muted:     #6b7280;
+      --cyan:      #00d4ff;
+      --cyan-dim:  #00d4ff22;
+      --green:     #00e676;
+      --green-dim: #00e67622;
+      --amber:     #ffb300;
+      --amber-dim: #ffb30022;
+      --red:       #ff4444;
+      --red-dim:   #ff444422;
+      --purple:    #a855f7;
+      --purple-dim:#a855f722;
+      --radius:    12px;
+      --radius-sm: 8px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Sidebar ──────────────────────────────────────── */
+    .sidebar {
+      width: 240px;
+      min-height: 100vh;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+    }
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-mark {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-glyph {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px; color: #000;
+    }
+    .logo-text { font-weight: 700; font-size: 15px; letter-spacing: 0.04em; }
+    .logo-text span { color: var(--cyan); }
+    .logo-sub { font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: 0.08em; }
+
+    .sidebar-status {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; color: var(--muted);
+    }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .nav {
+      flex: 1;
+      padding: 12px 10px;
+      display: flex; flex-direction: column; gap: 2px;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-size: 10px; color: var(--muted); letter-spacing: 0.1em;
+      padding: 8px 10px 4px; text-transform: uppercase;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: var(--radius-sm);
+      cursor: pointer; color: var(--muted);
+      transition: all 0.15s; font-size: 13px; font-weight: 500;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .nav-item:hover { background: var(--surface); color: var(--text); }
+    .nav-item.active {
+      background: var(--cyan-dim); color: var(--cyan);
+      border-color: #00d4ff22;
+    }
+    .nav-item .icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+    .nav-badge {
+      margin-left: auto; background: var(--cyan); color: #000;
+      font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 20px;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--muted);
+    }
+    .version-tag { color: var(--green); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Main ─────────────────────────────────────────── */
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Topbar ───────────────────────────────────────── */
+    .topbar {
+      height: 56px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px;
+      position: sticky; top: 0; z-index: 90;
+    }
+    .page-title {
+      font-size: 15px; font-weight: 600; color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-chip {
+      font-size: 11px; font-family: 'JetBrains Mono', monospace;
+      padding: 4px 10px; border-radius: 20px;
+      border: 1px solid var(--border2); color: var(--muted);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .topbar-chip .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* ── Content area ─────────────────────────────────── */
+    .content {
+      flex: 1; padding: 28px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+
+    /* ── Views ────────────────────────────────────────── */
+    .view { display: none; flex-direction: column; gap: 24px; }
+    .view.active { display: flex; }
+
+    /* ── Cards ────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title .accent { color: var(--cyan); }
+
+    /* ── Stat Grid ────────────────────────────────────── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: var(--border2); }
+    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .stat-value { font-size: 26px; font-weight: 700; line-height: 1; }
+    .stat-sub { font-size: 11px; color: var(--muted); }
+    .stat-icon { font-size: 20px; }
+
+    /* ── Buttons ──────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      border: none; transition: all 0.15s; white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-primary {
+      background: var(--cyan); color: #000;
+    }
+    .btn-primary:hover:not(:disabled) { background: #33ddff; box-shadow: 0 0 20px #00d4ff44; }
+    .btn-danger {
+      background: var(--red-dim); color: var(--red); border: 1px solid #ff444433;
+    }
+    .btn-danger:hover:not(:disabled) { background: #ff444433; }
+    .btn-ghost {
+      background: var(--surface2); color: var(--text); border: 1px solid var(--border2);
+    }
+    .btn-ghost:hover:not(:disabled) { background: var(--bg3); }
+    .btn-success {
+      background: var(--green-dim); color: var(--green); border: 1px solid #00e67633;
+    }
+    .btn-success:hover:not(:disabled) { background: #00e67633; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+    .btn-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    /* ── Pipeline Control ─────────────────────────────── */
+    .pipeline-control {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .pipeline-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .pipeline-title {
+      font-size: 14px; font-weight: 600;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .pipeline-badge {
+      font-size: 10px; padding: 3px 8px; border-radius: 20px;
+      font-weight: 700; letter-spacing: 0.06em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-idle    { background: var(--surface2); color: var(--muted); border: 1px solid var(--border2); }
+    .badge-running { background: var(--cyan-dim); color: var(--cyan); border: 1px solid #00d4ff33; animation: pulse 1.5s infinite; }
+    .badge-done    { background: var(--green-dim); color: var(--green); border: 1px solid #00e67633; }
+    .badge-error   { background: var(--red-dim); color: var(--red); border: 1px solid #ff444433; }
+
+    .log-console {
+      background: #08090d;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #a0aec0;
+      padding: 16px;
+      height: 380px;
+      overflow-y: auto;
+      line-height: 1.7;
+    }
+    .log-console .log-line { display: block; }
+    .log-console .log-line.info  { color: #a0aec0; }
+    .log-console .log-line.warn  { color: var(--amber); }
+    .log-console .log-line.error { color: var(--red); }
+    .log-console .log-line.ok    { color: var(--green); }
+    .log-console .log-line.sys   { color: var(--cyan); }
+    .log-cursor::after { content: '▋'; animation: blink 1s infinite; color: var(--cyan); }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Phase Progress ───────────────────────────────── */
+    .phase-track {
+      display: flex; gap: 0;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      margin: 0 20px 20px;
+    }
+    .phase-step {
+      flex: 1; padding: 8px 4px;
+      text-align: center; font-size: 10px;
+      color: var(--muted); font-weight: 500;
+      border-right: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .phase-step:last-child { border-right: none; }
+    .phase-step.active { background: var(--cyan-dim); color: var(--cyan); }
+    .phase-step.done   { background: var(--green-dim); color: var(--green); }
+    .phase-step.error  { background: var(--red-dim); color: var(--red); }
+    .phase-num { font-size: 13px; display: block; }
+
+    /* ── Outputs / Slides ─────────────────────────────── */
+    .runs-grid {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .run-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .run-header {
+      padding: 14px 18px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; user-select: none;
+    }
+    .run-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; font-weight: 600; color: var(--cyan);
+    }
+    .run-topic { font-size: 13px; color: var(--text); flex: 1; }
+    .run-meta { display: flex; align-items: center; gap: 10px; }
+    .pill {
+      font-size: 10px; padding: 3px 8px; border-radius: 20px;
+      font-weight: 600; white-space: nowrap;
+    }
+    .pill-green { background: var(--green-dim); color: var(--green); border: 1px solid #00e67622; }
+    .pill-blue  { background: var(--cyan-dim); color: var(--cyan); border: 1px solid #00d4ff22; }
+    .pill-purple{ background: var(--purple-dim); color: var(--purple); border: 1px solid #a855f722; }
+    .pill-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid #ffb30022; }
+    .run-body { padding: 16px 18px; display: none; }
+    .run-body.open { display: block; }
+    .slides-strip {
+      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;
+    }
+    .slide-thumb {
+      flex-shrink: 0; width: 90px; height: 112px;
+      border-radius: 8px; object-fit: cover;
+      border: 1px solid var(--border2);
+      cursor: pointer; transition: transform 0.15s;
+      background: var(--bg3);
+    }
+    .slide-thumb:hover { transform: scale(1.05); border-color: var(--cyan); }
+    .caption-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 12px; color: var(--muted);
+      margin-top: 12px; line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    /* ── Settings / ENV ───────────────────────────────── */
+    .env-table {
+      display: flex; flex-direction: column; gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .env-row {
+      display: grid; grid-template-columns: 220px 1fr auto;
+      align-items: center; gap: 12px;
+      background: var(--surface);
+      padding: 10px 14px;
+    }
+    .env-row:hover { background: var(--surface2); }
+    .env-key {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--cyan); font-weight: 500;
+    }
+    .env-input {
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--text);
+      width: 100%; outline: none;
+    }
+    .env-input:focus { border-color: var(--cyan); box-shadow: 0 0 0 2px var(--cyan-dim); }
+    .env-save-btn {
+      font-size: 11px; padding: 5px 10px;
+      background: var(--green-dim); color: var(--green);
+      border: 1px solid #00e67633; border-radius: 6px;
+      cursor: pointer; font-weight: 600; white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .env-save-btn:hover { background: #00e67633; }
+    .env-section-header {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); padding: 10px 14px 6px;
+      background: var(--bg2); font-weight: 600;
+    }
+
+    /* ── Memory / Analytics ───────────────────────────── */
+    .memory-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .post-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .post-score {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--green-dim); color: var(--green);
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .post-info { flex: 1; min-width: 0; }
+    .post-topic { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+    .post-hook { font-size: 11px; color: var(--muted); }
+    .post-date { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Pillar Bars ──────────────────────────────────── */
+    .pillar-bars { display: flex; flex-direction: column; gap: 10px; }
+    .pillar-bar { display: flex; align-items: center; gap: 10px; }
+    .pillar-name { font-size: 11px; width: 150px; color: var(--text); flex-shrink: 0; }
+    .bar-track {
+      flex: 1; height: 6px; background: var(--surface2);
+      border-radius: 3px; overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      transition: width 0.8s ease;
+    }
+    .pillar-count { font-size: 11px; color: var(--muted); width: 20px; text-align: right; }
+
+    /* ── Slide Lightbox ───────────────────────────────── */
+    .lightbox {
+      display: none; position: fixed; inset: 0;
+      background: #000000cc; z-index: 1000;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-img {
+      max-width: 90vw; max-height: 90vh;
+      border-radius: var(--radius);
+      box-shadow: 0 0 80px #00000080;
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      font-size: 28px; color: #fff; cursor: pointer; line-height: 1;
+    }
+
+    /* ── Toast ────────────────────────────────────────── */
+    .toast-container {
+      position: fixed; bottom: 24px; right: 24px;
+      display: flex; flex-direction: column; gap: 8px; z-index: 2000;
+    }
+    .toast {
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: var(--radius-sm); padding: 12px 16px;
+      font-size: 13px; color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 8px 32px #00000060;
+      animation: slideIn 0.2s ease;
+      max-width: 320px;
+    }
+    .toast.success { border-color: #00e67644; }
+    .toast.error   { border-color: #ff444444; }
+    @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    /* ── Scrollbar ────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2a2d3a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3a3d4a; }
+
+    /* ── Responsive ───────────────────────────────────── */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.2s; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .memory-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Sidebar ───────────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-glyph">A</div>
+      <div>
+        <div class="logo-text">AUTOGRAM<span>.AI</span></div>
+        <div class="logo-sub">OWNER DASHBOARD</div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-status">
+    <div class="status-dot"></div>
+    <span id="sidebar-status-text">Engine Online</span>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Control</div>
+    <div class="nav-item active" data-view="overview" onclick="switchView('overview', this)">
+      <span class="icon">⚡</span> Overview
+    </div>
+    <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
+      <span class="icon">🚀</span> Run Pipeline
+    </div>
+    <div class="nav-label">Content</div>
+    <div class="nav-item" data-view="outputs" onclick="switchView('outputs', this)">
+      <span class="icon">🖼️</span> Output History
+      <span class="nav-badge" id="nav-runs-badge">0</span>
+    </div>
+    <div class="nav-item" data-view="memory" onclick="switchView('memory', this)">
+      <span class="icon">🧠</span> Content Memory
+    </div>
+    <div class="nav-label">Config</div>
+    <div class="nav-item" data-view="settings" onclick="switchView('settings', this)">
+      <span class="icon">⚙️</span> Settings / .env
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div>@signhify.studio</div>
+    <div style="margin-top:4px;"><span class="version-tag">v2.4</span> · <span id="dry-run-tag">DRY RUN</span></div>
+  </div>
+</aside>
+
+<!-- ── Main ───────────────────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="page-title">
+      <span id="topbar-title">Overview</span>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-chip">
+        <div class="dot" style="background:var(--cyan)"></div>
+        <span id="chip-llm">Gemini 2.0</span>
+      </div>
+      <div class="topbar-chip">
+        <div class="dot" id="dot-dry" style="background:var(--amber)"></div>
+        <span id="chip-mode">DRY RUN</span>
+      </div>
+      <div class="topbar-chip">
+        <div class="dot" style="background:var(--green)"></div>
+        <span>Meta API Connected</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ─────────── VIEW: Overview ──────────────────── -->
+    <div class="view active" id="view-overview">
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Runs</div>
+          <div class="stat-value" id="stat-runs">—</div>
+          <div class="stat-sub">Pipeline executions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Last Post Score</div>
+          <div class="stat-value" style="color:var(--green)" id="stat-score">—</div>
+          <div class="stat-sub">Quality Gate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Posts in Memory</div>
+          <div class="stat-value" style="color:var(--cyan)" id="stat-posts">—</div>
+          <div class="stat-sub">Anti-repetition corpus</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">LLM Provider</div>
+          <div class="stat-value" style="font-size:16px;margin-top:4px" id="stat-llm">—</div>
+          <div class="stat-sub" id="stat-llm-sub">Model</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Posting Time</div>
+          <div class="stat-value" style="font-size:20px;margin-top:4px" id="stat-time">—</div>
+          <div class="stat-sub" id="stat-tz">Timezone</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">CDN / Image Host</div>
+          <div class="stat-value" style="font-size:13px;margin-top:6px;color:var(--muted)" id="stat-cdn">—</div>
+          <div class="stat-sub" id="stat-cdn-sub">Storage</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="accent">◈</span> Last Published Topic</div>
+        <div id="last-topic" style="font-size:15px;font-weight:600;margin-bottom:6px;">—</div>
+        <div id="last-date" style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="accent">◈</span> Quick Actions</div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="switchView('pipeline', document.querySelector('[data-view=pipeline]'))">
+            🚀 Run Pipeline
+          </button>
+          <button class="btn btn-ghost" onclick="switchView('outputs', document.querySelector('[data-view=outputs]'))">
+            🖼️ View Outputs
+          </button>
+          <button class="btn btn-ghost" onclick="refreshStatus()">
+            ↺ Refresh Status
+          </button>
+          <button class="btn btn-ghost" onclick="switchView('settings', document.querySelector('[data-view=settings]'))">
+            ⚙️ Edit Settings
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── VIEW: Pipeline ──────────────────── -->
+    <div class="view" id="view-pipeline">
+
+      <div class="card">
+        <div class="card-title"><span class="accent">◈</span> Run Mode</div>
+        <div class="btn-row" style="margin-bottom:0">
+          <button id="btn-dry" class="btn btn-ghost" onclick="selectMode('dry-run')" style="border-color:var(--cyan);color:var(--cyan)">
+            🧪 Dry Run (Safe Test)
+          </button>
+          <button id="btn-live" class="btn btn-ghost" onclick="selectMode('live')">
+            🚀 Live Publish to @signhify.studio
+          </button>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--muted)" id="mode-desc">
+          ✓ Safe: simulates the full pipeline without posting to Instagram.
+        </div>
+      </div>
+
+      <div class="pipeline-control">
+        <div class="pipeline-header">
+          <div class="pipeline-title">
+            Pipeline Console
+            <span class="pipeline-badge badge-idle" id="pipeline-badge">IDLE</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btn-run" onclick="runPipeline()">▶ Start</button>
+            <button class="btn btn-danger btn-sm" id="btn-stop" onclick="stopPipeline()" disabled>⏹ Stop</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearLog()">🗑 Clear</button>
+          </div>
+        </div>
+
+        <!-- Phase Tracker -->
+        <div class="phase-track" id="phase-track">
+          <div class="phase-step" id="ph1"><span class="phase-num">1</span>Research</div>
+          <div class="phase-step" id="ph2"><span class="phase-num">2</span>Topic</div>
+          <div class="phase-step" id="ph3"><span class="phase-num">3</span>Generate</div>
+          <div class="phase-step" id="ph4"><span class="phase-num">4</span>Fact-Check</div>
+          <div class="phase-step" id="ph5"><span class="phase-num">5</span>QA Gate</div>
+          <div class="phase-step" id="ph6"><span class="phase-num">6</span>Render</div>
+          <div class="phase-step" id="ph7"><span class="phase-num">7</span>Upload</div>
+          <div class="phase-step" id="ph8"><span class="phase-num">8</span>Publish</div>
+          <div class="phase-step" id="ph9"><span class="phase-num">9</span>Memory</div>
+        </div>
+
+        <div class="log-console" id="log-console">
+          <span class="log-line sys">[AUTOGRAM] Pipeline console ready. Press ▶ Start to begin.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── VIEW: Outputs ───────────────────── -->
+    <div class="view" id="view-outputs">
+      <div class="card" style="padding:14px 18px;">
+        <div class="card-title" style="margin-bottom:0"><span class="accent">◈</span> Output Runs — <span id="runs-count">0</span> total</div>
+      </div>
+      <div class="runs-grid" id="runs-grid">
+        <div style="color:var(--muted);font-size:13px;padding:20px 0;">Loading runs...</div>
+      </div>
+    </div>
+
+    <!-- ─────────── VIEW: Memory ────────────────────── -->
+    <div class="view" id="view-memory">
+      <div class="memory-grid">
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-title"><span class="accent">◈</span> Content Pillar Distribution</div>
+            <div class="pillar-bars" id="pillar-bars">
+              <div style="color:var(--muted);font-size:12px">Loading...</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="accent">◈</span> Winning Patterns</div>
+            <div id="winning-patterns" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="accent">◈</span> Recent Posts (Anti-Repetition Memory)</div>
+          <div id="recent-posts-list" style="display:flex;flex-direction:column;gap:8px;max-height:500px;overflow-y:auto"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── VIEW: Settings ──────────────────── -->
+    <div class="view" id="view-settings">
+      <div class="card">
+        <div class="card-title"><span class="accent">◈</span> Environment Configuration (.env)</div>
+        <div class="env-table" id="env-table">
+          <div style="color:var(--muted);font-size:12px;padding:12px">Loading...</div>
+        </div>
+        <div style="margin-top:14px;">
+          <button class="btn btn-success" onclick="saveAllEnv()">💾 Save All Changes</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">✕</span>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="Slide" />
+</div>
+
+<!-- Toast -->
+<div class="toast-container" id="toasts"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const API = 'http://localhost:5050/api';
+let currentMode = 'dry-run';
+let pollInterval = null;
+let logLineCount = 0;
+let envData = {};
+
+// ── Navigation ──────────────────────────────────────────────────────────────
+function switchView(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {overview:'Overview', pipeline:'Run Pipeline', outputs:'Output History', memory:'Content Memory', settings:'Settings / .env'};
+  document.getElementById('topbar-title').textContent = titles[id] || id;
+  if (id === 'outputs') loadRuns();
+  if (id === 'memory') loadMemory();
+  if (id === 'settings') loadEnv();
+  if (id === 'pipeline' && !pollInterval) startPolling();
+}
+
+// ── Status Refresh ──────────────────────────────────────────────────────────
+async function refreshStatus() {
+  try {
+    const s = await fetch(API + '/status').then(r => r.json());
+    document.getElementById('stat-runs').textContent = s.total_runs || '0';
+    document.getElementById('stat-score').textContent = s.last_post_score != null ? s.last_post_score + '/100' : '—';
+    document.getElementById('stat-posts').textContent = s.recent_posts_count || '0';
+    document.getElementById('stat-llm').textContent = s.llm_provider?.toUpperCase() || '—';
+    document.getElementById('stat-llm-sub').textContent = s.llm_model || '';
+    document.getElementById('stat-time').textContent = s.posting_time || '—';
+    document.getElementById('stat-tz').textContent = s.timezone || '';
+    const cdn = s.cdn_base || 'localhost';
+    const isLocal = cdn.includes('localhost');
+    document.getElementById('stat-cdn').textContent = isLocal ? '⚠ localhost (not public)' : cdn.replace('https://','');
+    document.getElementById('stat-cdn').style.color = isLocal ? 'var(--amber)' : 'var(--green)';
+    document.getElementById('stat-cdn-sub').textContent = s.s3_configured ? 'Cloudflare R2' : (isLocal ? 'Configure CDN to go live' : 'Custom CDN');
+
+    if (s.last_post_topic) {
+      document.getElementById('last-topic').textContent = s.last_post_topic;
+      document.getElementById('last-date').textContent = s.last_post_date || '';
+    }
+
+    const isLive = s.dry_run === 'false' || s.dry_run === false;
+    document.getElementById('chip-mode').textContent = isLive ? 'LIVE MODE' : 'DRY RUN';
+    document.getElementById('dot-dry').style.background = isLive ? 'var(--green)' : 'var(--amber)';
+    document.getElementById('dry-run-tag').textContent = isLive ? '🟢 LIVE' : '🟡 DRY RUN';
+    document.getElementById('chip-llm').textContent = (s.llm_provider || 'auto').charAt(0).toUpperCase() + (s.llm_provider || 'auto').slice(1) + ' ' + (s.llm_model || '');
+    document.getElementById('nav-runs-badge').textContent = s.total_runs || '0';
+    document.getElementById('stat-grid'); // refresh
+  } catch(e) {
+    console.warn('Status fetch failed', e);
+  }
+}
+
+// ── Pipeline ────────────────────────────────────────────────────────────────
+function selectMode(mode) {
+  currentMode = mode;
+  document.getElementById('btn-dry').style.borderColor = mode === 'dry-run' ? 'var(--cyan)' : '';
+  document.getElementById('btn-dry').style.color       = mode === 'dry-run' ? 'var(--cyan)' : '';
+  document.getElementById('btn-live').style.borderColor= mode === 'live' ? 'var(--green)' : '';
+  document.getElementById('btn-live').style.color      = mode === 'live' ? 'var(--green)' : '';
+  document.getElementById('mode-desc').textContent = mode === 'dry-run'
+    ? '✓ Safe: simulates the full pipeline without posting to Instagram.'
+    : '⚠ LIVE: will publish a carousel post to @signhify.studio on Instagram.';
+}
+
+function clearLog() {
+  const c = document.getElementById('log-console');
+  c.innerHTML = '<span class="log-line sys">[AUTOGRAM] Log cleared.</span>';
+  logLineCount = 0;
+  resetPhases();
+}
+
+function resetPhases() {
+  for (let i = 1; i <= 9; i++) {
+    const el = document.getElementById('ph' + i);
+    if (el) el.className = 'phase-step';
+  }
+}
+
+function classifyLine(line) {
+  if (line.includes('[WARNING]') || line.includes('[WARN]')) return 'warn';
+  if (line.includes('[ERROR]') || line.includes('Error') || line.includes('failed') || line.includes('✗')) return 'error';
+  if (line.includes('completed') || line.includes('PASSED') || line.includes('✓') || line.includes('Successfully') || line.includes('[+]')) return 'ok';
+  if (line.includes('AUTH') || line.includes('[*]') || line.startsWith('[AUTOGRAM]') || line.includes('==')) return 'sys';
+  return 'info';
+}
+
+function updatePhases(log) {
+  const map = {
+    'Phase 1:': 'ph1', 'Phase 2:': 'ph2', 'Phase 3:': 'ph3',
+    'Phase 4:': 'ph4', 'Phase 5:': 'ph5', 'Phase 6:': 'ph6',
+    'Phase 7:': 'ph7', 'Phase 8:': 'ph8', 'Phase 9:': 'ph9'
+  };
+  const latest = {};
+  for (const line of log) {
+    for (const [key, id] of Object.entries(map)) {
+      if (line.includes(key)) latest[id] = line;
+    }
+  }
+  let reached = false;
+  for (let i = 9; i >= 1; i--) {
+    const id = 'ph' + i;
+    if (latest[id] && !reached) { reached = true; }
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (latest[id]) {
+      const isError = latest[id].toLowerCase().includes('error') || latest[id].toLowerCase().includes('failed');
+      el.className = 'phase-step ' + (isError ? 'error' : (i === parseInt(Object.keys(latest).pop()?.replace('ph','')) ? 'active' : 'done'));
+    }
+  }
+}
+
+async function runPipeline() {
+  document.getElementById('btn-run').disabled = true;
+  document.getElementById('btn-stop').disabled = false;
+  clearLog();
+  setBadge('running');
+  startPolling();
+
+  try {
+    await fetch(API + '/pipeline/run', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({mode: currentMode})
+    });
+  } catch(e) {
+    appendLog('[ERROR] Could not reach dashboard API. Is it running?', 'error');
+    setBadge('error');
+    document.getElementById('btn-run').disabled = false;
+    document.getElementById('btn-stop').disabled = true;
+  }
+}
+
+async function stopPipeline() {
+  await fetch(API + '/pipeline/stop', {method: 'POST'});
+  stopPolling();
+  setBadge('idle');
+  document.getElementById('btn-run').disabled = false;
+  document.getElementById('btn-stop').disabled = true;
+  toast('Pipeline stopped.', 'success');
+}
+
+function setBadge(status) {
+  const el = document.getElementById('pipeline-badge');
+  el.className = 'pipeline-badge badge-' + status;
+  el.textContent = status.toUpperCase();
+}
+
+function appendLog(line, cls) {
+  const c = document.getElementById('log-console');
+  const span = document.createElement('span');
+  span.className = 'log-line ' + (cls || classifyLine(line));
+  span.textContent = line;
+  c.appendChild(document.createTextNode('\n'));
+  c.appendChild(span);
+  c.scrollTop = c.scrollHeight;
+}
+
+let lastLogLen = 0;
+function startPolling() {
+  if (pollInterval) return;
+  pollInterval = setInterval(async () => {
+    try {
+      const r = await fetch(API + '/pipeline/status').then(r => r.json());
+      const log = r.log || [];
+      if (log.length > lastLogLen) {
+        for (let i = lastLogLen; i < log.length; i++) appendLog(log[i]);
+        lastLogLen = log.length;
+        updatePhases(log);
+      }
+      if (r.status !== 'running') {
+        setBadge(r.status || 'idle');
+        document.getElementById('btn-run').disabled = false;
+        document.getElementById('btn-stop').disabled = true;
+        if (r.status === 'done') {
+          toast('✓ Pipeline completed successfully!', 'success');
+          refreshStatus();
+          // Mark all phases done
+          for (let i = 1; i <= 9; i++) {
+            const el = document.getElementById('ph' + i);
+            if (el) el.className = 'phase-step done';
+          }
+        } else if (r.status === 'error') {
+          toast('✗ Pipeline encountered an error. Check the log.', 'error');
+        }
+        stopPolling();
+        lastLogLen = 0;
+      }
+    } catch(e) {}
+  }, 800);
+}
+
+function stopPolling() {
+  clearInterval(pollInterval);
+  pollInterval = null;
+}
+
+// ── Outputs ─────────────────────────────────────────────────────────────────
+async function loadRuns() {
+  const grid = document.getElementById('runs-grid');
+  const runs = await fetch(API + '/runs').then(r => r.json()).catch(() => []);
+  document.getElementById('runs-count').textContent = runs.length;
+  document.getElementById('nav-runs-badge').textContent = runs.length;
+
+  if (!runs.length) {
+    grid.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px 0;">No runs yet. Go to Run Pipeline to create your first post.</div>';
+    return;
+  }
+
+  grid.innerHTML = runs.map((run, idx) => {
+    const slides = run.slides || [];
+    const pillarClass = pillarColor(run.pillar || '');
+    return `
+      <div class="run-card">
+        <div class="run-header" onclick="toggleRun(${idx})">
+          <div class="run-date">${run.date || '—'}</div>
+          <div class="run-topic">${run.topic || '—'}</div>
+          <div class="run-meta">
+            ${run.pillar ? `<span class="pill ${pillarClass}">${run.pillar}</span>` : ''}
+            ${run.slides_count ? `<span class="pill pill-blue">${run.slides_count} slides</span>` : ''}
+            ${run.qa_score != null ? `<span class="pill pill-green">${run.qa_score}/100</span>` : ''}
+            ${run.status === 'PUBLISHED' ? `<span class="pill pill-green">✓ PUBLISHED</span>` : run.status === 'SIMULATED_PUBLISH' ? `<span class="pill pill-amber">DRY RUN</span>` : ''}
+          </div>
+        </div>
+        <div class="run-body" id="run-body-${idx}">
+          ${slides.length ? `
+          <div class="slides-strip">
+            ${slides.map(s => `<img class="slide-thumb" src="${API.replace('/api','')}/api/output/${run.date}/${s}" alt="${s}" onclick="openLightbox(this.src)" loading="lazy" onerror="this.style.display='none'" />`).join('')}
+          </div>` : '<div style="color:var(--muted);font-size:12px;margin-bottom:8px">No slide images found locally.</div>'}
+          ${run.caption ? `<div class="caption-box">${run.caption}${run.caption.length >= 300 ? '…' : ''}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleRun(idx) {
+  const body = document.getElementById('run-body-' + idx);
+  body.classList.toggle('open');
+}
+
+function pillarColor(p) {
+  if (p.includes('AI')) return 'pill-blue';
+  if (p.includes('Myth') || p.includes('Contrarian')) return 'pill-amber';
+  if (p.includes('Psychology') || p.includes('Marketing')) return 'pill-purple';
+  if (p.includes('Tech') || p.includes('Industry')) return 'pill-green';
+  return 'pill-blue';
+}
+
+// ── Memory ───────────────────────────────────────────────────────────────────
+async function loadMemory() {
+  const mem = await fetch(API + '/memory').then(r => r.json()).catch(() => ({}));
+  const posts = mem.recent_posts || [];
+  const patterns = mem.winning_patterns || [];
+
+  // Pillar distribution
+  const pillars = {};
+  posts.forEach(p => { pillars[p.pillar] = (pillars[p.pillar] || 0) + 1; });
+  const maxCount = Math.max(...Object.values(pillars), 1);
+  document.getElementById('pillar-bars').innerHTML = Object.entries(pillars)
+    .sort((a,b) => b[1]-a[1])
+    .map(([name, count]) => `
+      <div class="pillar-bar">
+        <div class="pillar-name">${name}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(count/maxCount*100)}%"></div></div>
+        <div class="pillar-count">${count}</div>
+      </div>`).join('') || '<div style="color:var(--muted);font-size:12px">No data yet.</div>';
+
+  // Winning patterns
+  document.getElementById('winning-patterns').innerHTML = patterns.map(p =>
+    `<div style="font-size:12px;color:var(--text);padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;">✓ ${p}</div>`
+  ).join('') || '<div style="color:var(--muted);font-size:12px">Run the pipeline to build pattern memory.</div>';
+
+  // Recent posts
+  document.getElementById('recent-posts-list').innerHTML = posts.slice(0, 20).map(p => `
+    <div class="post-item">
+      <div class="post-score">${p.score}</div>
+      <div class="post-info">
+        <div class="post-topic">${p.topic || '—'}</div>
+        <div class="post-hook">${p.hook || ''}</div>
+        <div class="post-date">${p.date || ''} · ${p.pillar || ''}</div>
+      </div>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:12px">No posts in memory yet.</div>';
+}
+
+// ── Settings ─────────────────────────────────────────────────────────────────
+const ENV_SECTIONS = [
+  { label: 'LLM / AI Provider', keys: ['LLM_PROVIDER','LLM_MODEL','GEMINI_API_KEY','GROQ_API_KEY','OPENAI_API_KEY','CLAUDE_API_KEY'] },
+  { label: 'Image Generation', keys: ['IMAGE_PROVIDER','IMAGE_STYLE'] },
+  { label: 'Meta Instagram API', keys: ['IG_USER_ID','IG_ACCESS_TOKEN','META_API_VERSION','META_APP_ID','META_APP_SECRET'] },
+  { label: 'CDN / Storage', keys: ['PUBLIC_CDN_BASE','S3_ENDPOINT','S3_BUCKET','S3_ACCESS_KEY','S3_SECRET_KEY','S3_REGION'] },
+  { label: 'Scheduling', keys: ['POSTING_TIME','TIMEZONE'] },
+  { label: 'Operation', keys: ['DRY_RUN','DATABASE_URL'] },
+  { label: 'Alerts (optional)', keys: ['ALERT_WEBHOOK_URL','TELEGRAM_BOT_TOKEN','TELEGRAM_CHAT_ID'] },
+];
+
+async function loadEnv() {
+  envData = await fetch(API + '/env').then(r => r.json()).catch(() => ({}));
+  renderEnvTable();
+}
+
+function renderEnvTable() {
+  const table = document.getElementById('env-table');
+  let html = '';
+  const rendered = new Set();
+
+  for (const section of ENV_SECTIONS) {
+    html += `<div class="env-section-header">${section.label}</div>`;
+    for (const key of section.keys) {
+      rendered.add(key);
+      const entry = envData[key] || { value: '', redacted: false };
+      const type = entry.redacted ? 'password' : 'text';
+      html += `
+        <div class="env-row">
+          <div class="env-key">${key}</div>
+          <input class="env-input" type="${type}" id="env-${key}"
+            value="${escHtml(entry.value)}"
+            placeholder="${entry.redacted ? '••••••••' : '(empty)'}"
+            ${entry.redacted ? 'autocomplete="off"' : ''} />
+          <button class="env-save-btn" onclick="saveEnvKey('${key}')">Save</button>
+        </div>`;
+    }
+  }
+
+  // Remaining keys
+  const remaining = Object.keys(envData).filter(k => !rendered.has(k));
+  if (remaining.length) {
+    html += `<div class="env-section-header">Other</div>`;
+    for (const key of remaining) {
+      const entry = envData[key];
+      html += `
+        <div class="env-row">
+          <div class="env-key">${key}</div>
+          <input class="env-input" type="text" id="env-${key}" value="${escHtml(entry.value)}" />
+          <button class="env-save-btn" onclick="saveEnvKey('${key}')">Save</button>
+        </div>`;
+    }
+  }
+
+  table.innerHTML = html;
+}
+
+async function saveEnvKey(key) {
+  const input = document.getElementById('env-' + key);
+  const value = input.value;
+  await fetch(API + '/env', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({[key]: value})
+  });
+  toast(`✓ ${key} saved`, 'success');
+  refreshStatus();
+}
+
+async function saveAllEnv() {
+  const updates = {};
+  document.querySelectorAll('.env-input').forEach(input => {
+    const key = input.id.replace('env-', '');
+    if (input.value && !input.value.includes('••')) updates[key] = input.value;
+  });
+  if (!Object.keys(updates).length) { toast('Nothing to save.', 'success'); return; }
+  await fetch(API + '/env', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(updates)
+  });
+  toast(`✓ Saved ${Object.keys(updates).length} keys`, 'success');
+  refreshStatus();
+}
+
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg, type = 'success') {
+  const c = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span>${type === 'success' ? '✓' : '✗'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ── Util ──────────────────────────────────────────────────────────────────────
+function escHtml(s) { return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+refreshStatus();
+setInterval(refreshStatus, 30000);
+</script>
+</body>
+</html>

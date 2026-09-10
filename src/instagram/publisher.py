@@ -7,19 +7,32 @@ Includes mock/dry-run mode for zero-error local testing.
 import logging
 import time
 import requests
+import os
 from src.config import settings
 
 logger = logging.getLogger(__name__)
 
-GRAPH_HOST = "https://graph.instagram.com"
+DEFAULT_GRAPH_HOST = os.environ.get("META_GRAPH_HOST", "https://graph.facebook.com")
 
 class InstagramPublisher:
-    def __init__(self):
+    def __init__(self, host: str | None = None):
         self.user_id = settings.ig_user_id
         self.token = settings.ig_access_token
         self.version = settings.meta_api_version
-        self.base_url = f"{GRAPH_HOST}/{self.version}"
-        self.dry_run = settings.dry_run or not (self.user_id and self.token)
+        self.graph_host = host or os.environ.get("META_GRAPH_HOST", DEFAULT_GRAPH_HOST)
+        self.base_url = f"{self.graph_host}/{self.version}"
+        self._forced_dry_run: bool | None = None  # set by pipeline if --dry-run flag used
+
+    @property
+    def dry_run(self) -> bool:
+        """Evaluated lazily so CLI --dry-run flag propagates after module import."""
+        if self._forced_dry_run is not None:
+            return self._forced_dry_run
+        return settings.dry_run or not (self.user_id and self.token)
+
+    @dry_run.setter
+    def dry_run(self, value: bool):
+        self._forced_dry_run = value
 
     def check_publishing_limit(self) -> dict:
         """Inspects current 24-hour publishing usage."""
@@ -93,6 +106,10 @@ class InstagramPublisher:
             "access_token": self.token
         }
         resp = requests.post(url, data=data, timeout=30)
+        if resp.status_code != 200 and "is_ai_generated" in data:
+            logger.warning(f"Meta returned {resp.status_code} with is_ai_generated, retrying without it: {resp.text}")
+            data.pop("is_ai_generated", None)
+            resp = requests.post(url, data=data, timeout=30)
         resp.raise_for_status()
         return resp.json()["id"]
 

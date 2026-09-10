@@ -1,9 +1,16 @@
-name: Daily Instagram Post
+name: Daily Instagram Autopilot (7x Daily)
 
 on:
   schedule:
-    - cron: "30 14 * * *"   # 14:30 UTC = 20:00 PM IST (Evening post window)
-  workflow_dispatch: {}    # Manual dispatch button
+    # 7 Strategic Daily Posting Slots (Asia/Kolkata timezone)
+    - cron: "30 2 * * *"   # Slot 1: 08:00 AM IST (02:30 UTC) - Morning Commute & Mindset
+    - cron: "0 5 * * *"    # Slot 2: 10:30 AM IST (05:00 UTC) - Deep Work Tools & Architecture
+    - cron: "30 7 * * *"   # Slot 3: 01:00 PM IST (07:30 UTC) - Lunch Break Frameworks
+    - cron: "0 10 * * *"   # Slot 4: 03:30 PM IST (10:00 UTC) - Mid-Day Growth Hacks & Prompts
+    - cron: "30 12 * * *"  # Slot 5: 06:00 PM IST (12:30 UTC) - Outbound & Client Acquisition
+    - cron: "0 15 * * *"   # Slot 6: 08:30 PM IST (15:00 UTC) - Prime Evening Deep-Dive
+    - cron: "0 17 * * *"   # Slot 7: 10:30 PM IST (17:00 UTC) - Late-Night Founder Operating Systems
+  workflow_dispatch: {}    # Manual trigger button in GitHub Actions UI
 
 jobs:
   post:
@@ -11,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -23,7 +32,7 @@ jobs:
           pip install -r requirements.txt
           playwright install --with-deps chromium
 
-      - name: Execute Daily Content Pipeline
+      - name: Execute Autonomous Publishing Pipeline
         run: python orchestrator.py --run-all
         env:
           AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
@@ -34,18 +43,13 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
-          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
           PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE }}
-          ALERT_WEBHOOK_URL: ${{ secrets.ALERT_WEBHOOK_URL }}
           DRY_RUN: ${{ secrets.DRY_RUN || 'false' }}
 
-      - name: Commit Content Memory Update
+      - name: Commit Content Memory (Zero Repetition)
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data/content-memory.json autopilot.db || true
-          git commit -m "chore(memory): update post history [skip ci]" || echo "No changes to commit"
-          git push || echo "Push failed or not permitted"
+          git commit -m "chore(memory): record published carousel [skip ci]" || echo "No memory changes to commit"
+          git push || echo "Push skipped or not permitted"

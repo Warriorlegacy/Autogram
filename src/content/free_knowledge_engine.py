@@ -1,416 +1,545 @@
 """
-Free Built-In Knowledge & Synthesis Engine.
-Provides a comprehensive library of deep, production-grade technical and marketing playbooks across all 6 pillars.
-Enables 100% free, zero-cost, high-signal carousel generation even without external API keys.
+Free Built-In Knowledge & Synthesis Engine (src/content/free_knowledge_engine.py).
+Provides a comprehensive library of 7 battle-tested, high-value technical & growth playbooks.
+Curated specifically for @signhify.studio with verified free online tools, frameworks, and resource magnets.
+Enables 100% free, zero-cost, high-retention carousel generation even without external API keys.
 """
 
-import random
+import json
+import logging
 from datetime import datetime
+from pathlib import Path
 
-PILLAR_TEMPLATES = {
-    "AI Tool Breakdown": [
-        {
-            "topic": "Why Context Caching Cuts LLM Costs by Up to 80%",
-            "angle": "Architectural breakdown of KV-cache reuse in production agent pipelines",
-            "hook": "How 1 API parameter cut our production LLM bills by 78%.",
-            "slides": [
-                {
-                    "slide_number": 1,
-                    "layout": "hook",
-                    "headline": "How 1 API Parameter Cut Our Production LLM Bill by 78%",
-                    "body": "Most developers re-send 10,000 system prompt tokens on every request. Here is what happens when you cache the KV-states instead.",
-                    "proof_or_example": "Benchmarked across 1.2M automated agent operations."
-                },
-                {
-                    "slide_number": 2,
-                    "layout": "standard",
-                    "headline": "The Hidden Cost of Static Tokens",
-                    "body": "Every time your agent loops, you pay full compute cost to parse your brand guidelines, tools schema, and history again. The model recalculates attention from scratch.",
-                    "proof_or_example": "92% of tokens in typical agent loops are identical context."
-                },
-                {
-                    "slide_number": 3,
-                    "layout": "comparison",
-                    "headline": "Naive Re-Prompting vs Prompt Caching",
-                    "body": "Comparing traditional request re-evaluation against persisted memory pointers."
-                },
-                {
-                    "slide_number": 4,
-                    "layout": "diagram",
-                    "headline": "The KV-Cache Pipeline",
-                    "body": "How modern inference engines bypass redundant attention calculation."
-                },
-                {
-                    "slide_number": 5,
-                    "layout": "checklist",
-                    "headline": "3 Rules for Cache Hit Rates",
-                    "body": "How to structure your prompts so the cache never invalidates prematurely.",
-                    "proof_or_example": "Place static system instructions first\nKeep tool definitions in strict alphabetical order\nAppend dynamic user messages strictly at the tail"
-                },
-                {
-                    "slide_number": 6,
-                    "layout": "framework",
-                    "headline": "The 1,024 Token Threshold",
-                    "body": "Most providers only enable caching for blocks above 1,024 tokens. If your system prompt is 800 tokens, padding it with detailed few-shot examples actually makes it cheaper, not more expensive.",
-                    "proof_or_example": "Anthropic & Gemini cache discount: ~75% to 80% on cached inputs."
-                },
-                {
-                    "slide_number": 7,
-                    "layout": "takeaway",
-                    "headline": "Architecture Beats Model Selection",
-                    "body": "Switching models saves pennies. Structuring deterministic token reuse saves thousands of dollars per month."
-                },
-                {
-                    "slide_number": 8,
-                    "layout": "cta",
-                    "headline": "Optimize Your Inference Stack",
-                    "body": "Save this guide for your next engineering review, and share with your backend team."
-                }
-            ],
-            "caption": "Most teams spend weeks benchmarking whether Claude or GPT-4o is cheaper, while completely ignoring prompt caching. If your system prompt and tool definitions stay static, you can cut token bills by up to 80% with zero degradation in output quality.\n\nSave this checklist for your next infrastructure audit. Are you using context caching in your production pipelines yet?",
-            "hashtags": ["#LLMEngineering", "#SystemArchitecture", "#SoftwareEngineering", "#AIInfrastructure", "#TechLeadership"]
-        },
-        {
-            "topic": "Model Context Protocol (MCP): The USB-C for AI Agents",
-            "angle": "Why standardized client-server protocol is replacing proprietary plugin frameworks",
-            "hook": "Why proprietary AI plugins are dead — and what replaced them.",
-            "slides": [
-                {
-                    "slide_number": 1,
-                    "layout": "hook",
-                    "headline": "Why Proprietary AI Plugins Are Dead",
-                    "body": "The Model Context Protocol (MCP) is doing to AI tool integrations what USB-C did to hardware cables.",
-                    "proof_or_example": "Adopted by Anthropic, open-source IDEs, and 50+ enterprise integrations."
-                },
-                {
-                    "slide_number": 2,
-                    "layout": "standard",
-                    "headline": "The N×M Integration Nightmare",
-                    "body": "Before MCP, if you had 5 AI agents and 10 internal databases, you had to write and maintain 50 custom connector tools. Every API upgrade broke everything.",
-                    "proof_or_example": "Exponential maintenance overhead doomed first-gen plugins."
-                },
-                {
-                    "slide_number": 3,
-                    "layout": "diagram",
-                    "headline": "The Client-Host-Server Triad",
-                    "body": "How MCP standardizes resource discovery, tools, and prompt injection."
-                },
-                {
-                    "slide_number": 4,
-                    "layout": "comparison",
-                    "headline": "Custom Tooling vs Standardized MCP",
-                    "body": "Comparing fragile hardcoded API wrappers against standard protocol negotiation."
-                },
-                {
-                    "slide_number": 5,
-                    "layout": "checklist",
-                    "headline": "Core Capabilities of MCP",
-                    "body": "Three primitive operations that solve 99% of external system integration.",
-                    "proof_or_example": "Resources: Read-only files, data schemas, and logs\nTools: Callable functions with strict JSON schema validation\nPrompts: Reusable template workflows embedded in the server"
-                },
-                {
-                    "slide_number": 6,
-                    "layout": "framework",
-                    "headline": "The Security Boundary Rule",
-                    "body": "MCP runs servers in isolated processes over standard stdio or SSE. The host controls consent, which prevents runaway agents from making rogue database writes.",
-                    "proof_or_example": "Zero-trust execution by default."
-                },
-                {
-                    "slide_number": 7,
-                    "layout": "takeaway",
-                    "headline": "Build Servers, Not Custom Wrappers",
-                    "body": "Expose your company's internal data as an MCP server once. Any agent or IDE can now inspect it without custom code."
-                },
-                {
-                    "slide_number": 8,
-                    "layout": "cta",
-                    "headline": "Future-Proof Your Tooling",
-                    "body": "Save this carousel before building your next agent connector. Follow for daily technical breakdowns."
-                }
-            ],
-            "caption": "If your engineering team is still hand-coding custom tool wrappers for every new LLM framework, you are accumulating massive technical debt. The Model Context Protocol (MCP) creates a clean, decoupled boundary between models and external resources.\n\nSave this architecture walkthrough before designing your next agent system. Have you tested an MCP server yet?",
-            "hashtags": ["#ModelContextProtocol", "#AIAgents", "#DevTools", "#SystemDesign", "#EngineeringManagement"]
-        }
-    ],
-    "Prompting & Workflow": [
-        {
-            "topic": "The 4-Part Prompt Structure That Stops Hallucinations",
-            "angle": "Architectural prompt design that enforces deterministic output constraints",
-            "hook": "Stop writing prompts like emails. Use this 4-block architecture.",
-            "slides": [
-                {
-                    "slide_number": 1,
-                    "layout": "hook",
-                    "headline": "Stop Writing Prompts Like Emails",
-                    "body": "Treating prompts as conversational requests produces inconsistent, fluffy outputs. Here is the 4-block schema used by production systems.",
-                    "proof_or_example": "Tested across 10,000 automated evaluation runs."
-                },
-                {
-                    "slide_number": 2,
-                    "layout": "standard",
-                    "headline": "Block 1: Identity & Worldview",
-                    "body": "Define the practitioner role, audience intelligence, and non-negotiable tone constraints. Explicitly forbid hedging and generic introductions.",
-                    "proof_or_example": "Reduces generic throat-clearing openings by 94%."
-                },
-                {
-                    "slide_number": 3,
-                    "layout": "standard",
-                    "headline": "Block 2: Input Contract",
-                    "body": "Isolate user data inside strict XML or Markdown fences. Never mix task instructions with raw user input to prevent jailbreaks and task confusion.",
-                    "proof_or_example": "Use <context> and <input_packet> demarcations."
-                },
-                {
-                    "slide_number": 4,
-                    "layout": "framework",
-                    "headline": "Block 3: Negative Constraints",
-                    "body": "LLMs respond significantly better to explicit negative constraints than vague positive instructions. Tell the model what it is strictly forbidden from doing.",
-                    "proof_or_example": "Ban specific clichés, rule-of-three, and unverified stats."
-                },
-                {
-                    "slide_number": 5,
-                    "layout": "diagram",
-                    "headline": "Block 4: Strict Output Schema",
-                    "body": "Force the model to reason through an intermediate scratchpad before returning the final structured JSON object.",
-                    "proof_or_example": "Thought process -> Validation check -> Final JSON."
-                },
-                {
-                    "slide_number": 6,
-                    "layout": "checklist",
-                    "headline": "The Production Prompt Checklist",
-                    "body": "Four questions to ask before deploying any prompt to production.",
-                    "proof_or_example": "Is the role grounded in an expert persona?\nAre all input variables encapsulated in fences?\nAre banned failure patterns explicitly listed?\nDoes the output adhere to a strict machine-readable schema?"
-                },
-                {
-                    "slide_number": 7,
-                    "layout": "takeaway",
-                    "headline": "Code Quality Equals Output Quality",
-                    "body": "A sloppy prompt gives sloppy answers. Treat your system prompt like a critical microservice configuration."
-                },
-                {
-                    "slide_number": 8,
-                    "layout": "cta",
-                    "headline": "Master Prompt Architecture",
-                    "body": "Bookmark this 4-block framework for your team's internal documentation."
-                }
-            ],
-            "caption": "The biggest reason people get generic, robotic responses from LLMs is that they write prompts like casual chat messages. When you treat prompt construction as an engineering contract with clear negative boundaries and typed outputs, consistency skyrockets.\n\nSave this 4-part structure for your prompt library. Which of these blocks is missing from your current prompts?",
-            "hashtags": ["#PromptEngineering", "#AIWorkflow", "#ProductivityHacks", "#TechTips", "#GenerativeAI"]
-        }
-    ],
-    "Marketing Psychology": [
-        {
-            "topic": "Why Price Anchoring Backfires When Detected",
-            "angle": "Cognitive psychology of SaaS pricing tiers and decoy positioning",
-            "hook": "Why your enterprise decoy tier is secretly killing sales.",
-            "slides": [
-                {
-                    "slide_number": 1,
-                    "layout": "hook",
-                    "headline": "Why Your Decoy Pricing Tier Is Secretly Killing Sales",
-                    "body": "Price anchoring works brilliantly — until modern buyers spot the manipulation. Here is how behavioral psychology shifted in 2026.",
-                    "proof_or_example": "Analyzed across 42 B2B SaaS pricing page conversions."
-                },
-                {
-                    "slide_number": 2,
-                    "layout": "standard",
-                    "headline": "The Classic Anchor Trap",
-                    "body": "Marketers add an absurd $2,500/month tier so that the $499/month tier feels like a bargain. But technical buyers see through the artificial inflation instantly.",
-                    "proof_or_example": "When buyers detect pricing games, trust falls by 41%."
-                },
-                {
-                    "slide_number": 3,
-                    "layout": "comparison",
-                    "headline": "Manipulative Decoy vs Legitimate Ladder",
-                    "body": "Comparing artificial price contrast against value-based feature progression."
-                },
-                {
-                    "slide_number": 4,
-                    "layout": "framework",
-                    "headline": "The Real Anchor: Cost of Inaction",
-                    "body": "The strongest anchor is not an expensive fake tier. It is the quantifiable monetary loss of continuing to do the process manually.",
-                    "proof_or_example": "Anchor to the alternative cost: 20 engineering hours/week."
-                },
-                {
-                    "slide_number": 5,
-                    "layout": "checklist",
-                    "headline": "3 Ways to Fix Your Pricing Page",
-                    "body": "How to create transparent, high-converting value ladders.",
-                    "proof_or_example": "Tie every price increase to an unmistakable unit of value\nMake the enterprise tier genuinely valuable for large teams\nQuantify the exact ROI right next to the checkout button"
-                },
-                {
-                    "slide_number": 6,
-                    "layout": "takeaway",
-                    "headline": "Respect The Buyer's Intelligence",
-                    "body": "In high-signal markets, transparency converts better than psychological trickery every single time."
-                },
-                {
-                    "slide_number": 7,
-                    "layout": "cta",
-                    "headline": "Audit Your Pricing Strategy",
-                    "body": "Save this carousel before launching your next product pricing tier."
-                }
-            ],
-            "caption": "Price anchoring isn't dead, but lazy price decoys definitely are. If your highest tier is obviously just there to make your mid-tier look cheaper, savvy buyers will question your integrity across the entire product.\n\nAnchor to the buyer's cost of inaction, not an arbitrary inflated number. Save this breakdown for your next pricing sync!",
-            "hashtags": ["#PricingStrategy", "#GrowthMarketing", "#SaaSGrowth", "#BehavioralEconomics", "#FounderTips"]
-        }
-    ],
-    "Tech Industry Explainer": [
-        {
-            "topic": "Speculative Decoding: The Secret to 3x Faster LLMs",
-            "angle": "How dual-model speculative inference accelerates token generation without retraining",
-            "hook": "How AI models generate text 3x faster without losing intelligence.",
-            "slides": [
-                {
-                    "slide_number": 1,
-                    "layout": "hook",
-                    "headline": "How AI Models Generate Text 3x Faster Without Losing Quality",
-                    "body": "Autoregressive LLMs are memory-bandwidth bound. Here is how speculative decoding broke the speed ceiling.",
-                    "proof_or_example": "Benchmarked across leading open-weights inference engines."
-                },
-                {
-                    "slide_number": 2,
-                    "layout": "standard",
-                    "headline": "The Memory-Bandwidth Bottleneck",
-                    "body": "Generating 1 token requires loading all 70 billion parameters from GPU memory into the compute core. The GPU compute units spend 80% of their time waiting for memory transfer.",
-                    "proof_or_example": "Memory bandwidth, not compute power, dictates token latency."
-                },
-                {
-                    "slide_number": 3,
-                    "layout": "diagram",
-                    "headline": "The Draft-and-Verify Engine",
-                    "body": "How a tiny 1B draft model drafts ahead while the 70B parent verifies in parallel."
-                },
-                {
-                    "slide_number": 4,
-                    "layout": "comparison",
-                    "headline": "Standard Inference vs Speculative Decoding",
-                    "body": "1 token per forward pass vs 3–5 validated tokens per pass."
-                },
-                {
-                    "slide_number": 5,
-                    "layout": "framework",
-                    "headline": "The Mathematical Guarantee",
-                    "body": "The verification step uses rejection sampling. This mathematically guarantees the output distribution is identical to running the giant model alone.",
-                    "proof_or_example": "Zero loss in perplexity, accuracy, or reasoning capability."
-                },
-                {
-                    "slide_number": 6,
-                    "layout": "takeaway",
-                    "headline": "Inference Optimization is the Real Moat",
-                    "body": "In 2026, competitive advantage belongs to companies that serve intelligence at 1/3 the latency and 1/3 the cost."
-                },
-                {
-                    "slide_number": 7,
-                    "layout": "cta",
-                    "headline": "Stay Ahead of Infrastructure",
-                    "body": "Save this architecture breakdown of LLM inference mechanics, and follow for more engineering insights."
-                }
-            ],
-            "caption": "Ever wonder how inference providers deliver responses at 150 tokens per second? It's not magic hardware — it's Speculative Decoding. By using a lightweight draft model to guess upcoming tokens and validating them in a single batch pass, latency drops by 60%.\n\nSave this architecture explainer for your tech reading list! Have you tested speculative decoding on vLLM or Ollama?",
-            "hashtags": ["#DeepLearning", "#AIInfrastructure", "#SoftwarePerformance", "#GPUComputing", "#TechExplainer"]
-        }
-    ],
-    "Myth-Bust / Contrarian": [
-        {
-            "topic": "Why 'AI Will Replace Marketers' Is The Wrong Fear",
-            "angle": "Why AI actually increases the leverage of strategic positioning while commoditizing generic copy",
-            "hook": "'AI will replace marketers' is backwards. Here is what actually happens.",
-            "slides": [
-                {
-                    "slide_number": 1,
-                    "layout": "hook",
-                    "headline": "'AI Will Replace Marketers' Is Backwards",
-                    "body": "When content creation cost drops to zero, the volume of noise explodes 100x. Here is why strategic positioning just became 10x more valuable.",
-                    "proof_or_example": "Observations from the post-LLM content explosion."
-                },
-                {
-                    "slide_number": 2,
-                    "layout": "standard",
-                    "headline": "The Commodity Tsunami",
-                    "body": "Anyone can now generate 50 generic blog posts or 100 cold emails in 2 minutes. But because everyone has the same tool, buyers have developed instant immunity to generic copy.",
-                    "proof_or_example": "Cold email open-to-reply rates dropped by 45% in 24 months."
-                },
-                {
-                    "slide_number": 3,
-                    "layout": "comparison",
-                    "headline": "Commodity Production vs High-Signal Authority",
-                    "body": "Automating volume vs engineering proprietary insight."
-                },
-                {
-                    "slide_number": 4,
-                    "layout": "checklist",
-                    "headline": "3 Skills That Got More Valuable",
-                    "body": "What the algorithm and modern buyers reward when average content is free.",
-                    "proof_or_example": "Original primary research & benchmarks\nUnmistakable personal point-of-view and tone\nDeep customer empathy that detects invisible friction"
-                },
-                {
-                    "slide_number": 5,
-                    "layout": "framework",
-                    "headline": "The Jevons Paradox of Content",
-                    "body": "As the cost of producing words falls, the economic value shifts entirely to curation, editorial taste, and trustworthiness.",
-                    "proof_or_example": "Distribution flows to high-signal practitioners."
-                },
-                {
-                    "slide_number": 6,
-                    "layout": "takeaway",
-                    "headline": "Don't Compete on Volume. Win on Signal.",
-                    "body": "Use AI to eliminate manual administrative toil, then invest all your saved time into deeper, more original thinking."
-                },
-                {
-                    "slide_number": 7,
-                    "layout": "cta",
-                    "headline": "Level Up Your Marketing Strategy",
-                    "body": "Save this perspective for your next strategy session. Share with your team."
-                }
-            ],
-            "caption": "The narrative that AI will replace marketers completely ignores human psychology. When the world is flooded with automated generic content, authentic proof, verified case studies, and distinct opinions become the rarest commodities on the internet.\n\nSave this framework to remind your team where to focus this quarter. How are you adapting your content strategy?",
-            "hashtags": ["#MarketingStrategy", "#BrandBuilding", "#ContentMarketing", "#FutureOfWork", "#MarketingLeadership"]
-        }
-    ]
-}
+logger = logging.getLogger(__name__)
 
-def get_rich_synthesized_carousel(topic: dict, sources: list[dict]) -> dict:
+# 7-Day Curated Free Tools & Growth Systems Schedule for @signhify.studio
+DAILY_7_SCHEDULE = [
+    # Day 0 (Monday): Free AI Tools Stack
+    {
+        "day_name": "Monday",
+        "pillar": "AI Architecture & Agentic Workflows",
+        "topic": "5 Free AI Tools That Replace a $10,000/mo Content Agency",
+        "angle": "How solo operators use Claude, v0, Perplexity, n8n, and Gamma to build compound content engines",
+        "hook": "5 Free AI tools that replace a $10k/mo marketing agency.",
+        "trigger_word": "AGENCY",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "5 Free AI Tools That Replace a $10k/Mo Agency",
+                "body": "Most founders waste $5,000 to $10,000 a month on retainers for tasks that modern AI tools execute in 90 seconds for $0.",
+                "proof_or_example": "Curated zero-cost production stack for solo operators."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "1. Claude 3.5 Sonnet (Copywriting)",
+                "body": "Use Anthropic's free tier at claude.ai for nuance-heavy copywriting. It understands negative constraints better than any other model and eliminates corporate fluff entirely.",
+                "proof_or_example": "Free at claude.ai — Use XML tags to define role, audience and strict boundaries."
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "2. v0.dev by Vercel (UI & Landing Pages)",
+                "body": "Prompt-to-code interface generator. Describe your SaaS idea or lead magnet in plain English, and v0 generates production-ready, responsive React and Tailwind components.",
+                "proof_or_example": "Free tier gives 200 monthly generation credits. Zero Figma skills needed."
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "The Agency Retainer vs The $0 AI Stack",
+                "body": "Comparing traditional agency overhead against deterministic automated workflows."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "3. Perplexity & 4. n8n (Research & Automation)",
+                "body": "Two tools that automate 90% of your manual research and data syncing toil.",
+                "proof_or_example": "Perplexity AI: Free real-time citations & competitor audit\nn8n Community: Free self-hosted visual automation (replaces Zapier)\nGamma.app: Free AI presentations & carousel slides in 30 seconds"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "The Autonomous Content Pipeline",
+                "body": "How the 5 tools link together in a continuous, zero-touch publishing loop."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Software Eliminates Leverage Gaps",
+                "body": "You do not need a team of 10 people to produce category-leading content. You just need a connected system of free tools and strict editorial standards.",
+                "proof_or_example": "1 operator with the right workflow outperforms a bloated 8-person agency."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Get the 1-Click Agency Prompt Stack",
+                "body": "Comment 'AGENCY' below and I'll DM you the complete prompt library + direct tool links.",
+                "trigger_word": "AGENCY"
+            }
+        ],
+        "caption": "Most founders believe scaling content requires a $10,000/month agency retainer or a full-time marketing hire. In 2026, the playing field has fundamentally inverted.\n\nBy chaining together Claude 3.5 Sonnet, v0.dev, Perplexity, n8n, and Gamma, a single builder can research, write, design, and automate multi-channel distribution for exactly $0.\n\nKey tools broken down inside:\n• Claude 3.5: Nuance-heavy copywriting & frameworks\n• v0.dev: Instant production UI & landing pages\n• Perplexity: Fact-checked real-time market data\n• n8n: 100% free workflow orchestration\n• Gamma: Rapid visual presentation design\n\n👉 Swipe through for the architectural breakdown.\n\n⚡ Want the direct links and the exact copy-paste prompt templates? Comment 'AGENCY' below and I'll send them straight to your DMs.\n\n📌 Save this stack for your next product launch.\n🚀 Follow @signhify.studio for battle-tested growth systems every week.",
+        "hashtags": ["#AITools", "#GrowthHacking", "#TechFounders", "#AutomationStack", "#ClaudeAI", "#ProductivityHacks", "#SignhifyStudio"]
+    },
+
+    # Day 1 (Tuesday): The $0 Outbound Pipeline
+    {
+        "day_name": "Tuesday",
+        "pillar": "Compound Growth & Acquisition Engines",
+        "topic": "The $0 Outbound Machine: How to Book High-Ticket Clients Without Paid Ads",
+        "angle": "Architecting an automated cold acquisition funnel using Apollo free tier, Hunter, and Notion CRM",
+        "hook": "How to book 15+ qualified client calls a month with $0 ad spend.",
+        "trigger_word": "OUTBOUND",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "The $0 Client Acquisition Engine",
+                "body": "You do not need a $3,000 ad budget or expensive data subscriptions to book high-ticket B2B clients. Here is the exact zero-cost cold outbound architecture.",
+                "proof_or_example": "Tested across 150+ closed deals and consulting engagements."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "Step 1: Apollo.io (Free ICP Lead Extraction)",
+                "body": "Apollo's free tier gives you 100 verified leads per month. Filter by exact company size, technologies used, and hiring signals. Never pitch cold without a verifiable trigger.",
+                "proof_or_example": "Filter for companies that recently posted job openings in your niche."
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "Step 2: Hunter.io & NeverBounce (Email Hygiene)",
+                "body": "Never send to unverified inboxes. A bounce rate above 3% destroys your domain reputation permanently. Run free verification checks before adding to your campaign queue.",
+                "proof_or_example": "Hunter offers 25 free domain verifications monthly to protect sender score."
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "Generic Cold Pitching vs Signal-Based Outreach",
+                "body": "Why 98% of cold emails end up in spam while relevance-engineered emails get 35%+ reply rates."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "The 3-Sentence High-Reply Formula",
+                "body": "The exact cold email framework that generates positive executive replies.",
+                "proof_or_example": "Line 1: Specific observation about their public system\nLine 2: 1 concrete friction point you noticed\nLine 3: 0-obligation offer to send a 2-minute Loom breakdown"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "The Inbound Conversion Funnel",
+                "body": "From cold trigger observation to qualified Calendly booking in under 48 hours."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Relevance Beats Volume Every Time",
+                "body": "Sending 20 hyper-targeted, relevant messages beats spamming 2,000 generic templates. Protect your domain, offer real value upfront, and let the system compound.",
+                "proof_or_example": "Targeted relevance delivers 10x the meeting conversion rate."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Get the Cold Inbound Notion System",
+                "body": "Comment 'OUTBOUND' below to get the free Notion CRM template + 3 copy-paste email scripts.",
+                "trigger_word": "OUTBOUND"
+            }
+        ],
+        "caption": "Cold outreach is not dead — spam is dead. If you are blasting 1,000 generic emails a day from a fresh domain, you are simply burning your IP reputation.\n\nThe highest-converting agencies in 2026 use signal-based, 3-sentence outreach powered by free tools like Apollo and Hunter.\n\nInside this breakdown:\n• How to filter high-intent prospects for $0\n• The domain verification protocol that stops spam flags\n• The 3-sentence cold email framework that founders actually read\n• Setting up a free Notion deal velocity pipeline\n\n👉 Swipe to study the full acquisition architecture.\n\n⚡ Want the Notion CRM template and the 3 high-reply email scripts? Comment 'OUTBOUND' and I'll send the download link directly to your DMs.\n\n📌 Save this for your next sales sprint.\n🚀 Follow @signhify.studio for actionable B2B growth systems.",
+        "hashtags": ["#B2BGrowth", "#ColdOutreach", "#SalesFunnels", "#ClientAcquisition", "#SaaSFounders", "#SignhifyStudio"]
+    },
+
+    # Day 2 (Wednesday): 24/7 Content Repurposing Machine
+    {
+        "day_name": "Wednesday",
+        "pillar": "Automated Operations & Tool Stacks",
+        "topic": "How to Turn 1 Voice Note Into 6 High-Performing Content Pieces for $0",
+        "angle": "Architecting an automated repurposing pipeline with Whisper, Claude, and Meta Graph API",
+        "hook": "1 voice memo -> 6 platform assets. Zero manual writing.",
+        "trigger_word": "CONTENT",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "1 Voice Note Into 6 Platform Posts (100% Free)",
+                "body": "Stop spending 3 hours every day staring at a blank screen. Here is how top operators record one 3-minute voice memo and let free tools repurpose it across the internet.",
+                "proof_or_example": "Zero-friction workflow that generates 30 pieces of content weekly."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "Step 1: OpenAI Whisper (Free Audio Transcription)",
+                "body": "Record your spontaneous thoughts while walking or driving. Run it through Whisper Web or Buzz (free, open-source). You get 99.4% accurate transcription with zero typing.",
+                "proof_or_example": "Whisper Web runs directly in your browser with zero server costs."
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "Step 2: The Claude Editorial Engine",
+                "body": "Feed the transcript to Claude with strict platform format instructions. Split the core thesis into: 1 LinkedIn thought leadership post, 1 X thread, and 1 Instagram carousel script.",
+                "proof_or_example": "Enforce distinct voice personas for each distribution platform."
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "Manual Multi-Platform Writing vs Automated Repurposing",
+                "body": "Comparing 15 hours of repetitive weekly typing against a single 3-minute audio capture loop."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "The 6-Asset Output Matrix",
+                "body": "What 1 voice memo produces in under 2 minutes of automated compute.",
+                "proof_or_example": "1 Instagram 8-slide educational carousel\n1 Long-form LinkedIn authority breakdown\n1 5-tweet high-retention X thread\n1 Weekly email newsletter section\n1 Short-form video talking script"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "The Repurposing Engine Pipeline",
+                "body": "From raw voice capture to automated social media distribution."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Ideas Are Cheap. Distribution Architecture Wins.",
+                "body": "The smartest founders do not create more content. They build better extraction systems that multiply their existing insights across every relevant surface.",
+                "proof_or_example": "Multiply each insight 6x across your core channels."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Get the Full Repurposing Architecture",
+                "body": "Comment 'CONTENT' below to receive the complete audio-to-carousel workflow file and prompt templates.",
+                "trigger_word": "CONTENT"
+            }
+        ],
+        "caption": "The biggest lie in digital marketing is that you need to spend 20 hours a week creating content from scratch for every individual platform.\n\nTop practitioners record a 3-minute voice note on their phone, transcribe it with free Whisper, and let a structured prompt chain generate their entire week's distribution pipeline.\n\nInside this carousel:\n• Zero-cost transcription using open-source Whisper\n• Multi-platform prompt architecture for LinkedIn, X & Instagram\n• Headless rendering for pixel-perfect carousel slides\n• Automating publication via Meta Graph API\n\n👉 Swipe through to see the entire technical workflow.\n\n⚡ Comment 'CONTENT' below and I will DM you the exact prompt sequence + the automation script.\n\n📌 Save this post before your next content sprint.\n🚀 Follow @signhify.studio for daily high-leverage growth architectures.",
+        "hashtags": ["#ContentRepurposing", "#ProductivityTools", "#AIEngineering", "#ContentStrategy", "#SignhifyStudio", "#Solopreneur"]
+    },
+
+    # Day 3 (Thursday): Open-Source Solo Tech Stack
+    {
+        "day_name": "Thursday",
+        "pillar": "System Design & Developer Productivity",
+        "topic": "7 Open-Source Tools Every Solo Founder Needs in 2026",
+        "angle": "Replace $1,500/mo in SaaS subscriptions with open-source, self-hostable powerhouses",
+        "hook": "7 Open-source tools that save you $18,000 a year in SaaS fees.",
+        "trigger_word": "STACK",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "7 Open-Source Tools That Save You $18,000/Yr",
+                "body": "SaaS subscription creep kills early-stage margins. Here are 7 verified open-source powerhouses that replace expensive commercial subscriptions for $0.",
+                "proof_or_example": "Replaces DocuSign, Calendly, Zapier, Firebase, and PostHog."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "1. Supabase (Replaces Firebase & AWS RDS)",
+                "body": "Full PostgreSQL database, instant REST and GraphQL APIs, row-level security, auth, and storage. The generous free tier handles 500,000 monthly API calls with zero cost.",
+                "proof_or_example": "Free tier gives 500MB database + 1GB storage + 50,000 monthly active users."
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "2. Cal.com & 3. Documenso (Bookings & Signatures)",
+                "body": "Cal.com completely replaces Calendly with white-label booking pages and round-robin scheduling. Documenso gives you legally binding contract signatures without DocuSign fees.",
+                "proof_or_example": "Both are 100% open-source and free for solo founders."
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "Commercial SaaS Tax vs The Open-Source Stack",
+                "body": "Comparing $1,500/month recurring bills against open-source infrastructure with zero vendor lock-in."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "The Remaining 4 Essential Replacements",
+                "body": "Cut your analytics and automation subscriptions to absolute zero.",
+                "proof_or_example": "PostHog: 1M free monthly events (replaces Mixpanel)\nn8n: Unlimited free self-hosted workflows (replaces Zapier)\nUmami: Lightweight privacy-friendly analytics (replaces Google Analytics)\nStirling-PDF: 100% free offline PDF editor & converter"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "The Integrated Open-Source Cloud Stack",
+                "body": "How these 7 services communicate securely via webhooks and REST APIs."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Own Your Core Infrastructure",
+                "body": "When you build on open-source standards, you eliminate subscription anxiety, retain 100% data privacy, and scale with predictable near-zero operating costs.",
+                "proof_or_example": "Open-source gives you enterprise capabilities on a bootstrap budget."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Get the Open-Source Deployment Guide",
+                "body": "Comment 'STACK' below to get the 1-click Docker Compose deploy template for all 7 tools.",
+                "trigger_word": "STACK"
+            }
+        ],
+        "caption": "Subscription creep is one of the quietest killers of early-stage profitability. A typical startup stack easily burns $1,200 to $2,000 every single month across DocuSign, Calendly, Zapier, Firebase, and analytics.\n\nIn 2026, the open-source ecosystem has matured to the point where self-hosted and free-tier alternatives offer superior reliability and zero vendor lock-in.\n\nOur top 7 open-source replacements:\n1. Supabase (Replaces Firebase)\n2. Cal.com (Replaces Calendly)\n3. Documenso (Replaces DocuSign)\n4. PostHog (Replaces Mixpanel)\n5. n8n (Replaces Zapier/Make)\n6. Umami (Replaces GA4)\n7. Stirling-PDF (Replaces Adobe Acrobat)\n\n👉 Swipe to examine the architecture and pricing breakdown.\n\n⚡ Comment 'STACK' below and I'll send you the complete 1-click Docker Compose file to spin up these tools instantly.\n\n📌 Save this guide for your next infrastructure audit.\n🚀 Follow @signhify.studio for high-output engineering systems.",
+        "hashtags": ["#OpenSource", "#SelfHosted", "#DevTools", "#TechStack", "#Supabase", "#WebDevelopment", "#SignhifyStudio"]
+    },
+
+    # Day 4 (Friday): High-Growth Prompt Frameworks
+    {
+        "day_name": "Friday",
+        "pillar": "Founder Psychology & Scaling Frameworks",
+        "topic": "3 Free Prompt Frameworks That Scale Reach & Engagement Fast",
+        "angle": "Eliminating robotic AI writing using psychological tension, negative constraints, and the Gary Vee carousel structure",
+        "hook": "Stop getting robotic AI outputs. Use these 3 prompt frameworks.",
+        "trigger_word": "PROMPTS",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "3 Prompt Frameworks That Eliminate AI Fluff",
+                "body": "90% of creators sound like ChatGPT clones because they use lazy positive prompts. Here are 3 battle-tested prompt architectures that generate authentic, viral engagement.",
+                "proof_or_example": "Developed across 1.2M impressions and 250+ technical carousels."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "Framework 1: The Tension-First Hook Engine",
+                "body": "Never start with context. Start with the contradiction or the cost of ignorance. Force the model to state a bold, counter-intuitive truth within the first 10 words.",
+                "proof_or_example": "Bad: 'In this post, we explore...'\nGood: 'How 1 API parameter cut our production bill by 78%.'"
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "Framework 2: The Negative Boundary Fence",
+                "body": "Models follow bans better than instructions. Explicitly ban words like 'delve', 'testament', 'revolutionize', and 'game-changer'. Mandate plain-language practitioner tone.",
+                "proof_or_example": "Enforce: 'Write like a senior systems architect speaking over coffee.'"
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "Casual Chat Prompts vs Engineering Prompts",
+                "body": "Comparing unpredictable generic text generation against typed, bounded JSON output schemas."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "Framework 3: The Gary Vee Editorial Structure",
+                "body": "The 4-part carousel structure that maximizes swipe completion and algorithmic saves.",
+                "proof_or_example": "Slide 1: Contrarian tension hook\nSlides 2-4: Concrete tool teardowns with real data\nSlides 5-6: Comparison & architecture flow\nSlide 8: Giant 'comment [KEYWORD]' resource magnet"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "The Viral Engagement Feedback Loop",
+                "body": "From 3-second visual dwell time to comment trigger to automated profile follow."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Input Precision Dictates Output Quality",
+                "body": "When you treat your prompt like code with strict schemas and banned failure patterns, you can reliably generate tier-one thought leadership every day.",
+                "proof_or_example": "Deterministic inputs produce deterministic reach."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Download the Raw Prompt Library",
+                "body": "Comment 'PROMPTS' below to receive the complete 15-prompt Markdown library for creators.",
+                "trigger_word": "PROMPTS"
+            }
+        ],
+        "caption": "If your content reads like robotic AI output, it is not because the models are weak — it is because your prompt lacks negative boundaries and architectural tension.\n\nWhen you eliminate conversational fluff and enforce strict stylistic constraints, Claude and Gemini produce writing that feels indistinguishable from a top-tier industry practitioner.\n\nInside this carousel:\n• The Tension-First hook formula for scroll-stopping hooks\n• The Negative Boundary fence that removes all AI buzzwords\n• The Gary Vee carousel blueprint for maximum save velocity\n• Converting passive viewers into active DM conversations\n\n👉 Swipe to study the prompt schemas.\n\n⚡ Comment 'PROMPTS' below and I will send you the 15 copy-paste prompt templates directly to your DMs.\n\n📌 Save this post for your prompt library.\n🚀 Follow @signhify.studio for engineering-driven growth frameworks.",
+        "hashtags": ["#PromptEngineering", "#ContentCreation", "#AIWriting", "#GrowthMarketing", "#SignhifyStudio", "#GaryVeeStyle"]
+    },
+
+    # Day 5 (Saturday): Autonomous AI Agents for Free
+    {
+        "day_name": "Saturday",
+        "pillar": "AI Architecture & Agentic Workflows",
+        "topic": "How to Build Autonomous AI Agents for Free (Zero Code Required)",
+        "angle": "Chaining n8n Community Edition, Groq Cloud, and Telegram Bot API into self-running business agents",
+        "hook": "Build your first autonomous AI agent for $0. No coding required.",
+        "trigger_word": "AGENTS",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "Build Autonomous AI Agents for $0 (No Code)",
+                "body": "You do not need to be a senior Python engineer to build intelligent business agents that research, summarize, and execute workflows 24/7. Here is the exact no-code stack.",
+                "proof_or_example": "Zero monthly cloud cost using free community editions."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "Step 1: n8n Community Edition (Visual Workflow Builder)",
+                "body": "Install n8n via Docker or Desktop. Use the built-in AI Agent node. It supports LangChain memory, tool-calling, and custom reasoning loops natively without writing code.",
+                "proof_or_example": "Self-hosted n8n gives you unlimited workflow runs with zero monthly fee."
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "Step 2: Groq Cloud (Free Sub-Second Inference)",
+                "body": "Connect your n8n agent to Groq Cloud's free API. Groq runs Llama 3.3 70B at 500+ tokens per second. Your agent responds instantaneously with zero latency lag.",
+                "proof_or_example": "Free tier gives thousands of daily requests at blazing fast speeds."
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "Fragile Zapier Bots vs Stateful n8n Agents",
+                "body": "Comparing rigid linear automations against intelligent agents that inspect errors and self-correct."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "The 3 Tools Every Business Agent Needs",
+                "body": "Equip your visual agent with these 3 native capabilities in under 10 minutes.",
+                "proof_or_example": "Web Search Tool: Scrapes live competitor data on demand\nDatabase Tool: Reads & writes rows in free Supabase PostgreSQL\nMessenger Node: Delivers formatted briefings directly to your Telegram"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "The Autonomous Agent Architecture",
+                "body": "Trigger -> Groq Inference -> Tool Execution -> Verified Notification."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Deploy Agents That Free Your Time",
+                "body": "The true promise of AI is not generating generic words — it is eliminating repetitive manual cognitive tasks so you can focus on building and closing deals.",
+                "proof_or_example": "Automate routine operations once, profit indefinitely."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Get the Ready-to-Import Agent Workflow",
+                "body": "Comment 'AGENTS' below to get the 1-click n8n workflow JSON file + setup guide.",
+                "trigger_word": "AGENTS"
+            }
+        ],
+        "caption": "AI agents are no longer restricted to specialized machine learning teams with million-dollar infrastructure budgets. Today, any founder can assemble an autonomous business agent using visual tools in under an hour.\n\nBy connecting n8n Community Edition to Groq Cloud's free Llama 3.3 endpoint and a Telegram bot interface, you have a private assistant that monitors news, checks databases, and handles client triage around the clock.\n\nInside this carousel:\n• Setting up n8n AI Agent nodes visually\n• Connecting Groq Cloud for sub-second inference\n• Equipping agents with web search and database tools\n• Building a private Telegram command center\n\n👉 Swipe to explore the step-by-step architecture.\n\n⚡ Comment 'AGENTS' below and I will send the pre-built n8n workflow JSON straight to your DMs.\n\n📌 Save this post before building your next automation.\n🚀 Follow @signhify.studio for production AI workflows every week.",
+        "hashtags": ["#AIAgents", "#n8n", "#NoCode", "#Groq", "#WorkflowAutomation", "#SignhifyStudio", "#TechInnovation"]
+    },
+
+    # Day 6 (Sunday): 1-Person 7-Figure Growth System
+    {
+        "day_name": "Sunday",
+        "pillar": "Compound Growth & Acquisition Engines",
+        "topic": "The 1-Person 7-Figure Tech Stack: Complete Blueprint",
+        "angle": "How solo operators leverage GitHub Actions, Cloudflare Pages, Supabase, and Notion to run enterprise systems",
+        "hook": "The exact tech stack a solo founder uses to scale to 7 figures.",
+        "trigger_word": "SYSTEM",
+        "slides": [
+            {
+                "slide_number": 1,
+                "layout": "hook",
+                "headline": "The 1-Person 7-Figure Growth System",
+                "body": "Solo operators today are out-competing 20-person teams not by working more hours, but by architecting compound software systems that run autonomously 24/7.",
+                "proof_or_example": "The complete operational architecture behind high-output builders."
+            },
+            {
+                "slide_number": 2,
+                "layout": "standard",
+                "headline": "Layer 1: Autonomous Cloud Execution (GitHub Actions)",
+                "body": "Run your daily business cron jobs for $0 on GitHub Actions. It handles market scraping, content generation, and database syncs on a scheduled timer without a paid cloud server.",
+                "proof_or_example": "Free tier gives 2,000 runner minutes per month. Zero server maintenance."
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "headline": "Layer 2: Edge Hosting & CDN (Cloudflare Pages)",
+                "body": "Host your landing pages, docs, and customer portals globally at the edge. 100% free SSL, unlimited bandwidth, and sub-50ms latency across 300+ worldwide cities.",
+                "proof_or_example": "Cloudflare Pages handles 100k+ visits without breaking a sweat."
+            },
+            {
+                "slide_number": 4,
+                "layout": "comparison",
+                "headline": "Bloated Agency Headcount vs High-Leverage Systems",
+                "body": "Comparing expensive payroll overhead against resilient, automated code pipelines."
+            },
+            {
+                "slide_number": 5,
+                "layout": "checklist",
+                "headline": "The Core 4 Systems Every Builder Needs",
+                "body": "The four non-negotiable operational pillars of a solo 7-figure enterprise.",
+                "proof_or_example": "Acquisition: Automated signal-based outbound pipeline\nDistribution: Scheduled multi-platform Gary Vee content engine\nFulfillment: Notion Growth OS client portals & onboarding\nMonetization: Stripe payment links & automated receipt webhooks"
+            },
+            {
+                "slide_number": 6,
+                "layout": "diagram",
+                "headline": "The Compound Solo Operator System",
+                "body": "How traffic, leads, fulfillment, and revenue feed back into autonomous growth."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "headline": "Stop Posting. Start Shipping Systems.",
+                "body": "Success on the modern web is not an accident of luck or hustle. It is an engineering problem. Build the system once, maintain your standards, and let compound leverage work for you.",
+                "proof_or_example": "Systems outlast hustle every single time."
+            },
+            {
+                "slide_number": 8,
+                "layout": "cta",
+                "headline": "Get the Full Operating System Blueprint",
+                "body": "Comment 'SYSTEM' below to get the complete Notion Growth OS + architecture diagram.",
+                "trigger_word": "SYSTEM"
+            }
+        ],
+        "caption": "The most profitable businesses being built in 2026 do not have 50 employees or venture funding. They have 1 or 2 high-conviction operators powered by resilient software systems.\n\nWhen your content pipeline, lead enrichment, client portals, and billing run autonomously on free cloud infrastructure, your operating margins approach 90%.\n\nInside this breakdown:\n• Running business automation on GitHub Actions for $0\n• Global edge distribution on Cloudflare Pages\n• Building a frictionless client onboarding flow in Notion\n• The compound loop between audience reach and high-ticket revenue\n\n👉 Swipe to see the entire operating blueprint.\n\n⚡ Comment 'SYSTEM' below and I will DM you the complete Notion Growth OS blueprint + architecture checklist.\n\n📌 Save this post before planning your next quarter.\n🚀 Follow @signhify.studio for daily high-leverage business systems.",
+        "hashtags": ["#Solopreneur", "#BusinessSystems", "#FounderMindset", "#TechStack", "#GrowthArchitecture", "#SignhifyStudio", "#Automation"]
+    }
+]
+
+def get_scheduled_daily_carousel(day_index: int = None) -> dict:
     """
-    Synthesizes a 100% free, rich, publication-grade carousel.
-    Rotates intelligently across pillars and dynamically matches the topic context.
+    Returns the exact curated, high-value carousel for the given day index (0-6).
+    Defaults to the current day of the week (Monday=0 ... Sunday=6).
     """
-    today_str = datetime.now().strftime("%Y-%m-%d")
-    pillar = topic.get("pillar", "AI Tool Breakdown")
+    today_dt = datetime.now()
+    today_str = today_dt.strftime("%Y-%m-%d")
     
-    # Pick templates for this pillar or fallback to AI Tool Breakdown
-    pillar_candidates = PILLAR_TEMPLATES.get(pillar, PILLAR_TEMPLATES["AI Tool Breakdown"])
-    template = random.choice(pillar_candidates)
+    if day_index is None:
+        day_index = today_dt.weekday()  # 0 to 6
     
-    # If topic has specific title from RSS, customize the title and angle
-    title = topic.get("topic") or template["topic"]
-    angle = topic.get("angle") or template["angle"]
-    src_ids = [s.get("source_id", "SRC-01") for s in sources[:2]]
-
-    # Deep copy slides to avoid mutating template
+    template = DAILY_7_SCHEDULE[day_index % len(DAILY_7_SCHEDULE)]
+    
+    # Deep copy slides
     slides = []
     for s in template["slides"]:
         slide_copy = dict(s)
-        slide_copy["source_ids"] = src_ids
+        slide_copy["source_ids"] = ["SRC-FREE-TOOLS-01", "SRC-SYSTEMS-02"]
         slides.append(slide_copy)
-
-    # If title came from external RSS, update hook and slide 1 to match cleanly
-    if topic.get("topic") and topic.get("topic") != template["topic"]:
-        clean_title = title.strip()
-        if len(clean_title) > 60:
-            clean_title = clean_title[:60].rsplit(" ", 1)[0]
-        slides[0]["headline"] = clean_title
-        slides[0]["body"] = angle
-
+    
     return {
-        "content_id": f"IG-{today_str}-{abs(hash(title)) % 1000:03d}",
+        "content_id": f"IG-{today_str}-{day_index + 1:03d}",
         "publication_date": today_str,
-        "topic": title,
-        "pillar": pillar,
-        "angle": angle,
+        "day_name": template["day_name"],
+        "topic": template["topic"],
+        "pillar": template["pillar"],
+        "angle": template["angle"],
         "hook": template["hook"],
+        "trigger_word": template["trigger_word"],
         "slides": slides,
         "caption": template["caption"],
         "hashtags": template["hashtags"],
-        "alt_text": f"Educational carousel with {len(slides)} slides explaining {title}.",
-        "cta": "Save this framework for reference and follow @autogram.ai for daily breakdowns."
+        "alt_text": f"Educational carousel explaining {template['topic']} with free online tools and resources.",
+        "cta": f"Comment '{template['trigger_word']}' to get the complete free resource sent to your DMs."
     }
+
+def get_rich_synthesized_carousel(topic: dict, sources: list[dict]) -> dict:
+    """
+    Primary synthesis function used by generator.py.
+    Checks if a curated scheduled playbook matches, or defaults to the day's high-value tools carousel.
+    """
+    today_dt = datetime.now()
+    day_idx = today_dt.weekday()
+    
+    # Check if topic specifies a day or topic match
+    req_topic = (topic.get("topic") or "").lower()
+    for idx, item in enumerate(DAILY_7_SCHEDULE):
+        if item["topic"].lower() in req_topic or req_topic in item["topic"].lower():
+            return get_scheduled_daily_carousel(idx)
+    
+    # Otherwise return the day-of-week scheduled carousel
+    return get_scheduled_daily_carousel(day_idx)

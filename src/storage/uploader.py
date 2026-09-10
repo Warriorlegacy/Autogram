@@ -8,6 +8,8 @@ Supports 100% Free Hosting Options:
 """
 
 import logging
+import os
+import requests
 from pathlib import Path
 from src.config import settings
 
@@ -57,7 +59,38 @@ class AssetUploader:
             except Exception as e:
                 logger.error(f"S3/R2 upload failed: {e}. Falling back to CDN base URL formatting.")
 
-        # 2. Free Tunnel / Static Server URL staging
+        # 2. Check if running in cloud (GitHub Actions / Render / Docker) or localhost without active tunnel
+        use_cloud_upload = (
+            "localhost" in self.public_cdn_base
+            or "127.0.0.1" in self.public_cdn_base
+            or os.environ.get("GITHUB_ACTIONS") == "true"
+            or not self.public_cdn_base
+        )
+
+        if use_cloud_upload:
+            logger.info("Using 100% Free Public Cloud CDN for Meta Instagram ingestion...")
+            try:
+                for path_str in image_paths:
+                    p = Path(path_str)
+                    with open(p, "rb") as f:
+                        resp = requests.post(
+                            "https://catbox.moe/user/api.php",
+                            data={"reqtype": "fileupload"},
+                            files={"fileToUpload": (p.name, f, "image/jpeg")},
+                            timeout=25
+                        )
+                    if resp.status_code == 200 and resp.text.startswith("http"):
+                        url = resp.text.strip()
+                        public_urls.append(url)
+                        logger.info(f"Uploaded {p.name} to free cloud CDN: {url}")
+                    else:
+                        raise RuntimeError(f"Cloud CDN upload returned: {resp.text}")
+                return public_urls
+            except Exception as e:
+                logger.warning(f"Free cloud CDN upload error ({e}). Falling back to CDN base URL formatting.")
+                public_urls = []
+
+        # 3. Free Tunnel / Static Server URL staging (Ngrok / Cloudflare Tunnel)
         for path_str in image_paths:
             p = Path(path_str)
             relative_part = f"output/{p.parent.name}/{p.name}"

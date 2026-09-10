@@ -4,60 +4,97 @@
   <meta charset="UTF-8">
   <title>Slide {{ slide.slide_number }} - Comparison</title>
   <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .comparison-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+    .comp-bullet-bad {
+      color: #94A3B8;
+      font-weight: 900;
+      font-size: 20px;
+    }
+    .comp-bullet-good {
+      color: var(--accent-orange);
+      font-weight: 900;
+      font-size: 20px;
+    }
+  </style>
 </head>
 <body>
   <div class="slide-canvas">
-    <div class="progress-container">
-      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
-    </div>
-
     <header class="slide-header">
-      <div class="pillar-badge">
-        <span class="pillar-dot"></span>
-        Direct Contrast
-      </div>
-      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+      <div class="header-copyright">© 2026</div>
+      <div class="header-watermark">@SIGNHIFY.STUDIO</div>
+      <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
-      <h2 class="headline-medium">{{ slide.headline }}</h2>
-      {% if slide.body %}
-      <p class="subtext-lead" style="margin-bottom: 24px;">{{ slide.body }}</p>
+      {% if slide.step_label %}
+      <div class="step-badge">{{ slide.step_label }}</div>
+      {% else %}
+      <div class="sub-eyebrow">{{ slide.eyebrow | default('PARADIGM SHIFT') }}</div>
       {% endif %}
 
-      <div class="comparison-grid">
-        <div class="comp-column negative">
-          <div class="comp-title">❌ The Fragile Way</div>
-          <div class="subtext-body" style="font-size: 21px; line-height: 1.6;">
-            • Monolithic single-prompt pipelines<br><br>
-            • Letting LLMs hallucinate final pixels<br><br>
-            • Unsupervised publishing with zero QA<br><br>
-            • No historical memory or anti-repetition check
+      <h2 class="headline-large">{{ slide.headline }}</h2>
+
+      {% if slide.body %}
+      <p class="subtext-lead">{{ slide.body }}</p>
+      {% endif %}
+
+      <div class="comparison-container">
+        <div class="comparison-col bad">
+          <div class="comparison-col-header">✕ The Manual / Expensive Way</div>
+          <div class="comparison-item">
+            <span class="comp-bullet-bad">✕</span>
+            <div><b>$5,000/mo</b> agency retainer or expensive SaaS stacks</div>
+          </div>
+          <div class="comparison-item">
+            <span class="comp-bullet-bad">✕</span>
+            <div>Spending 3 hours/day manually creating slides in Canva</div>
+          </div>
+          <div class="comparison-item">
+            <span class="comp-bullet-bad">✕</span>
+            <div>Irregular posting cadence hurting algorithmic distribution</div>
+          </div>
+          <div class="comparison-item">
+            <span class="comp-bullet-bad">✕</span>
+            <div>Zero free resources to convert viewers into followers</div>
           </div>
         </div>
 
-        <div class="comp-column positive">
-          <div class="comp-title">✓ The Production Way</div>
-          <div class="subtext-body" style="font-size: 21px; line-height: 1.6;">
-            • Decoupled research, drafting & rendering<br><br>
-            • Deterministic HTML/Playwright layout<br><br>
-            • Automated fact-checking & quality gate<br><br>
-            • Database-backed learning & engagement loop
+        <div class="comparison-col good">
+          <div class="comparison-col-header">✓ The $0 Autonomous System</div>
+          <div class="comparison-item">
+            <span class="comp-bullet-good">✓</span>
+            <div><b>$0 / month</b> using free tools, open APIs & GitHub Actions</div>
+          </div>
+          <div class="comparison-item">
+            <span class="comp-bullet-good">✓</span>
+            <div>Fully automated research, drafting, rendering & posting</div>
+          </div>
+          <div class="comparison-item">
+            <span class="comp-bullet-good">✓</span>
+            <div>High-retention editorial aesthetics tailored for viral saves</div>
+          </div>
+          <div class="comparison-item">
+            <span class="comp-bullet-good">✓</span>
+            <div>Comment-to-DM loop generating inbound leads daily</div>
           </div>
         </div>
       </div>
     </main>
 
-    <footer class="slide-footer">
-      <div class="footer-brand">
-        <div class="brand-avatar">A</div>
-        <div class="brand-meta">
-          <div class="brand-name">{{ brand.brand_name }}</div>
-          <div class="brand-handle">{{ brand.handle }}</div>
-        </div>
-      </div>
-      <div class="footer-swipe">
-        Next <span class="swipe-arrow">→</span>
+    <footer class="slide-footer-editorial">
+      <div class="footer-handle-row">@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS</div>
+      <div class="pagination-dots">
+        {% for i in range(1, meta.total_slides + 1) %}
+        <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>
+        {% endfor %}
       </div>
     </footer>
   </div>

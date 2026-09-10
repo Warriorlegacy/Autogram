@@ -56,6 +56,9 @@ def run_pipeline(dry_run: bool = False) -> dict:
     logger.info(f"Mode: {'DRY RUN / SAFE TEST' if dry_run or settings.dry_run else 'LIVE PRODUCTION'}")
     logger.info("==================================================")
 
+    # Propagate dry_run flag to publisher (overrides .env DRY_RUN for this run)
+    publisher.dry_run = dry_run
+
     # 1. Knowledge Acquisition (Layer A)
     logger.info("Phase 1: Knowledge Acquisition...")
     sources = fetcher.acquire_sources(live_fetch=not dry_run)

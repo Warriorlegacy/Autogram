@@ -4,55 +4,63 @@
   <meta charset="UTF-8">
   <title>Slide {{ slide.slide_number }} - Checklist</title>
   <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    .checklist-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
   <div class="slide-canvas">
-    <div class="progress-container">
-      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
-    </div>
-
     <header class="slide-header">
-      <div class="pillar-badge">
-        <span class="pillar-dot"></span>
-        Actionable Checklist
-      </div>
-      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+      <div class="header-copyright">© 2026</div>
+      <div class="header-watermark">@SIGNHIFY.STUDIO</div>
+      <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
-      <h2 class="headline-medium">{{ slide.headline }}</h2>
-      {% if slide.body %}
-      <p class="subtext-lead" style="margin-bottom: 20px;">{{ slide.body }}</p>
+      {% if slide.step_label %}
+      <div class="step-badge">{{ slide.step_label }}</div>
+      {% else %}
+      <div class="sub-eyebrow">{{ slide.eyebrow | default('EXECUTION BLUEPRINT') }}</div>
       {% endif %}
 
-      <div class="checklist-container">
+      <h2 class="headline-large">{{ slide.headline }}</h2>
+
+      {% if slide.body %}
+      <p class="subtext-lead">{{ slide.body }}</p>
+      {% endif %}
+
+      <div class="checklist-list">
         {% set items = slide.proof_or_example.split('\n') if slide.proof_or_example else [
-          "Validate schema with deterministic pydantic models",
-          "Decouple prompt generation from layout rendering",
-          "Automate unit tests for dimension & text boundary checks",
-          "Fail closed before external publishing triggers"
+          "Curate verified zero-cost tools and community open-source models",
+          "Automate input ingestion via webhooks instead of manual copy-paste",
+          "Deterministic headless screenshot rendering for pixel perfection",
+          "Deploy autonomous scheduled GitHub Actions runner with 0 monthly cost"
         ] %}
         {% for item in items %}
         {% if item.strip() %}
-        <div class="checklist-item">
-          <div class="check-icon">✓</div>
-          <div class="check-text">{{ item.strip().lstrip('-').lstrip('*').strip() }}</div>
+        <div class="checklist-item-editorial">
+          <div class="checklist-num">{{ "%02d" | format(loop.index) }}</div>
+          <div class="checklist-content">
+            <h3>{{ item.strip().lstrip('-').lstrip('*').strip() }}</h3>
+          </div>
         </div>
         {% endif %}
         {% endfor %}
       </div>
     </main>
 
-    <footer class="slide-footer">
-      <div class="footer-brand">
-        <div class="brand-avatar">A</div>
-        <div class="brand-meta">
-          <div class="brand-name">{{ brand.brand_name }}</div>
-          <div class="brand-handle">{{ brand.handle }}</div>
-        </div>
-      </div>
-      <div class="footer-swipe">
-        Next <span class="swipe-arrow">→</span>
+    <footer class="slide-footer-editorial">
+      <div class="footer-handle-row">@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS</div>
+      <div class="pagination-dots">
+        {% for i in range(1, meta.total_slides + 1) %}
+        <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>
+        {% endfor %}
       </div>
     </footer>
   </div>

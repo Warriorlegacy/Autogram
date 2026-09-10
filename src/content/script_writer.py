@@ -45,31 +45,37 @@ class ScriptWriter:
 
         bullets_str = "\n".join([f"• {t}" for t in takeaways[:3]])
 
-        cta_question = f"Are you already applying this in your {pillar.lower()} workflow, or still running the manual approach?"
+        cta_question = f"Are you already applying this in your workflow, or still running the manual approach?"
+
+        trigger_word = carousel.get("trigger_word") or (slides[-1].get("trigger_word") if slides else "SYSTEM") or "SYSTEM"
 
         caption_text = f"""{hook_text}
 
 {body_summary}
 
-Here is what changes when you move to a compound architecture:
+Key architectural shifts inside:
 {bullets_str}
 
-👉 Swipe through the 8 slides for the full step-by-step breakdown.
+👉 Swipe through all slides for the full technical breakdown.
 
-📌 Save this post so your team has the exact reference when deploying.
+⚡ Want the full blueprint & free tool breakdown? Comment "{trigger_word}" below and I'll send it straight to your DMs.
+
+📌 Save this for your next sprint or review.
+🚀 Follow @signhify.studio for battle-tested growth systems & AI architecture every week.
+
 💬 {cta_question}"""
 
-        # Targeted, non-spammy technical hashtags
+        # Targeted, high-conversion growth & tech hashtags
         niche_tags = {
-            "AI Tool Breakdown": ["#AIEngineering", "#MachineLearning", "#LLMArchitecture", "#SystemDesign", "#TechStack"],
-            "Prompting & Workflow": ["#PromptEngineering", "#WorkflowAutomation", "#DevProductivity", "#AIWorkflow", "#SoftwareDevelopment"],
-            "Marketing Psychology": ["#B2BMarketing", "#GrowthStrategy", "#MarketingPsychology", "#SaaSGrowth", "#TechFounders"],
-            "Tech Industry Explainer": ["#TechTrends", "#SoftwareEngineering", "#CloudInfrastructure", "#DevCommunity", "#EngineeringManagement"],
-            "Career & Skills": ["#TechCareers", "#EngineeringLeadership", "#FutureOfWork", "#DeveloperLife", "#SkillBuilding"],
-            "Myth-Bust / Contrarian": ["#ContrarianThinking", "#TechDebate", "#SoftwareDesign", "#Startups", "#TechLeadership"]
+            "AI Tool Breakdown": ["#AIEngineering", "#MachineLearning", "#LLMArchitecture", "#SystemDesign", "#TechStack", "#AIWorkflows"],
+            "Prompting & Workflow": ["#PromptEngineering", "#WorkflowAutomation", "#DevProductivity", "#AIWorkflow", "#SoftwareDevelopment", "#DeveloperTools"],
+            "Marketing Psychology": ["#GrowthSystems", "#B2BMarketing", "#GrowthStrategy", "#MarketingPsychology", "#SaaSGrowth", "#TechFounders"],
+            "Tech Industry Explainer": ["#TechTrends", "#SoftwareEngineering", "#CloudInfrastructure", "#DevCommunity", "#EngineeringLeadership", "#SystemDesign"],
+            "Career & Skills": ["#TechCareers", "#EngineeringLeadership", "#FutureOfWork", "#DeveloperLife", "#SkillBuilding", "#FounderMindset"],
+            "Myth-Bust / Contrarian": ["#ContrarianThinking", "#TechDebate", "#SoftwareDesign", "#Startups", "#TechLeadership", "#GrowthHacking"]
         }
 
-        base_tags = ["#AutogramAI", "#TechInnovation", "#BuildInPublic"]
+        base_tags = ["#GrowthSystems", "#SignhifyStudio", "#BuildInPublic", "#AutomationStack"]
         selected_tags = niche_tags.get(pillar, ["#ArtificialIntelligence", "#TechNews", "#SoftwareArchitecture"]) + base_tags
         hashtags_str = " ".join(selected_tags)
 

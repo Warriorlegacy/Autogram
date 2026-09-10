@@ -7,43 +7,57 @@
 </head>
 <body>
   <div class="slide-canvas">
-    <div class="progress-container">
-      <div class="progress-fill" style="width: {{ (slide.slide_number / meta.total_slides) * 100 }}%;"></div>
-    </div>
-
     <header class="slide-header">
-      <div class="pillar-badge">
-        <span class="pillar-dot"></span>
-        {{ meta.pillar | default('AI & Technology') }}
-      </div>
-      <div class="slide-counter"><span>{{ "%02d" | format(slide.slide_number) }}</span> / {{ "%02d" | format(meta.total_slides) }}</div>
+      <div class="header-copyright">© 2026</div>
+      <div class="header-watermark">@SIGNHIFY.STUDIO</div>
+      <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
-      <div class="hook-tag">Critical Operational Shift</div>
-      <h1 class="headline-huge text-gradient">{{ slide.headline }}</h1>
+      <div class="sub-eyebrow">{{ slide.eyebrow | default('SYSTEM ARCHITECTURE') }}</div>
+
+      <h1 class="headline-huge">
+        {{ slide.headline }}
+      </h1>
+
       {% if slide.body %}
       <p class="subtext-lead">{{ slide.body }}</p>
       {% endif %}
 
-      {% if slide.proof_or_example %}
-      <div class="proof-box">
-        <span class="proof-icon">⚡</span>
-        <div>{{ slide.proof_or_example }}</div>
-      </div>
-      {% endif %}
-    </main>
+      <!-- Centerpiece Visual / Tool Hub -->
+      <div class="white-card-elevated" style="margin-top: 10px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <div class="connector-hub">
+          <div class="platform-tile" style="background: #FFFFFF; font-size: 32px; font-weight: 900; color: #E05A36; width: 80px; height: 80px;">⚡</div>
+          <div class="connector-dotted">● ······ + ······ ●</div>
+          <div class="platform-tile" style="background: #FFFFFF; min-width: 160px; height: 84px; padding: 0 24px; border-radius: 22px; box-shadow: 0 12px 28px rgba(0,0,0,0.08); font-size: 26px; font-weight: 900; color: #111111; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            {% if "Claude" in slide.headline or "Claude" in slide.body %}✳ Claude{% elif "Gemini" in slide.headline %}✦ Gemini{% else %}⚙ Studio{% endif %}
+          </div>
+        </div>
 
-    <footer class="slide-footer">
-      <div class="footer-brand">
-        <div class="brand-avatar">A</div>
-        <div class="brand-meta">
-          <div class="brand-name">{{ brand.brand_name }}</div>
-          <div class="brand-handle">{{ brand.handle }}</div>
+        <div style="width: 100%; border-top: 1px dashed rgba(224, 90, 54, 0.35); margin: 24px 0 20px 0;"></div>
+
+        <div class="platform-tile-row">
+          <div class="tile-badge"><div class="platform-tile">📸</div><div class="tile-label">Instagram</div></div>
+          <div class="tile-badge"><div class="platform-tile">▶️</div><div class="tile-label">YouTube</div></div>
+          <div class="tile-badge"><div class="platform-tile">💼</div><div class="tile-label">LinkedIn</div></div>
+          <div class="tile-badge"><div class="platform-tile">🎵</div><div class="tile-label">TikTok</div></div>
+          <div class="tile-badge"><div class="platform-tile">✖️</div><div class="tile-label">X (Twitter)</div></div>
+          <div class="tile-badge"><div class="platform-tile">🧵</div><div class="tile-label">Threads</div></div>
+        </div>
+
+        <div style="margin-top: 24px; font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: #16A34A; display: flex; align-items: center; gap: 8px;">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #16A34A; display: inline-block;"></span>
+          100% AUTOMATED & FREE
         </div>
       </div>
-      <div class="footer-swipe">
-        Swipe to learn <span class="swipe-arrow">→</span>
+    </main>
+
+    <footer class="slide-footer-editorial">
+      <div class="footer-handle-row">@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS</div>
+      <div class="pagination-dots">
+        {% for i in range(1, meta.total_slides + 1) %}
+        <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>
+        {% endfor %}
       </div>
     </footer>
   </div>
