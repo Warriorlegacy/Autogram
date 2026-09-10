@@ -82,12 +82,15 @@ class AssetUploader:
 
     def _upload_to_imgbb(self, p: Path) -> str:
         """Uploads to imgbb.com free API (reliable from all IPs including CI)."""
+        api_key = settings.imgbb_api_key
+        if not api_key:
+            raise RuntimeError("imgbb skipped: IMGBB_API_KEY is not configured.")
         import base64
         with open(p, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
         resp = requests.post(
             "https://api.imgbb.com/1/upload",
-            data={"key": "your_imgbb_key", "image": b64},
+            data={"key": api_key, "image": b64},
             timeout=30
         )
         if resp.status_code == 200:
@@ -189,7 +192,13 @@ class AssetUploader:
                                 uploaded_url = self._upload_to_0x0(p)
                                 logger.info(f"Uploaded {p.name} to 0x0.st: {uploaded_url}")
                             except Exception as e4:
-                                logger.warning(f"0x0.st failed for {p.name}: {e4}. All cloud CDNs exhausted.")
+                                logger.warning(f"0x0.st failed for {p.name}: {e4}. Trying imgbb...")
+                                # Fallback 5: imgbb.com API
+                                try:
+                                    uploaded_url = self._upload_to_imgbb(p)
+                                    logger.info(f"Uploaded {p.name} to imgbb.com: {uploaded_url}")
+                                except Exception as e5:
+                                    logger.error(f"imgbb failed for {p.name}: {e5}. All cloud CDNs exhausted.")
 
                 if uploaded_url:
                     temp_urls.append(uploaded_url)
@@ -200,10 +209,19 @@ class AssetUploader:
             if all_uploaded and len(temp_urls) == len(image_paths):
                 return temp_urls
             else:
-                logger.warning("Cloud image host cascade incomplete. Falling back to PUBLIC_CDN_BASE...")
+                logger.warning("Cloud image host cascade incomplete.")
 
-        # 3. Fallback to PUBLIC_CDN_BASE (e.g. Render dashboard or tunnel)
-        fallback_base = self.public_cdn_base if (self.public_cdn_base.startswith("http://") or self.public_cdn_base.startswith("https://")) else "https://autogram-dashboard.onrender.com"
+        # Last resort: require a publicly reachable CDN base.
+        # The old Render dashboard fallback produces URLs Meta cannot fetch,
+        # so we fail closed instead of silently publishing invalid links.
+        fallback_base = self.public_cdn_base if (self.public_cdn_base.startswith("http://") or self.public_cdn_base.startswith("https://")) else None
+        if not fallback_base:
+            raise RuntimeError(
+                "No usable image upload target available. Configure S3/R2 or IMGBB_API_KEY, "
+                "or set PUBLIC_CDN_BASE to a publicly reachable host."
+            )
+
+        public_urls = []
         for path_str in image_paths:
             p = Path(path_str)
             relative_part = f"output/{p.parent.name}/{p.name}"

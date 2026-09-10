@@ -1,0 +1,120 @@
+﻿2026-09-10T15:41:55.1951012Z ##[group]Run if [ -n "${IG_ACCESS_TOKEN}" ]; then
+2026-09-10T15:41:55.1951504Z [36;1mif [ -n "${IG_ACCESS_TOKEN}" ]; then[0m
+2026-09-10T15:41:55.1952011Z [36;1m  echo "Running direct cloud autonomous pipeline with GitHub runner..."[0m
+2026-09-10T15:41:55.1952533Z [36;1m  python orchestrator.py --run-all[0m
+2026-09-10T15:41:55.1952881Z [36;1melse[0m
+2026-09-10T15:41:55.1953238Z [36;1m  echo "GitHub IG_ACCESS_TOKEN secret not detected in runner."[0m
+2026-09-10T15:41:55.1953780Z [36;1m  echo "Triggering live Render backend cloud autopilot failover..."[0m
+2026-09-10T15:41:55.1954341Z [36;1m  HTTP_STATUS=$(curl -s -o webhook_response.json -w "%{http_code}" \[0m
+2026-09-10T15:41:55.1954784Z [36;1m    --max-time 30 \[0m
+2026-09-10T15:41:55.1955332Z [36;1m    -X POST "***/api/webhook/autopilot?mode=live" \[0m
+2026-09-10T15:41:55.1955873Z [36;1m    -H "Authorization: ***" || echo "000")[0m
+2026-09-10T15:41:55.1956308Z [36;1m  echo "Render webhook response (HTTP $HTTP_STATUS):"[0m
+2026-09-10T15:41:55.1956797Z [36;1m  cat webhook_response.json 2>/dev/null || true[0m
+2026-09-10T15:41:55.1957260Z [36;1m  if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "201" ]; then[0m
+2026-09-10T15:41:55.1957750Z [36;1m    echo "Render autopilot triggered successfully."[0m
+2026-09-10T15:41:55.1958129Z [36;1m  else[0m
+2026-09-10T15:41:55.1958616Z [36;1m    echo "Render webhook returned HTTP $HTTP_STATUS — falling back to local dry-run validation..."[0m
+2026-09-10T15:41:55.1959549Z [36;1m    python orchestrator.py --dry-run[0m
+2026-09-10T15:41:55.1960098Z [36;1m  fi[0m
+2026-09-10T15:41:55.1960377Z [36;1mfi[0m
+2026-09-10T15:41:55.1996661Z shell: /usr/bin/bash -e {0}
+2026-09-10T15:41:55.1996979Z env:
+2026-09-10T15:41:55.1997318Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:55.1997837Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-09-10T15:41:55.1998543Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:55.1999002Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:55.1999816Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:55.2000275Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-09-10T15:41:55.2000715Z   AUTOGRAM_OWNER_KEY: ***
+2026-09-10T15:41:55.2001134Z   GEMINI_API_KEY: ***
+2026-09-10T15:41:55.2001547Z   GROQ_API_KEY: ***
+2026-09-10T15:41:55.2002018Z   OPENROUTER_API_KEY: ***
+2026-09-10T15:41:55.2002461Z   CLOUDFLARE_API_TOKEN: ***
+2026-09-10T15:41:55.2002815Z   CLOUDFLARE_ACCOUNT_ID: ***
+2026-09-10T15:41:55.2003313Z   NVIDIA_NIM_API_KEY: ***
+2026-09-10T15:41:55.2003680Z   HUGGINGFACE_API_KEY: ***
+2026-09-10T15:41:55.2003966Z   OPENAI_API_KEY: 
+2026-09-10T15:41:55.2004226Z   CLAUDE_API_KEY: 
+2026-09-10T15:41:55.2004493Z   IG_USER_ID: ***
+2026-09-10T15:41:55.2005942Z   IG_ACCESS_TOKEN: ***
+2026-09-10T15:41:55.2006242Z   META_API_VERSION: ***
+2026-09-10T15:41:55.2006534Z   META_APP_ID: ***
+2026-09-10T15:41:55.2006844Z   META_APP_SECRET: ***
+2026-09-10T15:41:55.2007214Z   PUBLIC_CDN_BASE: ***
+2026-09-10T15:41:55.2007489Z   DRY_RUN: ***
+2026-09-10T15:41:55.2007746Z ##[endgroup]
+2026-09-10T15:41:55.2068480Z Running direct cloud autonomous pipeline with GitHub runner...
+2026-09-10T15:41:55.8497851Z [AUTH] 👑 OWNER MASTER ACCESS: VERIFIED (100% Free Unlimited Pipeline)
+2026-09-10T15:41:55.8499531Z 2026-09-10 15:41:55,849 [INFO] Autogram: ==================================================
+2026-09-10T15:41:55.8501099Z 2026-09-10 15:41:55,849 [INFO] Autogram: Starting Instagram AI Autopilot Run: 2026-09-10
+2026-09-10T15:41:55.8502467Z 2026-09-10 15:41:55,849 [INFO] Autogram: Mode: LIVE PRODUCTION
+2026-09-10T15:41:55.8503634Z 2026-09-10 15:41:55,849 [INFO] Autogram: ==================================================
+2026-09-10T15:41:55.8504859Z 2026-09-10 15:41:55,849 [INFO] Autogram: Phase 1: Knowledge Acquisition...
+2026-09-10T15:41:56.9872048Z 2026-09-10 15:41:56,986 [INFO] src.research.fetcher: Discovered 10 real-time trending niche signals.
+2026-09-10T15:41:58.2196329Z 2026-09-10 15:41:58,219 [INFO] src.research.fetcher: Acquired total 56 source records (live_fetch=True).
+2026-09-10T15:41:58.2201530Z 2026-09-10 15:41:58,219 [INFO] Autogram: Phase 2: Topic Scoring & Selection (6-Pillar Rotation)...
+2026-09-10T15:41:58.2209667Z 2026-09-10 15:41:58,220 [INFO] Autogram: Selected Topic: '.blend URL Viewer'
+2026-09-10T15:41:58.2211133Z 2026-09-10 15:41:58,220 [INFO] Autogram: Pillar: 'Prompting & Workflow'
+2026-09-10T15:41:58.2213040Z 2026-09-10 15:41:58,220 [INFO] Autogram: Reason: Top score (94.6) with high utility and zero overlap with recent memory.
+2026-09-10T15:41:58.2214762Z 2026-09-10 15:41:58,220 [INFO] Autogram: Phase 3: Generating Carousel Copy...
+2026-09-10T15:41:58.2216707Z 2026-09-10 15:41:58,221 [INFO] src.content.generator: Generating carousel with Google Gemini (configured model)...
+2026-09-10T15:41:58.2218622Z 2026-09-10 15:41:58,221 [INFO] src.content.generator: Attempting Gemini generation with model: gemini-2.5-flash...
+2026-09-10T15:42:13.1622835Z 2026-09-10 15:42:13,162 [INFO] src.content.generator: Gemini generation successful with gemini-2.5-flash (9 slides).
+2026-09-10T15:42:13.1645913Z 2026-09-10 15:42:13,164 [INFO] Autogram: Phase 3b: Synthesizing Conceptual Visual Hero Asset via FLUX.1...
+2026-09-10T15:42:13.1647890Z 2026-09-10 15:42:13,164 [INFO] src.content.image_generator: Generating image via Pollinations (FLUX.1): 'Conceptual technical visualization representing .blend URL V...'
+2026-09-10T15:42:13.6340775Z 2026-09-10 15:42:13,633 [INFO] src.content.image_generator: Successfully generated image: hero_visual.jpg (25749 bytes)
+2026-09-10T15:42:13.6350563Z 2026-09-10 15:42:13,634 [INFO] Autogram: Visual hero asset generated -> hero_visual.jpg
+2026-09-10T15:42:13.6352068Z 2026-09-10 15:42:13,634 [INFO] Autogram: Phase 4: Running Fact-Check Audit...
+2026-09-10T15:42:13.6354792Z 2026-09-10 15:42:13,635 [INFO] Autogram: Fact-Check: PASSED
+2026-09-10T15:42:13.6355867Z 2026-09-10 15:42:13,635 [INFO] Autogram: Phase 5: Editor Quality Gate...
+2026-09-10T15:42:13.6357032Z 2026-09-10 15:42:13,635 [INFO] src.content.quality_gate: Quality Gate PASSED (Score: 100/100)
+2026-09-10T15:42:13.6378700Z 2026-09-10 15:42:13,637 [INFO] Autogram: Phase 6: Rendering 1080x1350 JPEG Slides...
+2026-09-10T15:42:15.5583952Z 2026-09-10 15:42:15,558 [INFO] renderer.render: Rendered slide 1 -> slide_01.jpg
+2026-09-10T15:42:15.9650461Z 2026-09-10 15:42:15,963 [INFO] renderer.render: Rendered slide 2 -> slide_02.jpg
+2026-09-10T15:42:16.3777606Z 2026-09-10 15:42:16,377 [INFO] renderer.render: Rendered slide 3 -> slide_03.jpg
+2026-09-10T15:42:16.7864360Z 2026-09-10 15:42:16,786 [INFO] renderer.render: Rendered slide 4 -> slide_04.jpg
+2026-09-10T15:42:17.1900485Z 2026-09-10 15:42:17,189 [INFO] renderer.render: Rendered slide 5 -> slide_05.jpg
+2026-09-10T15:42:17.5907859Z 2026-09-10 15:42:17,590 [INFO] renderer.render: Rendered slide 6 -> slide_06.jpg
+2026-09-10T15:42:17.9986017Z 2026-09-10 15:42:17,998 [INFO] renderer.render: Rendered slide 7 -> slide_07.jpg
+2026-09-10T15:42:18.4401405Z 2026-09-10 15:42:18,439 [INFO] renderer.render: Rendered slide 8 -> slide_08.jpg
+2026-09-10T15:42:18.8460539Z 2026-09-10 15:42:18,845 [INFO] renderer.render: Rendered slide 9 -> slide_09.jpg
+2026-09-10T15:42:18.8976197Z 2026-09-10 15:42:18,897 [INFO] Autogram: Successfully rendered 9 slides to /home/runner/work/Autogram/Autogram/output/2026-09-10
+2026-09-10T15:42:18.9008897Z 2026-09-10 15:42:18,900 [INFO] Autogram: Generated high-converting caption (1053 chars) with 15 viral hashtags attached
+2026-09-10T15:42:18.9011490Z 2026-09-10 15:42:18,900 [INFO] Autogram: Generated viral engagement first-comment -> first_comment.txt
+2026-09-10T15:42:18.9013294Z 2026-09-10 15:42:18,901 [INFO] Autogram: Generated accompanying 35s Reels script -> reels_script.md
+2026-09-10T15:42:18.9014634Z 2026-09-10 15:42:18,901 [INFO] Autogram: Phase 7: Asset Staging / Upload...
+2026-09-10T15:42:18.9016163Z 2026-09-10 15:42:18,901 [INFO] src.storage.uploader: Using 100% Free Public Cloud CDN for Meta Instagram ingestion...
+2026-09-10T15:42:19.8414172Z 2026-09-10 15:42:19,839 [WARNING] src.storage.uploader: freeimage.host failed for slide_01.jpg: freeimage.host returned status 400: {"status_code":400,"error":{"message":"Internal upload error","code":111},"status_txt":"Bad Request"}. Trying catbox...
+2026-09-10T15:42:20.3673959Z 2026-09-10 15:42:20,367 [WARNING] src.storage.uploader: catbox.moe failed for slide_01.jpg: catbox returned status 412: Invalid uploader. Trying litterbox...
+2026-09-10T15:42:20.7384626Z 2026-09-10 15:42:20,738 [WARNING] src.storage.uploader: litterbox failed for slide_01.jpg: litterbox returned status 412: <html>
+2026-09-10T15:42:20.7386493Z <head><title>412 Precondition Failed</title></head>
+2026-09-10T15:42:20.7387499Z <body>
+2026-09-10T15:42:20.7388277Z <center><h1>412 Precondition Failed</h1></center>
+2026-09-10T15:42:20.7389496Z <hr><center>nginx</center>
+2026-09-10T15:42:20.7390257Z </body>
+2026-09-10T15:42:20.7390945Z </html>
+2026-09-10T15:42:20.7392303Z . Trying 0x0.st...
+2026-09-10T15:42:22.5690168Z 2026-09-10 15:42:22,568 [WARNING] src.storage.uploader: 0x0.st failed for slide_01.jpg: 0x0.st returned status 503: uploads disabled because it’s been almost nothing but AI botnet spam for the past few months. will be back with a few changes at some point. no ETA.. All cloud CDNs exhausted.
+2026-09-10T15:42:22.5724841Z 2026-09-10 15:42:22,572 [WARNING] src.storage.uploader: Cloud image host cascade incomplete. Falling back to PUBLIC_CDN_BASE...
+2026-09-10T15:42:22.5726548Z 2026-09-10 15:42:22,572 [INFO] Autogram: Phase 8: Meta Instagram Publishing Sequence...
+2026-09-10T15:42:22.5728244Z 2026-09-10 15:42:22,572 [INFO] src.instagram.publisher: Starting Instagram publish sequence for 9 slides...
+2026-09-10T15:42:22.5730554Z 2026-09-10 15:42:22,572 [INFO] src.instagram.publisher: Verified post caption: 1053 characters with 15 hashtags attached.
+2026-09-10T15:42:31.6007215Z 2026-09-10 15:42:31,599 [ERROR] src.instagram.publisher: Meta Graph API error in create_item_container: 400 - {"error":{"message":"Only photo or video can be accepted as media type.","type":"OAuthException","code":9004,"error_subcode":2207052,"is_transient":***,"error_user_title":"Media download has failed. The media URI doesn't meet our requirements.","error_user_msg":"The media could not be fetched from this URI: https:\/\/autogram-dashboard.onrender.com\/output\/2026-09-10\/slide_01.jpg.Please check the limitations section in our development document for more information: https:\/\/developers.facebook.com\/docs\/instagram-platform\/instagram-graph-api\/reference\/ig-user\/media#creating","fbtrace_id":"A_b28LiwGeliLlYVKRsY--t"}}
+2026-09-10T15:42:31.6013254Z Traceback (most recent call last):
+2026-09-10T15:42:31.6031582Z   File "/home/runner/work/Autogram/Autogram/orchestrator.py", line 365, in <module>
+2026-09-10T15:42:31.6032432Z     main()
+2026-09-10T15:42:31.6033782Z   File "/home/runner/work/Autogram/Autogram/orchestrator.py", line 362, in main
+2026-09-10T15:42:31.6034819Z     run_pipeline(dry_run=dry)
+2026-09-10T15:42:31.6035871Z   File "/home/runner/work/Autogram/Autogram/orchestrator.py", line 181, in run_pipeline
+2026-09-10T15:42:31.6037566Z     media_id = publisher.publish_carousel(
+2026-09-10T15:42:31.6038292Z                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-10T15:42:31.6039675Z   File "/home/runner/work/Autogram/Autogram/src/instagram/publisher.py", line 178, in publish_carousel
+2026-09-10T15:42:31.6041051Z     cid = self.create_item_container(url, alt)
+2026-09-10T15:42:31.6041816Z           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-09-10T15:42:31.6042976Z   File "/home/runner/work/Autogram/Autogram/src/instagram/publisher.py", line 70, in create_item_container
+2026-09-10T15:42:31.6044138Z     resp.raise_for_status()
+2026-09-10T15:42:31.6045369Z   File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/requests/models.py", line 1167, in raise_for_status
+2026-09-10T15:42:31.6046691Z     raise HTTPError(http_error_msg, response=self)
+2026-09-10T15:42:31.6047971Z requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://graph.facebook.com/***/***/media
+2026-09-10T15:42:31.6607483Z ##[error]Process completed with exit code 1.

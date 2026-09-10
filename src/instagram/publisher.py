@@ -58,6 +58,7 @@ class InstagramPublisher:
         url = f"{self.base_url}/{self.user_id}/media"
         data = {
             "image_url": image_url,
+            "media_type": "IMAGE",
             "is_carousel_item": True,
             "access_token": self.token
         }

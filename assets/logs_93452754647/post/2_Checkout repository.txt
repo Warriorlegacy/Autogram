@@ -1,0 +1,78 @@
+﻿2026-09-10T15:41:17.9230901Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-10T15:41:17.9245531Z ##[group]Run actions/checkout@v4
+2026-09-10T15:41:17.9247627Z with:
+2026-09-10T15:41:17.9248731Z   fetch-depth: 0
+2026-09-10T15:41:17.9250232Z   repository: Warriorlegacy/Autogram
+2026-09-10T15:41:17.9259738Z   token: ***
+2026-09-10T15:41:17.9260960Z   ssh-strict: true
+2026-09-10T15:41:17.9262088Z   ssh-user: git
+2026-09-10T15:41:17.9263198Z   persist-credentials: true
+2026-09-10T15:41:17.9264402Z   clean: true
+2026-09-10T15:41:17.9265475Z   sparse-checkout-cone-mode: true
+2026-09-10T15:41:17.9266827Z   fetch-tags: ***
+2026-09-10T15:41:17.9267918Z   show-progress: true
+2026-09-10T15:41:17.9269015Z   lfs: ***
+2026-09-10T15:41:17.9270496Z   submodules: ***
+2026-09-10T15:41:17.9271719Z   set-safe-directory: true
+2026-09-10T15:41:17.9273058Z   allow-unsafe-pr-checkout: ***
+2026-09-10T15:41:17.9274739Z ##[endgroup]
+2026-09-10T15:41:18.0951641Z Syncing repository: Warriorlegacy/Autogram
+2026-09-10T15:41:18.0956125Z ##[group]Getting Git version info
+2026-09-10T15:41:18.0960592Z Working directory is '/home/runner/work/Autogram/Autogram'
+2026-09-10T15:41:18.0964079Z [command]/usr/bin/git version
+2026-09-10T15:41:18.1347950Z git version 2.55.0
+2026-09-10T15:41:18.1355745Z ##[endgroup]
+2026-09-10T15:41:18.1363621Z Temporarily overriding HOME='/home/runner/work/_temp/1b62d148-67b8-490b-bbe6-bfe29433ef9a' before making global git config changes
+2026-09-10T15:41:18.1366605Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-10T15:41:18.1369497Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Autogram/Autogram
+2026-09-10T15:41:18.1374733Z Deleting the contents of '/home/runner/work/Autogram/Autogram'
+2026-09-10T15:41:18.1377767Z ##[group]Initializing the repository
+2026-09-10T15:41:18.1380036Z [command]/usr/bin/git init /home/runner/work/Autogram/Autogram
+2026-09-10T15:41:18.1500671Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-10T15:41:18.1524514Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-10T15:41:18.1544535Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-10T15:41:18.1554055Z hint: call:
+2026-09-10T15:41:18.1555237Z hint:
+2026-09-10T15:41:18.1570679Z hint: 	git config --global init.defaultBranch <name>
+2026-09-10T15:41:18.1588339Z hint:
+2026-09-10T15:41:18.1590550Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-10T15:41:18.1648138Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-10T15:41:18.1670354Z hint:
+2026-09-10T15:41:18.1689886Z hint: 	git branch -m <name>
+2026-09-10T15:41:18.1729962Z hint:
+2026-09-10T15:41:18.1736712Z hint: Disable this message with "git config set advice.defaultBranchName ***"
+2026-09-10T15:41:18.1740157Z Initialized empty Git repository in /home/runner/work/Autogram/Autogram/.git/
+2026-09-10T15:41:18.1788715Z [command]/usr/bin/git remote add origin https://github.com/Warriorlegacy/Autogram
+2026-09-10T15:41:18.1811651Z ##[endgroup]
+2026-09-10T15:41:18.1815705Z ##[group]Disabling automatic garbage collection
+2026-09-10T15:41:18.1822982Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-10T15:41:18.1829751Z ##[endgroup]
+2026-09-10T15:41:18.1831366Z ##[group]Setting up auth
+2026-09-10T15:41:18.1832848Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-10T15:41:18.1837439Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-10T15:41:18.2280059Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-10T15:41:18.2399978Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-10T15:41:18.2582798Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-10T15:41:18.2611147Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-10T15:41:18.2867025Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-10T15:41:18.2908454Z ##[endgroup]
+2026-09-10T15:41:18.2911569Z ##[group]Fetching the repository
+2026-09-10T15:41:18.2921467Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-09-10T15:41:19.5893054Z From https://github.com/Warriorlegacy/Autogram
+2026-09-10T15:41:19.5895403Z  * [new branch]      main       -> origin/main
+2026-09-10T15:41:19.5898319Z [command]/usr/bin/git branch --list --remote origin/main
+2026-09-10T15:41:19.5939413Z   origin/main
+2026-09-10T15:41:19.5942336Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-09-10T15:41:19.5968273Z 6c267b8a9531a8a24197ba4fb45bc5989bba1e66
+2026-09-10T15:41:19.5976242Z ##[endgroup]
+2026-09-10T15:41:19.5977900Z ##[group]Determining the checkout info
+2026-09-10T15:41:19.5979957Z ##[endgroup]
+2026-09-10T15:41:19.5984323Z [command]/usr/bin/git sparse-checkout disable
+2026-09-10T15:41:19.6037891Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-10T15:41:19.6077949Z ##[group]Checking out the ref
+2026-09-10T15:41:19.6079813Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-09-10T15:41:19.6518145Z Switched to a new branch 'main'
+2026-09-10T15:41:19.6520278Z branch 'main' set up to track 'origin/main'.
+2026-09-10T15:41:19.6540534Z ##[endgroup]
+2026-09-10T15:41:19.6578820Z [command]/usr/bin/git log -1 --format=%H
+2026-09-10T15:41:19.6610237Z 6c267b8a9531a8a24197ba4fb45bc5989bba1e66

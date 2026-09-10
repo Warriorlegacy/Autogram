@@ -1,0 +1,20 @@
+﻿2026-09-10T15:41:27.5086691Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-10T15:41:27.5088119Z ##[group]Run actions/cache@v4
+2026-09-10T15:41:27.5088431Z with:
+2026-09-10T15:41:27.5088703Z   path: ~/.cache/ms-playwright
+2026-09-10T15:41:27.5089965Z   key: playwright-chromium-Linux-35de4d7e8ca15c7cc5c089a9ffd9ccfd0e79ec36caa703cfea59afbf740f97dd
+2026-09-10T15:41:27.5090884Z   enableCrossOsArchive: ***
+2026-09-10T15:41:27.5091208Z   fail-on-cache-miss: ***
+2026-09-10T15:41:27.5091514Z   lookup-only: ***
+2026-09-10T15:41:27.5091787Z   save-always: ***
+2026-09-10T15:41:27.5092036Z env:
+2026-09-10T15:41:27.5092356Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:27.5092857Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-09-10T15:41:27.5093406Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:27.5093860Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:27.5094313Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:41:27.5094772Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-09-10T15:41:27.5095164Z ##[endgroup]
+2026-09-10T15:41:27.6233973Z (node:2092) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-10T15:41:27.6235707Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-10T15:41:27.7590532Z Cache not found for input keys: playwright-chromium-Linux-35de4d7e8ca15c7cc5c089a9ffd9ccfd0e79ec36caa703cfea59afbf740f97dd

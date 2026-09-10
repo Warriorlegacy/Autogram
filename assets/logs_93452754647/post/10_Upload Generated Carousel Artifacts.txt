@@ -1,0 +1,32 @@
+﻿2026-09-10T15:42:31.6685211Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-10T15:42:31.6686604Z ##[group]Run actions/upload-artifact@v4
+2026-09-10T15:42:31.6686943Z with:
+2026-09-10T15:42:31.6687212Z   name: daily-carousel-artifacts
+2026-09-10T15:42:31.6687525Z   path: output/
+2026-09-10T15:42:31.6687791Z   retention-days: 14
+2026-09-10T15:42:31.6688070Z   if-no-files-found: warn
+2026-09-10T15:42:31.6688362Z   compression-level: 6
+2026-09-10T15:42:31.6688664Z   overwrite: ***
+2026-09-10T15:42:31.6688954Z   include-hidden-files: ***
+2026-09-10T15:42:31.6689712Z env:
+2026-09-10T15:42:31.6690051Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:42:31.6690562Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-09-10T15:42:31.6691102Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:42:31.6691546Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:42:31.6691990Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-09-10T15:42:31.6692436Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-09-10T15:42:31.6692822Z ##[endgroup]
+2026-09-10T15:42:31.8737837Z (node:2833) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-10T15:42:31.8739698Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-10T15:42:31.9039948Z With the provided path, there will be 15 files uploaded
+2026-09-10T15:42:31.9059897Z Artifact name is valid!
+2026-09-10T15:42:31.9079706Z Root directory input is valid!
+2026-09-10T15:42:32.1790884Z Beginning upload of artifact content to blob storage
+2026-09-10T15:42:32.3116404Z (node:2833) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-09-10T15:42:32.5226129Z Uploaded bytes 1328195
+2026-09-10T15:42:32.5556774Z Finished uploading artifact content to blob storage!
+2026-09-10T15:42:32.5558616Z SHA256 digest of uploaded artifact zip is f882074cb7f4715949de5b915af27ce136e755d10a2226b7a2e81420eff49d61
+2026-09-10T15:42:32.5560572Z Finalizing artifact upload
+2026-09-10T15:42:32.8298703Z Artifact daily-carousel-artifacts.zip successfully finalized. Artifact ID 10160357920
+2026-09-10T15:42:32.8301015Z Artifact daily-carousel-artifacts has been successfully uploaded! Final size is 1328195 bytes. Artifact ID is 10160357920
+2026-09-10T15:42:32.8308382Z Artifact download URL: https://github.com/Warriorlegacy/Autogram/actions/runs/34497255956/artifacts/10160357920
