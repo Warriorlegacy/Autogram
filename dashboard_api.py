@@ -34,17 +34,25 @@ pipeline_lock = threading.Lock()
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
 def read_env() -> dict:
-    """Parse .env file into a dict."""
+    """Parse .env file into a dict and merge with os.environ."""
     env = {}
-    if not ENV_PATH.exists():
-        return env
-    for line in ENV_PATH.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        if "=" in line:
-            key, _, val = line.partition("=")
-            env[key.strip()] = val.strip()
+    if ENV_PATH.exists():
+        for line in ENV_PATH.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" in line:
+                key, _, val = line.partition("=")
+                env[key.strip()] = val.strip()
+    # Merge with os.environ so cloud environments reflect injected secrets
+    ALLOWED_KEYS = {
+        "IG_USER_ID", "IG_ACCESS_TOKEN", "GEMINI_API_KEY", "GROQ_API_KEY", "DRY_RUN",
+        "PUBLIC_CDN_BASE", "AUTOGRAM_OWNER_KEY", "LLM_PROVIDER", "LLM_MODEL",
+        "POSTING_TIME", "TIMEZONE", "S3_BUCKET", "S3_SECRET_KEY"
+    }
+    for k, v in os.environ.items():
+        if k in ALLOWED_KEYS:
+            env[k] = v
     return env
 
 def write_env_key(key: str, value: str):
