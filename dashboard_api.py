@@ -63,7 +63,8 @@ def read_env() -> dict:
                 env[key.strip()] = val.strip()
     # Merge with os.environ so cloud environments reflect injected secrets
     ALLOWED_KEYS = {
-        "IG_USER_ID", "IG_ACCESS_TOKEN", "GEMINI_API_KEY", "GROQ_API_KEY", "DRY_RUN",
+        "IG_USER_ID", "IG_ACCESS_TOKEN", "GEMINI_API_KEY", "GROQ_API_KEY", "OPENROUTER_API_KEY",
+        "CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN", "NVIDIA_NIM_API_KEY", "DRY_RUN",
         "PUBLIC_CDN_BASE", "AUTOGRAM_OWNER_KEY", "LLM_PROVIDER", "LLM_MODEL",
         "POSTING_TIME", "TIMEZONE", "S3_BUCKET", "S3_SECRET_KEY", "META_APP_SECRET"
     }
@@ -375,6 +376,9 @@ def api_status():
         "cdn_base": env.get("PUBLIC_CDN_BASE", "http://localhost:8000"),
         "gemini_key_set": bool(env.get("GEMINI_API_KEY", "").strip()),
         "groq_key_set": bool(env.get("GROQ_API_KEY", "").strip()),
+        "openrouter_key_set": bool(env.get("OPENROUTER_API_KEY", "").strip()),
+        "cloudflare_configured": bool(env.get("CLOUDFLARE_API_TOKEN", "").strip() and env.get("CLOUDFLARE_ACCOUNT_ID", "").strip()),
+        "nvidia_key_set": bool(env.get("NVIDIA_NIM_API_KEY", "").strip()),
         "s3_configured": bool(env.get("S3_BUCKET", "").strip()),
         "meta_token_configured": token_valid,
         "recent_posts_count": len(recent),

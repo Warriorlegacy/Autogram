@@ -18,9 +18,10 @@ class Settings(BaseSettings):
     groq_api_key: str | None = Field(default=None, alias="GROQ_API_KEY")
     huggingface_api_key: str | None = Field(default=None, alias="HUGGINGFACE_API_KEY")
     openrouter_api_key: str | None = Field(default=None, alias="OPENROUTER_API_KEY")
+    nvidia_nim_api_key: str | None = Field(default=None, alias="NVIDIA_NIM_API_KEY")
     ollama_base_url: str = Field(default="http://localhost:11434", alias="OLLAMA_BASE_URL")
     ollama_model: str = Field(default="llama3.2", alias="OLLAMA_MODEL")
-    llm_provider: str = Field(default="auto", alias="LLM_PROVIDER") # auto, gemini, groq, ollama, openai, claude, builtin
+    llm_provider: str = Field(default="auto", alias="LLM_PROVIDER") # auto, groq, openrouter, gemini, cloudflare, nvidia, ollama, builtin
     llm_model: str = Field(default="gemini-2.5-flash", alias="LLM_MODEL")
 
     # Image Generation Settings (Pollinations FLUX.1 free, Cloudflare Workers AI, Google Imagen 3, or OpenAI DALL-E 3)

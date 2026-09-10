@@ -99,13 +99,46 @@ Return ONLY valid JSON.
                 continue
         raise last_err or RuntimeError("All Gemini models failed")
 
+    def _parse_json_response(self, text: str) -> dict:
+        """Safely extracts and parses JSON even if wrapped in markdown codeblocks or thought tags."""
+        import re
+        # Remove reasoning tags if model output includes <think>...</think> (e.g. DeepSeek R1)
+        cleaned = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+        try:
+            return json.loads(cleaned)
+        except Exception:
+            pass
+
+        # Try markdown codeblock ```json ... ```
+        match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", cleaned, re.DOTALL)
+        if match:
+            try:
+                return json.loads(match.group(1))
+            except Exception:
+                pass
+
+        # Try finding outer curly braces
+        start = cleaned.find("{")
+        end = cleaned.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            try:
+                return json.loads(cleaned[start:end+1])
+            except Exception:
+                pass
+
+        raise ValueError(f"Failed to parse valid JSON from model response: {cleaned[:180]}...")
+
     def generate_with_groq(self, topic: dict, sources: list[dict]) -> dict:
         """
-        100% Free Groq Cloud API (Llama 3.3 70B / Llama 3.1 8B).
+        100% Free Groq Cloud API (14,400 req/day, sub-second LLaMA 3.3 70B & 3.1 8B).
         """
+        api_key = getattr(settings, "groq_api_key", None) or os.environ.get("GROQ_API_KEY", "")
+        if not api_key:
+            raise ValueError("No GROQ_API_KEY configured")
+
         url = "https://api.groq.com/openai/v1/chat/completions"
         headers = {
-            "Authorization": f"Bearer {settings.groq_api_key}",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
         models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"]
@@ -121,19 +154,23 @@ Return ONLY valid JSON.
                 "temperature": 0.7
             }
             try:
-                resp = requests.post(url, headers=headers, json=payload, timeout=45)
+                resp = requests.post(url, headers=headers, json=payload, timeout=20)
                 if resp.status_code == 200:
                     raw_text = resp.json()["choices"][0]["message"]["content"]
-                    return json.loads(raw_text)
+                    data = self._parse_json_response(raw_text)
+                    if "slides" in data and len(data["slides"]) >= 5:
+                        logger.info(f"Groq generation successful with {model}.")
+                        return data
                 resp.raise_for_status()
             except Exception as e:
                 last_err = e
+                logger.warning(f"Groq model '{model}' failed: {e}. Trying fallback...")
                 continue
         raise last_err or RuntimeError("All Groq models failed")
 
     def generate_with_openrouter(self, topic: dict, sources: list[dict]) -> dict:
         """
-        100% Free OpenRouter Tier (DeepSeek R1, LLaMA 3.3, Gemini Exp).
+        100% Free OpenRouter Tier (Meta LLaMA 3.3 70B, DeepSeek R1, Gemini 2.0 Flash Exp, Qwen 2.5 Coder).
         """
         api_key = getattr(settings, "openrouter_api_key", None) or os.environ.get("OPENROUTER_API_KEY", "")
         if not api_key:
@@ -145,7 +182,108 @@ Return ONLY valid JSON.
             "X-Title": "Autogram AI",
             "Content-Type": "application/json"
         }
-        for model in ["nvidia/nemotron-3.5-lightning:free", "google/gemini-2.0-flash-exp:free", "liquid/lfm-2.5-2.6b:free", "deepseek/deepseek-r1:free"]:
+        free_models = [
+            "nvidia/nemotron-3.5-lightning:free",
+            "google/gemma-4-31b-it:free",
+            "liquid/lfm-2.5-2.6b:free",
+            "google/gemma-4-26b-a4b-it:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+            "deepseek/deepseek-r1:free"
+        ]
+        last_err = None
+        for model in free_models:
+            payload = {
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}\nIMPORTANT: Reply ONLY with valid JSON."},
+                    {"role": "user", "content": self._build_user_prompt(topic, sources)}
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0.7
+            }
+            try:
+                logger.info(f"Attempting OpenRouter free model: {model}...")
+                resp = requests.post(url, headers=headers, json=payload, timeout=12)
+                if resp.status_code == 200:
+                    raw_text = resp.json()["choices"][0]["message"]["content"]
+                    data = self._parse_json_response(raw_text)
+                    if "slides" in data and len(data["slides"]) >= 5:
+                        logger.info(f"OpenRouter generation successful with {model}.")
+                        return data
+                resp.raise_for_status()
+            except Exception as e:
+                last_err = e
+                logger.warning(f"OpenRouter model '{model}' failed: {e}. Trying next free model...")
+                continue
+        raise last_err or RuntimeError("All OpenRouter free models failed")
+
+    def generate_with_cloudflare_ai(self, topic: dict, sources: list[dict]) -> dict:
+        """
+        100% Free Cloudflare Workers AI (10,000 free Neurons/day).
+        Models: @cf/meta/llama-3.1-8b-instruct, @cf/mistral/mistral-7b-instruct-v0.2, @cf/deepseek-ai/deepseek-r1-distill-qwen-32b.
+        """
+        token = getattr(settings, "cloudflare_api_token", None) or os.environ.get("CLOUDFLARE_API_TOKEN", "")
+        account_id = getattr(settings, "cloudflare_account_id", None) or os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
+        if not token or not account_id:
+            raise ValueError("No Cloudflare credentials configured")
+
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        models = [
+            "@cf/meta/llama-3.1-8b-instruct",
+            "@cf/mistral/mistral-7b-instruct-v0.2",
+            "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b",
+            "@cf/meta/llama-3.3-70b-instruct"
+        ]
+        last_err = None
+        for model in models:
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model}"
+            payload = {
+                "messages": [
+                    {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}\nIMPORTANT: Respond with ONLY valid JSON."},
+                    {"role": "user", "content": self._build_user_prompt(topic, sources)}
+                ],
+                "max_tokens": 2048
+            }
+            try:
+                logger.info(f"Attempting Cloudflare Workers AI generation with {model}...")
+                resp = requests.post(url, headers=headers, json=payload, timeout=18)
+                if resp.status_code == 200:
+                    res_json = resp.json()
+                    raw_text = res_json.get("result", {}).get("response", "")
+                    data = self._parse_json_response(raw_text)
+                    if "slides" in data and len(data["slides"]) >= 5:
+                        logger.info(f"Cloudflare Workers AI generation successful with {model}.")
+                        return data
+            except Exception as e:
+                last_err = e
+                logger.warning(f"Cloudflare model '{model}' failed: {e}. Trying fallback...")
+                continue
+        raise last_err or RuntimeError("All Cloudflare Workers AI models failed")
+
+    def generate_with_nvidia_nim(self, topic: dict, sources: list[dict]) -> dict:
+        """
+        NVIDIA NIM API (Free developer tier: 1,000 credits).
+        Models: meta/llama-3.3-70b-instruct, mistralai/mistral-large-2-instruct, deepseek-ai/deepseek-r1.
+        """
+        api_key = getattr(settings, "nvidia_nim_api_key", None) or os.environ.get("NVIDIA_NIM_API_KEY", "")
+        if not api_key:
+            raise ValueError("No NVIDIA_NIM_API_KEY configured")
+
+        url = "https://integrate.api.nvidia.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        models = [
+            "meta/llama-3.3-70b-instruct",
+            "mistralai/mistral-large-2-instruct",
+            "deepseek-ai/deepseek-r1"
+        ]
+        last_err = None
+        for model in models:
             payload = {
                 "model": model,
                 "messages": [
@@ -153,16 +291,23 @@ Return ONLY valid JSON.
                     {"role": "user", "content": self._build_user_prompt(topic, sources)}
                 ],
                 "response_format": {"type": "json_object"},
-                "temperature": 0.7
+                "temperature": 0.7,
+                "max_tokens": 2048
             }
             try:
-                resp = requests.post(url, headers=headers, json=payload, timeout=50)
+                logger.info(f"Attempting NVIDIA NIM generation with {model}...")
+                resp = requests.post(url, headers=headers, json=payload, timeout=25)
                 if resp.status_code == 200:
                     raw_text = resp.json()["choices"][0]["message"]["content"]
-                    return json.loads(raw_text)
-            except Exception:
+                    data = self._parse_json_response(raw_text)
+                    if "slides" in data and len(data["slides"]) >= 5:
+                        logger.info(f"NVIDIA NIM generation successful with {model}.")
+                        return data
+            except Exception as e:
+                last_err = e
+                logger.warning(f"NVIDIA NIM model '{model}' failed: {e}. Trying fallback...")
                 continue
-        raise RuntimeError("OpenRouter free models failed")
+        raise last_err or RuntimeError("All NVIDIA NIM models failed")
 
     def generate_with_ollama(self, topic: dict, sources: list[dict]) -> dict:
         """
@@ -303,28 +448,70 @@ Return ONLY valid JSON.
 
     def generate_carousel(self, topic: dict, sources: list[dict]) -> dict:
         """
-        Master generation method with multi-provider auto-fallback.
-        Order of evaluation:
-        1. Google Gemini (Free Tier: 1,500 req/day)
-        2. Hugging Face (Free Tier: LLaMA 3.3 70B Turbo)
-        3. Groq Cloud (Free Tier: LLaMA 3.3 70B)
-        4. OpenRouter (Free Tier)
-        5. Local Ollama
-        6. OpenAI (if configured)
-        7. Free Built-In Anti-Repetition Synthesis Engine (Guaranteed zero-failure, never duplicates)
+        Master generation method with intelligent multi-provider auto-fallback.
+        Priority order for 100% Free Tiers:
+        1. Groq Cloud (Free Tier: 14,400 req/day, sub-second LLaMA 3.3 70B & 3.1 8B)
+        2. OpenRouter (Free Tier: LLaMA 3.3 70B, DeepSeek R1, Gemini 2.0 Flash Exp)
+        3. Google Gemini (Free Tier: 1,500 req/day, Gemini 2.0 Flash & 1.5 Flash)
+        4. Cloudflare Workers AI (Free Tier: 10,000 Neurons/day, LLaMA 3.3 70B & DeepSeek R1 Distill)
+        5. NVIDIA NIM (Free Tier Credits: LLaMA 3.3 70B, Mistral Large, DeepSeek R1)
+        6. Hugging Face Router (Free Tier: LLaMA 3.3 70B Turbo)
+        7. Local Ollama (Free Local)
+        8. OpenAI (Optional Paid)
+        9. Free Built-In Anti-Repetition Synthesis Engine (Guaranteed zero-failure fail-safe)
         """
         provider = (settings.llm_provider or "auto").lower()
 
-        # 1. Google Gemini (100% Free Tier: 1500 req/day)
+        # 1. Groq Cloud (Ultra-Fast Free Tier: 14,400 req/day)
+        if "groq" not in self._disabled_providers and (provider in ["auto", "groq"]) and settings.groq_api_key and settings.groq_api_key.strip():
+            try:
+                logger.info("Generating carousel with Groq Cloud (Free Tier: LLaMA 3.3 70B)...")
+                return self._normalize_carousel(self.generate_with_groq(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"Groq generation error ({e}). Falling back to next free provider.")
+                self._disabled_providers.add("groq")
+
+        # 2. OpenRouter (100% Free Tier: LLaMA 3.3 70B, DeepSeek R1, Gemini Exp)
+        openrouter_key = getattr(settings, "openrouter_api_key", None) or os.environ.get("OPENROUTER_API_KEY", "").strip()
+        if "openrouter" not in self._disabled_providers and (provider in ["auto", "openrouter"]) and openrouter_key:
+            try:
+                logger.info("Generating carousel with OpenRouter (Free Tier models)...")
+                return self._normalize_carousel(self.generate_with_openrouter(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"OpenRouter generation error ({e}). Falling back to next free provider.")
+                self._disabled_providers.add("openrouter")
+
+        # 3. Google Gemini (100% Free Tier: 1,500 req/day)
         if "gemini" not in self._disabled_providers and (provider in ["auto", "gemini"]) and settings.gemini_api_key and settings.gemini_api_key.strip():
             try:
-                logger.info("Generating carousel with Google Gemini (Free Tier)...")
+                logger.info("Generating carousel with Google Gemini (Free Tier: Gemini 2.0 Flash)...")
                 return self._normalize_carousel(self.generate_with_gemini(topic, sources), topic)
             except Exception as e:
-                logger.warning(f"Gemini generation error ({e}). Falling back to next provider.")
+                logger.warning(f"Gemini generation error ({e}). Falling back to next free provider.")
                 self._disabled_providers.add("gemini")
 
-        # 2. Hugging Face (100% Free Tier: Llama 3.3 70B Instruct)
+        # 4. Cloudflare Workers AI (100% Free Tier: 10,000 Neurons/day)
+        cf_token = getattr(settings, "cloudflare_api_token", None) or os.environ.get("CLOUDFLARE_API_TOKEN", "").strip()
+        cf_account = getattr(settings, "cloudflare_account_id", None) or os.environ.get("CLOUDFLARE_ACCOUNT_ID", "").strip()
+        if "cloudflare" not in self._disabled_providers and (provider in ["auto", "cloudflare", "cf"]) and cf_token and cf_account:
+            try:
+                logger.info("Generating carousel with Cloudflare Workers AI (Free Tier: LLaMA 3.3 70B)...")
+                return self._normalize_carousel(self.generate_with_cloudflare_ai(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"Cloudflare Workers AI generation error ({e}). Falling back to next free provider.")
+                self._disabled_providers.add("cloudflare")
+
+        # 5. NVIDIA NIM (Free Developer Tier: 1,000 credits)
+        nvidia_key = getattr(settings, "nvidia_nim_api_key", None) or os.environ.get("NVIDIA_NIM_API_KEY", "").strip()
+        if "nvidia" not in self._disabled_providers and (provider in ["auto", "nvidia", "nim"]) and nvidia_key:
+            try:
+                logger.info("Generating carousel with NVIDIA NIM (Free Tier credits)...")
+                return self._normalize_carousel(self.generate_with_nvidia_nim(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"NVIDIA NIM generation error ({e}). Falling back to next provider.")
+                self._disabled_providers.add("nvidia")
+
+        # 6. Hugging Face (100% Free Tier: Llama 3.3 70B Instruct)
         hf_key = getattr(settings, "huggingface_api_key", None) or os.environ.get("HUGGINGFACE_API_KEY", "").strip()
         if "huggingface" not in self._disabled_providers and (provider in ["auto", "huggingface"]) and hf_key:
             try:
@@ -334,26 +521,7 @@ Return ONLY valid JSON.
                 logger.warning(f"Hugging Face generation error ({e}). Falling back to next provider.")
                 self._disabled_providers.add("huggingface")
 
-        # 3. Groq Cloud (100% Free Tier: Llama 3.3 70B)
-        if "groq" not in self._disabled_providers and (provider in ["auto", "groq"]) and settings.groq_api_key and settings.groq_api_key.strip():
-            try:
-                logger.info("Generating carousel with Groq Cloud (Free Tier)...")
-                return self._normalize_carousel(self.generate_with_groq(topic, sources), topic)
-            except Exception as e:
-                logger.warning(f"Groq generation error ({e}). Falling back.")
-                self._disabled_providers.add("groq")
-
-        # 3. OpenRouter (100% Free Tier models)
-        openrouter_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
-        if "openrouter" not in self._disabled_providers and (provider in ["auto", "openrouter"]) and openrouter_key:
-            try:
-                logger.info("Generating carousel with OpenRouter (Free Tier)...")
-                return self._normalize_carousel(self.generate_with_openrouter(topic, sources), topic)
-            except Exception as e:
-                logger.warning(f"OpenRouter generation error ({e}). Falling back.")
-                self._disabled_providers.add("openrouter")
-
-        # 4. Local Ollama (100% Free Local)
+        # 7. Local Ollama (100% Free Local)
         if "ollama" not in self._disabled_providers and provider in ["ollama", "auto"]:
             try:
                 logger.info(f"Attempting local Ollama generation ({settings.ollama_model})...")
@@ -362,7 +530,7 @@ Return ONLY valid JSON.
                 logger.debug(f"Ollama local not reachable: {e}")
                 self._disabled_providers.add("ollama")
 
-        # 5. OpenAI (Optional Paid)
+        # 8. OpenAI (Optional Paid)
         if "openai" not in self._disabled_providers and (provider in ["auto", "openai"]) and settings.openai_api_key and settings.openai_api_key.strip():
             try:
                 logger.info("Generating carousel with OpenAI...")
@@ -371,7 +539,7 @@ Return ONLY valid JSON.
                 logger.warning(f"OpenAI generation error ({e}). Falling back.")
                 self._disabled_providers.add("openai")
 
-        # 6. Built-In 100% Free Autonomous Knowledge Engine (Guaranteed 0-cost, 0-error, anti-repetition)
+        # 9. Built-In 100% Free Autonomous Knowledge Engine (Guaranteed 0-cost, 0-error, anti-repetition)
         logger.info("Generating carousel using Free Built-In Anti-Repetition Synthesis Engine.")
         return self._normalize_carousel(get_rich_synthesized_carousel(topic, sources), topic)
 
