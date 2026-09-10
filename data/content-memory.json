@@ -2,6 +2,20 @@
   "recent_posts": [
     {
       "date": "2026-09-10",
+      "pillar": "Tech",
+      "topic": "GPU Cluster Economics: The Real Cost of Training vs Inference in 2026",
+      "hook": "Training vs Inference: The 10x GPU Cost Gap",
+      "score": 100
+    },
+    {
+      "date": "2026-09-10",
+      "pillar": "Prompting & Workflow",
+      "topic": "Belief-Desire-Intention (BDI) Architectures for AI Automation",
+      "hook": "BDI Architectures Boost AI Automation Efficiency by 40%",
+      "score": 100
+    },
+    {
+      "date": "2026-09-10",
       "pillar": "AI",
       "topic": "Belief-Desire-Intention (BDI) Architectures for AI Automation",
       "hook": "Your AI agents struggle? Monolithic LLMs are the problem.",
