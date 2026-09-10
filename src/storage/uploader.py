@@ -59,12 +59,14 @@ class AssetUploader:
             except Exception as e:
                 logger.error(f"S3/R2 upload failed: {e}. Falling back to CDN base URL formatting.")
 
-        # 2. Check if running in cloud (GitHub Actions / Render / Docker) or localhost without active tunnel
+        # 2. Check if running in cloud, or localhost/ngrok without active S3/R2 bucket
         use_cloud_upload = (
             "localhost" in self.public_cdn_base
             or "127.0.0.1" in self.public_cdn_base
+            or "ngrok" in self.public_cdn_base
             or os.environ.get("GITHUB_ACTIONS") == "true"
             or not self.public_cdn_base
+            or not (self.s3_bucket and self.s3_access_key)
         )
 
         if use_cloud_upload:
