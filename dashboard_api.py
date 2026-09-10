@@ -868,11 +868,12 @@ def api_webhook_autopilot():
         "timestamp": datetime.now(timezone.utc).isoformat()
     })
 
-@app.route("/output/<date>/<filename>")
-@app.route("/api/output/<date>/<filename>")
-def api_output_file(date, filename):
-    folder = OUTPUT_DIR / date
-    return send_from_directory(str(folder), filename)
+@app.route("/output/<path:filepath>")
+@app.route("/api/output/<path:filepath>")
+def api_output_file(filepath):
+    resp = send_from_directory(str(OUTPUT_DIR), filepath)
+    resp.headers["Cache-Control"] = "public, max-age=86400"
+    return resp
 
 @app.route("/dashboard")
 @app.route("/dashboard.html")

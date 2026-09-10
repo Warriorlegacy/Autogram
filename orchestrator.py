@@ -95,7 +95,7 @@ def run_pipeline(dry_run: bool = False) -> dict:
 
     # Phase 3b: Optional Visual Hero Asset Synthesis (FLUX.1)
     hero_asset_file = None
-    if getattr(settings, "image_provider", "none").lower() != "none":
+    if not dry_run and getattr(settings, "image_provider", "none").lower() != "none":
         try:
             logger.info("Phase 3b: Synthesizing Conceptual Visual Hero Asset via FLUX.1...")
             hero_dest = out_dir / "hero_visual.jpg"
@@ -172,7 +172,7 @@ def run_pipeline(dry_run: bool = False) -> dict:
 
     # 7. Asset Staging & Upload (Layer D)
     logger.info("Phase 7: Asset Staging / Upload...")
-    public_image_urls = uploader.upload_slide_images(rendered_image_paths, today_str)
+    public_image_urls = uploader.upload_slide_images(rendered_image_paths, today_str, dry_run=dry_run)
 
     # 8. Distribution / Instagram Publishing (Layer D)
     logger.info("Phase 8: Meta Instagram Publishing Sequence...")

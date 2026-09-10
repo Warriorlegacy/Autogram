@@ -203,7 +203,7 @@ GRAPH = "https://graph.instagram.com/v23.0"
 def create_item_container(ig_user_id, token, image_url, alt_text):
     r = requests.post(f"{GRAPH}/{ig_user_id}/media", data={
         "image_url": image_url,
-        "is_carousel_item": "true",
+        "is_carousel_item": True,
         "alt_text": alt_text,
         "access_token": token,
     })

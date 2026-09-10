@@ -183,12 +183,10 @@ Return ONLY valid JSON.
             "Content-Type": "application/json"
         }
         free_models = [
-            "nvidia/nemotron-3.5-lightning:free",
-            "google/gemma-4-31b-it:free",
             "liquid/lfm-2.5-2.6b:free",
             "google/gemma-4-26b-a4b-it:free",
-            "meta-llama/llama-3.3-70b-instruct:free",
-            "deepseek/deepseek-r1:free"
+            "google/gemma-4-31b-it:free",
+            "nex-agi/nex-n2.5-mini:free"
         ]
         last_err = None
         for model in free_models:
@@ -203,7 +201,7 @@ Return ONLY valid JSON.
             }
             try:
                 logger.info(f"Attempting OpenRouter free model: {model}...")
-                resp = requests.post(url, headers=headers, json=payload, timeout=12)
+                resp = requests.post(url, headers=headers, json=payload, timeout=(3, 7))
                 if resp.status_code == 200:
                     raw_text = resp.json()["choices"][0]["message"]["content"]
                     data = self._parse_json_response(raw_text)
@@ -249,10 +247,13 @@ Return ONLY valid JSON.
             }
             try:
                 logger.info(f"Attempting Cloudflare Workers AI generation with {model}...")
-                resp = requests.post(url, headers=headers, json=payload, timeout=18)
+                resp = requests.post(url, headers=headers, json=payload, timeout=20)
                 if resp.status_code == 200:
                     res_json = resp.json()
-                    raw_text = res_json.get("result", {}).get("response", "")
+                    res_obj = res_json.get("result", {})
+                    raw_text = res_obj.get("response", "") if isinstance(res_obj, dict) else ""
+                    if not raw_text and isinstance(res_obj, dict) and "choices" in res_obj and res_obj["choices"]:
+                        raw_text = res_obj["choices"][0].get("message", {}).get("content", "")
                     data = self._parse_json_response(raw_text)
                     if "slides" in data and len(data["slides"]) >= 5:
                         logger.info(f"Cloudflare Workers AI generation successful with {model}.")
@@ -461,6 +462,17 @@ Return ONLY valid JSON.
         9. Free Built-In Anti-Repetition Synthesis Engine (Guaranteed zero-failure fail-safe)
         """
         provider = (settings.llm_provider or "auto").lower()
+        model_str = (settings.llm_model or "").lower()
+
+        # Check if Gemini is specifically requested or configured as primary model
+        prefer_gemini = "gemini" in model_str or provider == "gemini"
+        if prefer_gemini and "gemini" not in self._disabled_providers and settings.gemini_api_key and settings.gemini_api_key.strip():
+            try:
+                logger.info("Generating carousel with Google Gemini (configured model)...")
+                return self._normalize_carousel(self.generate_with_gemini(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"Gemini generation error ({e}). Falling back to next free provider.")
+                self._disabled_providers.add("gemini")
 
         # 1. Groq Cloud (Ultra-Fast Free Tier: 14,400 req/day)
         if "groq" not in self._disabled_providers and (provider in ["auto", "groq"]) and settings.groq_api_key and settings.groq_api_key.strip():
@@ -471,17 +483,7 @@ Return ONLY valid JSON.
                 logger.warning(f"Groq generation error ({e}). Falling back to next free provider.")
                 self._disabled_providers.add("groq")
 
-        # 2. OpenRouter (100% Free Tier: LLaMA 3.3 70B, DeepSeek R1, Gemini Exp)
-        openrouter_key = getattr(settings, "openrouter_api_key", None) or os.environ.get("OPENROUTER_API_KEY", "").strip()
-        if "openrouter" not in self._disabled_providers and (provider in ["auto", "openrouter"]) and openrouter_key:
-            try:
-                logger.info("Generating carousel with OpenRouter (Free Tier models)...")
-                return self._normalize_carousel(self.generate_with_openrouter(topic, sources), topic)
-            except Exception as e:
-                logger.warning(f"OpenRouter generation error ({e}). Falling back to next free provider.")
-                self._disabled_providers.add("openrouter")
-
-        # 3. Google Gemini (100% Free Tier: 1,500 req/day)
+        # 2. Google Gemini (100% Free Tier: 1,500 req/day)
         if "gemini" not in self._disabled_providers and (provider in ["auto", "gemini"]) and settings.gemini_api_key and settings.gemini_api_key.strip():
             try:
                 logger.info("Generating carousel with Google Gemini (Free Tier: Gemini 2.0 Flash)...")
@@ -490,16 +492,26 @@ Return ONLY valid JSON.
                 logger.warning(f"Gemini generation error ({e}). Falling back to next free provider.")
                 self._disabled_providers.add("gemini")
 
-        # 4. Cloudflare Workers AI (100% Free Tier: 10,000 Neurons/day)
+        # 3. Cloudflare Workers AI (100% Free Tier: 10,000 Neurons/day)
         cf_token = getattr(settings, "cloudflare_api_token", None) or os.environ.get("CLOUDFLARE_API_TOKEN", "").strip()
         cf_account = getattr(settings, "cloudflare_account_id", None) or os.environ.get("CLOUDFLARE_ACCOUNT_ID", "").strip()
         if "cloudflare" not in self._disabled_providers and (provider in ["auto", "cloudflare", "cf"]) and cf_token and cf_account:
             try:
-                logger.info("Generating carousel with Cloudflare Workers AI (Free Tier: LLaMA 3.3 70B)...")
+                logger.info("Generating carousel with Cloudflare Workers AI (Free Tier: LLaMA 3.1 8B)...")
                 return self._normalize_carousel(self.generate_with_cloudflare_ai(topic, sources), topic)
             except Exception as e:
                 logger.warning(f"Cloudflare Workers AI generation error ({e}). Falling back to next free provider.")
                 self._disabled_providers.add("cloudflare")
+
+        # 4. OpenRouter (100% Free Tier: LLaMA 3.3 70B, DeepSeek R1, Gemini Exp)
+        openrouter_key = getattr(settings, "openrouter_api_key", None) or os.environ.get("OPENROUTER_API_KEY", "").strip()
+        if "openrouter" not in self._disabled_providers and (provider in ["auto", "openrouter"]) and openrouter_key:
+            try:
+                logger.info("Generating carousel with OpenRouter (Free Tier models)...")
+                return self._normalize_carousel(self.generate_with_openrouter(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"OpenRouter generation error ({e}). Falling back to next free provider.")
+                self._disabled_providers.add("openrouter")
 
         # 5. NVIDIA NIM (Free Developer Tier: 1,000 credits)
         nvidia_key = getattr(settings, "nvidia_nim_api_key", None) or os.environ.get("NVIDIA_NIM_API_KEY", "").strip()

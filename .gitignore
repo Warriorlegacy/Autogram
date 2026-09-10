@@ -22,3 +22,5 @@ npm-debug.log
 
 .vercel
 temp_guide.html
+*.zip
+daily-carousel-artifacts/

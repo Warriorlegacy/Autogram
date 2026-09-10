@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 DEFAULT_GRAPH_HOST = os.environ.get("META_GRAPH_HOST", "https://graph.facebook.com")
 
 class InstagramPublisher:
-    def __init__(self, host: str | None = None):
+    def __init__(self, host: str | None = None, dry_run: bool | None = None):
         self.user_id = settings.ig_user_id
         self.token = settings.ig_access_token
         self.version = settings.meta_api_version
         self.graph_host = host or os.environ.get("META_GRAPH_HOST", DEFAULT_GRAPH_HOST)
         self.base_url = f"{self.graph_host}/{self.version}"
-        self._forced_dry_run: bool | None = None  # set by pipeline if --dry-run flag used
+        self._forced_dry_run: bool | None = dry_run
 
     @property
     def dry_run(self) -> bool:
@@ -52,16 +52,21 @@ class InstagramPublisher:
             logger.info(f"[DRY-RUN] Created item container: {simulated_id} for URL: {image_url}")
             return simulated_id
 
+        if not (image_url.startswith("http://") or image_url.startswith("https://")):
+            raise ValueError(f"Invalid image_url '{image_url}': Meta Graph API strictly requires an absolute public HTTP/HTTPS URL, not a relative path or local file.")
+
         url = f"{self.base_url}/{self.user_id}/media"
         data = {
             "image_url": image_url,
-            "is_carousel_item": "true",
+            "is_carousel_item": True,
             "access_token": self.token
         }
         if alt_text:
             data["alt_text"] = alt_text
 
         resp = requests.post(url, data=data, timeout=30)
+        if resp.status_code != 200:
+            logger.error(f"Meta Graph API error in create_item_container: {resp.status_code} - {resp.text}")
         resp.raise_for_status()
         return resp.json()["id"]
 

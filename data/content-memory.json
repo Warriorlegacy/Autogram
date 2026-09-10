@@ -2,6 +2,20 @@
   "recent_posts": [
     {
       "date": "2026-09-10",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Ditch the LLM Monolith: Compound AI Systems Outperform by 60%",
+      "score": 95
+    },
+    {
+      "date": "2026-09-10",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Monolithic LLMs are broken \u2013 it's time to upgrade to compound AI systems",
+      "score": 95
+    },
+    {
+      "date": "2026-09-10",
       "pillar": "AI",
       "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
       "hook": "Multi-Agent AI systems outperform monolithic LLMs by 60%",

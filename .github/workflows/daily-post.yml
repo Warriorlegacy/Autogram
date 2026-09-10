@@ -15,6 +15,7 @@ on:
 jobs:
   post:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
     steps:
@@ -29,12 +30,26 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          playwright install --with-deps chromium
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Install Playwright Chromium (if not cached)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: playwright install --with-deps chromium
+
+      - name: Install Playwright system deps only (if browser cached)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: playwright install-deps chromium
 
       - name: Execute Autonomous Publishing Pipeline
+        timeout-minutes: 15
         run: |
           if [ -n "${IG_ACCESS_TOKEN}" ]; then
             echo "Running direct cloud autonomous pipeline with GitHub runner..."
@@ -42,12 +57,16 @@ jobs:
           else
             echo "GitHub IG_ACCESS_TOKEN secret not detected in runner."
             echo "Triggering live Render backend cloud autopilot failover..."
-            HTTP_STATUS=$(curl -s -o webhook_response.json -w "%{http_code}" -X POST "https://autogram-dashboard.onrender.com/api/webhook/autopilot?mode=live" \
-              -H "Authorization: Bearer ${AUTOGRAM_OWNER_KEY}")
+            HTTP_STATUS=$(curl -s -o webhook_response.json -w "%{http_code}" \
+              --max-time 30 \
+              -X POST "https://autogram-dashboard.onrender.com/api/webhook/autopilot?mode=live" \
+              -H "Authorization: Bearer ${AUTOGRAM_OWNER_KEY}" || echo "000")
             echo "Render webhook response (HTTP $HTTP_STATUS):"
-            cat webhook_response.json || true
-            if [ "$HTTP_STATUS" -ne 200 ] && [ "$HTTP_STATUS" -ne 201 ]; then
-              echo "Render webhook returned non-200, falling back to local runner dry-run validation..."
+            cat webhook_response.json 2>/dev/null || true
+            if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "201" ]; then
+              echo "Render autopilot triggered successfully."
+            else
+              echo "Render webhook returned HTTP $HTTP_STATUS — falling back to local dry-run validation..."
               python orchestrator.py --dry-run
             fi
           fi
@@ -55,12 +74,19 @@ jobs:
           AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY }}
+          HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
-          PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE }}
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          META_APP_SECRET: ${{ secrets.META_APP_SECRET }}
+          PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE || 'https://autogram-dashboard.onrender.com' }}
           DRY_RUN: ${{ secrets.DRY_RUN || 'false' }}
 
       - name: Commit Content Memory (Zero Repetition)
@@ -68,7 +94,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data/content-memory.json autopilot.db || true
-          git commit -m "chore(memory): record published carousel [skip ci]" || echo "No memory changes to commit"
+          git diff --cached --quiet || git commit -m "chore(memory): record published carousel [skip ci]"
           git push || echo "Push skipped or not permitted"
 
       - name: Upload Generated Carousel Artifacts
@@ -78,3 +104,4 @@ jobs:
           name: daily-carousel-artifacts
           path: output/
           retention-days: 14
+

@@ -64,3 +64,27 @@ def test_image_generator_prompt_enhancement():
     enhanced = image_generator._enhance_prompt("A minimalist data server rack", style_preset="cyber-minimalist")
     assert "minimalist data server rack" in enhanced
     assert "dark obsidian" in enhanced
+
+def test_publisher_dry_run_and_boolean_container():
+    from src.instagram.publisher import InstagramPublisher
+    pub = InstagramPublisher(dry_run=True)
+    assert pub.dry_run is True
+    
+    # Test container creation returns simulated ID in dry run
+    container_id = pub.create_item_container("https://iili.io/test.jpg", alt_text="Test slide")
+    assert container_id.startswith("mock_child_cntr_")
+    
+    # Test invalid non-HTTP URL raises ValueError
+    import pytest
+    with pytest.raises(ValueError, match="strictly requires an absolute public HTTP/HTTPS URL"):
+        pub._forced_dry_run = False  # Temporarily toggle off dry-run to test URL validator
+        pub.create_item_container("/output/invalid/path.jpg")
+    pub._forced_dry_run = True
+
+def test_uploader_public_cdn_fallback():
+    from src.storage.uploader import uploader
+    # When given dummy paths, ensures formatted URLs are absolute HTTP/HTTPS
+    urls = uploader.upload_slide_images(["output/test/slide_01.jpg"], "2026-09-10")
+    assert len(urls) == 1
+    assert urls[0].startswith("http://") or urls[0].startswith("https://")
+

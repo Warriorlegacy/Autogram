@@ -21,13 +21,58 @@ class AssetUploader:
         self.s3_bucket = settings.s3_bucket
         self.s3_access_key = settings.s3_access_key
         self.s3_secret_key = settings.s3_secret_key
-        self.public_cdn_base = settings.public_cdn_base.rstrip("/")
+        
+        base = (settings.public_cdn_base or "").strip().rstrip("/")
+        if not base or "localhost" in base or "127.0.0.1" in base:
+            base = os.environ.get("RENDER_EXTERNAL_URL", "https://autogram-dashboard.onrender.com").rstrip("/")
+        self.public_cdn_base = base
 
-    def upload_slide_images(self, image_paths: list[str], publication_date: str) -> list[str]:
+    def _upload_to_freeimage(self, p: Path) -> str:
+        """Uploads image to freeimage.host returning a direct Cloudflare CDN URL."""
+        resp = requests.post(
+            "https://freeimage.host/api/1/upload",
+            data={"key": "6d207e02198a847aa98d0a2a901485a5", "action": "upload", "format": "json"},
+            files={"source": (p.name, open(p, "rb"), "image/jpeg")},
+            timeout=30
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            url = data.get("image", {}).get("url", "")
+            if url.startswith("http"):
+                return url
+        raise RuntimeError(f"freeimage.host returned status {resp.status_code}: {resp.text[:200]}")
+
+    def _upload_to_catbox(self, p: Path) -> str:
+        """Uploads image to catbox.moe returning a direct CDN URL."""
+        with open(p, "rb") as f:
+            resp = requests.post(
+                "https://catbox.moe/user/api.php",
+                data={"reqtype": "fileupload"},
+                files={"fileToUpload": (p.name, f, "image/jpeg")},
+                timeout=25
+            )
+        if resp.status_code == 200 and resp.text.strip().startswith("http"):
+            return resp.text.strip()
+        raise RuntimeError(f"catbox returned status {resp.status_code}: {resp.text[:200]}")
+
+    def upload_slide_images(self, image_paths: list[str], publication_date: str, dry_run: bool | None = None) -> list[str]:
         """
         Uploads or stages images and returns public URLs.
-        Defaults to PUBLIC_CDN_BASE (e.g. your free tunnel, R2, or local server).
+        Cascade:
+        0. If dry_run is True, formats public staging URLs instantly without upload.
+        1. S3 / Cloudflare R2 if configured.
+        2. freeimage.host cloud CDN (works in GitHub Actions & datacenter IPs).
+        3. catbox.moe cloud CDN fallback.
+        4. Render Dashboard / PUBLIC_CDN_BASE fallback.
+        Always guarantees valid absolute public HTTP/HTTPS URLs.
         """
+        is_dry = dry_run if dry_run is not None else (settings.dry_run or os.environ.get("DRY_RUN") == "true")
+        fallback_base = self.public_cdn_base if (self.public_cdn_base.startswith("http://") or self.public_cdn_base.startswith("https://")) else "https://autogram-dashboard.onrender.com"
+        
+        if is_dry:
+            logger.info("[DRY-RUN] Staging image URLs with public base without external upload.")
+            return [f"{fallback_base.rstrip('/')}/output/{Path(p).parent.name}/{Path(p).name}" for p in image_paths]
+
         public_urls = []
 
         # 1. Cloudflare R2 (100% Free 10GB tier) or AWS S3
@@ -52,51 +97,61 @@ class AssetUploader:
                     )
                     url = f"{self.public_cdn_base}/{key}"
                     public_urls.append(url)
-                    logger.info(f"Uploaded {p.name} to free Cloudflare R2: {url}")
+                    logger.info(f"Uploaded {p.name} to Cloudflare R2: {url}")
                 return public_urls
             except ImportError:
-                logger.warning("boto3 not installed, using CDN base URL formatting.")
+                logger.warning("boto3 not installed, falling back to cloud image hosts.")
             except Exception as e:
-                logger.error(f"S3/R2 upload failed: {e}. Falling back to CDN base URL formatting.")
+                logger.error(f"S3/R2 upload failed: {e}. Falling back to cloud image hosts.")
 
-        # 2. Check if running in cloud, or localhost/ngrok without active S3/R2 bucket
+        # 2. Check if running in cloud, GitHub Actions, or local without S3
         use_cloud_upload = (
             "localhost" in self.public_cdn_base
             or "127.0.0.1" in self.public_cdn_base
             or "ngrok" in self.public_cdn_base
             or os.environ.get("GITHUB_ACTIONS") == "true"
-            or not self.public_cdn_base
             or not (self.s3_bucket and self.s3_access_key)
         )
 
         if use_cloud_upload:
             logger.info("Using 100% Free Public Cloud CDN for Meta Instagram ingestion...")
-            try:
-                for path_str in image_paths:
-                    p = Path(path_str)
-                    with open(p, "rb") as f:
-                        resp = requests.post(
-                            "https://catbox.moe/user/api.php",
-                            data={"reqtype": "fileupload"},
-                            files={"fileToUpload": (p.name, f, "image/jpeg")},
-                            timeout=25
-                        )
-                    if resp.status_code == 200 and resp.text.startswith("http"):
-                        url = resp.text.strip()
-                        public_urls.append(url)
-                        logger.info(f"Uploaded {p.name} to free cloud CDN: {url}")
-                    else:
-                        raise RuntimeError(f"Cloud CDN upload returned: {resp.text}")
-                return public_urls
-            except Exception as e:
-                logger.warning(f"Free cloud CDN upload error ({e}). Falling back to CDN base URL formatting.")
-                public_urls = []
+            all_uploaded = True
+            temp_urls = []
 
-        # 3. Free Tunnel / Static Server URL staging (Ngrok / Cloudflare Tunnel)
+            for path_str in image_paths:
+                p = Path(path_str)
+                uploaded_url = None
+
+                # Primary: freeimage.host
+                try:
+                    uploaded_url = self._upload_to_freeimage(p)
+                    logger.info(f"Uploaded {p.name} to freeimage.host: {uploaded_url}")
+                except Exception as e1:
+                    logger.warning(f"freeimage.host failed for {p.name}: {e1}. Trying catbox...")
+                    # Secondary: catbox.moe
+                    try:
+                        uploaded_url = self._upload_to_catbox(p)
+                        logger.info(f"Uploaded {p.name} to catbox.moe: {uploaded_url}")
+                    except Exception as e2:
+                        logger.warning(f"catbox.moe also failed for {p.name}: {e2}")
+
+                if uploaded_url:
+                    temp_urls.append(uploaded_url)
+                else:
+                    all_uploaded = False
+                    break
+
+            if all_uploaded and len(temp_urls) == len(image_paths):
+                return temp_urls
+            else:
+                logger.warning("Cloud image host cascade incomplete. Falling back to PUBLIC_CDN_BASE...")
+
+        # 3. Fallback to PUBLIC_CDN_BASE (e.g. Render dashboard or tunnel)
+        fallback_base = self.public_cdn_base if (self.public_cdn_base.startswith("http://") or self.public_cdn_base.startswith("https://")) else "https://autogram-dashboard.onrender.com"
         for path_str in image_paths:
             p = Path(path_str)
             relative_part = f"output/{p.parent.name}/{p.name}"
-            public_url = f"{self.public_cdn_base}/{relative_part}"
+            public_url = f"{fallback_base.rstrip('/')}/{relative_part}"
             public_urls.append(public_url)
 
         return public_urls
