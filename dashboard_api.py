@@ -239,7 +239,8 @@ def root():
     return send_from_directory(str(BASE_DIR), "index.html")
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5050))
     print("=" * 60)
-    print("  Autogram Dashboard API — http://localhost:5050/dashboard")
+    print(f"  Autogram Dashboard API — port {port}")
     print("=" * 60)
-    app.run(host="0.0.0.0", port=5050, debug=False)
+    app.run(host="0.0.0.0", port=port, debug=False)
