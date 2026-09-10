@@ -208,12 +208,15 @@ class AssetUploader:
 
             if all_uploaded and len(temp_urls) == len(image_paths):
                 return temp_urls
-            else:
-                logger.warning("Cloud image host cascade incomplete.")
 
-        # Last resort: require a publicly reachable CDN base.
-        # The old Render dashboard fallback produces URLs Meta cannot fetch,
-        # so we fail closed instead of silently publishing invalid links.
+            # In cloud/CI environments, local/public CDN fallback URLs are not publicly
+            # fetchable by Meta, so fail closed instead of silently returning bad links.
+            raise RuntimeError(
+                "No usable public image host available for live publishing. "
+                "Configure S3/R2, or set IMGBB_API_KEY, or provide another public HTTPS image host."
+            )
+
+        # Non-cloud/local fallback only: acceptable for dry-run or when a public tunnel/CDN is configured.
         fallback_base = self.public_cdn_base if (self.public_cdn_base.startswith("http://") or self.public_cdn_base.startswith("https://")) else None
         if not fallback_base:
             raise RuntimeError(
