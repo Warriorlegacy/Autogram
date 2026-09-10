@@ -1,0 +1,78 @@
+{
+  "scheduler_enabled": true,
+  "daily_slots": [
+    {
+      "slot": "08:00",
+      "label": "Morning Prime",
+      "pillar": "AI Tool Breakdown",
+      "enabled": true
+    },
+    {
+      "slot": "10:30",
+      "label": "Mid-Morning High Signal",
+      "pillar": "Prompting & Workflow",
+      "enabled": true
+    },
+    {
+      "slot": "13:00",
+      "label": "Lunchtime Tech Deep Dive",
+      "pillar": "Tech Explainer",
+      "enabled": true
+    },
+    {
+      "slot": "15:30",
+      "label": "Afternoon Strategy",
+      "pillar": "Marketing Psychology",
+      "enabled": true
+    },
+    {
+      "slot": "18:00",
+      "label": "Evening Commute Insights",
+      "pillar": "Career & Skills",
+      "enabled": true
+    },
+    {
+      "slot": "20:30",
+      "label": "Prime Time Contrarian",
+      "pillar": "Contrarian",
+      "enabled": true
+    },
+    {
+      "slot": "22:30",
+      "label": "Late Night Blueprint",
+      "pillar": "AI Tool Breakdown",
+      "enabled": true
+    }
+  ],
+  "timezone": "Asia/Kolkata",
+  "queue": [
+    {
+      "id": "SCH-1001",
+      "scheduled_time": "2026-09-11T08:00:00",
+      "topic": "Why Multi-Agent Systems Beat Monolithic Prompts in Production",
+      "pillar": "AI Tool Breakdown",
+      "mode": "live",
+      "status": "QUEUED",
+      "created_at": "2026-09-10T16:00:00"
+    },
+    {
+      "id": "SCH-1002",
+      "scheduled_time": "2026-09-11T13:00:00",
+      "topic": "Context Caching Architecture & 90% LLM Cost Reduction Blueprint",
+      "pillar": "Tech Explainer",
+      "mode": "live",
+      "status": "QUEUED",
+      "created_at": "2026-09-10T16:15:00"
+    },
+    {
+      "id": "SCH-1003",
+      "scheduled_time": "2026-09-11T20:30:00",
+      "topic": "The 'Fine-Tuning is Dead' Fallacy: When RAG Fails at Scale",
+      "pillar": "Contrarian",
+      "mode": "dry-run",
+      "status": "QUEUED",
+      "created_at": "2026-09-10T16:30:00"
+    }
+  ],
+  "history": []
+}

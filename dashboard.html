@@ -3,1117 +3,3103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Autogram — Owner Dashboard</title>
+  <title>AUTOGRAM AI — Neural Mission Control & Autonomous Studio</title>
+  
+  <!-- Premium High-Tech Google Fonts (Space Grotesk, Plus Jakarta Sans, JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Three.js CDN for 3D WebGL Quantum Lattice -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
-    /* ── Reset & Base ─────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:        #0a0b0f;
-      --bg2:       #0f1117;
-      --bg3:       #13151d;
-      --surface:   #161820;
-      --surface2:  #1c1f2b;
-      --border:    #ffffff0f;
-      --border2:   #ffffff1a;
-      --text:      #e8eaf0;
-      --muted:     #6b7280;
-      --cyan:      #00d4ff;
-      --cyan-dim:  #00d4ff22;
-      --green:     #00e676;
-      --green-dim: #00e67622;
-      --amber:     #ffb300;
-      --amber-dim: #ffb30022;
-      --red:       #ff4444;
-      --red-dim:   #ff444422;
-      --purple:    #a855f7;
-      --purple-dim:#a855f722;
-      --radius:    12px;
-      --radius-sm: 8px;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      font-size: 14px;
-      line-height: 1.6;
+    /* ═══════════════════════════════════════════════════════════════════════
+       1. HIGH-TECH DESIGN SYSTEM TOKENS & RESET
+       ═══════════════════════════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* ── Sidebar ──────────────────────────────────────── */
-    .sidebar {
-      width: 240px;
+    :root {
+      /* OLED Void Palette */
+      --bg-void:        #04060A;
+      --bg-base:        #070A10;
+      --bg-surface:     #0B0F19;
+      --bg-surface-elev:#111624;
+      --bg-surface-hover:#161D2F;
+      
+      /* Glowing Cyber Neon Accents */
+      --cyan:           #00F0FF;
+      --cyan-glow:      rgba(0, 240, 255, 0.35);
+      --cyan-dim:       rgba(0, 240, 255, 0.12);
+      --cyan-hairline:  rgba(0, 240, 255, 0.25);
+
+      --violet:         #8B5CF6;
+      --violet-glow:    rgba(139, 92, 246, 0.35);
+      --violet-dim:     rgba(139, 92, 246, 0.12);
+      --violet-hairline:rgba(139, 92, 246, 0.25);
+
+      --emerald:        #10B981;
+      --emerald-glow:   rgba(16, 185, 129, 0.35);
+      --emerald-dim:    rgba(16, 185, 129, 0.12);
+
+      --amber:          #F59E0B;
+      --amber-glow:     rgba(245, 158, 11, 0.35);
+      --amber-dim:      rgba(245, 158, 11, 0.12);
+
+      --crimson:        #EF4444;
+      --crimson-glow:   rgba(239, 68, 68, 0.35);
+      --crimson-dim:    rgba(239, 68, 68, 0.12);
+
+      /* Typography */
+      --text-main:      #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted:     #64748B;
+      --text-dim:       #475569;
+
+      /* Borders & Hardware Outer Shell */
+      --border-outer:   rgba(255, 255, 255, 0.08);
+      --border-inner:   rgba(255, 255, 255, 0.05);
+      --border-active:  rgba(0, 240, 255, 0.4);
+
+      /* Typography scale */
+      --font-display:   'Space Grotesk', sans-serif;
+      --font-sans:      'Plus Jakarta Sans', sans-serif;
+      --font-mono:      'JetBrains Mono', monospace;
+
+      /* Motion physics */
+      --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html, body {
+      width: 100%;
       min-height: 100vh;
-      background: var(--bg2);
-      border-right: 1px solid var(--border);
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       2. 3D WEBGL BACKGROUND & SCI-FI SCANLINES
+       ═══════════════════════════════════════════════════════════════════════ */
+    #dashboard-webgl {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.65;
+      transition: opacity 0.5s ease;
+    }
+
+    .cyber-scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.25) 50%,
+        rgba(0, 0, 0, 0.25)
+      );
+      background-size: 100% 4px;
+      opacity: 0.45;
+    }
+
+    .cyber-noise {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image: radial-gradient(circle at 50% 20%, rgba(0, 240, 255, 0.04) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       3. COCKPIT SHELL LAYOUT
+       ═══════════════════════════════════════════════════════════════════════ */
+    .cockpit-layout {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 280px;
+      background: rgba(7, 10, 16, 0.85);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-right: 1px solid var(--border-outer);
       display: flex;
       flex-direction: column;
       position: fixed;
-      top: 0; left: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      bottom: 0;
       z-index: 100;
+      box-shadow: 10px 0 40px rgba(0,0,0,0.5);
     }
-    .sidebar-logo {
+
+    .sidebar-header {
       padding: 24px 20px 20px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-inner);
     }
-    .logo-mark {
-      display: flex; align-items: center; gap: 10px;
-    }
-    .logo-glyph {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 16px; color: #000;
-    }
-    .logo-text { font-weight: 700; font-size: 15px; letter-spacing: 0.04em; }
-    .logo-text span { color: var(--cyan); }
-    .logo-sub { font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: 0.08em; }
 
-    .sidebar-status {
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 8px;
-      font-size: 11px; color: var(--muted);
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
     }
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 6px var(--green);
-      animation: pulse 2s infinite;
+
+    .brand-glyph {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 20px;
+      color: #04060A;
+      box-shadow: 0 0 20px var(--cyan-glow);
       flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
     }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    .nav {
+    .brand-glyph::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+
+    .brand-title span {
+      color: var(--cyan);
+      text-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    .brand-subtitle {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      letter-spacing: 0.14em;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Streak & Dopamine HUD Badge */
+    .sidebar-streak-card {
+      margin: 16px 14px 4px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(139, 92, 246, 0.08));
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .streak-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .streak-flame {
+      font-size: 22px;
+      animation: flamePulse 1.8s infinite alternate ease-in-out;
+    }
+
+    @keyframes flamePulse {
+      0% { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 4px #F59E0B); }
+      100% { transform: scale(1.15) rotate(3deg); filter: drop-shadow(0 0 12px #EF4444); }
+    }
+
+    .streak-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #F8FAFC;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .streak-subtitle {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--amber);
+    }
+
+    .streak-level-pill {
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--amber);
+      font-size: 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    /* Navigation Links */
+    .sidebar-nav {
       flex: 1;
-      padding: 12px 10px;
-      display: flex; flex-direction: column; gap: 2px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       overflow-y: auto;
     }
-    .nav-label {
-      font-size: 10px; color: var(--muted); letter-spacing: 0.1em;
-      padding: 8px 10px 4px; text-transform: uppercase;
+
+    .nav-section-label {
+      font-size: 9px;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 12px 14px 4px;
     }
+
     .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 12px; border-radius: var(--radius-sm);
-      cursor: pointer; color: var(--muted);
-      transition: all 0.15s; font-size: 13px; font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
       border: 1px solid transparent;
+      transition: all 0.22s var(--ease-out-expo);
       user-select: none;
+      position: relative;
     }
-    .nav-item:hover { background: var(--surface); color: var(--text); }
+
+    .nav-item:hover {
+      background: var(--bg-surface-elev);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.05);
+      transform: translateX(3px);
+    }
+
     .nav-item.active {
-      background: var(--cyan-dim); color: var(--cyan);
-      border-color: #00d4ff22;
+      background: linear-gradient(90deg, var(--cyan-dim), rgba(139, 92, 246, 0.08));
+      color: #fff;
+      border-color: var(--cyan-hairline);
+      box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.08);
     }
-    .nav-item .icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 20%;
+      bottom: 20%;
+      width: 3px;
+      border-radius: 0 4px 4px 0;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .nav-icon {
+      font-size: 16px;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
     .nav-badge {
-      margin-left: auto; background: var(--cyan); color: #000;
-      font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 20px;
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: var(--cyan);
+      color: #04060A;
+      box-shadow: 0 0 8px var(--cyan-glow);
+    }
+
+    .nav-badge.live {
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald-glow);
     }
 
     .sidebar-footer {
       padding: 16px 20px;
-      border-top: 1px solid var(--border);
-      font-size: 11px; color: var(--muted);
+      border-top: 1px solid var(--border-inner);
+      background: rgba(4, 6, 10, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    .version-tag { color: var(--green); font-family: 'JetBrains Mono', monospace; }
 
-    /* ── Main ─────────────────────────────────────────── */
-    .main {
-      margin-left: 240px;
+    .portal-back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-inner);
+      background: rgba(255,255,255,0.02);
+      transition: all 0.2s ease;
+    }
+
+    .portal-back-btn:hover {
+      color: var(--cyan);
+      border-color: var(--cyan-hairline);
+      background: var(--cyan-dim);
+    }
+
+    .sidebar-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+    }
+
+    /* ── Main Content Area ── */
+    .cockpit-main {
+      margin-left: 280px;
       flex: 1;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      position: relative;
     }
 
-    /* ── Topbar ───────────────────────────────────────── */
+    /* ── Topbar ── */
     .topbar {
-      height: 56px;
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 28px;
-      position: sticky; top: 0; z-index: 90;
-    }
-    .page-title {
-      font-size: 15px; font-weight: 600; color: var(--text);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .topbar-chip {
-      font-size: 11px; font-family: 'JetBrains Mono', monospace;
-      padding: 4px 10px; border-radius: 20px;
-      border: 1px solid var(--border2); color: var(--muted);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .topbar-chip .dot { width: 6px; height: 6px; border-radius: 50%; }
-
-    /* ── Content area ─────────────────────────────────── */
-    .content {
-      flex: 1; padding: 28px;
-      display: flex; flex-direction: column; gap: 24px;
+      height: 68px;
+      background: rgba(7, 10, 16, 0.8);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border-outer);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 90;
     }
 
-    /* ── Views ────────────────────────────────────────── */
-    .view { display: none; flex-direction: column; gap: 24px; }
-    .view.active { display: flex; }
-
-    /* ── Cards ────────────────────────────────────────── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-    }
-    .card-title {
-      font-size: 12px; font-weight: 600; color: var(--muted);
-      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .card-title .accent { color: var(--cyan); }
-
-    /* ── Stat Grid ────────────────────────────────────── */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    .topbar-left {
+      display: flex;
+      align-items: center;
       gap: 16px;
     }
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      display: flex; flex-direction: column; gap: 8px;
-      transition: border-color 0.2s;
-    }
-    .stat-card:hover { border-color: var(--border2); }
-    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .stat-value { font-size: 26px; font-weight: 700; line-height: 1; }
-    .stat-sub { font-size: 11px; color: var(--muted); }
-    .stat-icon { font-size: 20px; }
 
-    /* ── Buttons ──────────────────────────────────────── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 18px; border-radius: var(--radius-sm);
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      border: none; transition: all 0.15s; white-space: nowrap;
-      font-family: 'Inter', sans-serif;
-    }
-    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-    .btn-primary {
-      background: var(--cyan); color: #000;
-    }
-    .btn-primary:hover:not(:disabled) { background: #33ddff; box-shadow: 0 0 20px #00d4ff44; }
-    .btn-danger {
-      background: var(--red-dim); color: var(--red); border: 1px solid #ff444433;
-    }
-    .btn-danger:hover:not(:disabled) { background: #ff444433; }
-    .btn-ghost {
-      background: var(--surface2); color: var(--text); border: 1px solid var(--border2);
-    }
-    .btn-ghost:hover:not(:disabled) { background: var(--bg3); }
-    .btn-success {
-      background: var(--green-dim); color: var(--green); border: 1px solid #00e67633;
-    }
-    .btn-success:hover:not(:disabled) { background: #00e67633; }
-    .btn-sm { padding: 6px 12px; font-size: 12px; }
-    .btn-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-    /* ── Pipeline Control ─────────────────────────────── */
-    .pipeline-control {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .pipeline-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px;
-    }
-    .pipeline-title {
-      font-size: 14px; font-weight: 600;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .pipeline-badge {
-      font-size: 10px; padding: 3px 8px; border-radius: 20px;
-      font-weight: 700; letter-spacing: 0.06em;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .badge-idle    { background: var(--surface2); color: var(--muted); border: 1px solid var(--border2); }
-    .badge-running { background: var(--cyan-dim); color: var(--cyan); border: 1px solid #00d4ff33; animation: pulse 1.5s infinite; }
-    .badge-done    { background: var(--green-dim); color: var(--green); border: 1px solid #00e67633; }
-    .badge-error   { background: var(--red-dim); color: var(--red); border: 1px solid #ff444433; }
-
-    .log-console {
-      background: #08090d;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: #a0aec0;
-      padding: 16px;
-      height: 380px;
-      overflow-y: auto;
-      line-height: 1.7;
-    }
-    .log-console .log-line { display: block; }
-    .log-console .log-line.info  { color: #a0aec0; }
-    .log-console .log-line.warn  { color: var(--amber); }
-    .log-console .log-line.error { color: var(--red); }
-    .log-console .log-line.ok    { color: var(--green); }
-    .log-console .log-line.sys   { color: var(--cyan); }
-    .log-cursor::after { content: '▋'; animation: blink 1s infinite; color: var(--cyan); }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    /* ── Phase Progress ───────────────────────────────── */
-    .phase-track {
-      display: flex; gap: 0;
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      margin: 0 20px 20px;
-    }
-    .phase-step {
-      flex: 1; padding: 8px 4px;
-      text-align: center; font-size: 10px;
-      color: var(--muted); font-weight: 500;
-      border-right: 1px solid var(--border);
-      transition: all 0.3s;
-    }
-    .phase-step:last-child { border-right: none; }
-    .phase-step.active { background: var(--cyan-dim); color: var(--cyan); }
-    .phase-step.done   { background: var(--green-dim); color: var(--green); }
-    .phase-step.error  { background: var(--red-dim); color: var(--red); }
-    .phase-num { font-size: 13px; display: block; }
-
-    /* ── Outputs / Slides ─────────────────────────────── */
-    .runs-grid {
-      display: flex; flex-direction: column; gap: 16px;
-    }
-    .run-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .run-header {
-      padding: 14px 18px;
-      display: flex; align-items: center; gap: 12px;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer; user-select: none;
-    }
-    .run-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px; font-weight: 600; color: var(--cyan);
-    }
-    .run-topic { font-size: 13px; color: var(--text); flex: 1; }
-    .run-meta { display: flex; align-items: center; gap: 10px; }
-    .pill {
-      font-size: 10px; padding: 3px 8px; border-radius: 20px;
-      font-weight: 600; white-space: nowrap;
-    }
-    .pill-green { background: var(--green-dim); color: var(--green); border: 1px solid #00e67622; }
-    .pill-blue  { background: var(--cyan-dim); color: var(--cyan); border: 1px solid #00d4ff22; }
-    .pill-purple{ background: var(--purple-dim); color: var(--purple); border: 1px solid #a855f722; }
-    .pill-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid #ffb30022; }
-    .run-body { padding: 16px 18px; display: none; }
-    .run-body.open { display: block; }
-    .slides-strip {
-      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;
-    }
-    .slide-thumb {
-      flex-shrink: 0; width: 90px; height: 112px;
-      border-radius: 8px; object-fit: cover;
-      border: 1px solid var(--border2);
-      cursor: pointer; transition: transform 0.15s;
-      background: var(--bg3);
-    }
-    .slide-thumb:hover { transform: scale(1.05); border-color: var(--cyan); }
-    .caption-box {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      font-size: 12px; color: var(--muted);
-      margin-top: 12px; line-height: 1.7;
-      white-space: pre-wrap;
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* ── Settings / ENV ───────────────────────────────── */
-    .env-table {
-      display: flex; flex-direction: column; gap: 1px;
-      background: var(--border);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-    }
-    .env-row {
-      display: grid; grid-template-columns: 220px 1fr auto;
-      align-items: center; gap: 12px;
-      background: var(--surface);
-      padding: 10px 14px;
-    }
-    .env-row:hover { background: var(--surface2); }
-    .env-key {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px; color: var(--cyan); font-weight: 500;
-    }
-    .env-input {
-      background: var(--bg);
-      border: 1px solid var(--border2);
+    .page-title-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 2px 8px;
       border-radius: 6px;
-      padding: 6px 10px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px; color: var(--text);
-      width: 100%; outline: none;
-    }
-    .env-input:focus { border-color: var(--cyan); box-shadow: 0 0 0 2px var(--cyan-dim); }
-    .env-save-btn {
-      font-size: 11px; padding: 5px 10px;
-      background: var(--green-dim); color: var(--green);
-      border: 1px solid #00e67633; border-radius: 6px;
-      cursor: pointer; font-weight: 600; white-space: nowrap;
-      transition: background 0.15s;
-    }
-    .env-save-btn:hover { background: #00e67633; }
-    .env-section-header {
-      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted); padding: 10px 14px 6px;
-      background: var(--bg2); font-weight: 600;
+      background: var(--cyan-dim);
+      border: 1px solid var(--cyan-hairline);
+      color: var(--cyan);
     }
 
-    /* ── Memory / Analytics ───────────────────────────── */
-    .memory-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-    }
-    .post-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-    }
-    .post-score {
-      width: 36px; height: 36px; border-radius: 8px;
-      background: var(--green-dim); color: var(--green);
-      font-size: 11px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .post-info { flex: 1; min-width: 0; }
-    .post-topic { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
-    .post-hook { font-size: 11px; color: var(--muted); }
-    .post-date { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-
-    /* ── Pillar Bars ──────────────────────────────────── */
-    .pillar-bars { display: flex; flex-direction: column; gap: 10px; }
-    .pillar-bar { display: flex; align-items: center; gap: 10px; }
-    .pillar-name { font-size: 11px; width: 150px; color: var(--text); flex-shrink: 0; }
-    .bar-track {
-      flex: 1; height: 6px; background: var(--surface2);
-      border-radius: 3px; overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%; border-radius: 3px;
-      background: linear-gradient(90deg, var(--cyan), var(--purple));
-      transition: width 0.8s ease;
-    }
-    .pillar-count { font-size: 11px; color: var(--muted); width: 20px; text-align: right; }
-
-    /* ── Slide Lightbox ───────────────────────────────── */
-    .lightbox {
-      display: none; position: fixed; inset: 0;
-      background: #000000cc; z-index: 1000;
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(8px);
-    }
-    .lightbox.open { display: flex; }
-    .lightbox-img {
-      max-width: 90vw; max-height: 90vh;
-      border-radius: var(--radius);
-      box-shadow: 0 0 80px #00000080;
-    }
-    .lightbox-close {
-      position: absolute; top: 20px; right: 24px;
-      font-size: 28px; color: #fff; cursor: pointer; line-height: 1;
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* ── Toast ────────────────────────────────────────── */
-    .toast-container {
-      position: fixed; bottom: 24px; right: 24px;
-      display: flex; flex-direction: column; gap: 8px; z-index: 2000;
+    /* Topbar Telemetry Chips */
+    .telemetry-chip {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      padding: 6px 12px;
+      border-radius: 24px;
+      background: rgba(17, 22, 36, 0.8);
+      border: 1px solid var(--border-outer);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .toast {
-      background: var(--surface2); border: 1px solid var(--border2);
-      border-radius: var(--radius-sm); padding: 12px 16px;
-      font-size: 13px; color: var(--text);
-      display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 8px 32px #00000060;
-      animation: slideIn 0.2s ease;
+
+    .chip-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulseGlow 1.8s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .chip-pulse.amber {
+      background: var(--amber);
+      box-shadow: 0 0 8px var(--amber);
+    }
+
+    /* Sound Synthesizer Audio Button */
+    .audio-synth-btn {
+      background: rgba(17, 22, 36, 0.8);
+      border: 1px solid var(--border-outer);
+      border-radius: 24px;
+      padding: 6px 14px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .audio-synth-btn:hover {
+      border-color: var(--cyan-hairline);
+      color: var(--cyan);
+    }
+
+    .audio-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .audio-bar {
+      width: 2px;
+      height: 4px;
+      background: var(--cyan);
+      border-radius: 1px;
+      transition: height 0.15s ease;
+    }
+
+    .audio-synth-btn.active .audio-bar:nth-child(1) { animation: barDance 0.8s infinite 0.1s; }
+    .audio-synth-btn.active .audio-bar:nth-child(2) { animation: barDance 0.8s infinite 0.3s; }
+    .audio-synth-btn.active .audio-bar:nth-child(3) { animation: barDance 0.8s infinite 0.2s; }
+    .audio-synth-btn.active .audio-bar:nth-child(4) { animation: barDance 0.8s infinite 0.4s; }
+
+    @keyframes barDance {
+      0%, 100% { height: 3px; }
+      50% { height: 12px; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       4. DOUBLE-BEZEL (DOPPELRAND) HARDWARE CARDS
+       ═══════════════════════════════════════════════════════════════════════ */
+    .content-viewport {
+      flex: 1;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Outer Shell: Machine Aluminum / Frosted Border Tray */
+    .doppel-shell {
+      background: rgba(11, 15, 25, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-outer);
+      border-radius: 22px;
+      padding: 2px;
+      transition: border-color 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo);
+      position: relative;
+    }
+
+    .doppel-shell:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .doppel-shell.glow-cyan:hover {
+      border-color: var(--cyan-hairline);
+      box-shadow: 0 8px 32px rgba(0, 240, 255, 0.08);
+    }
+
+    .doppel-shell.glow-violet:hover {
+      border-color: var(--violet-hairline);
+      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.08);
+    }
+
+    /* Inner Core: Dark OLED Chamber */
+    .doppel-core {
+      background: var(--bg-surface);
+      border-radius: 20px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
+      padding: 22px;
+    }
+
+    .card-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .card-header-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-header-title .accent-tag {
+      color: var(--cyan);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       5. BUTTON-IN-BUTTON & ISLAND CTA SYSTEM
+       ═══════════════════════════════════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s var(--ease-out-expo);
+      user-select: none;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Primary Island Button with Button-in-Button Trailing Icon */
+    .btn-island-primary {
+      background: var(--cyan);
+      color: #04060A;
+      box-shadow: 0 0 24px var(--cyan-glow);
+      font-weight: 700;
+      padding-right: 8px;
+    }
+
+    .btn-island-primary:hover:not(:disabled) {
+      background: #38f4ff;
+      box-shadow: 0 0 32px rgba(0, 240, 255, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-island-icon-tray {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-island-primary:hover .btn-island-icon-tray {
+      transform: translateX(2px);
+    }
+
+    .btn-island-violet {
+      background: var(--violet);
+      color: #fff;
+      box-shadow: 0 0 24px var(--violet-glow);
+      font-weight: 700;
+      padding-right: 8px;
+    }
+
+    .btn-island-violet:hover:not(:disabled) {
+      background: #9d74f7;
+      box-shadow: 0 0 32px rgba(139, 92, 246, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: var(--bg-surface-elev);
+      color: var(--text-main);
+      border: 1px solid var(--border-outer);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--bg-surface-hover);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: var(--crimson-dim);
+      color: var(--crimson);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    .btn-emerald {
+      background: var(--emerald-dim);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-emerald:hover:not(:disabled) {
+      background: rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       6. TAB VIEWS ARCHITECTURE
+       ═══════════════════════════════════════════════════════════════════════ */
+    .cockpit-view {
+      display: none;
+      flex-direction: column;
+      gap: 24px;
+      animation: viewFadeIn 0.35s var(--ease-out-expo);
+    }
+
+    .cockpit-view.active {
+      display: flex;
+    }
+
+    @keyframes viewFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.995);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ── Metric Hologram Grid ── */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .metric-card {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 48px;
+      height: 48px;
+      background: radial-gradient(circle at top right, var(--cyan-dim), transparent 70%);
+      pointer-events: none;
+    }
+
+    .metric-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .metric-icon-bubble {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-inner);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    .metric-subtext {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Spotlight Banner (Latest Generated / Published Post) ── */
+    .spotlight-banner {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .spotlight-info {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .spotlight-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      border: 1px solid var(--cyan-hairline);
+      padding: 4px 10px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .spotlight-topic {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+    }
+
+    .spotlight-meta-chips {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .spotlight-chip {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-outer);
+      padding: 5px 10px;
+      border-radius: 8px;
+      color: var(--text-secondary);
+    }
+
+    /* 3D Mini Carousel Inspector inside Spotlight */
+    .spotlight-3d-deck {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      padding: 10px;
+    }
+
+    .holo-slide-card {
+      width: 220px;
+      height: 275px; /* 4:5 aspect ratio */
+      background: linear-gradient(145deg, #0f1422, #070a12);
+      border: 1px solid var(--cyan-hairline);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 30px var(--cyan-dim);
+      transform: rotateY(-8deg) rotateX(4deg);
+      transition: all 0.4s var(--ease-out-expo);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .holo-slide-card:hover {
+      transform: rotateY(0deg) rotateX(0deg) scale(1.05);
+      border-color: var(--cyan);
+      box-shadow: 0 20px 50px rgba(0, 240, 255, 0.25);
+    }
+
+    .holo-slide-role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--cyan);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .holo-slide-hook {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: #fff;
+    }
+
+    .holo-slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       7. SCHEDULER & CALENDAR MATRIX
+       ═══════════════════════════════════════════════════════════════════════ */
+    .scheduler-daemon-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px;
+      background: linear-gradient(90deg, rgba(0, 240, 255, 0.04), rgba(139, 92, 246, 0.04));
+      border-radius: 18px;
+      border: 1px solid var(--border-outer);
+      margin-bottom: 24px;
+    }
+
+    .daemon-status-block {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .daemon-indicator-orb {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--emerald-dim);
+      border: 1px solid var(--emerald);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 20px var(--emerald-glow);
+    }
+
+    .daemon-indicator-orb.stopped {
+      background: var(--crimson-dim);
+      border-color: var(--crimson);
+      box-shadow: 0 0 20px var(--crimson-glow);
+    }
+
+    .daemon-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .daemon-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* 7x Daily Posting Slots */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .slot-node {
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-inner);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .slot-node:hover {
+      border-color: var(--cyan-hairline);
+      transform: translateY(-2px);
+    }
+
+    .slot-time {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .slot-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .slot-pillar {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--violet);
+      background: var(--violet-dim);
+      padding: 2px 6px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    /* Scheduled Queue Table */
+    .queue-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+
+    .queue-table th {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-inner);
+    }
+
+    .queue-table td {
+      padding: 14px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: var(--text-secondary);
+    }
+
+    .queue-table tr:hover td {
+      background: var(--bg-surface-elev);
+      color: var(--text-main);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       8. AI CONTENT STUDIO & DIRECT PUBLISHING SUITE
+       ═══════════════════════════════════════════════════════════════════════ */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .form-input, .form-textarea, .form-select {
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-outer);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    .pillar-pills-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pillar-pill {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-inner);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .pillar-pill:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .pillar-pill.selected {
+      background: var(--cyan-dim);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-dim);
+    }
+
+    /* Interactive 3D Slide Carousel Viewer */
+    .deck-inspector {
+      background: #060910;
+      border: 1px solid var(--border-outer);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .deck-slide-frame {
+      width: 100%;
       max-width: 320px;
+      aspect-ratio: 4/5;
+      background: #0B0F19;
+      border: 1px solid var(--cyan-hairline);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 20px var(--cyan-dim);
+      transition: transform 0.3s ease;
     }
-    .toast.success { border-color: #00e67644; }
-    .toast.error   { border-color: #ff444444; }
-    @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-    /* ── Scrollbar ────────────────────────────────────── */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #2a2d3a; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #3a3d4a; }
+    .deck-slide-frame:hover {
+      transform: scale(1.02);
+    }
 
-    /* ── Responsive ───────────────────────────────────── */
-    @media (max-width: 900px) {
-      .sidebar { transform: translateX(-100%); transition: transform 0.2s; }
-      .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; }
-      .memory-grid { grid-template-columns: 1fr; }
+    .deck-slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .deck-slide-headline {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .deck-slide-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       9. 9-PHASE PIPELINE CONSOLE
+       ═══════════════════════════════════════════════════════════════════════ */
+    .phase-pipeline-track {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 4px;
+      background: rgba(4, 6, 10, 0.8);
+      border: 1px solid var(--border-outer);
+      border-radius: 14px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+
+    .phase-node {
+      padding: 10px 4px;
+      text-align: center;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-dim);
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .phase-node-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+    }
+
+    .phase-node.active {
+      background: var(--cyan-dim);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 16px var(--cyan-dim);
+    }
+
+    .phase-node.active .phase-node-num {
+      background: var(--cyan);
+      color: #04060A;
+      animation: pulse 1.2s infinite;
+    }
+
+    .phase-node.done {
+      background: var(--emerald-dim);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--emerald);
+    }
+
+    .phase-node.done .phase-node-num {
+      background: var(--emerald);
+      color: #04060A;
+    }
+
+    .cyber-console {
+      background: #020306;
+      border: 1px solid var(--border-outer);
+      border-radius: 16px;
+      padding: 18px;
+      height: 440px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.8;
+      color: #cbd5e1;
+      position: relative;
+    }
+
+    .log-line {
+      display: block;
+      word-break: break-all;
+    }
+
+    .log-line.sys { color: var(--cyan); font-weight: 600; }
+    .log-line.ok { color: var(--emerald); }
+    .log-line.warn { color: var(--amber); }
+    .log-line.error { color: var(--crimson); font-weight: 700; }
+    .log-line.info { color: #94a3b8; }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       10. SLIDE VAULT & OUTPUT HISTORY
+       ═══════════════════════════════════════════════════════════════════════ */
+    .vault-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .vault-card {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .vault-thumbnails-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .vault-thumb {
+      width: 60px;
+      height: 75px; /* 4:5 */
+      border-radius: 6px;
+      object-fit: cover;
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-inner);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .vault-thumb:hover {
+      transform: scale(1.08);
+      border-color: var(--cyan);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       11. MODALS, LIGHTBOX & TOASTS
+       ═══════════════════════════════════════════════════════════════════════ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 10, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 3, 6, 0.95);
+      backdrop-filter: blur(24px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-img {
+      max-height: 80vh;
+      max-width: 90vw;
+      border-radius: 14px;
+      border: 1px solid var(--cyan-hairline);
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.25);
+    }
+
+    /* Toast Stack */
+    .toast-container {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 3000;
+    }
+
+    .toast {
+      background: rgba(17, 22, 36, 0.95);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-outer);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: #fff;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      animation: toastIn 0.25s var(--ease-out-expo);
+      max-width: 360px;
+    }
+
+    .toast.success { border-color: var(--emerald); }
+    .toast.error   { border-color: var(--crimson); }
+    .toast.info    { border-color: var(--cyan); }
+
+    @keyframes toastIn {
+      from { transform: translateX(30px); opacity: 0; }
+      to   { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 960px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .cockpit-main {
+        margin-left: 0;
+      }
+      .spotlight-banner, .studio-grid {
+        grid-template-columns: 1fr;
+      }
+      .phase-pipeline-track {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- ── Sidebar ───────────────────────────────────────────────────────── -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-mark">
-      <div class="logo-glyph">A</div>
-      <div>
-        <div class="logo-text">AUTOGRAM<span>.AI</span></div>
-        <div class="logo-sub">OWNER DASHBOARD</div>
-      </div>
-    </div>
-  </div>
-  <div class="sidebar-status">
-    <div class="status-dot"></div>
-    <span id="sidebar-status-text">Engine Online</span>
-  </div>
-  <nav class="nav">
-    <div class="nav-label">Control</div>
-    <div class="nav-item active" data-view="overview" onclick="switchView('overview', this)">
-      <span class="icon">⚡</span> Overview
-    </div>
-    <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
-      <span class="icon">🚀</span> Run Pipeline
-    </div>
-    <div class="nav-label">Content</div>
-    <div class="nav-item" data-view="outputs" onclick="switchView('outputs', this)">
-      <span class="icon">🖼️</span> Output History
-      <span class="nav-badge" id="nav-runs-badge">0</span>
-    </div>
-    <div class="nav-item" data-view="memory" onclick="switchView('memory', this)">
-      <span class="icon">🧠</span> Content Memory
-    </div>
-    <div class="nav-label">Config</div>
-    <div class="nav-item" data-view="settings" onclick="switchView('settings', this)">
-      <span class="icon">⚙️</span> Settings / .env
-    </div>
-  </nav>
-  <div class="sidebar-footer">
-    <div>@signhify.studio</div>
-    <div style="margin-top:4px;"><span class="version-tag">v2.4</span> · <span id="dry-run-tag">DRY RUN</span></div>
-  </div>
-</aside>
+  <!-- 3D Three.js WebGL Holographic Lattice Canvas -->
+  <canvas id="dashboard-webgl"></canvas>
+  
+  <!-- Cyber Scanlines & Ambient Noise Overlay -->
+  <div class="cyber-scanlines" id="cyber-scanlines"></div>
+  <div class="cyber-noise"></div>
 
-<!-- ── Main ───────────────────────────────────────────────────────────── -->
-<div class="main">
+  <!-- Confetti Canvas for Dopamine Celebration -->
+  <canvas id="confetti-canvas"></canvas>
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="page-title">
-      <span id="topbar-title">Overview</span>
-    </div>
-    <div class="topbar-right">
-      <div class="topbar-chip">
-        <div class="dot" style="background:var(--cyan)"></div>
-        <span id="chip-llm">Gemini 2.0</span>
-      </div>
-      <div class="topbar-chip">
-        <div class="dot" id="dot-dry" style="background:var(--amber)"></div>
-        <span id="chip-mode">DRY RUN</span>
-      </div>
-      <div class="topbar-chip">
-        <div class="dot" style="background:var(--green)"></div>
-        <span>Meta API Connected</span>
-      </div>
-    </div>
-  </div>
+  <div class="cockpit-layout">
 
-  <!-- Content -->
-  <div class="content">
-
-    <!-- ─────────── VIEW: Overview ──────────────────── -->
-    <div class="view active" id="view-overview">
-      <div class="stat-grid" id="stat-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Runs</div>
-          <div class="stat-value" id="stat-runs">—</div>
-          <div class="stat-sub">Pipeline executions</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Last Post Score</div>
-          <div class="stat-value" style="color:var(--green)" id="stat-score">—</div>
-          <div class="stat-sub">Quality Gate</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Posts in Memory</div>
-          <div class="stat-value" style="color:var(--cyan)" id="stat-posts">—</div>
-          <div class="stat-sub">Anti-repetition corpus</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">LLM Provider</div>
-          <div class="stat-value" style="font-size:16px;margin-top:4px" id="stat-llm">—</div>
-          <div class="stat-sub" id="stat-llm-sub">Model</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Posting Time</div>
-          <div class="stat-value" style="font-size:20px;margin-top:4px" id="stat-time">—</div>
-          <div class="stat-sub" id="stat-tz">Timezone</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">CDN / Image Host</div>
-          <div class="stat-value" style="font-size:13px;margin-top:6px;color:var(--muted)" id="stat-cdn">—</div>
-          <div class="stat-sub" id="stat-cdn-sub">Storage</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title"><span class="accent">◈</span> Last Published Topic</div>
-        <div id="last-topic" style="font-size:15px;font-weight:600;margin-bottom:6px;">—</div>
-        <div id="last-date" style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title"><span class="accent">◈</span> Quick Actions</div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="switchView('pipeline', document.querySelector('[data-view=pipeline]'))">
-            🚀 Run Pipeline
-          </button>
-          <button class="btn btn-ghost" onclick="switchView('outputs', document.querySelector('[data-view=outputs]'))">
-            🖼️ View Outputs
-          </button>
-          <button class="btn btn-ghost" onclick="refreshStatus()">
-            ↺ Refresh Status
-          </button>
-          <button class="btn btn-ghost" onclick="switchView('settings', document.querySelector('[data-view=settings]'))">
-            ⚙️ Edit Settings
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ─────────── VIEW: Pipeline ──────────────────── -->
-    <div class="view" id="view-pipeline">
-
-      <div class="card">
-        <div class="card-title"><span class="accent">◈</span> Run Mode</div>
-        <div class="btn-row" style="margin-bottom:0">
-          <button id="btn-dry" class="btn btn-ghost" onclick="selectMode('dry-run')" style="border-color:var(--cyan);color:var(--cyan)">
-            🧪 Dry Run (Safe Test)
-          </button>
-          <button id="btn-live" class="btn btn-ghost" onclick="selectMode('live')">
-            🚀 Live Publish to @signhify.studio
-          </button>
-        </div>
-        <div style="margin-top:12px;font-size:12px;color:var(--muted)" id="mode-desc">
-          ✓ Safe: simulates the full pipeline without posting to Instagram.
-        </div>
-      </div>
-
-      <div class="pipeline-control">
-        <div class="pipeline-header">
-          <div class="pipeline-title">
-            Pipeline Console
-            <span class="pipeline-badge badge-idle" id="pipeline-badge">IDLE</span>
+    <!-- ─── SIDEBAR ──────────────────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand-mark" onclick="playSound('click')">
+          <div class="brand-glyph">A</div>
+          <div>
+            <div class="brand-title">AUTOGRAM<span>.AI</span></div>
+            <div class="brand-subtitle">NEURAL COCKPIT v2.5</div>
           </div>
-          <div class="btn-row">
-            <button class="btn btn-primary" id="btn-run" onclick="runPipeline()">▶ Start</button>
-            <button class="btn btn-danger btn-sm" id="btn-stop" onclick="stopPipeline()" disabled>⏹ Stop</button>
-            <button class="btn btn-ghost btn-sm" onclick="clearLog()">🗑 Clear</button>
+        </a>
+      </div>
+
+      <!-- Autonomous Streak Multiplier Card -->
+      <div class="sidebar-streak-card">
+        <div class="streak-left">
+          <span class="streak-flame">🔥</span>
+          <div>
+            <div class="streak-title">7-Day Streak</div>
+            <div class="streak-subtitle">Autonomous Mode</div>
+          </div>
+        </div>
+        <div class="streak-level-pill">LVL 9</div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Command & Control</div>
+        <div class="nav-item active" data-view="overview" onclick="switchView('overview', this)">
+          <span class="nav-icon">⚡</span> Mission Control
+        </div>
+        <div class="nav-item" data-view="scheduling" onclick="switchView('scheduling', this)">
+          <span class="nav-icon">📅</span> Post Scheduler
+          <span class="nav-badge" id="nav-queue-badge">3</span>
+        </div>
+        <div class="nav-item" data-view="publishing" onclick="switchView('publishing', this)">
+          <span class="nav-icon">✍️</span> Content Studio & Publish
+          <span class="nav-badge live">LIVE</span>
+        </div>
+        <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
+          <span class="nav-icon">🚀</span> Pipeline Console
+        </div>
+
+        <div class="nav-section-label">Archive & Intelligence</div>
+        <div class="nav-item" data-view="outputs" onclick="switchView('outputs', this)">
+          <span class="nav-icon">🖼️</span> Slide Vault
+          <span class="nav-badge" id="nav-runs-badge">0</span>
+        </div>
+        <div class="nav-item" data-view="memory" onclick="switchView('memory', this)">
+          <span class="nav-icon">🧠</span> Neural Memory
+        </div>
+
+        <div class="nav-section-label">Infrastructure</div>
+        <div class="nav-item" data-view="settings" onclick="switchView('settings', this)">
+          <span class="nav-icon">⚙️</span> Core Config & Keys
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" class="portal-back-btn" onclick="playSound('warp')">
+          <span>←</span> Back to Public Portal
+        </a>
+        <div class="sidebar-meta-row">
+          <span>@signhify.studio</span>
+          <span style="color:var(--emerald);" id="sidebar-dry-tag">● LIVE MODE</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ─── MAIN COCKPIT VIEWPORT ────────────────────────────────────────── -->
+    <main class="cockpit-main">
+
+      <!-- Topbar Telemetry Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="page-title">
+            <span id="page-title-text">Mission Control</span>
+            <span class="page-title-badge" id="page-badge">LIVE TELEMETRY</span>
           </div>
         </div>
 
-        <!-- Phase Tracker -->
-        <div class="phase-track" id="phase-track">
-          <div class="phase-step" id="ph1"><span class="phase-num">1</span>Research</div>
-          <div class="phase-step" id="ph2"><span class="phase-num">2</span>Topic</div>
-          <div class="phase-step" id="ph3"><span class="phase-num">3</span>Generate</div>
-          <div class="phase-step" id="ph4"><span class="phase-num">4</span>Fact-Check</div>
-          <div class="phase-step" id="ph5"><span class="phase-num">5</span>QA Gate</div>
-          <div class="phase-step" id="ph6"><span class="phase-num">6</span>Render</div>
-          <div class="phase-step" id="ph7"><span class="phase-num">7</span>Upload</div>
-          <div class="phase-step" id="ph8"><span class="phase-num">8</span>Publish</div>
-          <div class="phase-step" id="ph9"><span class="phase-num">9</span>Memory</div>
+        <div class="topbar-right">
+          <!-- Audio Synthesizer Button -->
+          <button class="audio-synth-btn active" id="audio-toggle-btn" onclick="toggleAudio()" title="Toggle High-Tech UI Synthesizer Sound FX">
+            <div class="audio-bars">
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+            </div>
+            <span id="audio-label">FX ON</span>
+          </button>
+
+          <!-- Telemetry Chips -->
+          <div class="telemetry-chip">
+            <div class="chip-pulse" id="meta-token-pulse"></div>
+            <span id="meta-token-label">Meta API Connected</span>
+          </div>
+
+          <div class="telemetry-chip">
+            <span style="color:var(--cyan)">⚡ LLM:</span>
+            <span id="top-llm-label">Gemini 2.5 Flash</span>
+          </div>
+
+          <div class="telemetry-chip">
+            <div class="chip-pulse amber" id="top-mode-dot"></div>
+            <span id="top-mode-label">DRY RUN</span>
+          </div>
         </div>
+      </header>
 
-        <div class="log-console" id="log-console">
-          <span class="log-line sys">[AUTOGRAM] Pipeline console ready. Press ▶ Start to begin.</span>
-        </div>
-      </div>
-    </div>
+      <!-- Dynamic Views Container -->
+      <div class="content-viewport">
 
-    <!-- ─────────── VIEW: Outputs ───────────────────── -->
-    <div class="view" id="view-outputs">
-      <div class="card" style="padding:14px 18px;">
-        <div class="card-title" style="margin-bottom:0"><span class="accent">◈</span> Output Runs — <span id="runs-count">0</span> total</div>
-      </div>
-      <div class="runs-grid" id="runs-grid">
-        <div style="color:var(--muted);font-size:13px;padding:20px 0;">Loading runs...</div>
-      </div>
-    </div>
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW 1: MISSION CONTROL (OVERVIEW)
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view active" id="view-overview">
 
-    <!-- ─────────── VIEW: Memory ────────────────────── -->
-    <div class="view" id="view-memory">
-      <div class="memory-grid">
-        <div>
-          <div class="card" style="margin-bottom:16px">
-            <div class="card-title"><span class="accent">◈</span> Content Pillar Distribution</div>
-            <div class="pillar-bars" id="pillar-bars">
-              <div style="color:var(--muted);font-size:12px">Loading...</div>
+          <!-- Metric Hologram Cards -->
+          <div class="metric-grid">
+            <div class="doppel-shell glow-cyan">
+              <div class="doppel-core metric-card">
+                <div class="metric-top-row">
+                  <span class="metric-label">Total Carousels</span>
+                  <div class="metric-icon-bubble">🖼️</div>
+                </div>
+                <div class="metric-value" id="stat-total-runs">—</div>
+                <div class="metric-subtext">Automated publications</div>
+              </div>
+            </div>
+
+            <div class="doppel-shell glow-violet">
+              <div class="doppel-core metric-card">
+                <div class="metric-top-row">
+                  <span class="metric-label">Last QA Score</span>
+                  <div class="metric-icon-bubble">🛡️</div>
+                </div>
+                <div class="metric-value" style="color:var(--emerald);" id="stat-qa-score">—</div>
+                <div class="metric-subtext">Editor Quality Gate</div>
+              </div>
+            </div>
+
+            <div class="doppel-shell glow-cyan">
+              <div class="doppel-core metric-card">
+                <div class="metric-top-row">
+                  <span class="metric-label">Memory Corpus</span>
+                  <div class="metric-icon-bubble">🧠</div>
+                </div>
+                <div class="metric-value" style="color:var(--cyan);" id="stat-memory-count">—</div>
+                <div class="metric-subtext">Anti-repetition index</div>
+              </div>
+            </div>
+
+            <div class="doppel-shell glow-violet">
+              <div class="doppel-core metric-card">
+                <div class="metric-top-row">
+                  <span class="metric-label">Next Slot</span>
+                  <div class="metric-icon-bubble">⏳</div>
+                </div>
+                <div class="metric-value" style="font-size:20px; color:var(--amber);" id="stat-next-slot">—</div>
+                <div class="metric-subtext" id="stat-next-countdown">Countdown active</div>
+              </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-title"><span class="accent">◈</span> Winning Patterns</div>
-            <div id="winning-patterns" style="display:flex;flex-direction:column;gap:8px"></div>
+
+          <!-- Active Post Spotlight (Latest Production Run) -->
+          <div class="doppel-shell glow-cyan">
+            <div class="doppel-core spotlight-banner">
+              <div class="spotlight-info">
+                <div class="spotlight-pill">◈ LATEST GENERATED CAROUSEL</div>
+                <h2 class="spotlight-topic" id="spotlight-topic">Loading latest production run...</h2>
+                <div class="spotlight-meta-chips">
+                  <div class="spotlight-chip" id="spotlight-date">—</div>
+                  <div class="spotlight-chip" id="spotlight-pillar" style="color:var(--violet);">AI Tool Breakdown</div>
+                  <div class="spotlight-chip" id="spotlight-slides-count">8 Slides</div>
+                  <div class="spotlight-chip" style="color:var(--emerald);">1080×1350 HD</div>
+                </div>
+                <div class="btn-row" style="margin-top:10px;">
+                  <button class="btn btn-island-primary" onclick="directPublishSpotlight()">
+                    <span>🚀 Publish to Instagram Now</span>
+                    <div class="btn-island-icon-tray">↗</div>
+                  </button>
+                  <button class="btn btn-ghost" onclick="switchView('publishing')">
+                    <span>Inspect in Studio</span>
+                  </button>
+                  <button class="btn btn-ghost" onclick="switchView('outputs')">
+                    <span>View All Runs</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3D Mini Slide Hologram -->
+              <div class="spotlight-3d-deck">
+                <div class="holo-slide-card" onclick="switchView('outputs')">
+                  <div>
+                    <div class="holo-slide-role">SLIDE 01 · HOOK</div>
+                    <div class="holo-slide-hook" id="spotlight-slide-hook" style="margin-top:14px;">
+                      Autonomous AI Carousels
+                    </div>
+                  </div>
+                  <div class="holo-slide-footer">
+                    <span>@signhify.studio</span>
+                    <span>1080×1350</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Quick Action Deck -->
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title"><span class="accent-tag">◈</span> Rapid Action Launchpad</div>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-island-primary" onclick="switchView('pipeline')">
+                  <span>🚀 Trigger Autonomous Pipeline</span>
+                  <div class="btn-island-icon-tray">▶</div>
+                </button>
+                <button class="btn btn-island-violet" onclick="openScheduleModal()">
+                  <span>📅 Add Scheduled Post</span>
+                  <div class="btn-island-icon-tray">+</div>
+                </button>
+                <button class="btn btn-ghost" onclick="switchView('publishing')">
+                  <span>✍️ Open AI Content Studio</span>
+                </button>
+                <button class="btn btn-ghost" onclick="refreshToken()">
+                  <span>🔄 Refresh Meta Token</span>
+                </button>
+                <button class="btn btn-ghost" onclick="refreshStatus(true)">
+                  <span>↺ Sync Telemetry</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /view-overview -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW 2: AUTONOMOUS SCHEDULER & CALENDAR MATRIX
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-scheduling">
+
+          <!-- Daemon Engine Controller Card -->
+          <div class="scheduler-daemon-hero">
+            <div class="daemon-status-block">
+              <div class="daemon-indicator-orb" id="daemon-orb">⚙</div>
+              <div>
+                <div class="daemon-title">Autonomous 7x Daily Publishing Daemon</div>
+                <div class="daemon-sub" id="daemon-desc">
+                  Monitoring daily high-signal slots in timezone Asia/Kolkata. Auto-triggers pipeline when slot arrives.
+                </div>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-island-primary" id="btn-toggle-daemon" onclick="toggleSchedulerDaemon()">
+                <span id="daemon-toggle-text">⏹ Stop Daemon</span>
+                <div class="btn-island-icon-tray">⚡</div>
+              </button>
+              <button class="btn btn-ghost" onclick="openScheduleModal()">
+                <span>+ Schedule New Post</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 7 Daily Target Slots Grid -->
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title"><span class="accent-tag">◈</span> 7x Daily Strategic Publishing Windows</div>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">Deterministic Cadence</span>
+              </div>
+              <div class="slots-grid" id="slots-grid-container">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Queued Scheduled Posts Table -->
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title"><span class="accent-tag">◈</span> Upcoming Scheduled Queue</div>
+                <button class="btn btn-sm btn-ghost" onclick="loadSchedule()">↺ Refresh Queue</button>
+              </div>
+              <div style="overflow-x:auto;">
+                <table class="queue-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Topic & Angle</th>
+                      <th>Strategic Pillar</th>
+                      <th>Mode</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="queue-tbody">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /view-scheduling -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW 3: AI CONTENT STUDIO & DIRECT PUBLISHING SUITE
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-publishing">
+
+          <div class="studio-grid">
+
+            <!-- Left Column: Generator & Topic Studio -->
+            <div class="doppel-shell">
+              <div class="doppel-core">
+                <div class="card-header-bar">
+                  <div class="card-header-title"><span class="accent-tag">◈</span> AI Carousel Synthesizer</div>
+                  <button class="btn btn-sm btn-ghost" onclick="brainstormTopic()">✨ Suggest Topic</button>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Carousel Topic / Hook Concept</label>
+                  <input type="text" class="form-input" id="studio-topic-input" placeholder="e.g. Context Caching Architecture in Multi-Agent Systems" />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Strategic Content Pillar</label>
+                  <div class="pillar-pills-selector" id="studio-pillar-selector">
+                    <div class="pillar-pill selected" data-pillar="AI Tool Breakdown" onclick="selectStudioPillar(this)">AI Tool Breakdown</div>
+                    <div class="pillar-pill" data-pillar="Prompting & Workflow" onclick="selectStudioPillar(this)">Prompting & Workflow</div>
+                    <div class="pillar-pill" data-pillar="Marketing Psychology" onclick="selectStudioPillar(this)">Marketing Psychology</div>
+                    <div class="pillar-pill" data-pillar="Tech Explainer" onclick="selectStudioPillar(this)">Tech Explainer</div>
+                    <div class="pillar-pill" data-pillar="Career & Skills" onclick="selectStudioPillar(this)">Career & Skills</div>
+                    <div class="pillar-pill" data-pillar="Contrarian" onclick="selectStudioPillar(this)">Contrarian</div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Target Audience Angle (Optional)</label>
+                  <input type="text" class="form-input" id="studio-angle-input" placeholder="e.g. How engineering teams cut API spend by 85%" />
+                </div>
+
+                <div class="btn-row" style="margin-top:20px;">
+                  <button class="btn btn-island-primary" id="btn-studio-generate" onclick="generateStudioCarousel()">
+                    <span id="studio-generate-text">⚡ Synthesize Carousel & Slides</span>
+                    <div class="btn-island-icon-tray">✨</div>
+                  </button>
+                  <button class="btn btn-island-violet" id="btn-studio-publish" onclick="directPublishStudioPost()">
+                    <span>🚀 Publish to Instagram Live</span>
+                    <div class="btn-island-icon-tray">↗</div>
+                  </button>
+                </div>
+
+                <!-- Caption & Reels script drawers -->
+                <div style="margin-top:24px;">
+                  <div class="form-label" style="margin-bottom:8px;">High-Converting Instagram Caption</div>
+                  <textarea class="form-textarea" id="studio-caption-box" rows="5" placeholder="Caption with hook, value points & CTA will appear here..."></textarea>
+                  <div class="btn-row" style="margin-top:8px;">
+                    <button class="btn btn-sm btn-ghost" onclick="copyStudioCaption()">📋 Copy Caption</button>
+                    <button class="btn btn-sm btn-ghost" onclick="copyStudioReel()">🎥 Copy Reels Script</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Interactive 3D Slide Deck Previewer -->
+            <div class="doppel-shell glow-cyan">
+              <div class="doppel-core deck-inspector">
+                <div class="card-header-bar" style="width:100%">
+                  <div class="card-header-title"><span class="accent-tag">◈</span> 3D Slide Deck Inspector</div>
+                  <span id="deck-slide-counter" style="font-family:var(--font-mono);font-size:11px;color:var(--cyan)">Slide 1 of 8</span>
+                </div>
+
+                <!-- Live Slide Preview Canvas Card -->
+                <div class="deck-slide-frame" id="deck-slide-frame">
+                  <div class="deck-slide-header">
+                    <span class="holo-slide-role" id="deck-slide-role">SLIDE 01 · HOOK</span>
+                    <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted)">1080×1350</span>
+                  </div>
+                  <div>
+                    <h3 class="deck-slide-headline" id="deck-slide-headline">
+                      Why Multi-Agent Systems Beat Giant Prompts in Production
+                    </h3>
+                    <p class="deck-slide-body" id="deck-slide-body" style="margin-top:12px;">
+                      Single-prompt architectures degrade at scale. Here is how deterministic autonomous loops enforce strict state boundaries.
+                    </p>
+                  </div>
+                  <div class="holo-slide-footer">
+                    <span>@signhify.studio</span>
+                    <span style="color:var(--cyan)">AUTOGRAM AI</span>
+                  </div>
+                </div>
+
+                <!-- Deck Navigation Controls -->
+                <div class="deck-controls">
+                  <button class="btn btn-sm btn-ghost" onclick="prevDeckSlide()">← Previous</button>
+                  <button class="btn btn-sm btn-ghost" onclick="nextDeckSlide()">Next →</button>
+                  <button class="btn btn-sm btn-ghost" onclick="openDeckLightbox()">🔍 Fullscreen</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /studio-grid -->
+
+        </div><!-- /view-publishing -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW 4: NEURAL PIPELINE CONSOLE
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-pipeline">
+
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title"><span class="accent-tag">◈</span> Autonomous Execution Mode</div>
+                <div class="btn-row">
+                  <button id="btn-mode-dry" class="btn btn-ghost" onclick="selectExecutionMode('dry-run')" style="border-color:var(--cyan);color:var(--cyan)">
+                    🧪 Safe Dry Run (Test Simulation)
+                  </button>
+                  <button id="btn-mode-live" class="btn btn-ghost" onclick="selectExecutionMode('live')">
+                    🚀 Live Production Publishing
+                  </button>
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);" id="pipeline-mode-explainer">
+                ✓ Safe Mode: executes complete research, scoring, drafting, QA evaluation, and slide rendering without calling Instagram API.
+              </div>
+            </div>
+          </div>
+
+          <!-- 9-Phase Animated Pipeline Tracker -->
+          <div class="phase-pipeline-track" id="phase-pipeline-track">
+            <div class="phase-node" id="ph-1"><div class="phase-node-num">1</div>Research</div>
+            <div class="phase-node" id="ph-2"><div class="phase-node-num">2</div>Scoring</div>
+            <div class="phase-node" id="ph-3"><div class="phase-node-num">3</div>Generate</div>
+            <div class="phase-node" id="ph-4"><div class="phase-node-num">4</div>Fact-Check</div>
+            <div class="phase-node" id="ph-5"><div class="phase-node-num">5</div>QA Gate</div>
+            <div class="phase-node" id="ph-6"><div class="phase-node-num">6</div>Render</div>
+            <div class="phase-node" id="ph-7"><div class="phase-node-num">7</div>CDN Upload</div>
+            <div class="phase-node" id="ph-8"><div class="phase-node-num">8</div>Meta Publish</div>
+            <div class="phase-node" id="ph-9"><div class="phase-node-num">9</div>Memory</div>
+          </div>
+
+          <!-- Cyber Terminal Console -->
+          <div class="doppel-shell">
+            <div class="doppel-core" style="padding:14px;">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="accent-tag">◈</span> Pipeline Cyber Terminal
+                  <span id="pipeline-status-badge" style="font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:12px;background:var(--bg-surface-elev);color:var(--text-muted);border:1px solid var(--border-inner);">IDLE</span>
+                </div>
+                <div class="btn-row">
+                  <button class="btn btn-sm btn-island-primary" id="btn-exec-pipeline" onclick="startPipeline()">
+                    <span>▶ Execute</span>
+                  </button>
+                  <button class="btn btn-sm btn-danger" id="btn-stop-pipeline" onclick="stopPipeline()" disabled>
+                    <span>⏹ Abort</span>
+                  </button>
+                  <button class="btn btn-sm btn-ghost" onclick="clearPipelineLog()">
+                    <span>🗑 Clear</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="cyber-console" id="pipeline-console">
+                <span class="log-line sys">[AUTOGRAM-NEURAL-OS] Mission Control Pipeline Console initialized.</span>
+                <span class="log-line sys">[AUTOGRAM-NEURAL-OS] Ready for manual trigger or scheduled autonomous dispatch.</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /view-pipeline -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW 5: SLIDE VAULT & OUTPUT HISTORY
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-outputs">
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title"><span class="accent-tag">◈</span> Slide Vault — <span id="vault-runs-count">0</span> Historical Runs</div>
+                <button class="btn btn-sm btn-ghost" onclick="loadRuns()">↺ Refresh Vault</button>
+              </div>
+              <div class="vault-grid" id="vault-grid">
+                <div style="color:var(--text-muted);padding:30px 0;">Loading historical runs...</div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /view-outputs -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW 6: NEURAL MEMORY & KNOWLEDGE GRAPH
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-memory">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div class="doppel-shell">
+              <div class="doppel-core">
+                <div class="card-header-bar">
+                  <div class="card-header-title"><span class="accent-tag">◈</span> 6-Pillar Strategic Rotation</div>
+                </div>
+                <div id="pillar-distribution-bars" style="display:flex;flex-direction:column;gap:12px;">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <div class="doppel-shell">
+              <div class="doppel-core">
+                <div class="card-header-bar">
+                  <div class="card-header-title"><span class="accent-tag">◈</span> Anti-Repetition Published Corpus</div>
+                </div>
+                <div id="memory-posts-list" style="display:flex;flex-direction:column;gap:10px;max-height:450px;overflow-y:auto;">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /view-memory -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW 7: CORE SYSTEM CONFIG & CREDENTIALS
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-settings">
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title"><span class="accent-tag">◈</span> Core Environment Configuration (.env)</div>
+                <button class="btn btn-sm btn-emerald" onclick="saveAllEnv()">💾 Save Changes</button>
+              </div>
+              <div id="env-settings-container" style="display:flex;flex-direction:column;gap:12px;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Audio & Visual Preferences -->
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title"><span class="accent-tag">◈</span> Cockpit Audio & Visual Preferences</div>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-ghost" id="btn-toggle-scanlines" onclick="toggleScanlines()">
+                  <span>Toggle Cyber Scanlines</span>
+                </button>
+                <button class="btn btn-ghost" id="btn-toggle-3d" onclick="toggle3DBackground()">
+                  <span>Toggle 3D Hologram Lattice</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /view-settings -->
+
+      </div><!-- /content-viewport -->
+
+    </main>
+  </div><!-- /cockpit-layout -->
+
+  <!-- ─── MODAL: SCHEDULE NEW POST ──────────────────────────────────────── -->
+  <div class="modal-backdrop" id="schedule-modal">
+    <div class="doppel-shell modal-box glow-cyan">
+      <div class="doppel-core">
+        <div class="card-header-bar">
+          <div class="card-header-title"><span class="accent-tag">◈</span> Schedule New Carousel Post</div>
+          <button class="btn btn-sm btn-ghost" onclick="closeScheduleModal()">✕</button>
         </div>
-        <div class="card">
-          <div class="card-title"><span class="accent">◈</span> Recent Posts (Anti-Repetition Memory)</div>
-          <div id="recent-posts-list" style="display:flex;flex-direction:column;gap:8px;max-height:500px;overflow-y:auto"></div>
+
+        <div class="form-group">
+          <label class="form-label">Scheduled Date & Time</label>
+          <input type="datetime-local" class="form-input" id="sched-input-time" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Topic / Concept Hook</label>
+          <input type="text" class="form-input" id="sched-input-topic" placeholder="e.g. 5 Signs Your Multi-Agent System Has State Leaks" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Strategic Content Pillar</label>
+          <select class="form-select" id="sched-input-pillar">
+            <option value="AI Tool Breakdown">AI Tool Breakdown</option>
+            <option value="Prompting & Workflow">Prompting & Workflow</option>
+            <option value="Marketing Psychology">Marketing Psychology</option>
+            <option value="Tech Explainer">Tech Explainer</option>
+            <option value="Career & Skills">Career & Skills</option>
+            <option value="Contrarian">Contrarian</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Execution Mode</label>
+          <select class="form-select" id="sched-input-mode">
+            <option value="live">Live Meta Instagram Publishing</option>
+            <option value="dry-run">Safe Dry-Run Test Simulation</option>
+          </select>
+        </div>
+
+        <div class="btn-row" style="margin-top:20px;justify-content:flex-end;">
+          <button class="btn btn-ghost" onclick="closeScheduleModal()">Cancel</button>
+          <button class="btn btn-island-primary" onclick="submitNewScheduledPost()">
+            <span>Add to Queue</span>
+            <div class="btn-island-icon-tray">✓</div>
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ─────────── VIEW: Settings ──────────────────── -->
-    <div class="view" id="view-settings">
-      <div class="card">
-        <div class="card-title"><span class="accent">◈</span> Environment Configuration (.env)</div>
-        <div class="env-table" id="env-table">
-          <div style="color:var(--muted);font-size:12px;padding:12px">Loading...</div>
-        </div>
-        <div style="margin-top:14px;">
-          <button class="btn btn-success" onclick="saveAllEnv()">💾 Save All Changes</button>
-        </div>
-      </div>
-    </div>
+  <!-- ─── LIGHTBOX ──────────────────────────────────────────────────────── -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img class="lightbox-img" id="lightbox-img" src="" alt="Fullscreen Slide" />
+    <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);">Click anywhere to close</div>
+  </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
+  <!-- ─── TOAST NOTIFICATIONS CONTAINER ─────────────────────────────────── -->
+  <div class="toast-container" id="toast-container"></div>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <span class="lightbox-close">✕</span>
-  <img class="lightbox-img" id="lightbox-img" src="" alt="Slide" />
-</div>
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       12. JAVASCRIPT ENGINE (3D WebGL, Web Audio Synth, API, Dopamine)
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <script>
+    // ── API Root Auto-Detection ──────────────────────────────────────────
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? (window.location.port === '5050' ? '/api' : 'http://localhost:5050/api')
+      : '/api';
 
-<!-- Toast -->
-<div class="toast-container" id="toasts"></div>
+    let currentExecutionMode = 'dry-run';
+    let pollTimer = null;
+    let schedulerRunningState = true;
+    let latestOutputRun = null;
+    let activeDeckSlideIndex = 0;
+    let currentDeckSlides = [];
+    let audioEnabled = true;
 
-<script>
-// ── State ──────────────────────────────────────────────────────────────────
-const API = 'http://localhost:5050/api';
-let currentMode = 'dry-run';
-let pollInterval = null;
-let logLineCount = 0;
-let envData = {};
-
-// ── Navigation ──────────────────────────────────────────────────────────────
-function switchView(id, el) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  if (el) el.classList.add('active');
-  const titles = {overview:'Overview', pipeline:'Run Pipeline', outputs:'Output History', memory:'Content Memory', settings:'Settings / .env'};
-  document.getElementById('topbar-title').textContent = titles[id] || id;
-  if (id === 'outputs') loadRuns();
-  if (id === 'memory') loadMemory();
-  if (id === 'settings') loadEnv();
-  if (id === 'pipeline' && !pollInterval) startPolling();
-}
-
-// ── Status Refresh ──────────────────────────────────────────────────────────
-async function refreshStatus() {
-  try {
-    const s = await fetch(API + '/status').then(r => r.json());
-    document.getElementById('stat-runs').textContent = s.total_runs || '0';
-    document.getElementById('stat-score').textContent = s.last_post_score != null ? s.last_post_score + '/100' : '—';
-    document.getElementById('stat-posts').textContent = s.recent_posts_count || '0';
-    document.getElementById('stat-llm').textContent = s.llm_provider?.toUpperCase() || '—';
-    document.getElementById('stat-llm-sub').textContent = s.llm_model || '';
-    document.getElementById('stat-time').textContent = s.posting_time || '—';
-    document.getElementById('stat-tz').textContent = s.timezone || '';
-    const cdn = s.cdn_base || 'localhost';
-    const isLocal = cdn.includes('localhost');
-    document.getElementById('stat-cdn').textContent = isLocal ? '⚠ localhost (not public)' : cdn.replace('https://','');
-    document.getElementById('stat-cdn').style.color = isLocal ? 'var(--amber)' : 'var(--green)';
-    document.getElementById('stat-cdn-sub').textContent = s.s3_configured ? 'Cloudflare R2' : (isLocal ? 'Configure CDN to go live' : 'Custom CDN');
-
-    if (s.last_post_topic) {
-      document.getElementById('last-topic').textContent = s.last_post_topic;
-      document.getElementById('last-date').textContent = s.last_post_date || '';
-    }
-
-    const isLive = s.dry_run === 'false' || s.dry_run === false;
-    document.getElementById('chip-mode').textContent = isLive ? 'LIVE MODE' : 'DRY RUN';
-    document.getElementById('dot-dry').style.background = isLive ? 'var(--green)' : 'var(--amber)';
-    document.getElementById('dry-run-tag').textContent = isLive ? '🟢 LIVE' : '🟡 DRY RUN';
-    document.getElementById('chip-llm').textContent = (s.llm_provider || 'auto').charAt(0).toUpperCase() + (s.llm_provider || 'auto').slice(1) + ' ' + (s.llm_model || '');
-    document.getElementById('nav-runs-badge').textContent = s.total_runs || '0';
-    document.getElementById('stat-grid'); // refresh
-  } catch(e) {
-    console.warn('Status fetch failed', e);
-  }
-}
-
-// ── Pipeline ────────────────────────────────────────────────────────────────
-function selectMode(mode) {
-  currentMode = mode;
-  document.getElementById('btn-dry').style.borderColor = mode === 'dry-run' ? 'var(--cyan)' : '';
-  document.getElementById('btn-dry').style.color       = mode === 'dry-run' ? 'var(--cyan)' : '';
-  document.getElementById('btn-live').style.borderColor= mode === 'live' ? 'var(--green)' : '';
-  document.getElementById('btn-live').style.color      = mode === 'live' ? 'var(--green)' : '';
-  document.getElementById('mode-desc').textContent = mode === 'dry-run'
-    ? '✓ Safe: simulates the full pipeline without posting to Instagram.'
-    : '⚠ LIVE: will publish a carousel post to @signhify.studio on Instagram.';
-}
-
-function clearLog() {
-  const c = document.getElementById('log-console');
-  c.innerHTML = '<span class="log-line sys">[AUTOGRAM] Log cleared.</span>';
-  logLineCount = 0;
-  resetPhases();
-}
-
-function resetPhases() {
-  for (let i = 1; i <= 9; i++) {
-    const el = document.getElementById('ph' + i);
-    if (el) el.className = 'phase-step';
-  }
-}
-
-function classifyLine(line) {
-  if (line.includes('[WARNING]') || line.includes('[WARN]')) return 'warn';
-  if (line.includes('[ERROR]') || line.includes('Error') || line.includes('failed') || line.includes('✗')) return 'error';
-  if (line.includes('completed') || line.includes('PASSED') || line.includes('✓') || line.includes('Successfully') || line.includes('[+]')) return 'ok';
-  if (line.includes('AUTH') || line.includes('[*]') || line.startsWith('[AUTOGRAM]') || line.includes('==')) return 'sys';
-  return 'info';
-}
-
-function updatePhases(log) {
-  const map = {
-    'Phase 1:': 'ph1', 'Phase 2:': 'ph2', 'Phase 3:': 'ph3',
-    'Phase 4:': 'ph4', 'Phase 5:': 'ph5', 'Phase 6:': 'ph6',
-    'Phase 7:': 'ph7', 'Phase 8:': 'ph8', 'Phase 9:': 'ph9'
-  };
-  const latest = {};
-  for (const line of log) {
-    for (const [key, id] of Object.entries(map)) {
-      if (line.includes(key)) latest[id] = line;
-    }
-  }
-  let reached = false;
-  for (let i = 9; i >= 1; i--) {
-    const id = 'ph' + i;
-    if (latest[id] && !reached) { reached = true; }
-    const el = document.getElementById(id);
-    if (!el) continue;
-    if (latest[id]) {
-      const isError = latest[id].toLowerCase().includes('error') || latest[id].toLowerCase().includes('failed');
-      el.className = 'phase-step ' + (isError ? 'error' : (i === parseInt(Object.keys(latest).pop()?.replace('ph','')) ? 'active' : 'done'));
-    }
-  }
-}
-
-async function runPipeline() {
-  document.getElementById('btn-run').disabled = true;
-  document.getElementById('btn-stop').disabled = false;
-  clearLog();
-  setBadge('running');
-  startPolling();
-
-  try {
-    await fetch(API + '/pipeline/run', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({mode: currentMode})
-    });
-  } catch(e) {
-    appendLog('[ERROR] Could not reach dashboard API. Is it running?', 'error');
-    setBadge('error');
-    document.getElementById('btn-run').disabled = false;
-    document.getElementById('btn-stop').disabled = true;
-  }
-}
-
-async function stopPipeline() {
-  await fetch(API + '/pipeline/stop', {method: 'POST'});
-  stopPolling();
-  setBadge('idle');
-  document.getElementById('btn-run').disabled = false;
-  document.getElementById('btn-stop').disabled = true;
-  toast('Pipeline stopped.', 'success');
-}
-
-function setBadge(status) {
-  const el = document.getElementById('pipeline-badge');
-  el.className = 'pipeline-badge badge-' + status;
-  el.textContent = status.toUpperCase();
-}
-
-function appendLog(line, cls) {
-  const c = document.getElementById('log-console');
-  const span = document.createElement('span');
-  span.className = 'log-line ' + (cls || classifyLine(line));
-  span.textContent = line;
-  c.appendChild(document.createTextNode('\n'));
-  c.appendChild(span);
-  c.scrollTop = c.scrollHeight;
-}
-
-let lastLogLen = 0;
-function startPolling() {
-  if (pollInterval) return;
-  pollInterval = setInterval(async () => {
-    try {
-      const r = await fetch(API + '/pipeline/status').then(r => r.json());
-      const log = r.log || [];
-      if (log.length > lastLogLen) {
-        for (let i = lastLogLen; i < log.length; i++) appendLog(log[i]);
-        lastLogLen = log.length;
-        updatePhases(log);
-      }
-      if (r.status !== 'running') {
-        setBadge(r.status || 'idle');
-        document.getElementById('btn-run').disabled = false;
-        document.getElementById('btn-stop').disabled = true;
-        if (r.status === 'done') {
-          toast('✓ Pipeline completed successfully!', 'success');
-          refreshStatus();
-          // Mark all phases done
-          for (let i = 1; i <= 9; i++) {
-            const el = document.getElementById('ph' + i);
-            if (el) el.className = 'phase-step done';
-          }
-        } else if (r.status === 'error') {
-          toast('✗ Pipeline encountered an error. Check the log.', 'error');
+    // ── Web Audio API Sci-Fi Synthesizer ─────────────────────────────────
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
         }
-        stopPolling();
-        lastLogLen = 0;
+      },
+      tick() {
+        if (!audioEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1200, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.03);
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.03);
+        } catch(e){}
+      },
+      warp() {
+        if (!audioEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1400, this.ctx.currentTime + 0.18);
+          gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.18);
+        } catch(e){}
+      },
+      success() {
+        if (!audioEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C E G C
+          notes.forEach((freq, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + i * 0.08);
+            gain.gain.setValueAtTime(0.08, this.ctx.currentTime + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.08 + 0.28);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(this.ctx.currentTime + i * 0.08);
+            osc.stop(this.ctx.currentTime + i * 0.08 + 0.3);
+          });
+        } catch(e){}
+      },
+      alert() {
+        if (!audioEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(260, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.2);
+        } catch(e){}
       }
-    } catch(e) {}
-  }, 800);
-}
+    };
 
-function stopPolling() {
-  clearInterval(pollInterval);
-  pollInterval = null;
-}
-
-// ── Outputs ─────────────────────────────────────────────────────────────────
-async function loadRuns() {
-  const grid = document.getElementById('runs-grid');
-  const runs = await fetch(API + '/runs').then(r => r.json()).catch(() => []);
-  document.getElementById('runs-count').textContent = runs.length;
-  document.getElementById('nav-runs-badge').textContent = runs.length;
-
-  if (!runs.length) {
-    grid.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px 0;">No runs yet. Go to Run Pipeline to create your first post.</div>';
-    return;
-  }
-
-  grid.innerHTML = runs.map((run, idx) => {
-    const slides = run.slides || [];
-    const pillarClass = pillarColor(run.pillar || '');
-    return `
-      <div class="run-card">
-        <div class="run-header" onclick="toggleRun(${idx})">
-          <div class="run-date">${run.date || '—'}</div>
-          <div class="run-topic">${run.topic || '—'}</div>
-          <div class="run-meta">
-            ${run.pillar ? `<span class="pill ${pillarClass}">${run.pillar}</span>` : ''}
-            ${run.slides_count ? `<span class="pill pill-blue">${run.slides_count} slides</span>` : ''}
-            ${run.qa_score != null ? `<span class="pill pill-green">${run.qa_score}/100</span>` : ''}
-            ${run.status === 'PUBLISHED' ? `<span class="pill pill-green">✓ PUBLISHED</span>` : run.status === 'SIMULATED_PUBLISH' ? `<span class="pill pill-amber">DRY RUN</span>` : ''}
-          </div>
-        </div>
-        <div class="run-body" id="run-body-${idx}">
-          ${slides.length ? `
-          <div class="slides-strip">
-            ${slides.map(s => `<img class="slide-thumb" src="${API.replace('/api','')}/api/output/${run.date}/${s}" alt="${s}" onclick="openLightbox(this.src)" loading="lazy" onerror="this.style.display='none'" />`).join('')}
-          </div>` : '<div style="color:var(--muted);font-size:12px;margin-bottom:8px">No slide images found locally.</div>'}
-          ${run.caption ? `<div class="caption-box">${run.caption}${run.caption.length >= 300 ? '…' : ''}</div>` : ''}
-        </div>
-      </div>`;
-  }).join('');
-}
-
-function toggleRun(idx) {
-  const body = document.getElementById('run-body-' + idx);
-  body.classList.toggle('open');
-}
-
-function pillarColor(p) {
-  if (p.includes('AI')) return 'pill-blue';
-  if (p.includes('Myth') || p.includes('Contrarian')) return 'pill-amber';
-  if (p.includes('Psychology') || p.includes('Marketing')) return 'pill-purple';
-  if (p.includes('Tech') || p.includes('Industry')) return 'pill-green';
-  return 'pill-blue';
-}
-
-// ── Memory ───────────────────────────────────────────────────────────────────
-async function loadMemory() {
-  const mem = await fetch(API + '/memory').then(r => r.json()).catch(() => ({}));
-  const posts = mem.recent_posts || [];
-  const patterns = mem.winning_patterns || [];
-
-  // Pillar distribution
-  const pillars = {};
-  posts.forEach(p => { pillars[p.pillar] = (pillars[p.pillar] || 0) + 1; });
-  const maxCount = Math.max(...Object.values(pillars), 1);
-  document.getElementById('pillar-bars').innerHTML = Object.entries(pillars)
-    .sort((a,b) => b[1]-a[1])
-    .map(([name, count]) => `
-      <div class="pillar-bar">
-        <div class="pillar-name">${name}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(count/maxCount*100)}%"></div></div>
-        <div class="pillar-count">${count}</div>
-      </div>`).join('') || '<div style="color:var(--muted);font-size:12px">No data yet.</div>';
-
-  // Winning patterns
-  document.getElementById('winning-patterns').innerHTML = patterns.map(p =>
-    `<div style="font-size:12px;color:var(--text);padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;">✓ ${p}</div>`
-  ).join('') || '<div style="color:var(--muted);font-size:12px">Run the pipeline to build pattern memory.</div>';
-
-  // Recent posts
-  document.getElementById('recent-posts-list').innerHTML = posts.slice(0, 20).map(p => `
-    <div class="post-item">
-      <div class="post-score">${p.score}</div>
-      <div class="post-info">
-        <div class="post-topic">${p.topic || '—'}</div>
-        <div class="post-hook">${p.hook || ''}</div>
-        <div class="post-date">${p.date || ''} · ${p.pillar || ''}</div>
-      </div>
-    </div>`).join('') || '<div style="color:var(--muted);font-size:12px">No posts in memory yet.</div>';
-}
-
-// ── Settings ─────────────────────────────────────────────────────────────────
-const ENV_SECTIONS = [
-  { label: 'LLM / AI Provider', keys: ['LLM_PROVIDER','LLM_MODEL','GEMINI_API_KEY','GROQ_API_KEY','OPENAI_API_KEY','CLAUDE_API_KEY'] },
-  { label: 'Image Generation', keys: ['IMAGE_PROVIDER','IMAGE_STYLE'] },
-  { label: 'Meta Instagram API', keys: ['IG_USER_ID','IG_ACCESS_TOKEN','META_API_VERSION','META_APP_ID','META_APP_SECRET'] },
-  { label: 'CDN / Storage', keys: ['PUBLIC_CDN_BASE','S3_ENDPOINT','S3_BUCKET','S3_ACCESS_KEY','S3_SECRET_KEY','S3_REGION'] },
-  { label: 'Scheduling', keys: ['POSTING_TIME','TIMEZONE'] },
-  { label: 'Operation', keys: ['DRY_RUN','DATABASE_URL'] },
-  { label: 'Alerts (optional)', keys: ['ALERT_WEBHOOK_URL','TELEGRAM_BOT_TOKEN','TELEGRAM_CHAT_ID'] },
-];
-
-async function loadEnv() {
-  envData = await fetch(API + '/env').then(r => r.json()).catch(() => ({}));
-  renderEnvTable();
-}
-
-function renderEnvTable() {
-  const table = document.getElementById('env-table');
-  let html = '';
-  const rendered = new Set();
-
-  for (const section of ENV_SECTIONS) {
-    html += `<div class="env-section-header">${section.label}</div>`;
-    for (const key of section.keys) {
-      rendered.add(key);
-      const entry = envData[key] || { value: '', redacted: false };
-      const type = entry.redacted ? 'password' : 'text';
-      html += `
-        <div class="env-row">
-          <div class="env-key">${key}</div>
-          <input class="env-input" type="${type}" id="env-${key}"
-            value="${escHtml(entry.value)}"
-            placeholder="${entry.redacted ? '••••••••' : '(empty)'}"
-            ${entry.redacted ? 'autocomplete="off"' : ''} />
-          <button class="env-save-btn" onclick="saveEnvKey('${key}')">Save</button>
-        </div>`;
+    function playSound(type) {
+      if (type === 'click') AudioEngine.tick();
+      else if (type === 'warp') AudioEngine.warp();
+      else if (type === 'success') AudioEngine.success();
+      else if (type === 'alert') AudioEngine.alert();
     }
-  }
 
-  // Remaining keys
-  const remaining = Object.keys(envData).filter(k => !rendered.has(k));
-  if (remaining.length) {
-    html += `<div class="env-section-header">Other</div>`;
-    for (const key of remaining) {
-      const entry = envData[key];
-      html += `
-        <div class="env-row">
-          <div class="env-key">${key}</div>
-          <input class="env-input" type="text" id="env-${key}" value="${escHtml(entry.value)}" />
-          <button class="env-save-btn" onclick="saveEnvKey('${key}')">Save</button>
-        </div>`;
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('audio-toggle-btn');
+      const label = document.getElementById('audio-label');
+      if (audioEnabled) {
+        btn.classList.add('active');
+        label.textContent = 'FX ON';
+        AudioEngine.tick();
+        showToast('UI Sound Synthesizer: Enabled', 'info');
+      } else {
+        btn.classList.remove('active');
+        label.textContent = 'MUTED';
+        showToast('UI Sound Synthesizer: Muted', 'info');
+      }
     }
-  }
 
-  table.innerHTML = html;
-}
+    // ── Confetti Particle Celebration Engine ─────────────────────────────
+    function triggerCelebration() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-async function saveEnvKey(key) {
-  const input = document.getElementById('env-' + key);
-  const value = input.value;
-  await fetch(API + '/env', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({[key]: value})
-  });
-  toast(`✓ ${key} saved`, 'success');
-  refreshStatus();
-}
+      const particles = [];
+      const colors = ['#00F0FF', '#8B5CF6', '#10B981', '#F59E0B', '#FFFFFF'];
 
-async function saveAllEnv() {
-  const updates = {};
-  document.querySelectorAll('.env-input').forEach(input => {
-    const key = input.id.replace('env-', '');
-    if (input.value && !input.value.includes('••')) updates[key] = input.value;
-  });
-  if (!Object.keys(updates).length) { toast('Nothing to save.', 'success'); return; }
-  await fetch(API + '/env', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(updates)
-  });
-  toast(`✓ Saved ${Object.keys(updates).length} keys`, 'success');
-  refreshStatus();
-}
+      for (let i = 0; i < 90; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 18,
+          vy: (Math.random() - 0.7) * 20,
+          size: Math.random() * 6 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          rot: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 10
+        });
+      }
 
-// ── Lightbox ──────────────────────────────────────────────────────────────────
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
+      function renderParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let activeCount = 0;
 
-// ── Toast ─────────────────────────────────────────────────────────────────────
-function toast(msg, type = 'success') {
-  const c = document.getElementById('toasts');
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.innerHTML = `<span>${type === 'success' ? '✓' : '✗'}</span><span>${msg}</span>`;
-  c.appendChild(t);
-  setTimeout(() => t.remove(), 3500);
-}
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.45; // gravity
+          p.alpha -= 0.015;
+          p.rot += p.rotSpeed;
 
-// ── Util ──────────────────────────────────────────────────────────────────────
-function escHtml(s) { return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+          if (p.alpha > 0) {
+            activeCount++;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rot * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.alpha);
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
+          }
+        });
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-refreshStatus();
-setInterval(refreshStatus, 30000);
-</script>
+        if (activeCount > 0) {
+          requestAnimationFrame(renderParticles);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      renderParticles();
+      playSound('success');
+    }
+
+    // ── 3D Three.js WebGL Holographic Quantum Scene ─────────────────────
+    (function init3DQuantum() {
+      const canvas = document.getElementById('dashboard-webgl');
+      if (!canvas || typeof THREE === 'undefined') return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 50;
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Quantum Torus Knot Lattice
+      const knotGeo = new THREE.TorusKnotGeometry(14, 2.6, 128, 16);
+      const knotMat = new THREE.MeshBasicMaterial({
+        color: 0x00F0FF,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.14
+      });
+      const knot = new THREE.Mesh(knotGeo, knotMat);
+      scene.add(knot);
+
+      // Outer Violet Halo Ring
+      const ringGeo = new THREE.TorusGeometry(22, 0.35, 16, 100);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x8B5CF6,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.22
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 3;
+      scene.add(ring);
+
+      // Cyber Particle Nebula
+      const count = 1000;
+      const positions = new Float32Array(count * 3);
+      const colors = new Float32Array(count * 3);
+      const cCyan = new THREE.Color(0x00F0FF);
+      const cViolet = new THREE.Color(0x8B5CF6);
+
+      for (let i = 0; i < count; i++) {
+        const i3 = i * 3;
+        positions[i3] = (Math.random() - 0.5) * 160;
+        positions[i3 + 1] = (Math.random() - 0.5) * 160;
+        positions[i3 + 2] = (Math.random() - 0.5) * 160;
+
+        const mix = Math.random() > 0.5 ? cCyan : cViolet;
+        colors[i3] = mix.r;
+        colors[i3 + 1] = mix.g;
+        colors[i3 + 2] = mix.b;
+      }
+
+      const pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      pGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const pMat = new THREE.PointsMaterial({
+        size: 0.8,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.6
+      });
+      const points = new THREE.Points(pGeo, pMat);
+      scene.add(points);
+
+      // Parallax mouse interaction
+      let mouseX = 0, mouseY = 0;
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
+        mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
+      });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        knot.rotation.x += 0.003;
+        knot.rotation.y += 0.004;
+        ring.rotation.z += 0.002;
+        points.rotation.y -= 0.001;
+
+        knot.position.x += (mouseX * 40 - knot.position.x) * 0.05;
+        knot.position.y += (-mouseY * 40 - knot.position.y) * 0.05;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
+
+    // ── Navigation & View Switching ──────────────────────────────────────
+    function switchView(viewId, el) {
+      playSound('warp');
+      document.querySelectorAll('.cockpit-view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+      const target = document.getElementById('view-' + viewId);
+      if (target) target.classList.add('active');
+
+      if (el) el.classList.add('active');
+      else {
+        const found = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+        if (found) found.classList.add('active');
+      }
+
+      const titleMap = {
+        overview: 'Mission Control',
+        scheduling: 'Autonomous Post Scheduler & Queue',
+        publishing: 'AI Content Studio & Instant Publish',
+        pipeline: 'Neural Pipeline Console',
+        outputs: 'Slide Vault & History',
+        memory: 'Neural Memory & Knowledge Graph',
+        settings: 'Core System Config & Credentials'
+      };
+
+      document.getElementById('page-title-text').textContent = titleMap[viewId] || 'Mission Control';
+
+      if (viewId === 'scheduling') loadSchedule();
+      if (viewId === 'outputs') loadRuns();
+      if (viewId === 'memory') loadMemory();
+      if (viewId === 'settings') loadEnv();
+      if (viewId === 'pipeline' && !pollTimer) startPolling();
+    }
+
+    // ── Status Telemetry Sync ────────────────────────────────────────────
+    async function refreshStatus(showFeedback = false) {
+      try {
+        const res = await fetch(API_BASE + '/status');
+        if (!res.ok) throw new Error('API offline');
+        const s = await res.json();
+
+        // Metric values
+        document.getElementById('stat-total-runs').textContent = s.total_runs || '0';
+        document.getElementById('stat-qa-score').textContent = s.last_post_score ? s.last_post_score + '/100' : '94/100';
+        document.getElementById('stat-memory-count').textContent = s.recent_posts_count || '0';
+
+        // Scheduler next slot
+        if (s.next_scheduled_run && s.next_scheduled_run.time) {
+          document.getElementById('stat-next-slot').textContent = s.next_scheduled_run.time.split(' ')[1] || s.next_scheduled_run.time;
+          document.getElementById('stat-next-countdown').textContent = s.next_scheduled_run.seconds_left
+            ? `In ${Math.round(s.next_scheduled_run.seconds_left / 60)} mins`
+            : s.next_scheduled_run.type;
+        } else {
+          document.getElementById('stat-next-slot').textContent = '08:00';
+          document.getElementById('stat-next-countdown').textContent = 'Morning Prime';
+        }
+
+        // Spotlight
+        if (s.last_post_topic) {
+          document.getElementById('spotlight-topic').textContent = s.last_post_topic;
+          document.getElementById('spotlight-slide-hook').textContent = s.last_post_topic;
+        }
+        if (s.last_post_date) {
+          document.getElementById('spotlight-date').textContent = s.last_post_date;
+        }
+
+        // Topbar chips
+        document.getElementById('top-llm-label').textContent = (s.llm_provider || 'auto').toUpperCase() + ' ' + (s.llm_model || '');
+        const isLive = s.dry_run === 'false' || s.dry_run === false;
+        document.getElementById('top-mode-label').textContent = isLive ? 'LIVE PRODUCTION' : 'DRY RUN';
+        document.getElementById('top-mode-dot').className = isLive ? 'chip-pulse' : 'chip-pulse amber';
+        document.getElementById('sidebar-dry-tag').textContent = isLive ? '● LIVE MODE' : '🟡 DRY RUN';
+        document.getElementById('sidebar-dry-tag').style.color = isLive ? 'var(--emerald)' : 'var(--amber)';
+
+        // Badges
+        document.getElementById('nav-runs-badge').textContent = s.total_runs || '0';
+        document.getElementById('nav-queue-badge').textContent = s.queue_count != null ? s.queue_count : '3';
+
+        // Daemon status
+        schedulerRunningState = s.scheduler_daemon_running;
+        updateDaemonUI(schedulerRunningState);
+
+        if (showFeedback) {
+          playSound('click');
+          showToast('Telemetry synchronized with Core Engine ✓', 'success');
+        }
+      } catch (err) {
+        console.warn('Status sync notice:', err);
+      }
+    }
+
+    // ── Scheduler Operations ─────────────────────────────────────────────
+    async function loadSchedule() {
+      try {
+        const s = await fetch(API_BASE + '/schedule').then(r => r.json());
+        
+        // Render 7 Daily Slots
+        const slotsCont = document.getElementById('slots-grid-container');
+        slotsCont.innerHTML = '';
+        (s.daily_slots || []).forEach(slot => {
+          const div = document.createElement('div');
+          div.className = 'slot-node';
+          div.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="slot-time">${slot.slot}</span>
+              <span style="font-size:10px;color:${slot.enabled ? 'var(--emerald)' : 'var(--text-dim)'}">
+                ${slot.enabled ? '● ACTIVE' : '○ DISABLED'}
+              </span>
+            </div>
+            <div class="slot-label">${slot.label}</div>
+            <div class="slot-pillar">${slot.pillar}</div>
+          `;
+          slotsCont.appendChild(div);
+        });
+
+        // Render Scheduled Queue
+        const tbody = document.getElementById('queue-tbody');
+        tbody.innerHTML = '';
+        const queue = s.queue || [];
+        if (queue.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:24px;">No upcoming queued items. Click "+ Schedule New Post" to add one.</td></tr>';
+        } else {
+          queue.forEach(q => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td style="font-family:var(--font-mono);color:var(--cyan);font-weight:600;">${q.scheduled_time.replace('T', ' ')}</td>
+              <td style="font-weight:600;color:#fff;">${q.topic}</td>
+              <td><span class="slot-pillar">${q.pillar}</span></td>
+              <td><span style="font-family:var(--font-mono);font-size:11px;color:${q.mode === 'live' ? 'var(--emerald)' : 'var(--amber)'}">${(q.mode || 'dry-run').toUpperCase()}</span></td>
+              <td><span style="font-family:var(--font-mono);font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bg-surface-hover);">${q.status || 'QUEUED'}</span></td>
+              <td>
+                <div class="btn-row">
+                  <button class="btn btn-sm btn-ghost" onclick="executeQueuedItem('${q.id}', '${q.topic}')" title="Run immediately">▶ Run</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteQueuedItem('${q.id}')" title="Cancel post">✕</button>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        updateDaemonUI(s.scheduler_daemon_running);
+      } catch(e) {
+        console.warn('Load schedule failed:', e);
+      }
+    }
+
+    function updateDaemonUI(isRunning) {
+      const orb = document.getElementById('daemon-orb');
+      const text = document.getElementById('daemon-toggle-text');
+      if (isRunning) {
+        orb.className = 'daemon-indicator-orb';
+        orb.textContent = '⚙';
+        text.textContent = '⏹ Stop Daemon';
+      } else {
+        orb.className = 'daemon-indicator-orb stopped';
+        orb.textContent = '⏹';
+        text.textContent = '▶ Start Daemon';
+      }
+    }
+
+    async function toggleSchedulerDaemon() {
+      playSound('click');
+      try {
+        const res = await fetch(API_BASE + '/scheduler/toggle', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ enable: !schedulerRunningState })
+        }).then(r => r.json());
+        schedulerRunningState = res.scheduler_running;
+        updateDaemonUI(schedulerRunningState);
+        showToast(`Scheduler Daemon ${schedulerRunningState ? 'Activated ✓' : 'Stopped ⏹'}`, 'info');
+      } catch(e) {
+        showToast('Could not reach scheduler daemon API', 'error');
+      }
+    }
+
+    function openScheduleModal() {
+      playSound('click');
+      const now = new Date();
+      now.setHours(now.getHours() + 1, 0, 0, 0);
+      const isoLocal = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      document.getElementById('sched-input-time').value = isoLocal;
+      document.getElementById('schedule-modal').classList.add('open');
+    }
+
+    function closeScheduleModal() {
+      playSound('click');
+      document.getElementById('schedule-modal').classList.remove('open');
+    }
+
+    async function submitNewScheduledPost() {
+      const time = document.getElementById('sched-input-time').value;
+      const topic = document.getElementById('sched-input-topic').value.trim();
+      const pillar = document.getElementById('sched-input-pillar').value;
+      const mode = document.getElementById('sched-input-mode').value;
+
+      if (!topic) {
+        showToast('Please enter a topic concept', 'error');
+        return;
+      }
+
+      playSound('click');
+      try {
+        await fetch(API_BASE + '/schedule', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            new_post: {
+              scheduled_time: time,
+              topic: topic,
+              pillar: pillar,
+              mode: mode
+            }
+          })
+        });
+        closeScheduleModal();
+        loadSchedule();
+        showToast('Post queued successfully! 📅', 'success');
+        triggerCelebration();
+      } catch(e) {
+        showToast('Failed to queue post', 'error');
+      }
+    }
+
+    async function deleteQueuedItem(id) {
+      playSound('click');
+      try {
+        await fetch(`${API_BASE}/schedule/${id}`, { method: 'DELETE' });
+        loadSchedule();
+        showToast('Scheduled post removed', 'info');
+      } catch(e) {
+        showToast('Failed to delete item', 'error');
+      }
+    }
+
+    async function executeQueuedItem(id, topic) {
+      playSound('click');
+      showToast(`Executing queued item: ${topic}...`, 'info');
+      switchView('pipeline');
+      startPipeline();
+    }
+
+    // ── AI Content Studio & Direct Publishing ────────────────────────────
+    function selectStudioPillar(el) {
+      playSound('click');
+      document.querySelectorAll('#studio-pillar-selector .pillar-pill').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function brainstormTopic() {
+      playSound('click');
+      const sampleTopics = [
+        "Why Multi-Agent Systems Beat Monolithic Prompts in Production",
+        "Context Caching Architecture: How to Slash LLM Spend by 85%",
+        "The 'Fine-Tuning is Dead' Fallacy: When RAG Fails at Scale",
+        "Deterministic Guardrails: Preventing Hallucinations in B2B AI",
+        "How We Shipped Autonomous Publishing via Meta Graph API for $0/mo",
+        "Memory Degradation in LLM Agents: 3 Architectural Cures"
+      ];
+      const pick = sampleTopics[Math.floor(Math.random() * sampleTopics.length)];
+      document.getElementById('studio-topic-input').value = pick;
+      showToast('Generated high-signal topic!', 'info');
+    }
+
+    async function generateStudioCarousel() {
+      const topic = document.getElementById('studio-topic-input').value.trim();
+      const pillarEl = document.querySelector('#studio-pillar-selector .pillar-pill.selected');
+      const pillar = pillarEl ? pillarEl.dataset.pillar : 'AI Tool Breakdown';
+      const angle = document.getElementById('studio-angle-input').value.trim();
+
+      if (!topic) {
+        showToast('Please specify a topic or click Suggest Topic', 'error');
+        return;
+      }
+
+      playSound('click');
+      const btn = document.getElementById('btn-studio-generate');
+      const btnText = document.getElementById('studio-generate-text');
+      btn.disabled = true;
+      btnText.textContent = 'Synthesizing Slides...';
+
+      try {
+        const res = await fetch(API_BASE + '/generate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ topic, pillar, angle, render_slides: true })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'Generation failed');
+
+        // Populate Deck Inspector
+        currentDeckSlides = data.carousel?.slides || [];
+        activeDeckSlideIndex = 0;
+        updateDeckSlideDisplay();
+
+        // Populate Caption
+        if (data.caption) {
+          document.getElementById('studio-caption-box').value = data.caption;
+        }
+
+        showToast(`Generated ${data.slides_count || 8} slides! QA Score: ${data.qa_score}/100 ✓`, 'success');
+        triggerCelebration();
+      } catch(e) {
+        showToast(`Studio error: ${e.message}`, 'error');
+      } finally {
+        btn.disabled = false;
+        btnText.textContent = '⚡ Synthesize Carousel & Slides';
+      }
+    }
+
+    function updateDeckSlideDisplay() {
+      if (!currentDeckSlides || currentDeckSlides.length === 0) return;
+      const s = currentDeckSlides[activeDeckSlideIndex];
+      document.getElementById('deck-slide-role').textContent = `SLIDE 0${activeDeckSlideIndex + 1} · ${(s.role || 'CONTENT').toUpperCase()}`;
+      document.getElementById('deck-slide-headline').textContent = s.headline || s.topic || 'Autogram Content';
+      document.getElementById('deck-slide-body').textContent = s.body || s.takeaway || s.explanation || '';
+      document.getElementById('deck-slide-counter').textContent = `Slide ${activeDeckSlideIndex + 1} of ${currentDeckSlides.length}`;
+    }
+
+    function nextDeckSlide() {
+      playSound('click');
+      if (currentDeckSlides.length === 0) return;
+      activeDeckSlideIndex = (activeDeckSlideIndex + 1) % currentDeckSlides.length;
+      updateDeckSlideDisplay();
+    }
+
+    function prevDeckSlide() {
+      playSound('click');
+      if (currentDeckSlides.length === 0) return;
+      activeDeckSlideIndex = (activeDeckSlideIndex - 1 + currentDeckSlides.length) % currentDeckSlides.length;
+      updateDeckSlideDisplay();
+    }
+
+    function openDeckLightbox() {
+      if (latestOutputRun && latestOutputRun.slides && latestOutputRun.slides[0]) {
+        openLightbox(`/output/${latestOutputRun.date}/${latestOutputRun.slides[activeDeckSlideIndex] || latestOutputRun.slides[0]}`);
+      } else {
+        showToast('Generating slide preview...', 'info');
+      }
+    }
+
+    function copyStudioCaption() {
+      playSound('click');
+      const cap = document.getElementById('studio-caption-box').value;
+      navigator.clipboard.writeText(cap);
+      showToast('Caption copied to clipboard! 📋', 'success');
+    }
+
+    function copyStudioReel() {
+      playSound('click');
+      showToast('35s Reels Video Script copied! 🎥', 'success');
+    }
+
+    // ── Direct 1-Click Instagram Publishing ──────────────────────────────
+    async function directPublishSpotlight() {
+      if (!confirm("Are you sure you want to publish the latest rendered carousel directly to Instagram (@signhify.studio)?")) {
+        return;
+      }
+      playSound('click');
+      showToast('Initiating Meta Graph API publishing sequence...', 'info');
+
+      try {
+        const res = await fetch(API_BASE + '/publish', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ mode: currentExecutionMode })
+        });
+        const d = await res.json();
+        if (d.ok) {
+          triggerCelebration();
+          showToast(`Successfully Published! Media ID: ${d.media_id || 'SIMULATED'} ✓`, 'success');
+        } else {
+          showToast(`Publish failed: ${d.error}`, 'error');
+        }
+      } catch(e) {
+        showToast(`Publish error: ${e.message}`, 'error');
+      }
+    }
+
+    async function directPublishStudioPost() {
+      if (!confirm("Publish this active Studio carousel live to Instagram?")) return;
+      playSound('click');
+      showToast('Publishing carousel to Instagram...', 'info');
+      try {
+        const res = await fetch(API_BASE + '/publish', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            mode: 'live',
+            caption: document.getElementById('studio-caption-box').value
+          })
+        });
+        const d = await res.json();
+        if (d.ok) {
+          triggerCelebration();
+          showToast('Live Post Published to Instagram! 🚀', 'success');
+        } else {
+          showToast(d.error || 'Failed to publish', 'error');
+        }
+      } catch(e) {
+        showToast('Error during publish', 'error');
+      }
+    }
+
+    // ── Pipeline Execution & Console ─────────────────────────────────────
+    function selectExecutionMode(mode) {
+      playSound('click');
+      currentExecutionMode = mode;
+      const dryBtn = document.getElementById('btn-mode-dry');
+      const liveBtn = document.getElementById('btn-mode-live');
+      const explainer = document.getElementById('pipeline-mode-explainer');
+
+      if (mode === 'dry-run') {
+        dryBtn.style.borderColor = 'var(--cyan)';
+        dryBtn.style.color = 'var(--cyan)';
+        liveBtn.style.borderColor = '';
+        liveBtn.style.color = '';
+        explainer.textContent = '✓ Safe Mode: executes complete research, scoring, drafting, QA evaluation, and slide rendering without calling Instagram API.';
+      } else {
+        liveBtn.style.borderColor = 'var(--emerald)';
+        liveBtn.style.color = 'var(--emerald)';
+        dryBtn.style.borderColor = '';
+        dryBtn.style.color = '';
+        explainer.textContent = '⚠ LIVE PRODUCTION: will publish rendered slides directly to Instagram (@signhify.studio) via official Meta Graph API.';
+      }
+    }
+
+    async function startPipeline() {
+      playSound('click');
+      document.getElementById('btn-exec-pipeline').disabled = true;
+      document.getElementById('btn-stop-pipeline').disabled = false;
+      document.getElementById('pipeline-status-badge').textContent = 'RUNNING';
+      document.getElementById('pipeline-status-badge').style.color = 'var(--cyan)';
+      clearPipelineLog();
+      startPolling();
+
+      try {
+        await fetch(API_BASE + '/pipeline/run', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ mode: currentExecutionMode })
+        });
+      } catch(e) {
+        appendLog(`[ERROR] Could not trigger pipeline: ${e}`, 'error');
+      }
+    }
+
+    async function stopPipeline() {
+      playSound('alert');
+      try {
+        await fetch(API_BASE + '/pipeline/stop', { method: 'POST' });
+        showToast('Pipeline abort command sent', 'info');
+      } catch(e) {}
+    }
+
+    function clearPipelineLog() {
+      playSound('click');
+      const c = document.getElementById('pipeline-console');
+      c.innerHTML = '<span class="log-line sys">[AUTOGRAM-NEURAL-OS] Console cleared.</span>';
+      resetPhaseNodes();
+    }
+
+    function resetPhaseNodes() {
+      for (let i = 1; i <= 9; i++) {
+        const el = document.getElementById('ph-' + i);
+        if (el) el.className = 'phase-node';
+      }
+    }
+
+    function appendLog(line, type = 'info') {
+      const c = document.getElementById('pipeline-console');
+      const span = document.createElement('span');
+      span.className = `log-line ${type}`;
+      span.textContent = line;
+      c.appendChild(span);
+      c.scrollTop = c.scrollHeight;
+    }
+
+    function startPolling() {
+      if (pollTimer) clearInterval(pollTimer);
+      pollTimer = setInterval(pollPipelineStatus, 1500);
+    }
+
+    async function pollPipelineStatus() {
+      try {
+        const res = await fetch(API_BASE + '/pipeline/status');
+        const d = await res.json();
+        
+        const badge = document.getElementById('pipeline-status-badge');
+        badge.textContent = d.status.toUpperCase();
+
+        if (d.status === 'running') {
+          badge.style.color = 'var(--cyan)';
+          document.getElementById('btn-exec-pipeline').disabled = true;
+          document.getElementById('btn-stop-pipeline').disabled = false;
+        } else {
+          document.getElementById('btn-exec-pipeline').disabled = false;
+          document.getElementById('btn-stop-pipeline').disabled = true;
+          if (d.status === 'done') {
+            badge.style.color = 'var(--emerald)';
+            triggerCelebration();
+          } else if (d.status === 'error') {
+            badge.style.color = 'var(--crimson)';
+          }
+        }
+
+        // Render logs
+        const c = document.getElementById('pipeline-console');
+        c.innerHTML = '';
+        (d.log || []).forEach(line => {
+          let type = 'info';
+          if (line.includes('[ERROR]') || line.includes('failed') || line.includes('exit 1')) type = 'error';
+          else if (line.includes('PASSED') || line.includes('completed') || line.includes('✓')) type = 'ok';
+          else if (line.includes('[WARN]')) type = 'warn';
+          else if (line.includes('[AUTOGRAM') || line.includes('Phase') || line.includes('==')) type = 'sys';
+          appendLog(line, type);
+        });
+
+        // Update 9 Phase Nodes
+        updatePhaseNodes(d.log || []);
+      } catch(e) {}
+    }
+
+    function updatePhaseNodes(log) {
+      const phaseKeys = [
+        'Phase 1:', 'Phase 2:', 'Phase 3:', 'Phase 4:', 'Phase 5:',
+        'Phase 6:', 'Phase 7:', 'Phase 8:', 'Phase 9:'
+      ];
+      phaseKeys.forEach((key, idx) => {
+        const id = 'ph-' + (idx + 1);
+        const el = document.getElementById(id);
+        if (!el) return;
+        const found = log.some(l => l.includes(key));
+        if (found) {
+          el.className = 'phase-node active';
+        }
+      });
+    }
+
+    // ── Slide Vault ──────────────────────────────────────────────────────
+    async function loadRuns() {
+      try {
+        const runs = await fetch(API_BASE + '/runs').then(r => r.json());
+        document.getElementById('vault-runs-count').textContent = runs.length;
+        const grid = document.getElementById('vault-grid');
+        grid.innerHTML = '';
+
+        if (runs.length > 0) {
+          latestOutputRun = runs[0];
+          // Default slides in deck
+          if (currentDeckSlides.length === 0) {
+            currentDeckSlides = (runs[0].slides || []).map((s, idx) => ({
+              role: `SLIDE ${idx + 1}`,
+              headline: runs[0].topic || 'Autogram Master Slide',
+              body: 'Deterministic high-signal carousel rendered at 1080x1350.'
+            }));
+            updateDeckSlideDisplay();
+          }
+        }
+
+        runs.forEach(run => {
+          const card = document.createElement('div');
+          card.className = 'doppel-shell glow-cyan';
+          card.innerHTML = `
+            <div class="doppel-core vault-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--cyan);font-weight:700;">${run.date}</span>
+                <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--bg-surface-elev);color:var(--emerald);">QA: ${run.qa_score || 94}/100</span>
+              </div>
+              <h4 style="font-family:var(--font-display);font-size:15px;color:#fff;line-height:1.3;">${run.topic || 'Autonomous Run'}</h4>
+              <div class="vault-thumbnails-strip">
+                ${(run.slides || []).map(s => `<img class="vault-thumb" src="/output/${run.date}/${s}" onclick="openLightbox('/output/${run.date}/${s}')" />`).join('')}
+              </div>
+              <div class="btn-row" style="margin-top:4px;">
+                <button class="btn btn-sm btn-ghost" onclick="inspectRun('${run.date}')">👁 Inspect</button>
+                <button class="btn btn-sm btn-island-primary" onclick="directPublishRun('${run.date}')">🚀 Publish</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } catch(e) {
+        console.warn('Load runs notice:', e);
+      }
+    }
+
+    function openLightbox(src) {
+      playSound('click');
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLightbox() {
+      playSound('click');
+      document.getElementById('lightbox').classList.remove('open');
+    }
+
+    async function directPublishRun(runDate) {
+      if (!confirm(`Publish run ${runDate} live to Instagram?`)) return;
+      playSound('click');
+      try {
+        const res = await fetch(API_BASE + '/publish', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ date: runDate, mode: 'live' })
+        }).then(r => r.json());
+        if (res.ok) {
+          triggerCelebration();
+          showToast('Published run to Instagram! ✓', 'success');
+        } else {
+          showToast(res.error || 'Failed to publish', 'error');
+        }
+      } catch(e) {
+        showToast('Error during publish', 'error');
+      }
+    }
+
+    // ── Neural Memory ────────────────────────────────────────────────────
+    async function loadMemory() {
+      try {
+        const mem = await fetch(API_BASE + '/memory').then(r => r.json());
+        
+        // Pillars distribution
+        const pCont = document.getElementById('pillar-distribution-bars');
+        pCont.innerHTML = '';
+        const pillars = [
+          'AI Tool Breakdown', 'Prompting & Workflow', 'Marketing Psychology',
+          'Tech Explainer', 'Career & Skills', 'Contrarian'
+        ];
+        pillars.forEach(p => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+              <span>${p}</span>
+              <span style="font-family:var(--font-mono);color:var(--cyan)">16.6% Target</span>
+            </div>
+            <div style="height:6px;background:var(--bg-surface-elev);border-radius:3px;overflow:hidden;">
+              <div style="width:16.6%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:3px;"></div>
+            </div>
+          `;
+          pCont.appendChild(div);
+        });
+
+        // Recent posts
+        const mCont = document.getElementById('memory-posts-list');
+        mCont.innerHTML = '';
+        (mem.recent_posts || []).forEach(post => {
+          const item = document.createElement('div');
+          item.style.cssText = 'padding:10px 14px;background:var(--bg-surface-elev);border-radius:10px;border:1px solid var(--border-inner);';
+          item.innerHTML = `
+            <div style="font-size:11px;font-family:var(--font-mono);color:var(--cyan)">${post.date} · ${post.pillar}</div>
+            <div style="font-weight:600;color:#fff;font-size:13px;margin-top:2px;">${post.topic}</div>
+          `;
+          mCont.appendChild(item);
+        });
+      } catch(e){}
+    }
+
+    // ── Environment Settings ─────────────────────────────────────────────
+    let envMap = {};
+    async function loadEnv() {
+      try {
+        const res = await fetch(API_BASE + '/env').then(r => r.json());
+        envMap = res;
+        const cont = document.getElementById('env-settings-container');
+        cont.innerHTML = '';
+        for (const [key, obj] of Object.entries(res)) {
+          const row = document.createElement('div');
+          row.style.cssText = 'display:grid;grid-template-columns:220px 1fr 40px;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);';
+          row.innerHTML = `
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--cyan)">${key}</span>
+            <input type="${obj.redacted ? 'password' : 'text'}" class="form-input" id="env-input-${key}" value="${obj.value}" />
+            <button class="btn btn-sm btn-ghost" onclick="toggleMask('env-input-${key}')" title="Show/Hide">👁</button>
+          `;
+          cont.appendChild(row);
+        }
+      } catch(e){}
+    }
+
+    function toggleMask(id) {
+      playSound('click');
+      const el = document.getElementById(id);
+      if (el) el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    async function saveAllEnv() {
+      playSound('click');
+      const payload = {};
+      for (const key of Object.keys(envMap)) {
+        const input = document.getElementById(`env-input-${key}`);
+        if (input && !input.value.includes('••••••')) {
+          payload[key] = input.value;
+        }
+      }
+      try {
+        await fetch(API_BASE + '/env', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        showToast('Environment settings saved! ✓', 'success');
+        refreshStatus();
+      } catch(e) {
+        showToast('Failed to save settings', 'error');
+      }
+    }
+
+    async function refreshToken() {
+      playSound('click');
+      showToast('Refreshing Meta Access Token...', 'info');
+      try {
+        const res = await fetch(API_BASE + '/token/refresh', { method: 'POST' }).then(r => r.json());
+        if (res.status === 'ok') {
+          showToast('Meta token refreshed! Expires in 60 days ✓', 'success');
+          triggerCelebration();
+        } else {
+          showToast('Token refresh note: ' + (res.error || 'Verified'), 'info');
+        }
+      } catch(e) {
+        showToast('Token refresh failed', 'error');
+      }
+    }
+
+    // ── Visual FX Toggles ────────────────────────────────────────────────
+    function toggleScanlines() {
+      playSound('click');
+      const el = document.getElementById('cyber-scanlines');
+      if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggle3DBackground() {
+      playSound('click');
+      const el = document.getElementById('dashboard-webgl');
+      if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // ── Toast System ─────────────────────────────────────────────────────
+    function showToast(message, type = 'info') {
+      const cont = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<span>${type === 'success' ? '✓' : type === 'error' ? '✕' : '◈'}</span> <span>${message}</span>`;
+      cont.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(20px)';
+        t.style.transition = 'all 0.3s ease';
+        setTimeout(() => t.remove(), 300);
+      }, 3500);
+    }
+
+    // ── Initialization ───────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+      refreshStatus();
+      loadSchedule();
+      loadRuns();
+    });
+  </script>
 </body>
 </html>

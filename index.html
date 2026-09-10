@@ -35,13 +35,13 @@
     <div class="hud-topbar">
       <div class="hud-telemetry">
         <span id="hud-auth-badge" class="hud-auth-tag guest-tag"><span class="badge-dot lock"></span> 🔒 CLIENT ACCESS GATED</span>
-        <span><span class="hud-status-dot"></span>CORE ENGINE: ONLINE [v2.4]</span>
+        <a href="dashboard.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 6px;"><span class="hud-status-dot"></span>CORE ENGINE: ONLINE [v2.5] <span style="color:var(--neon-cyan);font-weight:700;">[OPEN DASHBOARD ↗]</span></a>
         <span>META GRAPH API: CONNECTED</span>
         <span>ZERO-TOUCH: ENGAGED</span>
       </div>
-      <div style="display: flex; gap: 16px;">
+      <div style="display: flex; gap: 16px; align-items: center;">
         <span>SYS LATENCY: 18MS</span>
-        <span style="color: var(--neon-cyan);">COST: $0.00 / MO</span>
+        <a href="dashboard.html" style="color: var(--neon-cyan); text-decoration: none; font-weight: 700; font-family: var(--font-mono); font-size: 11px;">⚡ COCKPIT HUD ↗</a>
       </div>
     </div>
 
@@ -53,6 +53,7 @@
         </a>
 
         <ul class="nav-links">
+          <li><a href="dashboard.html" class="nav-link" style="color: var(--neon-cyan); font-weight: 700;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--neon-cyan);box-shadow:0 0 8px var(--neon-cyan);margin-right:6px;"></span>Neural Dashboard</a></li>
           <li><a href="#simulator" class="nav-link">Live Simulator</a></li>
           <li><a href="#architecture" class="nav-link">Architecture</a></li>
           <li><a href="#roi" class="nav-link">ROI Calculator</a></li>
@@ -61,8 +62,11 @@
         </ul>
 
         <div class="nav-actions">
+          <a href="dashboard.html" class="btn btn-primary" style="padding: 10px 18px; font-size: 13px; background: linear-gradient(135deg, #00F0FF, #8B5CF6); color: #04060A; box-shadow: 0 0 20px rgba(0,240,255,0.4); font-weight: 800;">
+            <span>⚡ Mission Cockpit</span>
+          </a>
           <a href="#" id="open-portal-btn" class="btn btn-secondary trigger-portal-modal" style="padding: 10px 18px; font-size: 13px;">
-            <span>⚡ Client Portal & Studio</span>
+            <span>Client Portal</span>
           </a>
           <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot">
             <span>Deploy Autopilot</span>
@@ -91,13 +95,13 @@
         </p>
 
         <div class="hero-cta-group">
-          <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 18px 38px; font-size: 17px;">
+          <a href="dashboard.html" class="btn btn-primary" style="padding: 18px 36px; font-size: 17px; background: linear-gradient(135deg, #00F0FF, #8B5CF6); color: #04060A; box-shadow: 0 0 32px rgba(0, 240, 255, 0.45); font-weight: 800;">
+            <span>Launch Neural Dashboard</span>
+            <span>⚡</span>
+          </a>
+          <a href="#pricing" class="btn btn-secondary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 18px 34px; font-size: 17px;">
             <span>Deploy My Autopilot</span>
             <span>→</span>
-          </a>
-          <a href="#simulator" class="btn btn-secondary" style="padding: 18px 34px; font-size: 17px;">
-            <span>Interactive Live Demo</span>
-            <span>👁</span>
           </a>
         </div>
 
@@ -699,6 +703,21 @@
             <span class="hud-auth-tag owner-tag">👑 OWNER VIP ACCESS ($0.00)</span>
             <button id="studio-logout-btn" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px;">Logout</button>
           </div>
+        </div>
+
+        <!-- Master Mission Control HUD Quick Launcher -->
+        <div style="margin-bottom: 20px; background: linear-gradient(135deg, rgba(0,240,255,0.08), rgba(139,92,246,0.08)); border: 1px solid var(--neon-cyan); border-radius: 14px; padding: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; box-shadow: 0 0 24px rgba(0, 240, 255, 0.15);">
+          <div>
+            <div style="font-weight: 800; font-size: 16px; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <span>⚡ Master Mission Control HUD & Scheduling Matrix Active</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+              Access the full 3D interactive cockpit: 7x daily slot scheduler daemon, 1-click live Meta publishing, 3D slide vault, and anti-repetition memory.
+            </div>
+          </div>
+          <a href="dashboard.html" class="btn btn-primary" style="padding: 12px 24px; font-size: 13px; font-weight: 800; background: linear-gradient(135deg, #00F0FF, #8B5CF6); color: #04060A; box-shadow: 0 0 20px rgba(0,240,255,0.4);">
+            <span>Open Neural Dashboard ↗</span>
+          </a>
         </div>
 
         <!-- Tool 1: Interactive Topic & Carousel Builder -->
