@@ -53,3 +53,31 @@ def test_carousel_rendering(tmp_path):
         assert val["width"] == 1080
         assert val["height"] == 1350
         assert val["format"] in ["JPEG", "JPG"]
+
+def test_all_theme_variants_render(tmp_path):
+    from renderer.render import AVAILABLE_THEMES
+    renderer = CarouselRenderer()
+    
+    for theme in AVAILABLE_THEMES:
+        carousel = {
+            "pillar": "AI Automation",
+            "topic": f"Testing {theme} Theme",
+            "theme": theme,
+            "publication_date": "2026-09-10",
+            "slides": [
+                {
+                    "slide_number": 1,
+                    "layout": "hook",
+                    "headline": f"Theme {theme.upper()} Active",
+                    "body": "Verifying multi-theme dynamic layout."
+                }
+            ]
+        }
+        theme_dir = tmp_path / theme
+        paths = renderer.render_carousel(carousel, theme_dir)
+        assert len(paths) == 1
+        val = validate_image_file(paths[0])
+        assert val["valid"] is True
+        assert val["width"] == 1080
+        assert val["height"] == 1350
+

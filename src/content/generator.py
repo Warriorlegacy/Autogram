@@ -223,6 +223,10 @@ Return ONLY valid JSON.
             if s.get("layout") == "cta":
                 s["trigger_word"] = data["trigger_word"]
 
+        if not data.get("theme"):
+            from renderer.render import resolve_theme
+            data["theme"] = resolve_theme({"pillar": topic.get("pillar", ""), "topic": topic.get("topic", "")})
+
         # Automatically scrub banned marketing clichés
         banned_replacements = {
             "robust": "reliable",

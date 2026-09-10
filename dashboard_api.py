@@ -660,6 +660,7 @@ def api_generate():
     topic_text = data.get("topic", "").strip()
     pillar = data.get("pillar", "AI Tool Breakdown")
     angle = data.get("angle", "")
+    theme = data.get("theme", "auto").strip().lower()
     render_slides = data.get("render_slides", True)
 
     if not topic_text:
@@ -670,7 +671,7 @@ def api_generate():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     with pipeline_lock:
-        pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [STUDIO] Synthesizing custom carousel: '{topic_text}' [{pillar}]...")
+        pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [STUDIO] Synthesizing custom carousel: '{topic_text}' [{pillar}] (Theme: {theme})...")
 
     try:
         from src.content.generator import generator
@@ -683,10 +684,13 @@ def api_generate():
         topic_obj = {
             "topic": topic_text,
             "pillar": pillar,
-            "angle": angle or f"Comprehensive guide to {topic_text}"
+            "angle": angle or f"Comprehensive guide to {topic_text}",
+            "theme": theme if theme != "auto" else None
         }
 
         carousel = generator.generate_carousel(topic_obj, sources)
+        if theme and theme != "auto":
+            carousel["theme"] = theme
         carousel["publication_date"] = today_str
 
         # Fact checking & QA

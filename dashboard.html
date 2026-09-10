@@ -1787,6 +1787,18 @@
                   <input type="text" class="form-input" id="studio-angle-input" placeholder="e.g. How engineering teams cut API spend by 85%" />
                 </div>
 
+                <div class="form-group">
+                  <label class="form-label">Editorial Theme & Font Styling</label>
+                  <select class="form-input" id="studio-theme-select" style="background:var(--bg-surface-elev);color:var(--text-main);border:1px solid var(--border-subtle);padding:10px 14px;border-radius:10px;font-family:var(--font-mono);font-size:13px;width:100%;">
+                    <option value="auto">◈ Auto-Select by Pillar & Topic (Dynamic Rotation)</option>
+                    <option value="blueprint">1. Editorial Blueprint (Warm Cream & Electric Vermilion · Plus Jakarta Sans)</option>
+                    <option value="obsidian">2. Cyber Obsidian Pro (Dark Mode High-Tech · Space Grotesk)</option>
+                    <option value="swiss">3. Swiss Minimalist (Stark Architectural Monochrome & Cobalt · Outfit / DM Sans)</option>
+                    <option value="sage">4. Sage Deep Tech (Sovereign Pine & Forest Emerald · Plus Jakarta Sans)</option>
+                    <option value="crimson">5. Crimson Velocity (Contrarian Newsprint · Space Grotesk)</option>
+                  </select>
+                </div>
+
                 <div class="btn-row" style="margin-top:20px;">
                   <button class="btn btn-island-primary" id="btn-studio-generate" onclick="generateStudioCarousel()">
                     <span id="studio-generate-text">⚡ Synthesize Carousel & Slides</span>
@@ -2625,6 +2637,8 @@
       const pillarEl = document.querySelector('#studio-pillar-selector .pillar-pill.selected');
       const pillar = pillarEl ? pillarEl.dataset.pillar : 'AI Tool Breakdown';
       const angle = document.getElementById('studio-angle-input').value.trim();
+      const themeSelect = document.getElementById('studio-theme-select');
+      const theme = themeSelect ? themeSelect.value : 'auto';
 
       if (!topic) {
         showToast('Please specify a topic or click Suggest Topic', 'error');
@@ -2641,7 +2655,7 @@
         const res = await fetch(API_BASE + '/generate', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ topic, pillar, angle, render_slides: true })
+          body: JSON.stringify({ topic, pillar, angle, theme, render_slides: true })
         });
         const data = await res.json();
         if (!data.ok) throw new Error(data.error || 'Generation failed');

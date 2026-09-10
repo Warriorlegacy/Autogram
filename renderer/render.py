@@ -28,6 +28,31 @@ LAYOUT_TO_TEMPLATE = {
     "cta": "cta.html"
 }
 
+AVAILABLE_THEMES = ["blueprint", "obsidian", "swiss", "sage", "crimson"]
+
+def resolve_theme(carousel_data: dict) -> str:
+    """
+    Intelligently select editorial design theme based on explicit config,
+    content pillar, or topic keywords to maximize visual variety across posts.
+    """
+    requested = (carousel_data.get("theme") or "").lower().strip()
+    if requested in AVAILABLE_THEMES:
+        return requested
+
+    pillar = (carousel_data.get("pillar") or "").lower()
+    topic = (carousel_data.get("topic") or "").lower()
+
+    if any(k in pillar or k in topic for k in ["swarm", "agent", "code", "terminal", "cyber", "pipeline", "stack", "dev"]):
+        return "obsidian"
+    elif any(k in pillar or k in topic for k in ["monochrome", "swiss", "law", "truth", "framework", "career"]):
+        return "swiss"
+    elif any(k in pillar or k in topic for k in ["contrarian", "myth", "cost", "cut", "warning", "fail", "danger", "stop"]):
+        return "crimson"
+    elif any(k in pillar or k in topic for k in ["deep tech", "clean", "calm", "scale", "infrastructure", "founder"]):
+        return "sage"
+    else:
+        return "blueprint"
+
 class CarouselRenderer:
     def __init__(self, brand_profile: dict | None = None):
         self.template_dir = TEMPLATE_DIR
@@ -83,11 +108,14 @@ class CarouselRenderer:
 
         slides = carousel_data.get("slides", [])
         total_slides = len(slides)
+        theme_id = resolve_theme(carousel_data)
         meta = {
             "total_slides": total_slides,
             "pillar": carousel_data.get("pillar", "AI & Technology"),
             "topic": carousel_data.get("topic", ""),
-            "date": carousel_data.get("publication_date", "")
+            "date": carousel_data.get("publication_date", ""),
+            "theme": theme_id,
+            "theme_class": f"theme-{theme_id}"
         }
 
         rendered_paths = []
