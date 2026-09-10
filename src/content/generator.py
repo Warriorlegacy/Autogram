@@ -203,6 +203,26 @@ Return ONLY valid JSON.
         raw_text = resp.json()["choices"][0]["message"]["content"]
         return json.loads(raw_text)
 
+    def _normalize_carousel(self, data: dict, topic: dict) -> dict:
+        """Ensure consistent fields, slide layout roles, and trigger_word for CTA banners."""
+        if not data.get("trigger_word"):
+            for s in data.get("slides", []):
+                if s.get("layout") == "cta" and s.get("trigger_word"):
+                    data["trigger_word"] = s["trigger_word"]
+                    break
+        if not data.get("trigger_word"):
+            t_lower = (topic.get("topic") or "").lower()
+            for cand in ["PROMPTS", "AGENCY", "OUTBOUND", "CONTENT", "STACK", "AGENTS", "DEV", "SYSTEM", "SCALE", "BLUEPRINT"]:
+                if cand.lower() in t_lower:
+                    data["trigger_word"] = cand
+                    break
+            if not data.get("trigger_word"):
+                data["trigger_word"] = "SYSTEM"
+        for s in data.get("slides", []):
+            if s.get("layout") == "cta":
+                s["trigger_word"] = data["trigger_word"]
+        return data
+
     def generate_carousel(self, topic: dict, sources: list[dict]) -> dict:
         """
         Master generation method with multi-provider auto-fallback.
@@ -220,7 +240,7 @@ Return ONLY valid JSON.
         if "gemini" not in self._disabled_providers and (provider in ["auto", "gemini"]) and settings.gemini_api_key and settings.gemini_api_key.strip():
             try:
                 logger.info("Generating carousel with Google Gemini (Free Tier)...")
-                return self.generate_with_gemini(topic, sources)
+                return self._normalize_carousel(self.generate_with_gemini(topic, sources), topic)
             except Exception as e:
                 logger.warning(f"Gemini generation error ({e}). Falling back to next provider.")
                 self._disabled_providers.add("gemini")
@@ -229,7 +249,7 @@ Return ONLY valid JSON.
         if "groq" not in self._disabled_providers and (provider in ["auto", "groq"]) and settings.groq_api_key and settings.groq_api_key.strip():
             try:
                 logger.info("Generating carousel with Groq Cloud (Free Tier)...")
-                return self.generate_with_groq(topic, sources)
+                return self._normalize_carousel(self.generate_with_groq(topic, sources), topic)
             except Exception as e:
                 logger.warning(f"Groq generation error ({e}). Falling back.")
                 self._disabled_providers.add("groq")
@@ -239,7 +259,7 @@ Return ONLY valid JSON.
         if "openrouter" not in self._disabled_providers and (provider in ["auto", "openrouter"]) and openrouter_key:
             try:
                 logger.info("Generating carousel with OpenRouter (Free Tier)...")
-                return self.generate_with_openrouter(topic, sources)
+                return self._normalize_carousel(self.generate_with_openrouter(topic, sources), topic)
             except Exception as e:
                 logger.warning(f"OpenRouter generation error ({e}). Falling back.")
                 self._disabled_providers.add("openrouter")
@@ -248,7 +268,7 @@ Return ONLY valid JSON.
         if "ollama" not in self._disabled_providers and provider in ["ollama", "auto"]:
             try:
                 logger.info(f"Attempting local Ollama generation ({settings.ollama_model})...")
-                return self.generate_with_ollama(topic, sources)
+                return self._normalize_carousel(self.generate_with_ollama(topic, sources), topic)
             except Exception as e:
                 logger.debug(f"Ollama local not reachable: {e}")
                 self._disabled_providers.add("ollama")
@@ -257,13 +277,13 @@ Return ONLY valid JSON.
         if "openai" not in self._disabled_providers and (provider in ["auto", "openai"]) and settings.openai_api_key and settings.openai_api_key.strip():
             try:
                 logger.info("Generating carousel with OpenAI...")
-                return self.generate_with_openai(topic, sources)
+                return self._normalize_carousel(self.generate_with_openai(topic, sources), topic)
             except Exception as e:
                 logger.warning(f"OpenAI generation error ({e}). Falling back.")
                 self._disabled_providers.add("openai")
 
         # 6. Built-In 100% Free Autonomous Knowledge Engine (Guaranteed 0-cost, 0-error, anti-repetition)
         logger.info("Generating carousel using Free Built-In Anti-Repetition Synthesis Engine.")
-        return get_rich_synthesized_carousel(topic, sources)
+        return self._normalize_carousel(get_rich_synthesized_carousel(topic, sources), topic)
 
 generator = ContentGenerator()
