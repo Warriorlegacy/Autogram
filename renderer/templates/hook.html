@@ -34,44 +34,41 @@
       <!-- Centerpiece Visual / Flow Connector Card -->
       <div class="white-card-elevated" style="margin-top: 24px; padding: 28px; display: flex; flex-direction: column; align-items: center; text-align: center;">
         <div class="connector-hub" style="display: flex; align-items: center; justify-content: center; gap: 16px;">
-          <!-- Phone Recording Mockup -->
-          <div style="width: 100px; height: 110px; border: 2.5px solid #111111; border-radius: 18px; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 8px 20px rgba(0,0,0,0.06);">
-            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 800; color: #111111;">VOICE / IDEA</div>
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(224, 90, 54, 0.12); border: 2px solid var(--accent-orange); display: flex; align-items: center; justify-content: center; color: var(--accent-orange); font-size: 11px; font-weight: 900;">REC</div>
-            <div style="font-family: var(--font-mono); font-size: 9px; color: #777;">02:00</div>
+          <!-- Left Lightning Tool Icon -->
+          <div style="background: #FFFFFF; width: 80px; height: 90px; border-radius: 20px; border: 1.5px solid rgba(0,0,0,0.08); box-shadow: 0 10px 24px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 32px; color: var(--accent-orange);">⚡</span>
           </div>
 
           <!-- Dotted Plus Connector -->
           <div style="font-family: var(--font-mono); font-size: 20px; font-weight: 900; color: var(--accent-orange); letter-spacing: 2px;">······ + ······</div>
 
-          <!-- Master AI Tool Card -->
-          <div style="background: #FFFFFF; min-width: 180px; height: 110px; padding: 0 24px; border-radius: 22px; border: 1.5px solid rgba(0,0,0,0.08); box-shadow: 0 14px 32px rgba(0,0,0,0.07); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;">
-            <span style="font-size: 32px; color: var(--accent-orange); line-height: 1;">✳</span>
-            <span style="font-family: var(--font-display); font-size: 24px; font-weight: 800; color: #111111;">Claude</span>
+          <!-- Studio Tool Card -->
+          <div style="background: #FFFFFF; min-width: 170px; height: 90px; padding: 0 24px; border-radius: 20px; border: 1.5px solid rgba(0,0,0,0.08); box-shadow: 0 10px 24px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <span style="font-size: 26px; color: #111111;">⚙</span>
+            <span style="font-family: var(--font-display); font-size: 24px; font-weight: 800; color: #111111;">Studio</span>
           </div>
         </div>
 
-        <div style="width: 100%; border-top: 2px dashed rgba(224, 90, 54, 0.35); margin: 26px 0 22px 0;"></div>
+        <div style="width: 100%; border-top: 1.5px dashed rgba(224, 90, 54, 0.35); margin: 24px 0 20px 0;"></div>
 
         <!-- Social Platform Distribution Grid -->
         <div class="platform-tile-row" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
-          <div class="tile-badge"><div class="platform-tile">📸</div><div class="tile-label">Instagram</div></div>
-          <div class="tile-badge"><div class="platform-tile">▶️</div><div class="tile-label">YouTube</div></div>
-          <div class="tile-badge"><div class="platform-tile">💼</div><div class="tile-label">LinkedIn</div></div>
-          <div class="tile-badge"><div class="platform-tile">🎵</div><div class="tile-label">TikTok</div></div>
-          <div class="tile-badge"><div class="platform-tile">✖️</div><div class="tile-label">X</div></div>
-          <div class="tile-badge"><div class="platform-tile">🧵</div><div class="tile-label">Threads</div></div>
+          <div class="tile-badge"><div class="platform-tile">📸</div><div class="tile-label">INSTAGRAM</div></div>
+          <div class="tile-badge"><div class="platform-tile">▶️</div><div class="tile-label">YOUTUBE</div></div>
+          <div class="tile-badge"><div class="platform-tile">💼</div><div class="tile-label">LINKEDIN</div></div>
+          <div class="tile-badge"><div class="platform-tile">🎵</div><div class="tile-label">TIKTOK</div></div>
+          <div class="tile-badge"><div class="platform-tile">✖️</div><div class="tile-label">X (TWITTER)</div></div>
+          <div class="tile-badge"><div class="platform-tile">🧵</div><div class="tile-label">THREADS</div></div>
         </div>
 
-        <div style="margin-top: 22px; font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #16A34A; display: flex; align-items: center; gap: 8px;">
-          <span style="width: 8px; height: 8px; border-radius: 50%; background: #16A34A; display: inline-block;"></span>
-          ● LIVE DISTRIBUTION
+        <div style="margin-top: 20px; font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #16A34A; display: flex; align-items: center; gap: 8px;">
+          ● 100% AUTOMATED & FREE
         </div>
       </div>
     </main>
 
     <footer class="slide-footer-editorial">
-      <div class="footer-handle-row">{{ brand.footer_text | default('@PIYUSH.GLITCH · @ZERO.CANON · MAKERZZ.SPACE') }}</div>
+      <div class="footer-handle-row">{{ brand.footer_text | default('@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS') }}</div>
       <div class="pagination-dots">
         {% for i in range(1, meta.total_slides + 1) %}
         <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>

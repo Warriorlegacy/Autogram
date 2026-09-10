@@ -44,11 +44,12 @@ class CarouselRenderer:
                     pass
 
         self.brand = brand_profile or {
-            "brand_name": "Autogram AI",
-            "handle": "@piyush.glitch",
+            "brand_name": "Signhify Studio",
+            "handle": "@signhify.studio",
             "watermark": "@SIGNHIFY.STUDIO",
-            "name": "Piyush | AI Automation & Growth Systems",
-            "secondary_links": "@ZERO.CANON · MAKERZZ.SPACE",
+            "name": "Piyush | Growth Systems",
+            "footer_text": "@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS",
+            "sign_off": "My name is Piyush. Stop posting. Start shipping.",
             "colors": {}
         }
         self.css_content = CSS_FILE.read_text(encoding="utf-8") if CSS_FILE.exists() else ""
