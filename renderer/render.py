@@ -35,9 +35,20 @@ class CarouselRenderer:
             loader=FileSystemLoader(str(self.template_dir)),
             autoescape=False
         )
+        if brand_profile is None:
+            brand_file = Path(__file__).parent.parent / "data" / "brand.json"
+            if brand_file.exists():
+                try:
+                    brand_profile = json.loads(brand_file.read_text(encoding="utf-8"))
+                except Exception:
+                    pass
+
         self.brand = brand_profile or {
             "brand_name": "Autogram AI",
-            "handle": "@autogram.ai",
+            "handle": "@piyush.glitch",
+            "watermark": "@SIGNHIFY.STUDIO",
+            "name": "Piyush | AI Automation & Growth Systems",
+            "secondary_links": "@ZERO.CANON · MAKERZZ.SPACE",
             "colors": {}
         }
         self.css_content = CSS_FILE.read_text(encoding="utf-8") if CSS_FILE.exists() else ""
@@ -98,10 +109,10 @@ class CarouselRenderer:
                 html_content = self.render_slide_html(slide, meta)
                 
                 # Render in browser
-                page.set_content(html_content, wait_until="load")
+                page.set_content(html_content, wait_until="domcontentloaded", timeout=15000)
                 
                 # Allow a short moment for fonts if loading from Google Fonts
-                page.wait_for_timeout(300)
+                page.wait_for_timeout(350)
 
                 slide_filename = f"slide_{slide['slide_number']:02d}.jpg"
                 slide_filepath = out_path / slide_filename

@@ -23,19 +23,31 @@
       font-weight: 900;
       font-size: 20px;
     }
+    .callout-badge-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--accent-orange);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
   <div class="slide-canvas">
     <header class="slide-header">
       <div class="header-copyright">© 2026</div>
-      <div class="header-watermark">@SIGNHIFY.STUDIO</div>
+      <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
       {% if slide.step_label %}
-      <div class="step-badge">{{ slide.step_label }}</div>
+      <div class="callout-badge-pill">{{ slide.step_label }}</div>
       {% else %}
       <div class="sub-eyebrow">{{ slide.eyebrow | default('PARADIGM SHIFT') }}</div>
       {% endif %}
@@ -48,7 +60,7 @@
 
       <div class="comparison-container">
         <div class="comparison-col bad">
-          <div class="comparison-col-header">✕ The Manual / Expensive Way</div>
+          <div class="comparison-col-header">✕ CREATE (Manual Grind)</div>
           <div class="comparison-item">
             <span class="comp-bullet-bad">✕</span>
             <div><b>$5,000/mo</b> agency retainer or expensive SaaS stacks</div>
@@ -59,38 +71,38 @@
           </div>
           <div class="comparison-item">
             <span class="comp-bullet-bad">✕</span>
-            <div>Irregular posting cadence hurting algorithmic distribution</div>
+            <div>1 post a day with low leverage and burnout</div>
           </div>
           <div class="comparison-item">
             <span class="comp-bullet-bad">✕</span>
-            <div>Zero free resources to convert viewers into followers</div>
+            <div>Zero autonomous compounding when laptop is closed</div>
           </div>
         </div>
 
         <div class="comparison-col good">
-          <div class="comparison-col-header">✓ The $0 Autonomous System</div>
+          <div class="comparison-col-header">✓ DOCUMENT (Autonomous Engine)</div>
           <div class="comparison-item">
             <span class="comp-bullet-good">✓</span>
-            <div><b>$0 / month</b> using free tools, open APIs & GitHub Actions</div>
+            <div><b>6–7 posts/day</b> across 13 platforms automatically</div>
           </div>
           <div class="comparison-item">
             <span class="comp-bullet-good">✓</span>
-            <div>Fully automated research, drafting, rendering & posting</div>
+            <div>One raw voice note or topic in, 30 assets out</div>
           </div>
           <div class="comparison-item">
             <span class="comp-bullet-good">✓</span>
-            <div>High-retention editorial aesthetics tailored for viral saves</div>
+            <div>Deterministic headless rendering — 100% crisp typography</div>
           </div>
           <div class="comparison-item">
             <span class="comp-bullet-good">✓</span>
-            <div>Comment-to-DM loop generating inbound leads daily</div>
+            <div>24/7 cloud autopilot runs even when PC is shut down</div>
           </div>
         </div>
       </div>
     </main>
 
     <footer class="slide-footer-editorial">
-      <div class="footer-handle-row">@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS</div>
+      <div class="footer-handle-row">{{ brand.footer_text | default('@PIYUSH.GLITCH · @ZERO.CANON · MAKERZZ.SPACE') }}</div>
       <div class="pagination-dots">
         {% for i in range(1, meta.total_slides + 1) %}
         <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>

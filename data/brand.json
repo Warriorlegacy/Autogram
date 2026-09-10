@@ -1,34 +1,38 @@
 {
-  "brand_name": "Piyush | Growth Systems",
-  "handle": "@signhify.studio",
-  "avatar_letter": "S",
-  "positioning": "Engineering compound growth systems, AI workflows, and scalable acquisition architecture for high-output founders and builders.",
+  "brand_name": "Piyush | AI Automation & Growth Systems",
+  "handle": "@piyush.glitch",
+  "watermark": "@SIGNHIFY.STUDIO",
+  "avatar_letter": "P",
+  "footer_text": "@PIYUSH.GLITCH · @ZERO.CANON · MAKERZZ.SPACE",
+  "sign_off": "My name is Piyush. Stop posting. Start shipping.",
+  "positioning": "Engineering compound AI automation, autonomous workflows, and Gary Vee-style content engines for high-output builders and founders.",
   "target_audience": [
     "Tech Founders & Solopreneurs",
-    "Growth Engineers & Marketers",
-    "SaaS Operators & Developers",
-    "High-Performance Agency Owners"
+    "AI Engineers & Automation Builders",
+    "Growth Engineers & Modern Marketers",
+    "Agency Owners & High-Output Creators"
   ],
   "voice": [
     "authoritative",
     "architectural",
     "hyper-practical",
-    "metrics-driven",
     "zero-fluff",
-    "contrarian"
+    "contrarian",
+    "document-dont-create"
   ],
   "content_pillars": [
     "AI Architecture & Agentic Workflows",
-    "Compound Growth & Acquisition Engines",
-    "Automated Operations & Tool Stacks",
-    "System Design & Developer Productivity",
-    "Founder Psychology & Scaling Frameworks"
+    "Document, Don't Create (Content Autopilot)",
+    "Developer Tools & Claude/LLM Stacks",
+    "Solo AI Architecture & Cost Reduction",
+    "Production Systems & Failure Modes",
+    "Contrarian Engineering & Scaling Realities"
   ],
   "follow_triggers": {
-    "cta_headline": "Build Systems, Not Just Tasks",
-    "cta_subtext": "I deconstruct production AI architectures and high-converting growth engines every week.",
-    "button_text": "Follow @signhify.studio",
-    "comment_lead_magnet": "Comment 'SYSTEM' to get the full architecture playbook sent to your DMs."
+    "cta_headline": "Get the document-don't-create autopilot on your account.",
+    "cta_subtext": "13 PLATFORMS · 6–7 A DAY · 10 MIN A WEEK · MAKERZZ.SPACE",
+    "button_text": "RUN IT ON YOUR ACCOUNT →",
+    "comment_lead_magnet": "Comment 'DOCUMENT' to get the full automation blueprint sent to your DMs."
   },
   "avoid": [
     "generic hype",
@@ -36,21 +40,13 @@
     "unsupported statistics",
     "overused motivational language",
     "keyword stuffing",
-    "excessive emojis",
     "game-changer",
     "unlock the power of",
     "in today's fast-paced world",
     "dive into",
-    "let's explore",
     "at its core",
-    "stands as a testament to",
-    "in conclusion",
-    "it's important to note",
     "seamless",
-    "robust",
-    "unleash",
-    "not just X, it's Y",
-    "faster, smarter, better"
+    "robust"
   ],
   "design": {
     "colors": {
@@ -59,14 +55,17 @@
       "card_border": "rgba(0, 0, 0, 0.08)",
       "primary": "#111111",
       "accent": "#E05A36",
+      "accent_hover": "#CC4C29",
       "highlight": "#16A34A",
       "text": "#111111",
       "text_muted": "#666666"
     },
     "fonts": {
-      "headline": "Plus Jakarta Sans, system-ui, sans-serif",
-      "body": "Inter, system-ui, sans-serif",
-      "code": "JetBrains Mono, monospace"
+      "headline": "Plus Jakarta Sans, -apple-system, sans-serif",
+      "body": "Inter, -apple-system, sans-serif",
+      "code": "JetBrains Mono, monospace",
+      "hand": "Caveat, cursive",
+      "stamp": "Anton, Plus Jakarta Sans, sans-serif"
     }
   },
   "default_carousel_size": 8,

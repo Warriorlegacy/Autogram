@@ -140,7 +140,7 @@ Return ONLY valid JSON.
         url = "https://openrouter.ai/api/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "https://signhify.studio",
+            "HTTP-Referer": "https://autogram-ai.vercel.app",
             "X-Title": "Autogram AI",
             "Content-Type": "application/json"
         }

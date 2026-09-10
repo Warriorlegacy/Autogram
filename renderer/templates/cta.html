@@ -22,7 +22,7 @@
       padding: 14px 34px;
       background: #FFFFFF;
       color: #111111;
-      border: 2px solid var(--accent-orange);
+      border: 2.5px solid var(--accent-orange);
       border-radius: 999px;
       font-family: var(--font-mono);
       font-size: 19px;
@@ -36,13 +36,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 24px;
+      flex-wrap: wrap;
     }
     .phone-badge {
-      width: 80px;
-      height: 72px;
-      border: 2px solid #111111;
+      width: 82px;
+      height: 74px;
+      border: 2.5px solid #111111;
       border-radius: 14px;
       display: flex;
       flex-direction: column;
@@ -50,10 +51,11 @@
       justify-content: center;
       background: #FFFFFF;
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       color: #111111;
       gap: 4px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
     }
     .phone-badge .rec-dot {
       color: #EF4444;
@@ -62,21 +64,38 @@
       gap: 4px;
     }
     .cta-app-tile {
-      width: 62px;
-      height: 62px;
-      border-radius: 16px;
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
       background: #FFFFFF;
       border: 1px solid rgba(0, 0, 0, 0.08);
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 26px;
     }
     .connector-line-dots {
       color: var(--accent-orange);
       font-size: 18px;
       letter-spacing: 2px;
+      font-weight: 900;
+    }
+    .cta-sign-off {
+      font-size: 24px;
+      margin-top: 10px;
+      color: var(--text-primary);
+    }
+    .cta-sign-off em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 700;
+    }
+    .cta-sign-off span {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: var(--accent-orange);
+      font-weight: 700;
     }
   </style>
 </head>
@@ -84,53 +103,57 @@
   <div class="slide-canvas">
     <header class="slide-header">
       <div class="header-copyright">© 2026</div>
-      <div class="header-watermark">@SIGNHIFY.STUDIO</div>
+      <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="cta-editorial-canvas">
+      <!-- Big Comment + Stamp Banner -->
       <div class="comment-callout-hero">
         <div class="word-comment">comment</div>
         <div class="stamp-banner">
-          <div class="stamp-text">{{ slide.trigger_word | default('SYSTEM') }}</div>
+          <div class="stamp-text">{{ slide.trigger_word | default('DOCUMENT') }}</div>
         </div>
       </div>
 
-      <h2 class="comment-subheadline" style="font-size: 32px; max-width: 880px; margin-bottom: 12px;">
-        {{ slide.headline | default('Get the full growth blueprint & free tools on your account.') }}
+      <h2 class="comment-subheadline" style="font-size: 32px; max-width: 880px; margin-top: 18px; margin-bottom: 12px; font-weight: 800; color: #111111;">
+        Get the <span style="color: var(--accent-orange);">document-don't-create autopilot</span> on your account.
       </h2>
 
-      <div class="comment-meta-row" style="margin-bottom: 8px;">
-        100% FREE RESOURCE · DELIVERED INSTANTLY TO YOUR DMs
+      <div style="font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: #333333; letter-spacing: 0.1em; margin-bottom: 16px; text-transform: uppercase;">
+        13 PLATFORMS · 6–7 A DAY · 10 MIN A WEEK · MAKERZZ.SPACE
       </div>
 
+      <!-- Action Button Pill -->
       <div class="cta-button-pill">
-        GET THE FREE BLUEPRINT →
+        RUN IT ON YOUR ACCOUNT →
       </div>
 
-      <!-- Connector App Row -->
+      <!-- Phone recording icon connected to multi-platform icons -->
       <div class="cta-platform-connector">
         <div class="phone-badge">
-          <div class="rec-dot">● REC</div>
-          <div>2 MIN</div>
+          <span class="rec-dot">● REC</span>
+          <span>2 MIN</span>
         </div>
-        <div class="connector-line-dots">·····</div>
+        <div class="connector-line-dots">······</div>
         <div class="cta-app-tile">📸</div>
         <div class="cta-app-tile">▶️</div>
         <div class="cta-app-tile">💼</div>
         <div class="cta-app-tile">🎵</div>
-        <div class="cta-app-tile">✖️</div>
+        <div class="cta-app-tile">📘</div>
         <div class="cta-app-tile">🧵</div>
-        <div class="connector-line-dots">·····</div>
+        <div class="cta-app-tile">✖️</div>
+        <div class="cta-app-tile">📌</div>
       </div>
 
-      <div class="author-signoff" style="margin-top: 6px;">
-        My name is Piyush. <span>Stop posting. Start shipping.</span>
+      <!-- Creator Sign-off -->
+      <div class="cta-sign-off">
+        <em>My name is Piyush.</em> <span>Stop posting. Start shipping.</span>
       </div>
     </main>
 
     <footer class="slide-footer-editorial">
-      <div class="footer-handle-row">@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS</div>
+      <div class="footer-handle-row">{{ brand.footer_text | default('@PIYUSH.GLITCH · @ZERO.CANON · MAKERZZ.SPACE') }}</div>
       <div class="pagination-dots">
         {% for i in range(1, meta.total_slides + 1) %}
         <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>

@@ -1,16 +1,22 @@
 {
   "rss_feeds": [
     {
+      "name": "Simon Willison AI & LLMs",
+      "url": "https://simonwillison.net/atom/everything/",
+      "source_type": "engineering_research",
+      "trust_score": 0.96
+    },
+    {
+      "name": "Hacker News AI & Agents",
+      "url": "https://hnrss.org/newest?q=AI+OR+LLM+OR+Agent+OR+Claude",
+      "source_type": "developer_community",
+      "trust_score": 0.90
+    },
+    {
       "name": "TechCrunch AI",
       "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
       "source_type": "industry_journalism",
       "trust_score": 0.88
-    },
-    {
-      "name": "Hacker News Top",
-      "url": "https://hnrss.org/frontpage",
-      "source_type": "developer_community",
-      "trust_score": 0.85
     },
     {
       "name": "ArXiv AI Papers",

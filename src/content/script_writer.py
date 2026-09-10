@@ -47,36 +47,52 @@ class ScriptWriter:
 
         cta_question = f"Are you already applying this in your workflow, or still running the manual approach?"
 
-        trigger_word = carousel.get("trigger_word") or (slides[-1].get("trigger_word") if slides else "SYSTEM") or "SYSTEM"
+        from pathlib import Path
+        brand = {}
+        brand_path = Path(__file__).parent.parent.parent / "data" / "brand.json"
+        if brand_path.exists():
+            try:
+                brand = json.loads(brand_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+
+        handle = brand.get("handle", "@piyush.glitch")
+        sign_off = brand.get("sign_off", "My name is Piyush. Stop posting. Start shipping.")
+        secondary_links = brand.get("secondary_links", "@ZERO.CANON · MAKERZZ.SPACE")
+
+        trigger_word = carousel.get("trigger_word") or (slides[-1].get("trigger_word") if slides else "DOCUMENT") or "DOCUMENT"
 
         caption_text = f"""{hook_text}
 
 {body_summary}
 
-Key architectural shifts inside:
+Key architecture inside this breakdown:
 {bullets_str}
 
-👉 Swipe through all slides for the full technical breakdown.
+👉 Swipe through all slides to see the exact implementation diagrams.
 
-⚡ Want the full blueprint & free tool breakdown? Comment "{trigger_word}" below and I'll send it straight to your DMs.
+⚡ Want the full blueprint & runnable repo? Comment "{trigger_word}" below and I'll send it straight to your DMs.
 
-📌 Save this for your next sprint or review.
-🚀 Follow @signhify.studio for battle-tested growth systems & AI architecture every week.
+📌 Save this post before your next architecture sprint.
+🚀 Follow {handle} for battle-tested AI automation & systems design.
+
+— {sign_off}
+{secondary_links}
 
 💬 {cta_question}"""
 
         # Targeted, high-conversion growth & tech hashtags
         niche_tags = {
-            "AI Tool Breakdown": ["#AIEngineering", "#MachineLearning", "#LLMArchitecture", "#SystemDesign", "#TechStack", "#AIWorkflows"],
-            "Prompting & Workflow": ["#PromptEngineering", "#WorkflowAutomation", "#DevProductivity", "#AIWorkflow", "#SoftwareDevelopment", "#DeveloperTools"],
-            "Marketing Psychology": ["#GrowthSystems", "#B2BMarketing", "#GrowthStrategy", "#MarketingPsychology", "#SaaSGrowth", "#TechFounders"],
-            "Tech Industry Explainer": ["#TechTrends", "#SoftwareEngineering", "#CloudInfrastructure", "#DevCommunity", "#EngineeringLeadership", "#SystemDesign"],
-            "Career & Skills": ["#TechCareers", "#EngineeringLeadership", "#FutureOfWork", "#DeveloperLife", "#SkillBuilding", "#FounderMindset"],
-            "Myth-Bust / Contrarian": ["#ContrarianThinking", "#TechDebate", "#SoftwareDesign", "#Startups", "#TechLeadership", "#GrowthHacking"]
+            "AI Tool Breakdown": ["#AIAutomation", "#AgenticAI", "#LLMArchitecture", "#SystemDesign", "#TechStack", "#AIWorkflows"],
+            "Prompting & Workflow": ["#PromptEngineering", "#WorkflowAutomation", "#DevProductivity", "#DeveloperTools", "#VibeCoding", "#Python"],
+            "Marketing Psychology": ["#GaryVee", "#ContentRepurposing", "#GrowthSystems", "#B2BMarketing", "#ContentEngine", "#ShipFast"],
+            "Tech Industry Explainer": ["#TechTrends", "#SoftwareEngineering", "#CloudInfrastructure", "#DevCommunity", "#OpenSource", "#BuildInPublic"],
+            "Career & Skills": ["#Solopreneur", "#EngineeringLeadership", "#FutureOfWork", "#DeveloperLife", "#SkillBuilding", "#FounderMindset"],
+            "Myth-Bust / Contrarian": ["#ContrarianThinking", "#TechDebate", "#SoftwareDesign", "#Startups", "#ShipFast", "#GrowthHacking"]
         }
 
-        base_tags = ["#GrowthSystems", "#SignhifyStudio", "#BuildInPublic", "#AutomationStack"]
-        selected_tags = niche_tags.get(pillar, ["#ArtificialIntelligence", "#TechNews", "#SoftwareArchitecture"]) + base_tags
+        base_tags = ["#AIAutomation", "#AgenticAI", "#BuildInPublic", "#Autogram", "#SoloBuilder"]
+        selected_tags = niche_tags.get(pillar, ["#AIAutomation", "#AgenticAI", "#TechNews", "#SoftwareArchitecture"]) + base_tags
         hashtags_str = " ".join(selected_tags)
 
         full_caption = f"{caption_text}\n\n.\n.\n{hashtags_str}"
