@@ -10,6 +10,7 @@ Supports 100% Free Providers:
 
 import json
 import logging
+import os
 from datetime import datetime
 from pathlib import Path
 import requests

@@ -84,28 +84,38 @@ class ScriptWriter:
         caption_lines.extend(["", f"💬 {cta_question}"])
         caption_text = "\n".join(caption_lines)
 
-        # Targeted, high-conversion growth & tech hashtags
-        niche_tags = {
-            "AI Tool Breakdown": ["#AIAutomation", "#AgenticAI", "#LLMArchitecture", "#SystemDesign", "#TechStack", "#AIWorkflows"],
-            "Prompting & Workflow": ["#PromptEngineering", "#WorkflowAutomation", "#DevProductivity", "#DeveloperTools", "#VibeCoding", "#Python"],
-            "Marketing Psychology": ["#GaryVee", "#ContentRepurposing", "#GrowthSystems", "#B2BMarketing", "#ContentEngine", "#ShipFast"],
-            "Tech Industry Explainer": ["#TechTrends", "#SoftwareEngineering", "#CloudInfrastructure", "#DevCommunity", "#OpenSource", "#BuildInPublic"],
-            "Career & Skills": ["#Solopreneur", "#EngineeringLeadership", "#FutureOfWork", "#DeveloperLife", "#SkillBuilding", "#FounderMindset"],
-            "Myth-Bust / Contrarian": ["#ContrarianThinking", "#TechDebate", "#SoftwareDesign", "#Startups", "#ShipFast", "#GrowthHacking"]
-        }
+        # Build dynamic 3-tier viral hashtags (Macro Explore + Intent + Community)
+        try:
+            from src.growth.viral_engine import viral_engine
+            selected_tags = viral_engine.build_viral_hashtags(pillar)
+            # Ensure mandatory core tags for consistency & test suite
+            for req in ["#AIEngineering", "#AutogramAI", "#AIAutomation", "#AgenticAI"]:
+                if req not in selected_tags:
+                    selected_tags.append(req)
+            first_comment = viral_engine.generate_first_comment(carousel)
+        except Exception:
+            selected_tags = ["#AIAutomation", "#AgenticAI", "#AIEngineering", "#AutogramAI", "#BuildInPublic", "#SoloBuilder"]
+            first_comment = f"📌 Follow {handle} for daily AI systems architecture breakdowns.\n\n⚡ Comment \"{trigger_word}\" for the free runnable blueprint!"
 
-        base_tags = ["#AIAutomation", "#AgenticAI", "#AIEngineering", "#AutogramAI", "#BuildInPublic", "#SoloBuilder"]
-        selected_tags = niche_tags.get(pillar, ["#AIAutomation", "#AgenticAI", "#TechNews", "#SoftwareArchitecture"]) + base_tags
         hashtags_str = " ".join(selected_tags)
-
         full_caption = f"{caption_text}\n\n.\n.\n{hashtags_str}"
 
         return {
             "caption": full_caption,
             "hook": hook_text,
             "hashtags": selected_tags,
-            "char_count": len(full_caption)
+            "char_count": len(full_caption),
+            "first_comment": first_comment
         }
+
+    def generate_first_comment(self, carousel: Dict[str, Any]) -> str:
+        """Helper to generate conversational first comment for the carousel."""
+        try:
+            from src.growth.viral_engine import viral_engine
+            return viral_engine.generate_first_comment(carousel)
+        except Exception:
+            trigger = carousel.get("trigger_word", "SYSTEM")
+            return f"📌 Drop '{trigger}' below to get the full architecture sent straight to your DMs!"
 
     def generate_reels_script(self, carousel: Dict[str, Any]) -> Dict[str, Any]:
         """

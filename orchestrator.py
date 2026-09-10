@@ -152,6 +152,12 @@ def run_pipeline(dry_run: bool = False) -> dict:
     caption_file = out_dir / "caption.txt"
     caption_file.write_text(caption_text, encoding="utf-8")
 
+    # Generate viral discussion first-comment to maximize initial engagement velocity
+    first_comment_text = caption_meta.get("first_comment") or script_writer.generate_first_comment(carousel)
+    first_comment_file = out_dir / "first_comment.txt"
+    first_comment_file.write_text(first_comment_text, encoding="utf-8")
+    logger.info(f"Generated viral engagement first-comment -> {first_comment_file.name}")
+
     # Repurpose into 30-45s Reels / Shorts Video Script
     reels_meta = script_writer.generate_reels_script(carousel)
     reels_file = out_dir / "reels_script.md"
@@ -171,6 +177,14 @@ def run_pipeline(dry_run: bool = False) -> dict:
         alt_texts=alt_texts,
         caption=caption_text
     )
+
+    # Post viral discussion first comment
+    if media_id and not dry_run and not str(media_id).startswith("mock"):
+        try:
+            publisher.post_comment(media_id, first_comment_text)
+            logger.info("Successfully published viral discussion first-comment to Instagram live feed!")
+        except Exception as e:
+            logger.warning(f"Could not post first comment via Meta API (saved locally to first_comment.txt): {e}")
 
     # 9. Logging & Memory Learning (Layer E)
     logger.info("Phase 9: Logging & Anti-Repetition Learning...")

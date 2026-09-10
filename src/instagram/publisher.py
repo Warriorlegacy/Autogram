@@ -151,4 +151,21 @@ class InstagramPublisher:
         media_id = self.publish_media(carousel_id)
         return media_id
 
+    def post_comment(self, media_id: str, message: str) -> str:
+        """Posts a first discussion comment to the published media object."""
+        if self.dry_run or str(media_id).startswith("mock"):
+            logger.info(f"[DRY-RUN] Simulated posting comment to {media_id}")
+            return f"mock_comment_{int(time.time()*1000) % 1000000}"
+
+        url = f"{self.base_url}/{media_id}/comments"
+        data = {
+            "message": message,
+            "access_token": self.token
+        }
+        resp = requests.post(url, data=data, timeout=20)
+        resp.raise_for_status()
+        comment_id = resp.json().get("id")
+        logger.info(f"Published first comment to Instagram post {media_id}: Comment ID = {comment_id}")
+        return comment_id
+
 publisher = InstagramPublisher()

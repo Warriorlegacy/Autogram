@@ -35,7 +35,22 @@ jobs:
           playwright install --with-deps chromium
 
       - name: Execute Autonomous Publishing Pipeline
-        run: python orchestrator.py --run-all
+        run: |
+          if [ -n "${IG_ACCESS_TOKEN}" ]; then
+            echo "Running direct cloud autonomous pipeline with GitHub runner..."
+            python orchestrator.py --run-all
+          else
+            echo "GitHub IG_ACCESS_TOKEN secret not detected in runner."
+            echo "Triggering live Render backend cloud autopilot failover..."
+            HTTP_STATUS=$(curl -s -o webhook_response.json -w "%{http_code}" -X POST "https://autogram-dashboard.onrender.com/api/webhook/autopilot?mode=live" \
+              -H "Authorization: Bearer ${AUTOGRAM_OWNER_KEY}")
+            echo "Render webhook response (HTTP $HTTP_STATUS):"
+            cat webhook_response.json || true
+            if [ "$HTTP_STATUS" -ne 200 ] && [ "$HTTP_STATUS" -ne 201 ]; then
+              echo "Render webhook returned non-200, falling back to local runner dry-run validation..."
+              python orchestrator.py --dry-run
+            fi
+          fi
         env:
           AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

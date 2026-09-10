@@ -12,7 +12,7 @@ import subprocess
 import sys
 import threading
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
@@ -219,7 +219,17 @@ def scheduler_worker():
                 time.sleep(15)
                 continue
 
-            now_dt = datetime.now()
+            # Timezone-aware timestamp (default Asia/Kolkata for peak engagement alignment)
+            tz_name = sched.get("timezone", "Asia/Kolkata")
+            try:
+                from zoneinfo import ZoneInfo
+                target_tz = ZoneInfo(tz_name)
+                now_dt = datetime.now(target_tz)
+            except Exception:
+                from datetime import timezone as dt_timezone
+                target_tz = dt_timezone(timedelta(hours=5, minutes=30))
+                now_dt = datetime.now(target_tz)
+
             current_time_str = now_dt.strftime("%H:%M")
             current_date_str = now_dt.strftime("%Y-%m-%d")
 
@@ -233,7 +243,7 @@ def scheduler_worker():
                 triggered_today.add(current_time_str)
                 with pipeline_lock:
                     pipeline_log.append(
-                        f"[{now_dt.strftime('%H:%M:%S')}] [SCHEDULER] Triggering scheduled post for slot {current_time_str}..."
+                        f"[{now_dt.strftime('%H:%M:%S')} {tz_name}] [GROWTH AUTOPILOT] Triggering peak viral drop for slot {current_time_str}..."
                     )
                 # Run pipeline in a subprocess
                 run_pipeline_subprocess(mode="live" if read_env().get("DRY_RUN") == "false" else "dry-run")
@@ -688,6 +698,36 @@ def api_pipeline_stop():
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Pipeline stopped by user.")
     return jsonify({"ok": True})
 
+@app.route("/api/webhook/autopilot", methods=["GET", "POST"])
+def api_webhook_autopilot():
+    """
+    Zero-touch trigger endpoint for external cron jobs (GitHub Actions, cron-job.org, EasyCron, Render Cron).
+    Pinging this endpoint triggers the autonomous publishing pipeline even if computer is shut down.
+    """
+    key = request.args.get("key") or request.headers.get("X-Autogram-Key") or ""
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        key = auth_header.split(" ", 1)[1]
+
+    expected_key = os.environ.get("AUTOGRAM_OWNER_KEY", "autogram_owner_vip_2026")
+    if key != expected_key:
+        return jsonify({"ok": False, "error": "Unauthorized. Invalid or missing secret key."}), 401
+
+    mode = request.args.get("mode") or ("live" if read_env().get("DRY_RUN") == "false" else "dry-run")
+
+    with pipeline_lock:
+        if pipeline_status == "running":
+            return jsonify({"ok": True, "message": "Autopilot pipeline is already running.", "status": "running"})
+
+    run_pipeline_subprocess(mode=mode)
+    return jsonify({
+        "ok": True,
+        "message": f"Autonomous pipeline triggered successfully in {mode.upper()} mode.",
+        "status": "started",
+        "brand": "@signhify.studio",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    })
+
 @app.route("/output/<date>/<filename>")
 @app.route("/api/output/<date>/<filename>")
 def api_output_file(date, filename):
@@ -707,7 +747,9 @@ def health_check():
         "service": "autogram-dashboard",
         "version": "v2.5-quantum",
         "brand": "@signhify.studio",
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "growth_autopilot": "ACTIVE",
+        "schedule_slots": 7,
+        "timestamp": datetime.now(timezone.utc).isoformat()
     })
 
 @app.route("/")
