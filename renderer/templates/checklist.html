@@ -22,36 +22,28 @@
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
-    <main class="slide-body">
-      {% if slide.step_label %}
-      <div class="step-badge">{{ slide.step_label }}</div>
-      {% else %}
-      <div class="sub-eyebrow">{{ slide.eyebrow | default('EXECUTION BLUEPRINT') }}</div>
-      {% endif %}
+    <main class="slide-body" style="display: flex; flex-direction: column; justify-content: center;">
+      <div class="sub-eyebrow" style="text-align: left; color: var(--accent-orange); font-family: var(--font-mono); font-size: 18px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 20px;">
+        {{ slide.eyebrow | default('EXECUTION BLUEPRINT') }}
+      </div>
 
-      <h2 class="headline-large">{{ slide.headline }}</h2>
+      <h1 class="headline-large" style="font-family: var(--font-display); font-size: 50px; font-weight: 800; color: #111111; line-height: 1.18; margin-bottom: 20px;">
+        {{ slide.headline }}
+      </h1>
 
       {% if slide.body %}
-      <p class="subtext-lead">{{ slide.body }}</p>
+      <p class="subtext-lead" style="font-family: var(--font-body); font-size: 24px; line-height: 1.6; color: #3A3A3C; margin-bottom: 32px;">
+        {{ slide.body }}
+      </p>
       {% endif %}
 
-      <div class="checklist-list">
-        {% set items = slide.proof_or_example.split('\n') if slide.proof_or_example else [
-          "Curate verified zero-cost tools and community open-source models",
-          "Automate input ingestion via webhooks instead of manual copy-paste",
-          "Deterministic headless screenshot rendering for pixel perfection",
-          "Deploy autonomous scheduled GitHub Actions runner with 0 monthly cost"
-        ] %}
-        {% for item in items %}
-        {% if item.strip() %}
-        <div class="checklist-item-editorial">
-          <div class="checklist-num">{{ "%02d" | format(loop.index) }}</div>
-          <div class="checklist-content">
-            <h3>{{ item.strip().lstrip('-').lstrip('*').strip() }}</h3>
-          </div>
+      <div class="blueprint-summary-card" style="background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); border-radius: 24px; padding: 28px 32px; box-shadow: 0 12px 32px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 20px;">
+        <div class="blueprint-num-badge" style="width: 54px; height: 54px; background: #FDEEE9; border: 1px solid #F5C6B8; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 18px; font-weight: 800; color: var(--accent-orange); flex-shrink: 0;">
+          01
         </div>
-        {% endif %}
-        {% endfor %}
+        <div style="font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #111111; line-height: 1.4;">
+          {{ slide.proof_or_example | default("Each item directly contributes to reducing technical debt, increasing reliability, and cutting costs.") }}
+        </div>
       </div>
     </main>
 

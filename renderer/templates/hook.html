@@ -14,21 +14,17 @@
     </header>
 
     <main class="slide-body">
-      <!-- Star / Asterisk Symbol -->
-      <div style="display: flex; justify-content: center; margin-bottom: 8px;">
-        <span style="font-size: 38px; color: var(--accent-orange); font-weight: 900; line-height: 1;">✳</span>
+      <!-- Category Eyebrow with Asterisk -->
+      <div class="sub-eyebrow" style="text-align: left; color: var(--accent-orange); font-family: var(--font-mono); font-size: 18px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 16px;">
+        {{ slide.eyebrow | default('SYSTEM ARCHITECTURE') }}
       </div>
 
-      <div class="sub-eyebrow" style="text-align: center; color: var(--accent-orange); font-family: var(--font-mono); font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;">
-        {{ slide.eyebrow | default('GARY VEE-STYLE') }}
-      </div>
-
-      <h1 class="headline-huge" style="text-align: center; margin-top: 10px;">
+      <h1 class="headline-huge" style="text-align: left; font-size: 58px; font-weight: 800; line-height: 1.15; color: #111111; margin-bottom: 16px;">
         {{ slide.headline }}
       </h1>
 
       {% if slide.body %}
-      <p class="subtext-lead" style="text-align: center; margin-top: 10px;">{{ slide.body }}</p>
+      <p class="subtext-lead" style="text-align: left; font-size: 24px; font-weight: 400; line-height: 1.45; color: #4A4A4A; margin-bottom: 24px;">{{ slide.body }}</p>
       {% endif %}
 
       <!-- Centerpiece Visual / Flow Connector Card -->

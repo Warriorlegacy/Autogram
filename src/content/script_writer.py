@@ -56,7 +56,7 @@ class ScriptWriter:
             except Exception:
                 pass
 
-        handle = brand.get("handle", "@piyush.glitch")
+        handle = brand.get("handle", "@signhify.studio")
         sign_off = brand.get("sign_off", "My name is Piyush. Stop posting. Start shipping.")
         secondary_links = brand.get("secondary_links", "@ZERO.CANON · MAKERZZ.SPACE")
 

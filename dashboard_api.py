@@ -344,7 +344,7 @@ def api_status():
         "version": "v2.5-quantum",
         "dry_run": env.get("DRY_RUN", "true"),
         "ig_user_id": env.get("IG_USER_ID", ""),
-        "ig_account": get_brand_config().get("handle", "@piyush.glitch"),
+        "ig_account": get_brand_config().get("handle", "@signhify.studio"),
         "llm_provider": env.get("LLM_PROVIDER", "auto"),
         "llm_model": env.get("LLM_MODEL", "gemini-2.5-flash"),
         "cdn_base": env.get("PUBLIC_CDN_BASE", "http://localhost:8000"),

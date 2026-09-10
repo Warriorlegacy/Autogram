@@ -61,19 +61,28 @@
     {
       num: 7,
       image: "public/assets/slides/slide_07.jpg",
-      role: "Distilled Takeaway",
-      headline: "Automate Mechanics Aggressively. Automate Judgment Conservatively.",
-      body: "Your code should handle scheduling, rendering, and API distribution. Your quality gates should protect your reputation.",
+      role: "Execution Blueprint",
+      headline: "Your Zero-Debt Automation Checklist",
+      body: "Deconstruct tasks into verifiable steps, prioritize structured JSON, use deterministic rendering, and explore local SLMs.",
       proof: "Core principle of production-grade AI systems.",
       status: "VERIFIED"
     },
     {
       num: 8,
       image: "public/assets/slides/slide_08.jpg",
-      role: "Conversion CTA",
-      headline: "Build Your Own AI Autopilot",
-      body: "Save this carousel for reference, and check the caption for the complete architectural blueprint.",
+      role: "The Distilled Rule",
+      headline: "The Compounding Return of Zero-Debt",
+      body: "Reduced error rates (60% from modularity) and zero cloud costs (local SLMs) directly impact ROI.",
       proof: "Save-rate optimized for Instagram ranking algorithm.",
+      status: "VERIFIED"
+    },
+    {
+      num: 9,
+      image: "public/assets/slides/slide_09.jpg",
+      role: "Conversion CTA",
+      headline: "Comment CONTENT to Get The Blueprint",
+      body: "100% free resource delivered instantly to your DMs. My name is Piyush. Stop posting. Start shipping.",
+      proof: "Direct Meta Graph API and comment-to-DM conversion trigger.",
       status: "VERIFIED"
     }
   ];

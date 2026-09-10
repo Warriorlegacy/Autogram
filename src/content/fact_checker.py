@@ -19,8 +19,8 @@ class FactChecker:
         all_passed = True
 
         for slide in carousel.get("slides", []):
-            headline = slide.get("headline", "")
-            proof = slide.get("proof_or_example", "")
+            headline = str(slide.get("headline") or "")
+            proof = str(slide.get("proof_or_example") or "")
             
             # Check for generic uncorroborated superlatives
             superlatives = ["first ever", "world's fastest", "guaranteed 100%"]

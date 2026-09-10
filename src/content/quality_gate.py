@@ -48,8 +48,13 @@ class QualityGate:
         # 2. Check each slide for banned phrases and text length
         all_text = ""
         for s in slides:
-            headline = s.get("headline", "")
-            body = s.get("body", "")
+            headline = str(s.get("headline") or "")
+            body_val = s.get("body", "")
+            if isinstance(body_val, list):
+                body = " ".join(str(item) for item in body_val)
+                s["body"] = body
+            else:
+                body = str(body_val or "")
             slide_combined = f"{headline} {body}".lower()
             all_text += " " + slide_combined
 
