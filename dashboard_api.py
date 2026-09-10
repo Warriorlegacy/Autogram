@@ -89,6 +89,10 @@ def get_output_runs() -> list[dict]:
         runs.append(entry)
     return runs
 
+@app.route("/health")
+def health():
+    return jsonify({"status": "healthy", "service": "autogram-dashboard", "timestamp": datetime.now().isoformat()}), 200
+
 # ─── API Routes ───────────────────────────────────────────────────────────────
 
 @app.route("/api/status")
@@ -175,7 +179,7 @@ def api_pipeline_run():
 
     def run_in_thread():
         global pipeline_status, pipeline_proc
-        python = str(BASE_DIR / ".venv" / "Scripts" / "python.exe")
+        python = sys.executable
         cmd = [python, str(BASE_DIR / "orchestrator.py")]
         if mode == "dry-run":
             cmd.append("--dry-run")
