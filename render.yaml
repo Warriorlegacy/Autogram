@@ -2,7 +2,8 @@ services:
   - type: web
     name: autogram-dashboard
     runtime: python
-    buildCommand: pip install -r requirements.txt && playwright install --with-deps chromium
+    plan: free
+    buildCommand: pip install -r requirements.txt
     startCommand: python dashboard_api.py
     envVars:
       - key: PORT
