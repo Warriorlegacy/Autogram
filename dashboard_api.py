@@ -699,6 +699,17 @@ def api_output_file(date, filename):
 def dashboard():
     return send_from_directory(str(BASE_DIR), "dashboard.html")
 
+@app.route("/health")
+@app.route("/api/health")
+def health_check():
+    return jsonify({
+        "status": "healthy",
+        "service": "autogram-dashboard",
+        "version": "v2.5-quantum",
+        "brand": "@signhify.studio",
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    })
+
 @app.route("/")
 def root():
     return send_from_directory(str(BASE_DIR), "index.html")

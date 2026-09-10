@@ -2066,10 +2066,12 @@
        12. JAVASCRIPT ENGINE (3D WebGL, Web Audio Synth, API, Dopamine)
        ═══════════════════════════════════════════════════════════════════════ -->
   <script>
-    // ── API Root Auto-Detection ──────────────────────────────────────────
+    // ── API Root Auto-Detection (Render & Local & Vercel) ───────────────────
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? (window.location.port === '5050' ? '/api' : 'http://localhost:5050/api')
-      : '/api';
+      : (window.location.hostname.includes('vercel.app')
+          ? (localStorage.getItem('autogram_api_base') || 'https://autogram-dashboard.onrender.com/api')
+          : '/api');
 
     let currentExecutionMode = 'dry-run';
     let pollTimer = null;
