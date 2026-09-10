@@ -24,6 +24,16 @@ OUTPUT_DIR = BASE_DIR / "output"
 MEMORY_PATH = BASE_DIR / "data" / "content-memory.json"
 SCHEDULE_PATH = BASE_DIR / "data" / "schedule.json"
 DB_PATH = BASE_DIR / "autopilot.db"
+BRAND_PATH = BASE_DIR / "data" / "brand.json"
+
+def get_brand_config() -> dict:
+    """Load brand profile data from data/brand.json."""
+    if BRAND_PATH.exists():
+        try:
+            return json.loads(BRAND_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {"handle": "@signhify.studio", "watermark": "@SIGNHIFY.STUDIO", "name": "Piyush | Growth Systems"}
 
 app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path="")
 CORS(app)
@@ -621,7 +631,7 @@ def api_caption_generate():
     """
     On-demand caption and 3-tier viral hashtag generation for any topic/pillar.
     """
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
     topic = data.get("topic", "AI Automation Systems Architecture").strip()
     pillar = data.get("pillar", "AI Tool Breakdown").strip()
     custom_body = data.get("body", "").strip()
@@ -646,7 +656,7 @@ def api_generate():
     """
     On-demand AI Carousel & Script Studio Generator.
     """
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
     topic_text = data.get("topic", "").strip()
     pillar = data.get("pillar", "AI Tool Breakdown")
     angle = data.get("angle", "")
