@@ -57,12 +57,12 @@ Return ONLY valid JSON.
     def generate_with_gemini(self, topic: dict, sources: list[dict]) -> dict:
         """
         100% Free Google Gemini API (1,500 free requests/day).
-        Tries active Google models: gemini-2.5-flash, gemini-flash-latest, gemini-2.5-flash-lite, gemini-2.5-pro.
+        Tries active Google models: gemini-2.0-flash, gemini-1.5-flash, gemini-1.5-pro.
         """
         candidate_models = []
         if settings.llm_model and "gemini" in settings.llm_model:
             candidate_models.append(settings.llm_model)
-        candidate_models.extend(["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite", "gemini-2.5-pro"])
+        candidate_models.extend(["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"])
         
         # Deduplicate while preserving order
         seen = set()
@@ -84,7 +84,7 @@ Return ONLY valid JSON.
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={settings.gemini_api_key}"
             try:
                 logger.info(f"Attempting Gemini generation with model: {model}...")
-                resp = requests.post(url, json=payload, timeout=60)
+                resp = requests.post(url, json=payload, timeout=15)
                 if resp.status_code == 200:
                     candidates = resp.json().get("candidates", [])
                     raw_text = candidates[0]["content"]["parts"][0]["text"]
