@@ -58,28 +58,31 @@ class ScriptWriter:
 
         handle = brand.get("handle", "@signhify.studio")
         sign_off = brand.get("sign_off", "My name is Piyush. Stop posting. Start shipping.")
-        secondary_links = brand.get("secondary_links", "@ZERO.CANON · MAKERZZ.SPACE")
+        secondary_links = brand.get("secondary_links", "")
 
         trigger_word = carousel.get("trigger_word") or (slides[-1].get("trigger_word") if slides else "DOCUMENT") or "DOCUMENT"
 
-        caption_text = f"""{hook_text}
-
-{body_summary}
-
-Key architecture inside this breakdown:
-{bullets_str}
-
-👉 Swipe through all slides to see the exact implementation diagrams.
-
-⚡ Want the full blueprint & runnable repo? Comment "{trigger_word}" below and I'll send it straight to your DMs.
-
-📌 Save this post before your next architecture sprint.
-🚀 Follow {handle} for battle-tested AI automation & systems design.
-
-— {sign_off}
-{secondary_links}
-
-💬 {cta_question}"""
+        caption_lines = [
+            hook_text,
+            "",
+            body_summary,
+            "",
+            "Key architecture inside this breakdown:",
+            bullets_str,
+            "",
+            "👉 Swipe through all slides to see the exact implementation diagrams.",
+            "",
+            f'⚡ Want the full blueprint & runnable repo? Comment "{trigger_word}" below and I\'ll send it straight to your DMs.',
+            "",
+            "📌 Save this post before your next architecture sprint.",
+            f"🚀 Follow {handle} for battle-tested AI automation & systems design.",
+            "",
+            f"— {sign_off}"
+        ]
+        if secondary_links:
+            caption_lines.append(secondary_links)
+        caption_lines.extend(["", f"💬 {cta_question}"])
+        caption_text = "\n".join(caption_lines)
 
         # Targeted, high-conversion growth & tech hashtags
         niche_tags = {
@@ -91,7 +94,7 @@ Key architecture inside this breakdown:
             "Myth-Bust / Contrarian": ["#ContrarianThinking", "#TechDebate", "#SoftwareDesign", "#Startups", "#ShipFast", "#GrowthHacking"]
         }
 
-        base_tags = ["#AIAutomation", "#AgenticAI", "#BuildInPublic", "#Autogram", "#SoloBuilder"]
+        base_tags = ["#AIAutomation", "#AgenticAI", "#AIEngineering", "#AutogramAI", "#BuildInPublic", "#SoloBuilder"]
         selected_tags = niche_tags.get(pillar, ["#AIAutomation", "#AgenticAI", "#TechNews", "#SoftwareArchitecture"]) + base_tags
         hashtags_str = " ".join(selected_tags)
 
