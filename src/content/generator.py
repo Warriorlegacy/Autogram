@@ -223,16 +223,64 @@ Return ONLY valid JSON.
                 s["trigger_word"] = data["trigger_word"]
         return data
 
+    def generate_with_huggingface(self, topic: dict, sources: list[dict]) -> dict:
+        """
+        100% Free Hugging Face Router API (Meta LLaMA 3.3 70B Instruct / Qwen 2.5 72B).
+        """
+        token = getattr(settings, "huggingface_api_key", None) or os.environ.get("HUGGINGFACE_API_KEY", "")
+        if not token:
+            raise ValueError("No HUGGINGFACE_API_KEY configured")
+
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+
+        models = [
+            "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+            "meta-llama/Llama-3.1-70B-Instruct",
+            "Qwen/Qwen2.5-72B-Instruct"
+        ]
+
+        last_err = None
+        for model in models:
+            url = "https://router.huggingface.co/together/v1/chat/completions"
+            payload = {
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}"},
+                    {"role": "user", "content": self._build_user_prompt(topic, sources)}
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0.7
+            }
+            try:
+                logger.info(f"Attempting Hugging Face generation with model: {model}...")
+                resp = requests.post(url, headers=headers, json=payload, timeout=60)
+                if resp.status_code == 200:
+                    raw_text = resp.json()["choices"][0]["message"]["content"]
+                    data = json.loads(raw_text)
+                    if "slides" in data and len(data["slides"]) >= 5:
+                        logger.info(f"Hugging Face generation successful with {model} ({len(data['slides'])} slides).")
+                        return data
+                resp.raise_for_status()
+            except Exception as e:
+                last_err = e
+                logger.warning(f"Hugging Face model '{model}' failed: {e}")
+                continue
+        raise last_err or RuntimeError("All Hugging Face models failed")
+
     def generate_carousel(self, topic: dict, sources: list[dict]) -> dict:
         """
         Master generation method with multi-provider auto-fallback.
         Order of evaluation:
-        1. Google Gemini (Free Tier)
-        2. Groq Cloud (Free Tier)
-        3. OpenRouter (Free Tier)
-        4. Local Ollama
-        5. OpenAI (if configured)
-        6. Free Built-In Anti-Repetition Synthesis Engine (Guaranteed zero-failure, never duplicates)
+        1. Google Gemini (Free Tier: 1,500 req/day)
+        2. Hugging Face (Free Tier: LLaMA 3.3 70B Turbo)
+        3. Groq Cloud (Free Tier: LLaMA 3.3 70B)
+        4. OpenRouter (Free Tier)
+        5. Local Ollama
+        6. OpenAI (if configured)
+        7. Free Built-In Anti-Repetition Synthesis Engine (Guaranteed zero-failure, never duplicates)
         """
         provider = (settings.llm_provider or "auto").lower()
 
@@ -245,7 +293,17 @@ Return ONLY valid JSON.
                 logger.warning(f"Gemini generation error ({e}). Falling back to next provider.")
                 self._disabled_providers.add("gemini")
 
-        # 2. Groq Cloud (100% Free Tier: Llama 3.3 70B)
+        # 2. Hugging Face (100% Free Tier: Llama 3.3 70B Instruct)
+        hf_key = getattr(settings, "huggingface_api_key", None) or os.environ.get("HUGGINGFACE_API_KEY", "").strip()
+        if "huggingface" not in self._disabled_providers and (provider in ["auto", "huggingface"]) and hf_key:
+            try:
+                logger.info("Generating carousel with Hugging Face (Free Tier: LLaMA 3.3 70B)...")
+                return self._normalize_carousel(self.generate_with_huggingface(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"Hugging Face generation error ({e}). Falling back to next provider.")
+                self._disabled_providers.add("huggingface")
+
+        # 3. Groq Cloud (100% Free Tier: Llama 3.3 70B)
         if "groq" not in self._disabled_providers and (provider in ["auto", "groq"]) and settings.groq_api_key and settings.groq_api_key.strip():
             try:
                 logger.info("Generating carousel with Groq Cloud (Free Tier)...")
