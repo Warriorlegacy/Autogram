@@ -5,98 +5,225 @@
   <title>Slide {{ slide.slide_number }} - Comparison</title>
   <link rel="stylesheet" href="../css/design-system.css">
   <style>
-    .comparison-item {
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .comp-col-shell {
+      background: var(--bg-paper-warm);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 28px;
+      padding: 8px;
+      box-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+    }
+    .comp-col-shell.featured {
+      border-color: var(--accent-orange-border);
+      background: #FFF9F5;
+      box-shadow: 0 20px 44px -10px rgba(255, 85, 0, 0.12);
+    }
+    .comp-col-core {
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      border-radius: 20px;
+      padding: 28px 24px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    }
+    .comp-col-shell.featured .comp-col-core {
+      border-color: rgba(255, 85, 0, 0.18);
+    }
+    .comp-header-strip {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1.5px dashed rgba(15, 23, 42, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .comp-header-bad {
+      color: #64748B;
+    }
+    .comp-header-good {
+      color: var(--accent-orange);
+    }
+    .comp-item-row {
       display: flex;
       align-items: flex-start;
       gap: 12px;
       margin-bottom: 18px;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.45;
+      color: var(--text-primary);
     }
-    .comp-bullet-bad {
-      color: #94A3B8;
-      font-weight: 900;
-      font-size: 20px;
+    .comp-item-row:last-child {
+      margin-bottom: 0;
     }
-    .comp-bullet-good {
-      color: var(--accent-orange);
-      font-weight: 900;
-      font-size: 20px;
-    }
-    .callout-badge-pill {
-      display: inline-block;
-      padding: 6px 16px;
-      background: var(--accent-orange);
-      color: #FFFFFF;
+    .badge-bad {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      color: #64748B;
       font-family: var(--font-mono);
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .badge-good {
+      width: 26px;
+      height: 26px;
       border-radius: 8px;
-      margin-bottom: 12px;
-      text-transform: uppercase;
+      background: var(--accent-orange-soft);
+      border: 1px solid var(--accent-orange-border);
+      color: var(--accent-orange);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .comp-summary-strip {
+      margin-top: 22px;
+      background: #FFFFFF;
+      border: 1px solid var(--card-border);
+      border-left: 6px solid var(--accent-orange);
+      border-radius: 18px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
   <div class="slide-canvas">
     <header class="slide-header">
-      <div class="header-copyright">© 2026</div>
+      <div class="header-copyright">© 2026 // PARADIGM COMPARISON</div>
       <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
-      {% if slide.step_label %}
-      <div class="callout-badge-pill">{{ slide.step_label }}</div>
-      {% else %}
-      <div class="sub-eyebrow">{{ slide.eyebrow | default('PARADIGM SHIFT') }}</div>
-      {% endif %}
+      <div class="sub-eyebrow">
+        {{ slide.eyebrow | default(meta.pillar | upper) | default('ARCHITECTURE MATRIX') }}
+      </div>
 
-      <h2 class="headline-large">{{ slide.headline }}</h2>
+      <h1 class="headline-large" style="font-size: 48px; margin-bottom: 12px;">
+        {{ slide.headline }}
+      </h1>
 
       {% if slide.body %}
-      <p class="subtext-lead">{{ slide.body }}</p>
+      <p class="subtext-lead" style="font-size: 22px; margin-bottom: 16px;">
+        {{ slide.body }}
+      </p>
       {% endif %}
 
-      <div class="comparison-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px;">
-        <div class="comparison-col bad" style="background: #FFFFFF; border-radius: 24px; padding: 32px 28px; box-shadow: 0 12px 32px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.06); border-top: 6px solid #8E8E93;">
-          <div class="comparison-col-header" style="font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: #6B6B70; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">✕ THE MANUAL / EXPENSIVE WAY</div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #2C2C2E;">
-            <span class="comp-bullet-bad" style="color: #8E8E93; font-weight: 900;">✕</span>
-            <div><b>$5,000/mo</b> agency retainer or expensive SaaS stacks</div>
-          </div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #2C2C2E;">
-            <span class="comp-bullet-bad" style="color: #8E8E93; font-weight: 900;">✕</span>
-            <div>Spending 3 hours/day manually creating slides in Canva</div>
-          </div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #2C2C2E;">
-            <span class="comp-bullet-bad" style="color: #8E8E93; font-weight: 900;">✕</span>
-            <div>Irregular posting cadence hurting algorithmic distribution</div>
-          </div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #2C2C2E;">
-            <span class="comp-bullet-bad" style="color: #8E8E93; font-weight: 900;">✕</span>
-            <div>Zero free resources to convert viewers into followers</div>
+      <div class="comparison-grid">
+        <!-- Bad / Traditional Column -->
+        <div class="comp-col-shell">
+          <div class="comp-col-core">
+            <div class="comp-header-strip comp-header-bad">
+              <span>✕ THE MANUAL WAY</span>
+              <span style="font-size: 11px; opacity: 0.8;">HIGH FRICTION</span>
+            </div>
+
+            {% if slide.left_items %}
+              {% for item in slide.left_items %}
+              <div class="comp-item-row">
+                <span class="badge-bad">✕</span>
+                <div>{{ item }}</div>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="comp-item-row">
+                <span class="badge-bad">✕</span>
+                <div><b>$5,000/mo</b> recurring SaaS retainers and fragile manual tooling</div>
+              </div>
+              <div class="comp-item-row">
+                <span class="badge-bad">✕</span>
+                <div>3+ hours lost daily creating and styling slides manually</div>
+              </div>
+              <div class="comp-item-row">
+                <span class="badge-bad">✕</span>
+                <div>Inconsistent publishing cadence throttling organic reach</div>
+              </div>
+              <div class="comp-item-row">
+                <span class="badge-bad">✕</span>
+                <div>Zero systematic lead magnet to convert views into followers</div>
+              </div>
+            {% endif %}
           </div>
         </div>
 
-        <div class="comparison-col good" style="background: #FFFFFF; border-radius: 24px; padding: 32px 28px; box-shadow: 0 12px 32px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.06); border-top: 6px solid var(--accent-orange);">
-          <div class="comparison-col-header" style="font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--accent-orange); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px;">✓ THE $0 AUTONOMOUS SYSTEM</div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #111111;">
-            <span class="comp-bullet-good" style="color: var(--accent-orange); font-weight: 900;">✓</span>
-            <div><b>$0 / month</b> using free tools, open APIs & GitHub Actions</div>
+        <!-- Good / Engineered Column -->
+        <div class="comp-col-shell featured">
+          <div class="comp-col-core">
+            <div class="comp-header-strip comp-header-good">
+              <span>✓ THE AUTONOMOUS ENGINE</span>
+              <span style="color: #16A34A; font-size: 11px;">● ZERO-DEBT</span>
+            </div>
+
+            {% if slide.right_items %}
+              {% for item in slide.right_items %}
+              <div class="comp-item-row">
+                <span class="badge-good">✓</span>
+                <div>{{ item }}</div>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="comp-item-row">
+                <span class="badge-good">✓</span>
+                <div><b>$0 / month stack:</b> open APIs, Playwright & GitHub Actions</div>
+              </div>
+              <div class="comp-item-row">
+                <span class="badge-good">✓</span>
+                <div>Fully autonomous research, slide synthesis & 24/7 cloud posting</div>
+              </div>
+              <div class="comp-item-row">
+                <span class="badge-good">✓</span>
+                <div>Engineered luxury editorial templates driving high-intent saves</div>
+              </div>
+              <div class="comp-item-row">
+                <span class="badge-good">✓</span>
+                <div>Deterministic comment-to-DM flywheel capturing qualified leads</div>
+              </div>
+            {% endif %}
           </div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #111111;">
-            <span class="comp-bullet-good" style="color: var(--accent-orange); font-weight: 900;">✓</span>
-            <div>Fully automated research, drafting, rendering & posting</div>
-          </div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #111111;">
-            <span class="comp-bullet-good" style="color: var(--accent-orange); font-weight: 900;">✓</span>
-            <div>High-retention editorial aesthetics tailored for viral saves</div>
-          </div>
-          <div class="comparison-item" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 18px; line-height: 1.45; color: #111111;">
-            <span class="comp-bullet-good" style="color: var(--accent-orange); font-weight: 900;">✓</span>
-            <div>Comment-to-DM loop generating inbound leads daily</div>
-          </div>
+        </div>
+      </div>
+
+      <!-- Actionable Bottom Shift Callout -->
+      <div class="comp-summary-strip">
+        <span style="color: var(--accent-orange); font-size: 24px; flex-shrink: 0;">⚡</span>
+        <div>
+          <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; color: var(--accent-orange); letter-spacing: 0.1em; text-transform: uppercase;">THE CORE ADVANTAGE:</span>
+          {{ slide.proof_or_example | default("Eliminate human execution latency. Deterministic state machines always out-execute manual workflows.") }}
         </div>
       </div>
     </main>

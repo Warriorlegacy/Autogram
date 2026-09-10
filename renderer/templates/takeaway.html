@@ -5,75 +5,95 @@
   <title>Slide {{ slide.slide_number }} - Takeaway</title>
   <link rel="stylesheet" href="../css/design-system.css">
   <style>
-    .takeaway-card {
-      background: #FFFFFF;
-      border: 1px solid var(--card-border);
-      border-radius: 28px;
-      padding: 44px 48px;
-      box-shadow: var(--card-shadow-lg);
-      margin-top: 16px;
-    }
     .takeaway-headline {
       font-family: var(--font-display);
       font-size: 46px;
       font-weight: 900;
       color: var(--text-primary);
-      line-height: 1.15;
-      margin-bottom: 24px;
+      line-height: 1.14;
+      letter-spacing: -0.025em;
+      margin-bottom: 22px;
     }
     .takeaway-body {
       font-family: var(--font-body);
-      font-size: 26px;
+      font-size: 24px;
       color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: 32px;
+      line-height: 1.55;
+      margin-bottom: 28px;
     }
-    .takeaway-rule-box {
-      background: var(--accent-orange-soft);
-      border: 2px solid var(--accent-orange-border);
-      border-radius: 18px;
-      padding: 24px 30px;
+    .golden-rule-hardware-box {
+      background: #FFF9F5;
+      border: 1.5px solid var(--accent-orange-border);
+      border-radius: 20px;
+      padding: 24px 28px;
       display: flex;
       align-items: flex-start;
       gap: 16px;
-      font-size: 22px;
-      color: var(--text-primary);
-      line-height: 1.45;
+      box-shadow: 0 10px 24px -6px rgba(255, 85, 0, 0.12);
     }
-    .rule-bullet {
+    .golden-rule-icon {
       font-size: 28px;
       color: var(--accent-orange);
       flex-shrink: 0;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .golden-rule-text {
+      font-family: var(--font-body);
+      font-size: 20px;
+      line-height: 1.45;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    .golden-rule-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
   </style>
 </head>
 <body>
   <div class="slide-canvas">
     <header class="slide-header">
-      <div class="header-copyright">© 2026</div>
+      <div class="header-copyright">© 2026 // DISTILLED LAW</div>
       <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
-    <main class="slide-body" style="display: flex; flex-direction: column; justify-content: center;">
-      <div class="sub-eyebrow" style="text-align: left; color: var(--accent-orange); font-family: var(--font-mono); font-size: 18px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 24px;">
-        {{ slide.eyebrow | default('THE DISTILLED RULE') }}
+    <main class="slide-body">
+      <div class="sub-eyebrow">
+        {{ slide.eyebrow | default(meta.pillar | upper) | default('THE DISTILLED LAW') }}
       </div>
 
-      <div class="takeaway-card" style="background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); border-radius: 32px; padding: 48px 44px; box-shadow: 0 16px 40px rgba(0,0,0,0.06);">
-        <h1 class="takeaway-headline" style="font-family: var(--font-display); font-size: 46px; font-weight: 800; color: #111111; line-height: 1.2; margin-bottom: 24px;">
-          {{ slide.headline }}
-        </h1>
-        <p class="takeaway-body" style="font-family: var(--font-body); font-size: 26px; color: #3A3A3C; line-height: 1.6; margin-bottom: 32px;">
-          {{ slide.body }}
-        </p>
+      <div class="doppel-shell" style="margin-top: 10px;">
+        <div class="doppel-core">
+          <div class="spec-ribbon">
+            <span>● SYNTHESIS // FINAL PRINCIPLE</span>
+            <span class="status-alert">● MAXIMUM LEVERAGE</span>
+          </div>
 
-        {% if slide.proof_or_example %}
-        <div class="takeaway-rule-box" style="background: #FDF2EE; border: 1.5px solid #F5C6B8; border-radius: 20px; padding: 24px 28px; display: flex; align-items: flex-start; gap: 14px; font-family: var(--font-body); font-size: 20px; line-height: 1.5; color: #1A1A1A;">
-          <span class="rule-bullet" style="font-size: 24px;">💡</span>
-          <div><b style="font-family: var(--font-mono); font-weight: 800; letter-spacing: 0.05em; color: #111111;">GOLDEN RULE:</b> {{ slide.proof_or_example }}</div>
+          <h1 class="takeaway-headline">
+            {{ slide.headline }}
+          </h1>
+
+          <p class="takeaway-body">
+            {{ slide.body }}
+          </p>
+
+          <div class="golden-rule-hardware-box">
+            <span class="golden-rule-icon">💡</span>
+            <div>
+              <div class="golden-rule-label">CORE ARCHITECTURAL RULE</div>
+              <div class="golden-rule-text">
+                {{ slide.proof_or_example | default("The best systems are not the most complicated ones. They are the simplest architectures that eliminate human execution latency.") }}
+              </div>
+            </div>
+          </div>
         </div>
-        {% endif %}
       </div>
     </main>
 

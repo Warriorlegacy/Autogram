@@ -5,7 +5,7 @@
   <title>Slide {{ slide.slide_number }} - CTA</title>
   <link rel="stylesheet" href="../css/design-system.css">
   <style>
-    .cta-editorial-canvas {
+    .cta-canvas-inner {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -14,143 +14,193 @@
       text-align: center;
       padding: 10px 0;
     }
-    .cta-button-pill {
+    .word-comment-luxury {
+      font-family: var(--font-display);
+      font-size: 116px;
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+      color: var(--text-primary);
+      text-transform: lowercase;
+      margin-bottom: 12px;
+    }
+    .stamp-banner-luxury {
+      background-color: var(--accent-orange);
+      color: #FFFFFF;
+      border-radius: 26px;
+      padding: 14px 44px 20px 44px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: 0 20px 48px rgba(255, 85, 0, 0.32);
+      margin-bottom: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+    }
+    .stamp-text-luxury {
+      font-family: var(--font-stamp);
+      font-size: 130px;
+      line-height: 0.88;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+    .cta-headline-luxury {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--text-primary);
+      max-width: 860px;
+      margin-bottom: 12px;
+    }
+    .cta-delivery-badge {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent-orange);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--accent-orange-soft);
+      border: 1px solid var(--accent-orange-border);
+      padding: 6px 18px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cta-island-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
-      padding: 14px 34px;
+      padding: 16px 40px;
       background: #FFFFFF;
-      color: #111111;
+      color: var(--text-primary);
       border: 2.5px solid var(--accent-orange);
       border-radius: 999px;
       font-family: var(--font-mono);
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      box-shadow: 0 8px 24px rgba(224, 90, 54, 0.16);
-      margin: 18px 0 24px 0;
-    }
-    .cta-platform-connector {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      box-shadow: 0 10px 28px rgba(255, 85, 0, 0.18);
       margin-bottom: 24px;
-      flex-wrap: wrap;
     }
-    .phone-badge {
-      width: 82px;
-      height: 74px;
-      border: 2.5px solid #111111;
-      border-radius: 14px;
+    .cta-feature-triad {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      width: 100%;
+      max-width: 880px;
+    }
+    .triad-pill {
+      flex: 1;
       background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
       font-family: var(--font-mono);
       font-size: 12px;
       font-weight: 800;
-      color: #111111;
-      gap: 4px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-    }
-    .phone-badge .rec-dot {
-      color: #EF4444;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .cta-app-tile {
-      width: 58px;
-      height: 58px;
-      border-radius: 14px;
-      background: #FFFFFF;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+      color: var(--text-secondary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
     }
-    .connector-line-dots {
-      color: var(--accent-orange);
-      font-size: 18px;
-      letter-spacing: 2px;
-      font-weight: 900;
-    }
-    .cta-sign-off {
+    .creator-signoff-block {
       font-size: 24px;
-      margin-top: 10px;
       color: var(--text-primary);
+      margin-top: 4px;
+      margin-bottom: 14px;
     }
-    .cta-sign-off em {
+    .creator-signoff-block em {
       font-family: var(--font-serif);
       font-style: italic;
       font-weight: 700;
     }
-    .cta-sign-off span {
+    .creator-signoff-block span {
       font-family: var(--font-serif);
       font-style: italic;
       color: var(--accent-orange);
       font-weight: 700;
+    }
+    .follower-magnet-capsule {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-primary);
+      background: #FFFFFF;
+      border: 1.5px solid rgba(15, 23, 42, 0.12);
+      padding: 10px 24px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+      letter-spacing: 0.06em;
     }
   </style>
 </head>
 <body>
   <div class="slide-canvas">
     <header class="slide-header">
-      <div class="header-copyright">© 2026</div>
+      <div class="header-copyright">© 2026 // SYSTEM BLUEPRINT</div>
       <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
-    <main class="cta-editorial-canvas">
-      <!-- Big Comment + Stamp Banner -->
-      <div class="comment-callout-hero">
-        <div class="word-comment">comment</div>
-        <div class="stamp-banner">
-          <div class="stamp-text">{{ slide.trigger_word | default('DOCUMENT') }}</div>
-        </div>
+    <main class="cta-canvas-inner">
+      <!-- Big Comment Callout -->
+      <div class="word-comment-luxury">comment</div>
+
+      <!-- High-Impact Stamped Trigger Banner -->
+      <div class="stamp-banner-luxury">
+        <div class="stamp-text-luxury">{{ slide.trigger_word | default('BLUEPRINT') }}</div>
       </div>
 
-      <h2 class="comment-subheadline" style="font-size: 32px; max-width: 880px; margin-top: 18px; margin-bottom: 12px; font-weight: 800; color: #111111;">
-        {{ slide.headline | default("Build Your First Zero-Debt Pipeline.") }}
+      <!-- Supporting Headline -->
+      <h2 class="cta-headline-luxury">
+        {{ slide.headline | default("Get the Full Architecture Blueprint & Runnable Scripts") }}
       </h2>
 
-      <div style="font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: #333333; letter-spacing: 0.1em; margin-bottom: 16px; text-transform: uppercase;">
-        {{ slide.meta_chips | default("100% FREE RESOURCE · DELIVERED INSTANTLY TO YOUR DMS") }}
+      <!-- Delivery Spec Badge -->
+      <div class="cta-delivery-badge">
+        <span>●</span> {{ slide.meta_chips | default("100% FREE RESOURCE · DELIVERED INSTANTLY TO YOUR DMS") }}
       </div>
 
       <!-- Action Button Pill -->
-      <div class="cta-button-pill">
-        {{ slide.button_text | default("GET THE FREE BLUEPRINT →") }}
+      <div class="cta-island-button">
+        {{ slide.button_text | default("GET RUNNABLE REPO ↗") }}
       </div>
 
-      <!-- Phone recording icon connected to multi-platform icons -->
-      <div class="cta-platform-connector">
-        <div class="phone-badge">
-          <span class="rec-dot">● REC</span>
-          <span>2 MIN</span>
+      <!-- 3-Pillar Feature Strip -->
+      <div class="cta-feature-triad">
+        <div class="triad-pill">
+          <span style="color: var(--accent-orange)">⚡</span> 100% FREE STACK
         </div>
-        <div class="connector-line-dots">······</div>
-        <div class="cta-app-tile">📸</div>
-        <div class="cta-app-tile">▶️</div>
-        <div class="cta-app-tile">💼</div>
-        <div class="cta-app-tile">🎵</div>
-        <div class="cta-app-tile">✖️</div>
-        <div class="cta-app-tile">🧵</div>
-        <div class="connector-line-dots">······</div>
+        <div class="triad-pill">
+          <span style="color: #16A34A">🔒</span> PRODUCTION TESTED
+        </div>
+        <div class="triad-pill">
+          <span style="color: #2563EB">📦</span> INSTANT DM DELIVERY
+        </div>
       </div>
 
       <!-- Creator Sign-off & Follower Magnet -->
-      <div class="cta-sign-off">
+      <div class="creator-signoff-block">
         <em>My name is Piyush.</em> <span>Stop posting. Start shipping.</span>
       </div>
-      <div style="margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: #111111; background: #FFFFFF; border: 1.5px solid rgba(0,0,0,0.12); padding: 8px 22px; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); letter-spacing: 0.05em;">
-        <span style="color: var(--accent-orange); font-size: 16px; font-weight: 900;">+</span> FOLLOW @SIGNHIFY.STUDIO FOR DAILY AI BLUEPRINTS
+
+      <div class="follower-magnet-capsule">
+        <span style="color: var(--accent-orange); font-size: 16px; font-weight: 900;">+</span>
+        FOLLOW {{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }} FOR DAILY AI BLUEPRINTS
       </div>
     </main>
 

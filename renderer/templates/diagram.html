@@ -5,107 +5,193 @@
   <title>Slide {{ slide.slide_number }} - Diagram</title>
   <link rel="stylesheet" href="../css/design-system.css">
   <style>
-    .diagram-pipeline {
+    .diagram-stack {
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      margin-top: 24px;
+      margin-top: 20px;
+      width: 100%;
     }
-    .pipeline-node {
-      background: #FFFFFF;
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 22px 28px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      box-shadow: var(--card-shadow);
+    .diagram-node-shell {
+      background: var(--bg-paper-warm);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 24px;
+      padding: 6px;
+      box-shadow: 0 12px 28px -8px rgba(15, 23, 42, 0.05);
       position: relative;
     }
+    .diagram-node-shell.active-stage {
+      border-color: var(--accent-orange-border);
+      background: #FFF9F5;
+      box-shadow: 0 16px 36px -8px rgba(255, 85, 0, 0.12);
+    }
+    .diagram-node-core {
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      border-radius: 18px;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    }
+    .diagram-node-shell.active-stage .diagram-node-core {
+      border-color: rgba(255, 85, 0, 0.2);
+    }
+    .node-left-cluster {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+    }
     .node-icon-box {
-      width: 56px;
-      height: 56px;
-      background: var(--accent-orange-soft);
-      border-radius: 14px;
+      width: 60px;
+      height: 60px;
+      background: var(--bg-paper-warm);
+      border: 1.5px solid rgba(15, 23, 42, 0.08);
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 28px;
       flex-shrink: 0;
     }
-    .node-text-title {
+    .diagram-node-shell.active-stage .node-icon-box {
+      background: var(--accent-orange-soft);
+      border-color: var(--accent-orange-border);
+    }
+    .node-meta-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .node-title {
       font-family: var(--font-display);
       font-size: 22px;
       font-weight: 800;
       color: var(--text-primary);
+      line-height: 1.25;
       margin-bottom: 4px;
     }
-    .node-text-sub {
+    .node-subtext {
       font-family: var(--font-body);
-      font-size: 17px;
+      font-size: 16px;
       color: var(--text-secondary);
-      line-height: 1.4;
+      line-height: 1.45;
     }
-    .pipeline-arrow {
+    .node-status-chip {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #16A34A;
       display: flex;
-      justify-content: center;
-      font-size: 20px;
-      color: var(--accent-orange);
-      margin: -6px 0;
-      font-weight: 900;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      text-transform: uppercase;
     }
   </style>
 </head>
 <body>
   <div class="slide-canvas">
     <header class="slide-header">
-      <div class="header-copyright">© 2026</div>
+      <div class="header-copyright">© 2026 // SYSTEM ARCHITECTURE</div>
       <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
     <main class="slide-body">
-      {% if slide.step_label %}
-      <div class="step-badge">{{ slide.step_label }}</div>
-      {% else %}
-      <div class="sub-eyebrow">{{ slide.eyebrow | default('SYSTEM ARCHITECTURE') }}</div>
-      {% endif %}
+      <div class="sub-eyebrow">
+        {{ slide.eyebrow | default(meta.pillar | upper) | default('SYSTEM ARCHITECTURE') }}
+      </div>
 
-      <h2 class="headline-large">{{ slide.headline }}</h2>
+      <h1 class="headline-large" style="font-size: 48px; margin-bottom: 12px;">
+        {{ slide.headline }}
+      </h1>
 
       {% if slide.body %}
-      <p class="subtext-lead">{{ slide.body }}</p>
+      <p class="subtext-lead" style="font-size: 22px; margin-bottom: 16px;">
+        {{ slide.body }}
+      </p>
       {% endif %}
 
-      <div class="diagram-pipeline">
-        <div class="pipeline-node">
-          <div class="node-icon-box">🔍</div>
-          <div>
-            <div class="node-text-title">1. Market Intelligence & Niche Discovery</div>
-            <div class="node-text-sub">Researches trending AI tools, viral hooks & compound workflows in real time</div>
+      <div class="diagram-stack">
+        <!-- Node 1 -->
+        <div class="diagram-node-shell">
+          <div class="diagram-node-core">
+            <div class="node-left-cluster">
+              <div class="node-icon-box">🔍</div>
+              <div>
+                <div class="node-meta-tag">STAGE 01 · INGESTION</div>
+                <div class="node-title">{{ slide.step1_title | default('Telemetry & Market Intelligence') }}</div>
+                <div class="node-subtext">{{ slide.step1_sub | default('Captures live signals, verified research seeds, and trending developer tools') }}</div>
+              </div>
+            </div>
+            <div class="node-status-chip">● ACTIVE</div>
           </div>
         </div>
 
-        <div class="pipeline-arrow">↓</div>
+        <!-- Laser Rail 1 -->
+        <div class="laser-rail">
+          <div class="rail-node">↓</div>
+        </div>
 
-        <div class="pipeline-node">
-          <div class="node-icon-box">⚡</div>
-          <div>
-            <div class="node-text-title">2. Document-Don't-Create Slide Synthesis</div>
-            <div class="node-text-sub">Transforms 1 raw insight or voice note into 30 structured multi-platform assets</div>
+        <!-- Node 2 (Hero Active Stage) -->
+        <div class="diagram-node-shell active-stage">
+          <div class="diagram-node-core">
+            <div class="node-left-cluster">
+              <div class="node-icon-box">⚙️</div>
+              <div>
+                <div class="node-meta-tag" style="color: var(--accent-orange);">STAGE 02 · SYNTHESIS ENGINE</div>
+                <div class="node-title">{{ slide.step2_title | default('Deterministic Structured Synthesis') }}</div>
+                <div class="node-subtext">{{ slide.step2_sub | default('Zero-shot anti-repetition filter guarantees high-retention editorial schemas') }}</div>
+              </div>
+            </div>
+            <div class="node-status-chip" style="background: var(--accent-orange-soft); border-color: var(--accent-orange-border); color: var(--accent-orange);">
+              ● CORE GATE
+            </div>
           </div>
         </div>
 
-        <div class="pipeline-arrow">↓</div>
+        <!-- Laser Rail 2 -->
+        <div class="laser-rail">
+          <div class="rail-node">↓</div>
+        </div>
 
-        <div class="pipeline-node">
-          <div class="node-icon-box">🚀</div>
-          <div>
-            <div class="node-text-title">3. Headless Rendering & Cloud 24/7 Publishing</div>
-            <div class="node-text-sub">Playwright produces 1080×1350 JPEGs & publishes via Meta Graph API</div>
+        <!-- Node 3 -->
+        <div class="diagram-node-shell">
+          <div class="diagram-node-core">
+            <div class="node-left-cluster">
+              <div class="node-icon-box">🚀</div>
+              <div>
+                <div class="node-meta-tag">STAGE 03 · DISPATCH</div>
+                <div class="node-title">{{ slide.step3_title | default('Headless Render & Meta Cloud Publish') }}</div>
+                <div class="node-subtext">{{ slide.step3_sub | default('Playwright renders 1080×1350 JPEGs + publishes with auto-generated hashtags') }}</div>
+              </div>
+            </div>
+            <div class="node-status-chip">● ZERO-FAIL</div>
           </div>
         </div>
       </div>
+
+      {% if slide.proof_or_example %}
+      <div class="implementation-tray" style="margin-top: 20px;">
+        <span class="tray-icon">⚡</span>
+        <div>
+          <span class="tray-label">PIPELINE LAW:</span>
+          {{ slide.proof_or_example }}
+        </div>
+      </div>
+      {% endif %}
     </main>
 
     <footer class="slide-footer-editorial">

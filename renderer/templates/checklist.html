@@ -5,45 +5,190 @@
   <title>Slide {{ slide.slide_number }} - Checklist</title>
   <link rel="stylesheet" href="../css/design-system.css">
   <style>
-    .checklist-list {
+    .checklist-stack {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      margin-top: 24px;
+      gap: 14px;
+      margin-top: 20px;
       width: 100%;
+    }
+    .check-card-shell {
+      background: var(--bg-paper-warm);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 22px;
+      padding: 6px;
+      box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.04);
+    }
+    .check-card-core {
+      background: #FFFFFF;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    }
+    .check-left-group {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex: 1;
+    }
+    .check-num-chip {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: var(--accent-orange-soft);
+      border: 1.5px solid var(--accent-orange-border);
+      color: var(--accent-orange);
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .check-text-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 2px;
+    }
+    .check-text-desc {
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .check-status-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #16A34A;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .checklist-audit-banner {
+      margin-top: 22px;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(15, 23, 42, 0.08);
+      border-radius: 16px;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
     }
   </style>
 </head>
 <body>
   <div class="slide-canvas">
     <header class="slide-header">
-      <div class="header-copyright">© 2026</div>
+      <div class="header-copyright">© 2026 // EXECUTION AUDIT</div>
       <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
-    <main class="slide-body" style="display: flex; flex-direction: column; justify-content: center;">
-      <div class="sub-eyebrow" style="text-align: left; color: var(--accent-orange); font-family: var(--font-mono); font-size: 18px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 20px;">
-        {{ slide.eyebrow | default('EXECUTION BLUEPRINT') }}
+    <main class="slide-body">
+      <div class="sub-eyebrow">
+        {{ slide.eyebrow | default(meta.pillar | upper) | default('EXECUTION BLUEPRINT') }}
       </div>
 
-      <h1 class="headline-large" style="font-family: var(--font-display); font-size: 50px; font-weight: 800; color: #111111; line-height: 1.18; margin-bottom: 20px;">
+      <h1 class="headline-large" style="font-size: 48px; margin-bottom: 12px;">
         {{ slide.headline }}
       </h1>
 
       {% if slide.body %}
-      <p class="subtext-lead" style="font-family: var(--font-body); font-size: 24px; line-height: 1.6; color: #3A3A3C; margin-bottom: 32px;">
+      <p class="subtext-lead" style="font-size: 22px; margin-bottom: 16px;">
         {{ slide.body }}
       </p>
       {% endif %}
 
-      <div class="blueprint-summary-card" style="background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); border-radius: 24px; padding: 28px 32px; box-shadow: 0 12px 32px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 20px;">
-        <div class="blueprint-num-badge" style="width: 54px; height: 54px; background: #FDEEE9; border: 1px solid #F5C6B8; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 18px; font-weight: 800; color: var(--accent-orange); flex-shrink: 0;">
-          01
-        </div>
-        <div style="font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #111111; line-height: 1.4;">
-          {{ slide.proof_or_example | default("Each item directly contributes to reducing technical debt, increasing reliability, and cutting costs.") }}
-        </div>
+      <div class="checklist-stack">
+        {% if slide.checklist_items %}
+          {% for item in slide.checklist_items %}
+          <div class="check-card-shell">
+            <div class="check-card-core">
+              <div class="check-left-group">
+                <div class="check-num-chip">{{ "%02d" | format(loop.index) }}</div>
+                <div>
+                  <div class="check-text-title">{{ item.title | default(item) }}</div>
+                  {% if item.desc %}
+                  <div class="check-text-desc">{{ item.desc }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="check-status-tag">✓ VERIFIED</div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <!-- High-Signal Dynamic Execution Fallbacks -->
+          <div class="check-card-shell">
+            <div class="check-card-core">
+              <div class="check-left-group">
+                <div class="check-num-chip">01</div>
+                <div>
+                  <div class="check-text-title">Cloud Ingestion & Signal Filtering</div>
+                  <div class="check-text-desc">Capture raw trending triggers with zero human monitoring required.</div>
+                </div>
+              </div>
+              <div class="check-status-tag">✓ VERIFIED</div>
+            </div>
+          </div>
+
+          <div class="check-card-shell">
+            <div class="check-card-core">
+              <div class="check-left-group">
+                <div class="check-num-chip">02</div>
+                <div>
+                  <div class="check-text-title">Deterministic Quality Gate & Synthesis</div>
+                  <div class="check-text-desc">Strict anti-repetition memory ensures unique, high-retention frameworks.</div>
+                </div>
+              </div>
+              <div class="check-status-tag">✓ PASS</div>
+            </div>
+          </div>
+
+          <div class="check-card-shell">
+            <div class="check-card-core">
+              <div class="check-left-group">
+                <div class="check-num-chip">03</div>
+                <div>
+                  <div class="check-text-title">Autonomous Meta Dispatch & Hashtag Binding</div>
+                  <div class="check-text-desc">Headless Chromium renders 1080×1350 JPEGs with 3-tier viral hashtags.</div>
+                </div>
+              </div>
+              <div class="check-status-tag">✓ DEPLOYED</div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Execution Quality Banner -->
+      <div class="checklist-audit-banner">
+        <span style="color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+          <span style="color: #16A34A;">●</span> SYSTEM AUDIT: 100% ZERO-DEBT READY
+        </span>
+        <span style="color: var(--accent-orange);">
+          {{ slide.proof_or_example | default('SHIP IN UNDER 45 MINUTES →') }}
+        </span>
       </div>
     </main>
 
