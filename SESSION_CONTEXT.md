@@ -1,11 +1,12 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-11 14:10 IST  
+> **Last Updated:** 2026-09-11 17:30 IST  
 > **Repository:** `Warriorlegacy/Autogram` (`main` branch)  
-> **Latest Git Commit:** `5676f3b` ("feat: expand prompt framework database and add ManyChat DM automation guide")  
+> **Latest Git Commit:** `3ca847c` ("refactor(design): makerzz-inspired redesign — editorial dark, day/night mode, SIGNHIFY watermark")  
 > **Target Profile:** `@signhify.studio`  
 > **Live Publishing Status:** **VERIFIED & ACTIVE** (Live Media ID: `18133054180629915` published directly to Instagram feed with first-comment ID `18190231507400189`)  
-> **Growth Objective:** 100k followers in 15 days via zero-touch FOSS & Secret AI Prompts publishing.
+> **Growth Objective:** 100k followers in 15 days via zero-touch FOSS & Secret AI Prompts publishing.  
+> **Dashboard:** **REDESIGNED** — makerzz.space-inspired editorial dark UI, live at `https://autogram-dashboard.onrender.com/dashboard`
 
 ---
 
@@ -177,5 +178,44 @@ Instead of paying $15–$150+/month to ManyChat or dealing with contact limits a
   - **CLI Trigger:** `python orchestrator.py --auto-dm [--dry-run]`
   - **Dashboard API:** `POST /api/instagram/auto-dm` and `GET /api/instagram/auto-dm/stats`
   - **Interactive Cockpit UI:** Dedicated "Auto-DM Engine" view in `dashboard.html` with real-time stats, activity log, and 1-click scan button.
-  - **Cloud Automation:** GitHub Actions workflow [`.github/workflows/auto-dm.yml`](file:///d:/Autogram/.github/workflows/auto-dm.yml) running every 30 minutes 24/7.
+   - **Cloud Automation:** GitHub Actions workflow [`.github/workflows/auto-dm.yml`](file:///d:/Autogram/.github/workflows/auto-dm.yml) running every 30 minutes 24/7.
+
+---
+
+## 8. Dashboard Redesign — Makerzz-Inspired Editorial Dark UI
+
+**Commit:** `3ca847c` — pushed to `main`, deployed to Render.
+
+### Design Shift
+| Before (Sci-Fi) | After (Editorial) |
+|---|---|
+| Neon cyan `#00F0FF` + violet glows | Teal `#0E6F77` + amber `#FFC22B` |
+| Scanlines, noise overlays, WebGL 3D lattice | Clean solid backgrounds, no overlays |
+| Double-bezel "doppel-shell" cards with backdrop blur | Flat cards with subtle borders |
+| Glow buttons (`box-shadow: 0 0 24px`) | 3D push-pill buttons (`box-shadow: 0px 5px 0px`) |
+| "NEURAL MISSION CONTROL v2.5" branding | "Zero-Touch Carousel Engine" |
+| Gamification chrome (🔥 streak, LVL 9) | Removed — clean sidebar |
+
+### Changes Applied (Phases 1–6)
+- **CSS Token Migration:** `--cyan` value changed from `#00F0FF` to `#0E6F77` (teal), glow opacities reduced
+- **Cyber Chrome Removal:** `#dashboard-webgl`, `.cyber-scanlines`, `.cyber-noise`, `#confetti-canvas` set to `display: none`
+- **Button System:** `.btn-island-primary`/`.btn-island-violet` → makerzz 3D push-pill (`border-radius: 999px`)
+- **Card System:** `.doppel-shell` flattened — removed backdrop blur, double-bezel padding, hover glows
+- **Sidebar:** Removed streak card, LVL badge, flamePulse keyframe. Brand glyph flattened. Nav labels editorialized
+- **Day/Night Mode:** `[data-theme="light"]` CSS overrides, theme toggle in topbar, localStorage persistence
+- **Watermark:** All templates updated from `@SIGNHIFY.STUDIO` → `SIGNHIFY.STUDIO`
+
+### Files Modified
+| File | What Changed |
+|---|---|
+| `dashboard.html` | CSS tokens, buttons, cards, sidebar, copy, day/night mode (~446 ins, ~522 del) |
+| `data/brand.json` | Watermark + footer_text |
+| `dashboard_api.py` | Fallback brand dict watermark |
+| `renderer/render.py` | Fallback brand dict watermark |
+| `renderer/templates/*.html` (9 files) | Jinja watermark defaults |
+
+### Remaining (Optional)
+- Phase 7: Landing page `index.html` alignment (not started)
+- Remove Three.js CDN script tag (WebGL canvas hidden)
+- Rename `var(--cyan)` → `var(--makerzz-teal)` across 37 inline HTML references (cosmetic, value already correct)
 
