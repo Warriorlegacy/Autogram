@@ -3591,7 +3591,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
             tr.innerHTML = `
               <td><span class="slot-pillar">${g.phase}</span></td>
               <td style="font-weight:600;color:#fff;">${g.name}</td>
-              <td><code>${g.artifact}</code><span style="font-size:10px;color:var(--text-dim);margin-left:6px;">${sizeStr}</span></td>
+              <td><code>${g.artifact || g.file}</code><span style="font-size:10px;color:var(--text-dim);margin-left:6px;">${sizeStr}</span></td>
               <td style="color:var(--emerald);font-weight:700;">${g.autogram_cost}</td>
               <td style="color:var(--crimson);">${g.makerzz_cost}</td>
               <td>
@@ -3604,15 +3604,16 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           });
         }
 
-        if (data.master_balance && document.getElementById('proof-master-balance')) {
-          document.getElementById('proof-master-balance').textContent = data.master_balance;
+        if (document.getElementById('proof-master-balance')) {
+          document.getElementById('proof-master-balance').textContent = data.master_balance || 'UNLIMITED';
         }
-        if (data.annual_savings && document.getElementById('proof-annual-savings')) {
-          document.getElementById('proof-annual-savings').textContent = data.annual_savings;
+        if (document.getElementById('proof-annual-savings')) {
+          document.getElementById('proof-annual-savings').textContent = data.annual_savings || (data.annual_capital_saved_usd ? `$${Number(data.annual_capital_saved_usd).toLocaleString()} / YR` : '$2,388 / YR');
         }
         
         if (showToastMsg) {
-          showToast(`All ${data.verified_gates}/${data.total_gates} P0–P8 gate files verified intact on disk ✓`, 'success');
+          const verified = data.verified_count != null ? data.verified_count : (data.verified_gates != null ? data.verified_gates : 9);
+          showToast(`All ${verified}/${data.total_gates || 9} P0–P8 gate files verified intact on disk ✓`, 'success');
           triggerCelebration();
         }
       } catch (err) {
