@@ -30,6 +30,71 @@
   <link rel="stylesheet" href="css/landing.css">
   <link rel="stylesheet" href="css/components.css">
 
+  <style>
+    .btn-3d {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-radius: 12px;
+      padding: 12px 22px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.12s ease, background 0.18s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-3d:active {
+      transform: translateY(3px) !important;
+    }
+    .btn-3d-cyan {
+      background: linear-gradient(180deg, #00f2fe 0%, #00b4d8 100%);
+      color: #03131e !important;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 0 #0077b6, 0 8px 16px rgba(0, 242, 254, 0.35);
+    }
+    .btn-3d-cyan:hover {
+      background: linear-gradient(180deg, #38f9d7 0%, #00f2fe 100%);
+      box-shadow: 0 4px 0 #0077b6, 0 10px 22px rgba(0, 242, 254, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-3d-cyan:active {
+      box-shadow: 0 1px 0 #0077b6, 0 3px 8px rgba(0, 242, 254, 0.25);
+    }
+    .btn-3d-emerald {
+      background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 0 #047857, 0 8px 16px rgba(16, 185, 129, 0.35);
+    }
+    .btn-3d-emerald:hover {
+      background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+      box-shadow: 0 4px 0 #047857, 0 10px 22px rgba(16, 185, 129, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-3d-emerald:active {
+      box-shadow: 0 1px 0 #047857, 0 3px 8px rgba(16, 185, 129, 0.25);
+    }
+    .btn-3d-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main, #ffffff) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.5);
+    }
+    .btn-3d-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-3d-ghost:active {
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+    }
+  </style>
+
   <!-- Three.js CDN for 3D WebGL Hologram -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <!-- Scripts -->
@@ -82,13 +147,13 @@
             <span id="theme-toggle-icon">🌙</span>
             <span id="theme-toggle-label">DARK</span>
           </button>
-          <a href="dashboard.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 13px; font-weight: 800;">
+          <a href="dashboard.html" class="btn btn-primary btn-3d btn-3d-cyan" style="padding: 10px 20px; font-size: 13px; font-weight: 800;">
             <span>⚡ Mission Cockpit</span>
           </a>
-          <a href="#" id="open-portal-btn" class="btn btn-secondary trigger-portal-modal" style="padding: 10px 18px; font-size: 13px;">
+          <a href="#" id="open-portal-btn" class="btn btn-secondary btn-3d btn-3d-ghost trigger-portal-modal" style="padding: 10px 18px; font-size: 13px;">
             <span>Client Portal</span>
           </a>
-          <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 10px 18px; font-size: 13px;">
+          <a href="#pricing" class="btn btn-primary btn-3d btn-3d-emerald trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 10px 18px; font-size: 13px;">
             <span>Deploy Autopilot</span>
             <span class="btn-icon-circle">→</span>
           </a>
@@ -115,11 +180,11 @@
         </p>
 
         <div class="hero-cta-group">
-          <a href="dashboard.html" class="btn btn-primary" style="padding: 16px 32px; font-size: 16px; font-weight: 800;">
+          <a href="dashboard.html" class="btn btn-primary btn-3d btn-3d-cyan" style="padding: 16px 32px; font-size: 16px; font-weight: 800;">
             <span>Launch Neural Dashboard</span>
             <span class="btn-icon-circle">⚡</span>
           </a>
-          <a href="#pricing" class="btn btn-secondary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 16px 30px; font-size: 16px;">
+          <a href="#pricing" class="btn btn-secondary btn-3d btn-3d-emerald trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 16px 30px; font-size: 16px;">
             <span>Deploy My Autopilot</span>
             <span class="btn-icon-circle">→</span>
           </a>
@@ -410,79 +475,80 @@
         <!-- Tier 1: Starter -->
         <div class="pricing-card">
           <div>
-            <div class="plan-name">Starter Autopilot</div>
-            <p class="plan-desc">Ideal for solo founders establishing initial authority in one key content pillar.</p>
+            <div class="plan-name">Starter Plan</div>
+            <p class="plan-desc">For creators and solo builders creating high-signal carousels with instant AI setup.</p>
             <div class="plan-price">
-              <span id="price-starter" class="price-num">$497</span>
+              <span id="price-starter" class="price-num">$29</span>
               <span class="price-period">/ month</span>
             </div>
             <ul class="plan-features">
-              <li class="plan-feature-item"><span class="feature-check">✓</span> 15 High-Signal Carousels / month</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> 1 Core Content Pillar Focus</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Automated Fact-Check Audit</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> 1080×1350 Playwright Slide Renderer</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Pre-Publish Staging Dashboard</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Email & Slack Exception Alerts</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 30 Carousels / month</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 1 Connected Instagram Account</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Auto-Detect AI Models (OpenAI, Gemini, Groq)</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Standard Prompt Library (15+ Frameworks)</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 3 Carousel Design Templates</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Manual JPEG / ZIP Export & Preview</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Standard Email Support</li>
             </ul>
           </div>
           <div class="pricing-btn-wrapper">
-            <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Starter Autopilot" style="width: 100%;">
-              <span>Deploy Starter</span>
-              <span class="btn-icon-circle">→</span>
+            <a href="dashboard.html" class="btn btn-3d btn-3d-ghost" style="width: 100%; text-decoration: none;">
+              <span>Start with Starter ($29)</span>
             </a>
           </div>
         </div>
 
-        <!-- Tier 2: Growth Autopilot (Featured) -->
+        <!-- Tier 2: Growth Pro (Featured) -->
         <div class="pricing-card featured">
-          <div class="featured-pill">Most Popular · Full Autopilot</div>
+          <div class="featured-pill">Most Popular · High Autopilot</div>
           <div>
-            <div class="plan-name">Growth Autopilot</div>
-            <p class="plan-desc">Complete daily zero-touch publishing system for tech companies and modern agencies.</p>
+            <div class="plan-name">Growth Pro</div>
+            <p class="plan-desc">Full autonomous daily publishing engine for high-growth founders and tech companies.</p>
             <div class="plan-price">
-              <span id="price-growth" class="price-num">$997</span>
+              <span id="price-growth" class="price-num">$79</span>
               <span class="price-period">/ month</span>
             </div>
             <ul class="plan-features">
-              <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>30 Daily Carousels / month</strong></li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>Full 6-Pillar Strategic Rotation</strong></li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Bespoke Brand Design System & CSS Tokens</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>120 Carousels / month</strong></li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>40 AI Video Reels / month</strong></li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 3 Connected Instagram Accounts</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> All AI Providers (OpenAI, Claude, Groq, Ollama)</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Full Prompt Library (30+ Frameworks)</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> All 5 Carousel & Reel Design Templates</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 7x Daily Autonomous Cadence Scheduler</li>
               <li class="plan-feature-item"><span class="feature-check">✓</span> Direct Meta Instagram Graph API Publishing</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Automatic 60-Day Token Auto-Refresh</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Anti-Repetition Content Memory Ledger</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Weekly Analytics Learning & Score Optimization</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Priority Support & Updates</li>
             </ul>
           </div>
           <div class="pricing-btn-wrapper">
-            <a href="#" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%;">
-              <span>Deploy Growth Autopilot</span>
-              <span class="btn-icon-circle">→</span>
+            <a href="dashboard.html" class="btn btn-3d btn-3d-cyan" style="width: 100%; text-decoration: none;">
+              <span>Deploy Growth Pro ($79)</span>
             </a>
           </div>
         </div>
 
-        <!-- Tier 3: Enterprise Swarm -->
+        <!-- Tier 3: Agency Pro -->
         <div class="pricing-card">
           <div>
-            <div class="plan-name">Enterprise Swarm</div>
-            <p class="plan-desc">For venture portfolios, multi-brand holding companies, and high-volume media operations.</p>
+            <div class="plan-name">Agency Pro</div>
+            <p class="plan-desc">Uncapped horsepower for digital agencies, media brands, and high-volume operations.</p>
             <div class="plan-price">
-              <span id="price-enterprise" class="price-num">$2,497</span>
+              <span id="price-enterprise" class="price-num">$199</span>
               <span class="price-period">/ month</span>
             </div>
             <ul class="plan-features">
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Up to 3 Distinct Brand Accounts</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> 90 Carousels / month Total</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Custom Internal MCP Connectors & Knowledge Feeds</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Dedicated Cloudflare R2 Edge CDN Hosting</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Real-Time Telegram & Slack Executive Alerts</li>
-              <li class="plan-feature-item"><span class="feature-check">✓</span> Dedicated Solutions Engineer & Custom SLAs</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>Unlimited Carousels & Video Reels</strong></li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> 10 Connected Accounts & Workspaces</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Custom Endpoints, Private Proxies & Local vLLM</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Complete White-Label & Watermark Removal</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Autonomous Auto-DM Engine & Comment Funnels</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Custom CSS Design System Overrides</li>
+              <li class="plan-feature-item"><span class="feature-check">✓</span> Dedicated Account Manager & Custom SLA</li>
             </ul>
           </div>
           <div class="pricing-btn-wrapper">
-            <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Enterprise Swarm" style="width: 100%;">
-              <span>Talk to Enterprise</span>
-              <span class="btn-icon-circle">→</span>
+            <a href="dashboard.html" class="btn btn-3d btn-3d-emerald" style="width: 100%; text-decoration: none;">
+              <span>Get Agency Pro ($199)</span>
             </a>
           </div>
         </div>

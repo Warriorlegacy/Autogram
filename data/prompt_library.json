@@ -1,0 +1,295 @@
+{
+  "categories": [
+    {
+      "id": "saas_breakdown",
+      "name": "SaaS & Tech Teardowns",
+      "description": "Deconstruct modern tools, open-source alternatives, and billion-dollar architectures.",
+      "prompts": [
+        {
+          "id": "saas_oss_alt",
+          "title": "Open Source Alternatives to Expensive SaaS",
+          "hook": "Stop paying $500/month. Here are 7 free, open-source alternatives to industry software.",
+          "pillar": "saas_alternatives",
+          "slides_outline": [
+            "Hook: The SaaS bill reality check",
+            "Tool 1: Supabase vs Firebase",
+            "Tool 2: PostHog vs Mixpanel",
+            "Tool 3: n8n vs Zapier",
+            "Tool 4: Documenso vs DocuSign",
+            "Tool 5: Cal.com vs Calendly",
+            "Summary Comparison Grid",
+            "CTA: Which one are you self-hosting first?"
+          ]
+        },
+        {
+          "id": "saas_pricing_hack",
+          "title": "How Companies Trick You with Per-Seat Pricing",
+          "hook": "The hidden math behind SaaS per-seat pricing and how modern startups bypass it.",
+          "pillar": "marketing_psychology",
+          "slides_outline": [
+            "The Illusion of the $12/user plan",
+            "The Multiplier Trap (Slack, Figma, Zoom)",
+            "The Usage-Based Revolution",
+            "How Engineering Teams Self-Host to Save 80%",
+            "Checklist: 4 questions before signing any annual SaaS contract"
+          ]
+        },
+        {
+          "id": "system_arch_netflix",
+          "title": "System Architecture: How Netflix Streams at Scale",
+          "hook": "How Netflix delivers 4K video to 260M users without crashing during peak hours.",
+          "pillar": "system_architecture",
+          "slides_outline": [
+            "The Problem: Petabytes per second",
+            "Open Connect: Custom hardware appliances at local ISPs",
+            "The Encoding Pipeline: Micro-chunks & Dynamic Bitrate",
+            "Zuul Gateway & Chaos Monkey resilience",
+            "Key Takeaway for your startup's backend"
+          ]
+        },
+        {
+          "id": "system_arch_stripe",
+          "title": "Why Stripe Never Loses a Single Cent",
+          "hook": "The distributed database architecture that processes $1 Trillion without double charges.",
+          "pillar": "system_architecture",
+          "slides_outline": [
+            "Idempotency Keys: The invisible shield against double payment",
+            "Two-Phase Commit vs Saga Pattern",
+            "Event-driven architecture with Kafka",
+            "Audit logs & ledger reconciliation in real-time",
+            "How to implement idempotency in 20 lines of code"
+          ]
+        },
+        {
+          "id": "system_arch_redis",
+          "title": "5 Redis Architecture Patterns Every Senior Dev Knows",
+          "hook": "Redis is more than just a cache. Here are 5 production architectural patterns.",
+          "pillar": "system_architecture",
+          "slides_outline": [
+            "Pattern 1: Distributed Locking (Redlock)",
+            "Pattern 2: Sliding Window Rate Limiting",
+            "Pattern 3: Realtime Leaderboards (Sorted Sets)",
+            "Pattern 4: Pub/Sub & Stream Processing",
+            "Pattern 5: Session Stores with Ephemeral TTL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dev_cli_tools",
+      "name": "Developer Power Tools & CLI",
+      "description": "Terminal workflows, hidden developer utilities, and productivity multipliers.",
+      "prompts": [
+        {
+          "id": "cli_hidden_gems",
+          "title": "7 Modern CLI Tools Replacing 40-Year-Old Unix Commands",
+          "hook": "Upgrade your terminal in 5 minutes: 7 modern CLI tools built in Rust.",
+          "pillar": "developer_productivity",
+          "slides_outline": [
+            "bat instead of cat (syntax highlighting & git integration)",
+            "eza instead of ls (icons, tree view, git status)",
+            "ripgrep (rg) instead of grep (10x faster)",
+            "fd instead of find (intuitive syntax, ignore rules)",
+            "zoxide instead of cd (smart directory jumping)",
+            "Summary cheat-sheet to install all in 1 brew command"
+          ]
+        },
+        {
+          "id": "git_commands_senior",
+          "title": "Git Commands That Make You Look Like a Senior Engineer",
+          "hook": "Stop deleting and re-cloning repos. Master these 6 life-saving Git commands.",
+          "pillar": "developer_productivity",
+          "slides_outline": [
+            "git reflog: Time travel when you think you lost code",
+            "git bisect: Find the exact commit that broke production",
+            "git worktree: Work on multiple branches simultaneously",
+            "git cherry-pick --no-commit: Selective patch extraction",
+            "git commit --fixup & autosquash: Clean PR history",
+            "Pro tip: Interactive rebase without fear"
+          ]
+        },
+        {
+          "id": "docker_compose_speed",
+          "title": "10x Faster Docker Builds with Multi-Stage Caching",
+          "hook": "Why your Docker build takes 8 minutes (and how to bring it under 45 seconds).",
+          "pillar": "developer_productivity",
+          "slides_outline": [
+            "The Layer Caching Mistake 90% of devs make",
+            "Order matters: package.json before source code",
+            "Multi-stage builds: strip build tools from production image",
+            "Mount cache flags in BuildKit",
+            "Before vs After benchmark numbers"
+          ]
+        },
+        {
+          "id": "curl_to_api_mastery",
+          "title": "Mastering cURL: 6 Tricks You Didn't Learn in School",
+          "hook": "From debugging SSL certificates to measuring DNS latency: cURL secrets.",
+          "pillar": "developer_productivity",
+          "slides_outline": [
+            "Measure latency breakdown (DNS, TCP, TLS, TTFB)",
+            "Download with automatic resume (--continue-at -)",
+            "Silent progress with custom formatted JSON output",
+            "Send raw binary & multi-part file uploads",
+            "Follow redirects while preserving POST payload"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai_engineering",
+      "name": "AI Engineering & LLM Systems",
+      "description": "Building production AI systems, RAG pipelines, and agentic workflows.",
+      "prompts": [
+        {
+          "id": "rag_triad_evaluation",
+          "title": "Why 80% of RAG Systems Fail in Production (And How to Fix It)",
+          "hook": "Vector search is not enough. Here is the architecture of production-grade RAG.",
+          "pillar": "ai_engineering",
+          "slides_outline": [
+            "The Naive RAG Failure Mode: Hallucinations and Bad Chunks",
+            "Component 1: Hybrid Search (BM25 + Dense Vectors)",
+            "Component 2: Cross-Encoder Reranking (Cohere/BGE)",
+            "Component 3: Contextual Compression & Sliding Window",
+            "The RAG Triad: Context Relevance, Groundedness, Answer Relevance",
+            "Actionable blueprint for your next LLM app"
+          ]
+        },
+        {
+          "id": "local_llm_setup",
+          "title": "Run Open Source DeepSeek & Llama 3 Locally for $0",
+          "hook": "Complete guide to running private, uncensored LLMs on your laptop.",
+          "pillar": "ai_engineering",
+          "slides_outline": [
+            "Hardware requirements (VRAM vs Unified RAM)",
+            "Ollama vs LM Studio vs vLLM comparison",
+            "Quantization explained (Q4_K_M vs Q8 vs FP16)",
+            "Exposing OpenAI-compatible endpoints on localhost",
+            "Connecting your local model to cursor or terminal"
+          ]
+        },
+        {
+          "id": "prompt_engineering_system",
+          "title": "Stop Saying 'Act as an Expert': Production Prompting Framework",
+          "hook": "The 5-part prompt engineering framework used by Anthropic & OpenAI engineers.",
+          "pillar": "ai_engineering",
+          "slides_outline": [
+            "Part 1: Role & Domain Authority Anchor",
+            "Part 2: Strict Delimiters for Context Isolation",
+            "Part 3: Few-Shot In-Context Demonstrations",
+            "Part 4: Chain-of-Thought Scratchpad Enforcement",
+            "Part 5: Structured JSON Output Schema Validation",
+            "Copy-paste template you can use immediately"
+          ]
+        },
+        {
+          "id": "ai_agent_loops",
+          "title": "How Autonomous AI Agents Actually Work (Under the Hood)",
+          "hook": "No magic: Deconstructing the ReAct (Reasoning + Acting) loop in 5 slides.",
+          "pillar": "ai_engineering",
+          "slides_outline": [
+            "The Core Loop: Thought -> Action -> Observation -> Reflection",
+            "Tool Calling Protocol: Function schemas & JSON parsing",
+            "Memory Systems: Short-term context vs Long-term Vector memory",
+            "Handling Infinite Loops & Guardrails",
+            "Code snippet: A 30-line mini-agent in Python"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "viral_marketing_growth",
+      "name": "Viral Growth & Creator Psychology",
+      "description": "High-retention hooks, visual pacing, and conversion psychology.",
+      "prompts": [
+        {
+          "id": "hook_formulas_retention",
+          "title": "7 Hook Formulas That Guarantee 80%+ Swipe-Through Rate",
+          "hook": "Slide 1 determines 90% of your carousel reach. Here are 7 proven formulas.",
+          "pillar": "marketing_psychology",
+          "slides_outline": [
+            "Formula 1: The Contrarian Reality ('Everything you know about X is wrong')",
+            "Formula 2: The Hidden Resource ('99% of devs don't know this free tool')",
+            "Formula 3: The Expensive Mistake ('Stop paying for X before reading this')",
+            "Formula 4: The Time Compression ('Learn what took me 5 years in 2 minutes')",
+            "Formula 5: The Case Study Breakdown ('How X grew from $0 to $10M')",
+            "Visual rule: Big numbers + high contrast + curiosity gap"
+          ]
+        },
+        {
+          "id": "carousel_visual_pacing",
+          "title": "The Golden Pacing Formula for High-Engagement Carousels",
+          "hook": "Why readers drop off at slide 3 (and the psychological trick to hold them to slide 10).",
+          "pillar": "marketing_psychology",
+          "slides_outline": [
+            "Slide 1: High-stakes Hook & Pattern Interrupt",
+            "Slide 2: Agitate the Pain Point & Context",
+            "Slide 3: The Big Reveal / Paradigm Shift",
+            "Slide 4-7: Bite-sized, Actionable Solutions (1 concept per slide)",
+            "Slide 8: Summary Cheat Sheet (The Bookmark Magnet)",
+            "Slide 9-10: Conversational CTA & Discussion Trigger"
+          ]
+        },
+        {
+          "id": "zero_to_100k_framework",
+          "title": "Zero to 100k Followers: The Asymmetric Content Engine",
+          "hook": "The systematic publishing framework behind 100k tech audience growth.",
+          "pillar": "marketing_psychology",
+          "slides_outline": [
+            "Pillar 1: High-Utility Cheat Sheets (Saves & Shares)",
+            "Pillar 2: Contrarian Opinions (Comments & Debate)",
+            "Pillar 3: Visual System Explanations (Authority & Follows)",
+            "The 80/20 of Carousel Design: Typography over illustrations",
+            "Algorithmic flywheel: Watch time, swipe completion, share velocity"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contrarian_opinions",
+      "name": "Contrarian Tech & Business Truths",
+      "description": "Challenge conventional wisdom, spark discussions, and build thought leadership.",
+      "prompts": [
+        {
+          "id": "microservices_regret",
+          "title": "Why You Don't Need Microservices: The Majestic Monolith",
+          "hook": "Your startup with 500 daily users does not need Kubernetes. Here's why.",
+          "pillar": "contrarian_opinions",
+          "slides_outline": [
+            "The Microservices Lie: Over-engineering before product-market fit",
+            "The Network Latency & Distributed Tracing Tax",
+            "The Majestic Monolith: Modular monolithic architecture",
+            "Companies that migrated BACK to monoliths (Amazon Prime Video, Basecamp)",
+            "The 3 rare scenarios when you actually need microservices"
+          ]
+        },
+        {
+          "id": "clean_code_dogma",
+          "title": "When 'Clean Code' Becomes Bad Code: Pragmatic Engineering",
+          "hook": "Premature abstraction is the root of all evil. Why pragmatic code wins.",
+          "pillar": "contrarian_opinions",
+          "slides_outline": [
+            "The DRY Dogma: Duplication is cheaper than the wrong abstraction",
+            "Design Pattern Overkill: The AbstractSingletonProxyFactoryBean curse",
+            "Readability vs Cleverness: Code is read 10x more than it is written",
+            "Refactor on the 3rd occurrence, not the 1st",
+            "The Pragmatic Programmer rule: Ship value, don't build monuments"
+          ]
+        },
+        {
+          "id": "ai_will_replace_engineers",
+          "title": "AI Won't Replace Software Engineers, But...",
+          "hook": "The brutal reality of how AI is reshaping the senior engineer role in 2026.",
+          "pillar": "contrarian_opinions",
+          "slides_outline": [
+            "Syntax and boilerplate are now free commodities",
+            "What becomes 10x more valuable: Architecture, Domain Knowledge, Verification",
+            "The Rise of the 1-Person Unicorn Engineering Team",
+            "Prompt-driven development vs Specification-driven engineering",
+            "How to future-proof your tech career today"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "active_text_provider": "gemini",
+  "active_text_model": "gemini-2.5-flash",
+  "active_image_provider": "flux_free",
+  "active_image_model": "black-forest-labs/FLUX.1-schnell",
+  "active_video_provider": "luma",
+  "active_video_model": "dream-machine",
+  "custom_providers": [],
+  "presets": {
+    "openai": {
+      "name": "OpenAI",
+      "base_url": "https://api.openai.com/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "gpt-4o-mini",
+      "models": [
+        "gpt-4o",
+        "gpt-4o-mini",
+        "o3-mini",
+        "gpt-4-turbo"
+      ]
+    },
+    "anthropic": {
+      "name": "Anthropic Claude",
+      "base_url": "https://api.anthropic.com/v1",
+      "auth_header": "x-api-key",
+      "auth_prefix": "",
+      "default_model": "claude-3-5-sonnet-20241022",
+      "models": [
+        "claude-3-5-sonnet-20241022",
+        "claude-3-5-haiku-20241022",
+        "claude-3-opus-20240229"
+      ]
+    },
+    "gemini": {
+      "name": "Google Gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "gemini-2.5-flash",
+      "models": [
+        "gemini-2.5-flash",
+        "gemini-2.5-pro",
+        "gemini-2.0-flash",
+        "gemini-1.5-flash"
+      ]
+    },
+    "groq": {
+      "name": "Groq Cloud (Fast)",
+      "base_url": "https://api.groq.com/openai/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "llama-3.3-70b-versatile",
+      "models": [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "mixtral-8x7b-32768",
+        "gemma2-9b-it"
+      ]
+    },
+    "deepseek": {
+      "name": "DeepSeek",
+      "base_url": "https://api.deepseek.com/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "deepseek-chat",
+      "models": [
+        "deepseek-chat",
+        "deepseek-reasoner"
+      ]
+    },
+    "mistral": {
+      "name": "Mistral AI",
+      "base_url": "https://api.mistral.ai/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "mistral-large-latest",
+      "models": [
+        "mistral-large-latest",
+        "mistral-small-latest",
+        "codestral-latest"
+      ]
+    },
+    "together": {
+      "name": "Together AI",
+      "base_url": "https://api.together.xyz/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "models": [
+        "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+        "deepseek-ai/DeepSeek-R1",
+        "Qwen/Qwen2.5-72B-Instruct-Turbo"
+      ]
+    },
+    "openrouter": {
+      "name": "OpenRouter (Universal Router)",
+      "base_url": "https://openrouter.ai/api/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "meta-llama/llama-3.3-70b-instruct:free",
+      "models": [
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "deepseek/deepseek-r1:free",
+        "google/gemini-2.0-flash-exp:free",
+        "qwen/qwen-2.5-72b-instruct:free"
+      ]
+    },
+    "perplexity": {
+      "name": "Perplexity Sonar",
+      "base_url": "https://api.perplexity.ai",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "sonar",
+      "models": [
+        "sonar",
+        "sonar-pro",
+        "sonar-reasoning"
+      ]
+    },
+    "ollama": {
+      "name": "Local Ollama (Offline)",
+      "base_url": "http://localhost:11434/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "llama3.2",
+      "models": [
+        "llama3.2",
+        "llama3.1:8b",
+        "mistral",
+        "deepseek-r1:8b",
+        "qwen2.5:7b"
+      ]
+    },
+    "lmstudio": {
+      "name": "LM Studio (Local)",
+      "base_url": "http://localhost:1234/v1",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "default_model": "local-model",
+      "models": [
+        "local-model"
+      ]
+    }
+  },
+  "image_models": [
+    {
+      "id": "flux_free",
+      "name": "FLUX.1 Schnell ($0 Free)",
+      "provider": "HuggingFace / Together",
+      "model_id": "black-forest-labs/FLUX.1-schnell"
+    },
+    {
+      "id": "dall_e_3",
+      "name": "DALL-E 3 HD",
+      "provider": "OpenAI",
+      "model_id": "dall-e-3"
+    },
+    {
+      "id": "sd3",
+      "name": "Stable Diffusion 3.5",
+      "provider": "Stability AI",
+      "model_id": "sd3-medium"
+    },
+    {
+      "id": "imagen3",
+      "name": "Google Imagen 3",
+      "provider": "Google Cloud",
+      "model_id": "imagen-3.0-generate-001"
+    },
+    {
+      "id": "midjourney_proxy",
+      "name": "Midjourney v6.1 (API Proxy)",
+      "provider": "Custom Proxy",
+      "model_id": "mj-v6"
+    }
+  ],
+  "video_models": [
+    {
+      "id": "luma",
+      "name": "Luma Dream Machine",
+      "provider": "Luma AI",
+      "model_id": "dream-machine-v1"
+    },
+    {
+      "id": "runway",
+      "name": "Runway Gen-3 Alpha",
+      "provider": "Runway ML",
+      "model_id": "gen3a_turbo"
+    },
+    {
+      "id": "kling",
+      "name": "Kling AI 1.5",
+      "provider": "Kuaishou Kling",
+      "model_id": "kling-v1.5"
+    },
+    {
+      "id": "pika",
+      "name": "Pika 2.0",
+      "provider": "Pika Labs",
+      "model_id": "pika-v2"
+    }
+  ]
+}

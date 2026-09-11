@@ -18,6 +18,14 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
+from src.auth.user_manager import user_manager, verify_session_token, TIERS
+from src.content.providers_manager import (
+    providers_manager,
+    PROVIDER_PRESETS,
+    IMAGE_MODELS,
+    VIDEO_MODELS,
+)
+
 BASE_DIR = Path(__file__).parent
 ENV_PATH = BASE_DIR / ".env"
 OUTPUT_DIR = BASE_DIR / "output"
@@ -25,6 +33,8 @@ MEMORY_PATH = BASE_DIR / "data" / "content-memory.json"
 SCHEDULE_PATH = BASE_DIR / "data" / "schedule.json"
 DB_PATH = BASE_DIR / "autopilot.db"
 BRAND_PATH = BASE_DIR / "data" / "brand.json"
+PROMPTS_PATH = BASE_DIR / "data" / "prompt_library.json"
+TEMPLATES_PATH = BASE_DIR / "data" / "templates.json"
 
 def get_brand_config() -> dict:
     """Load brand profile data from data/brand.json."""
@@ -1607,6 +1617,182 @@ def api_calculator_evaluate():
             "license": "Free VIP Owner"
         }
     })
+
+def get_current_user_from_request():
+    auth_header = request.headers.get("Authorization", "")
+    token = None
+    if auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1].strip()
+    elif request.cookies.get("autogram_session"):
+        token = request.cookies.get("autogram_session")
+    elif request.args.get("token"):
+        token = request.args.get("token")
+
+    if token:
+        payload = verify_session_token(token)
+        if payload and "user_id" in payload:
+            return user_manager.get_user_by_id(payload["user_id"])
+    return None
+
+# ─── Multi-User Auth & Pricing Routes ─────────────────────────────────────────
+
+@app.route("/api/auth/login", methods=["POST"])
+def api_auth_login():
+    data = request.get_json(silent=True) or {}
+    username = data.get("username", "").strip()
+    password = data.get("password", "").strip()
+    if not username or not password:
+        return jsonify({"ok": False, "error": "Username and password are required."}), 400
+
+    res = user_manager.authenticate_user(username, password)
+    if not res.get("ok"):
+        return jsonify(res), 401
+    return jsonify(res)
+
+@app.route("/api/auth/signup", methods=["POST"])
+def api_auth_signup():
+    data = request.get_json(silent=True) or {}
+    username = data.get("username", "").strip()
+    password = data.get("password", "").strip()
+    email = data.get("email", "").strip() or None
+    tier = data.get("tier", "starter").strip().lower()
+
+    if not username or not password:
+        return jsonify({"ok": False, "error": "Username and password are required."}), 400
+
+    res = user_manager.register_user(username, password, email=email, tier=tier)
+    if not res.get("ok"):
+        return jsonify(res), 400
+    return jsonify(res)
+
+@app.route("/api/auth/me", methods=["GET"])
+def api_auth_me():
+    user = get_current_user_from_request()
+    if not user:
+        return jsonify({"ok": False, "authenticated": False, "user": None})
+    return jsonify({"ok": True, "authenticated": True, "user": user})
+
+@app.route("/api/auth/logout", methods=["POST"])
+def api_auth_logout():
+    return jsonify({"ok": True, "message": "Logged out successfully."})
+
+@app.route("/api/auth/pricing", methods=["GET"])
+def api_auth_pricing():
+    return jsonify({"ok": True, "tiers": TIERS})
+
+@app.route("/api/auth/users", methods=["GET"])
+def api_auth_users():
+    cur = get_current_user_from_request()
+    if not cur or cur.get("role") != "admin":
+        return jsonify({"ok": False, "error": "Admin access required."}), 403
+    users = user_manager.list_all_users()
+    return jsonify({"ok": True, "users": users})
+
+@app.route("/api/auth/users/<int:user_id>/tier", methods=["POST"])
+def api_auth_update_user_tier(user_id: int):
+    cur = get_current_user_from_request()
+    if not cur or cur.get("role") != "admin":
+        return jsonify({"ok": False, "error": "Admin access required."}), 403
+    data = request.get_json(silent=True) or {}
+    new_tier = data.get("tier", "starter")
+    success = user_manager.update_tier(user_id, new_tier)
+    return jsonify({"ok": success, "tier": new_tier})
+
+# ─── Universal AI Providers & Dynamic Model Detection ───────────────────────────
+
+@app.route("/api/providers", methods=["GET"])
+def api_get_providers():
+    state = providers_manager.get_all_providers()
+    return jsonify({
+        "ok": True,
+        **state,
+        "presets": PROVIDER_PRESETS,
+        "image_models": IMAGE_MODELS,
+        "video_models": VIDEO_MODELS
+    })
+
+@app.route("/api/providers/save", methods=["POST"])
+def api_save_provider():
+    data = request.get_json(silent=True) or {}
+    provider_id = data.get("id") or data.get("name", "custom").lower().replace(" ", "_")
+    name = data.get("name", "Custom Provider")
+    base_url = data.get("base_url", "")
+    api_key = data.get("api_key", "")
+    default_model = data.get("default_model")
+    models = data.get("models")
+    headers = data.get("headers")
+
+    if not base_url:
+        return jsonify({"ok": False, "error": "base_url is required."}), 400
+
+    res = providers_manager.add_or_update_custom_provider(
+        provider_id=provider_id,
+        name=name,
+        base_url=base_url,
+        api_key=api_key,
+        default_model=default_model,
+        models=models,
+        headers=headers
+    )
+    return jsonify(res)
+
+@app.route("/api/providers/detect-models", methods=["POST"])
+def api_detect_models():
+    data = request.get_json(silent=True) or {}
+    base_url = data.get("base_url", "")
+    api_key = data.get("api_key", "")
+    headers = data.get("headers")
+    if not base_url:
+        return jsonify({"ok": False, "error": "base_url is required to detect models."}), 400
+    res = providers_manager.detect_models_from_endpoint(base_url, api_key, headers)
+    return jsonify(res)
+
+@app.route("/api/providers/set-active", methods=["POST"])
+def api_set_active_provider():
+    data = request.get_json(silent=True) or {}
+    provider_id = data.get("provider_id", "")
+    model_id = data.get("model_id", "")
+    if not provider_id or not model_id:
+        return jsonify({"ok": False, "error": "provider_id and model_id are required."}), 400
+    providers_manager.set_active_text_model(provider_id, model_id)
+    return jsonify({"ok": True, "active_text_provider": provider_id, "active_text_model": model_id})
+
+@app.route("/api/providers/set-media-model", methods=["POST"])
+def api_set_media_model():
+    data = request.get_json(silent=True) or {}
+    media_type = data.get("media_type", "image")
+    provider_id = data.get("provider_id", "")
+    model_id = data.get("model_id", "")
+    if not provider_id or not model_id:
+        return jsonify({"ok": False, "error": "provider_id and model_id are required."}), 400
+
+    if media_type == "video":
+        providers_manager.set_active_video_model(provider_id, model_id)
+    else:
+        providers_manager.set_active_image_model(provider_id, model_id)
+    return jsonify({"ok": True, "media_type": media_type, "provider_id": provider_id, "model_id": model_id})
+
+# ─── Prompt Library & Templates ───────────────────────────────────────────────
+
+@app.route("/api/prompts", methods=["GET"])
+def api_get_prompts():
+    if PROMPTS_PATH.exists():
+        try:
+            data = json.loads(PROMPTS_PATH.read_text(encoding="utf-8"))
+            return jsonify({"ok": True, **data})
+        except Exception as e:
+            return jsonify({"ok": False, "error": str(e)}), 500
+    return jsonify({"ok": True, "categories": []})
+
+@app.route("/api/templates", methods=["GET"])
+def api_get_templates():
+    if TEMPLATES_PATH.exists():
+        try:
+            data = json.loads(TEMPLATES_PATH.read_text(encoding="utf-8"))
+            return jsonify({"ok": True, **data})
+        except Exception as e:
+            return jsonify({"ok": False, "error": str(e)}), 500
+    return jsonify({"ok": True, "carousel_templates": [], "video_reel_templates": []})
 
 @app.route("/output/<path:filepath>")
 @app.route("/api/output/<path:filepath>")

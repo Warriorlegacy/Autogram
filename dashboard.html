@@ -1616,9 +1616,275 @@
       .spotlight-banner, .studio-grid {
         grid-template-columns: 1fr;
       }
-      .phase-pipeline-track {
-        grid-template-columns: repeat(3, 1fr);
-      }
+    /* ═══════════════════════════════════════════════════════════════════════
+       MODERN TACTILE 3D BUTTONS & MICRO-INTERACTIONS
+       ═══════════════════════════════════════════════════════════════════════ */
+    .btn-3d {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-radius: 12px;
+      padding: 10px 18px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.12s ease, background 0.18s ease;
+      outline: none;
+      white-space: nowrap;
+    }
+    .btn-3d:active {
+      transform: translateY(3px) !important;
+    }
+
+    /* Cyan 3D */
+    .btn-3d-cyan {
+      background: linear-gradient(180deg, #00f2fe 0%, #00b4d8 100%);
+      color: #03131e;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 0 #0077b6, 0 8px 16px rgba(0, 242, 254, 0.35);
+    }
+    .btn-3d-cyan:hover {
+      background: linear-gradient(180deg, #38f9d7 0%, #00f2fe 100%);
+      box-shadow: 0 4px 0 #0077b6, 0 10px 22px rgba(0, 242, 254, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-3d-cyan:active {
+      box-shadow: 0 1px 0 #0077b6, 0 3px 8px rgba(0, 242, 254, 0.25);
+    }
+
+    /* Emerald 3D */
+    .btn-3d-emerald {
+      background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 0 #047857, 0 8px 16px rgba(16, 185, 129, 0.35);
+    }
+    .btn-3d-emerald:hover {
+      background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+      box-shadow: 0 4px 0 #047857, 0 10px 22px rgba(16, 185, 129, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-3d-emerald:active {
+      box-shadow: 0 1px 0 #047857, 0 3px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Purple 3D */
+    .btn-3d-purple {
+      background: linear-gradient(180deg, #a855f7 0%, #7c3aed 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 0 #6d28d9, 0 8px 16px rgba(168, 85, 247, 0.35);
+    }
+    .btn-3d-purple:hover {
+      background: linear-gradient(180deg, #c084fc 0%, #9333ea 100%);
+      box-shadow: 0 4px 0 #6d28d9, 0 10px 22px rgba(168, 85, 247, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-3d-purple:active {
+      box-shadow: 0 1px 0 #6d28d9, 0 3px 8px rgba(168, 85, 247, 0.25);
+    }
+
+    /* Amber 3D */
+    .btn-3d-amber {
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+      color: #1f1202;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 0 #b45309, 0 8px 16px rgba(245, 158, 11, 0.35);
+    }
+    .btn-3d-amber:hover {
+      background: linear-gradient(180deg, #fcd34d 0%, #f59e0b 100%);
+      box-shadow: 0 4px 0 #b45309, 0 10px 22px rgba(245, 158, 11, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-3d-amber:active {
+      box-shadow: 0 1px 0 #b45309, 0 3px 8px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Ghost 3D */
+    .btn-3d-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-outer);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.5);
+    }
+    .btn-3d-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-3d-ghost:active {
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    /* Mode Switcher Pill (Simple vs Pro) */
+    .mode-switch-pill {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-outer);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .mode-pill-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .mode-pill-btn.active {
+      background: var(--cyan);
+      color: #03131e;
+      box-shadow: 0 2px 8px var(--cyan-glow);
+    }
+
+    /* User Auth Pill */
+    .user-auth-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .user-profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-outer);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .user-role-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+    .user-role-admin { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .user-role-pro { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.4); }
+    .user-role-starter { background: rgba(14, 111, 119, 0.2); color: var(--cyan); border: 1px solid var(--cyan-hairline); }
+
+    /* Simple Mode Creator Wizard Styles */
+    .simple-wizard-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    .wizard-step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-outer);
+      border-radius: 16px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .wizard-step-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--cyan);
+    }
+    .wizard-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .wizard-step-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+    }
+    .wizard-step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--cyan);
+      color: #03131e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .prompt-quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .prompt-chip {
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-inner);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .prompt-chip:hover {
+      background: var(--cyan-dim);
+      border-color: var(--cyan);
+      color: #fff;
+    }
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .template-card-tile {
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-inner);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .template-card-tile:hover, .template-card-tile.selected {
+      border-color: var(--cyan);
+      box-shadow: 0 4px 16px var(--cyan-dim);
+      transform: translateY(-2px);
+    }
+    .template-preview-bar {
+      height: 48px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 11px;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
     }
   </style>
 </head>
@@ -1709,14 +1975,42 @@
 
       <!-- Topbar Telemetry Header -->
       <header class="topbar">
-        <div class="topbar-left">
+        <div class="topbar-left" style="display:flex;align-items:center;gap:16px;">
           <div class="page-title">
             <span id="page-title-text">Overview</span>
             <span class="page-title-badge" id="page-badge">LIVE TELEMETRY</span>
           </div>
+
+          <!-- Simple vs Pro Mode Switcher -->
+          <div class="mode-switch-pill" id="mode-switch-container">
+            <button class="mode-pill-btn active" id="btn-mode-simple" onclick="setStudioMode('simple')">⚡ Simple Mode</button>
+            <button class="mode-pill-btn" id="btn-mode-pro" onclick="setStudioMode('pro')">⚙️ Pro Pipeline</button>
+          </div>
         </div>
 
-        <div class="topbar-right">
+        <div class="topbar-right" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <!-- AI Models Hub Button -->
+          <button class="btn-3d btn-3d-cyan" style="padding: 6px 12px; font-size: 11px;" onclick="openProvidersHub()" title="Connect any AI Provider or Custom Endpoint">
+            <span>🧠</span> AI Models Hub
+          </button>
+
+          <!-- Prompt Library Button -->
+          <button class="btn-3d btn-3d-purple" style="padding: 6px 12px; font-size: 11px;" onclick="openPromptsModal()" title="Browse 30+ Viral Prompt Frameworks">
+            <span>💡</span> Prompts
+          </button>
+
+          <!-- Templates Button -->
+          <button class="btn-3d btn-3d-emerald" style="padding: 6px 12px; font-size: 11px;" onclick="openTemplatesModal()" title="Browse Carousel & Reel Design Templates">
+            <span>🎨</span> Templates
+          </button>
+
+          <!-- User Auth Profile Pill -->
+          <div class="user-auth-pill" id="user-auth-pill">
+            <button class="btn-3d btn-3d-ghost" style="padding: 6px 12px; font-size: 11px;" onclick="openAuthModal()">
+              <span>🔑</span> Sign In
+            </button>
+          </div>
+
           <!-- Quick Autopilot Action Button -->
           <button class="topbar-action-btn" onclick="startLiveAutopilot()" title="Trigger autonomous publishing cycle">
             <span>⚡</span> Run Autopilot
@@ -1743,16 +2037,112 @@
             <span style="color:var(--makerzz-teal)">⚡ LLM:</span>
             <span id="top-llm-label">Gemini 2.5 Flash</span>
           </div>
-
-          <div class="telemetry-chip">
-            <div class="chip-pulse amber" id="top-mode-dot"></div>
-            <span id="top-mode-label">DRY RUN</span>
-          </div>
         </div>
       </header>
 
       <!-- Dynamic Views Container -->
       <div class="content-viewport">
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             SIMPLE MODE: 3-STEP CREATOR WIZARD (DEFAULT FOR GENERAL AUDIENCES)
+             ══════════════════════════════════════════════════════════════════ -->
+        <div id="simple-creator-panel" class="simple-wizard-container" style="display:block;">
+          
+          <!-- Step 1: Idea / Topic Selection -->
+          <div class="wizard-step-card">
+            <div class="wizard-step-header">
+              <div class="wizard-step-title">
+                <span class="wizard-step-num">1</span>
+                <span>Enter Topic or Pick a Viral Hook</span>
+              </div>
+              <button class="btn-3d btn-3d-purple" style="padding:6px 12px; font-size:11px;" onclick="openPromptsModal()">
+                <span>💡</span> Browse 30+ Viral Prompts
+              </button>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <input type="text" id="simple-topic-input" class="form-input" style="flex:1;font-size:14px;padding:12px 16px;background:var(--bg-surface-elev);border:1px solid var(--border-inner);border-radius:12px;color:var(--text-main);" placeholder="e.g. 7 Free Open-Source Tools Replacing $500/mo Software..." />
+              <button class="btn-3d btn-3d-ghost" onclick="suggestRandomSimplePrompt()">
+                <span>🎲</span> Random Idea
+              </button>
+            </div>
+            <div class="prompt-quick-chips">
+              <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;">Trending Quick Picks:</span>
+              <div class="prompt-chip" onclick="selectQuickSimplePrompt('Open Source Alternatives to Expensive SaaS')">🔥 Supabase vs Firebase</div>
+              <div class="prompt-chip" onclick="selectQuickSimplePrompt('7 Modern CLI Tools Replacing 40-Year-Old Unix Commands')">⚡ Modern Rust CLI Tools</div>
+              <div class="prompt-chip" onclick="selectQuickSimplePrompt('Why 80% of RAG Systems Fail in Production')">🧠 Production RAG Architecture</div>
+              <div class="prompt-chip" onclick="selectQuickSimplePrompt('7 Hook Formulas That Guarantee 80%+ Swipe-Through Rate')">📈 Viral Carousel Hooks</div>
+              <div class="prompt-chip" onclick="selectQuickSimplePrompt('Why You Don\'t Need Microservices: The Majestic Monolith')">🛡️ The Majestic Monolith</div>
+            </div>
+          </div>
+
+          <!-- Step 2: Format & Design Style Selection -->
+          <div class="wizard-step-card">
+            <div class="wizard-step-header">
+              <div class="wizard-step-title">
+                <span class="wizard-step-num">2</span>
+                <span>Select Format & Design Style</span>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn-3d btn-3d-cyan" id="btn-format-carousel" onclick="setSimpleFormat('carousel')" style="padding:6px 12px;font-size:11px;">
+                  🖼️ Carousel (4:5)
+                </button>
+                <button class="btn-3d btn-3d-ghost" id="btn-format-reel" onclick="setSimpleFormat('reel')" style="padding:6px 12px;font-size:11px;">
+                  🎬 Video Reel (9:16)
+                </button>
+                <button class="btn-3d btn-3d-ghost" onclick="openTemplatesModal()" style="padding:6px 12px;font-size:11px;">
+                  🎨 View All Templates
+                </button>
+              </div>
+            </div>
+            <div class="templates-grid" id="simple-templates-list">
+              <!-- Dynamically populated from /api/templates -->
+            </div>
+          </div>
+
+          <!-- Step 3: Synthesize, Preview & Publish -->
+          <div class="wizard-step-card">
+            <div class="wizard-step-header">
+              <div class="wizard-step-title">
+                <span class="wizard-step-num">3</span>
+                <span>Synthesize, Preview & Publish</span>
+              </div>
+              <div id="simple-gen-status" style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);">
+                Ready to generate
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px;">
+              <button class="btn-3d btn-3d-cyan" id="btn-simple-generate" style="padding:12px 24px;font-size:13px;" onclick="generateSimpleContent()">
+                <span>⚡</span> GENERATE HIGH-IMPACT CONTENT
+              </button>
+              <button class="btn-3d btn-3d-emerald" id="btn-simple-publish" style="padding:12px 22px;font-size:13px;display:none;" onclick="publishSimpleContent()">
+                <span>🚀</span> 1-Click Publish to Instagram
+              </button>
+              <button class="btn-3d btn-3d-ghost" id="btn-simple-download" style="padding:12px 18px;font-size:13px;display:none;" onclick="downloadSimpleContent()">
+                <span>💾</span> Download JPEGs
+              </button>
+            </div>
+
+            <!-- Preview Deck Area -->
+            <div id="simple-preview-deck" style="display:none;background:var(--bg-surface-elev);border:1px solid var(--border-inner);border-radius:14px;padding:18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div style="font-weight:700;font-size:14px;color:var(--text-main);" id="simple-preview-title">Generated Preview</div>
+                <div style="font-size:12px;font-family:var(--font-mono);color:var(--cyan);" id="simple-slide-indicator">Slide 1 of 8</div>
+              </div>
+              <div style="display:flex;justify-content:center;margin-bottom:14px;">
+                <img id="simple-slide-img" src="" alt="Slide Preview" style="max-height:440px;aspect-ratio:4/5;border-radius:10px;border:1px solid var(--border-outer);box-shadow:0 8px 30px rgba(0,0,0,0.5);" />
+              </div>
+              <div style="display:flex;justify-content:center;gap:12px;">
+                <button class="btn-3d btn-3d-ghost" onclick="prevSimpleSlide()">← Previous Slide</button>
+                <button class="btn-3d btn-3d-ghost" onclick="nextSimpleSlide()">Next Slide →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             PRO PIPELINE VIEWS (UNLOCKED IN PRO MODE)
+             ══════════════════════════════════════════════════════════════════ -->
+        <div id="pro-pipeline-panel" style="display:none;">
 
         <!-- ══════════════════════════════════════════════════════════════════
              VIEW 1: MISSION CONTROL (OVERVIEW)
@@ -2901,6 +3291,8 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           </div>
         </div><!-- /view-settings -->
 
+        </div><!-- /pro-pipeline-panel -->
+
       </div><!-- /content-viewport -->
 
     </main>
@@ -2981,6 +3373,279 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           <button class="btn-makerzz-teal" onclick="copyPlatformModalContent()">
             📋 Copy Formatted Copy
           </button>
+        </div>
+  </div>
+
+  <!-- ─── MODAL: AUTHENTICATION (LOGIN / SIGNUP) ───────────────────────── -->
+  <div class="modal-backdrop" id="auth-modal">
+    <div class="doppel-shell modal-box glow-cyan" style="max-width:440px;width:95%;">
+      <div class="doppel-core">
+        <div class="card-header-bar">
+          <div class="card-header-title">
+            <span class="accent-tag">🔑</span>
+            <span id="auth-modal-title">Sign In to Autogram</span>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="closeAuthModal()">✕</button>
+        </div>
+
+        <div style="display:flex;gap:4px;background:var(--bg-surface-elev);padding:4px;border-radius:10px;margin-bottom:16px;">
+          <button class="btn btn-sm" id="auth-tab-login" onclick="setAuthTab('login')" style="flex:1;background:var(--cyan);color:#03131e;font-weight:700;">Sign In</button>
+          <button class="btn btn-sm" id="auth-tab-signup" onclick="setAuthTab('signup')" style="flex:1;background:transparent;color:var(--text-secondary);">Create Account</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-input" id="auth-username" placeholder="e.g. signhify.studio" />
+        </div>
+
+        <div class="form-group" id="auth-email-group" style="display:none;">
+          <label class="form-label">Email Address (Optional)</label>
+          <input type="email" class="form-input" id="auth-email" placeholder="name@domain.com" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="auth-password" placeholder="••••••••" />
+        </div>
+
+        <div class="form-group" id="auth-tier-group" style="display:none;">
+          <label class="form-label">Subscription Tier</label>
+          <select class="form-select" id="auth-tier">
+            <option value="starter">Starter — $29/mo (30 carousels/mo, 1 account)</option>
+            <option value="growth" selected>Growth Pro — $79/mo (120 carousels, 40 reels, scheduler)</option>
+            <option value="agency_pro">Agency Pro — $199/mo (Unlimited, White-label, 10 accounts)</option>
+          </select>
+        </div>
+
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;" id="auth-note">
+          👑 Admin Account: <code style="color:var(--cyan);">signhify.studio</code> (pre-configured)
+        </div>
+
+        <div class="btn-row" style="justify-content:flex-end;gap:10px;">
+          <button class="btn btn-ghost" onclick="closeAuthModal()">Cancel</button>
+          <button class="btn-3d btn-3d-cyan" id="auth-submit-btn" onclick="submitAuth()">
+            <span>Sign In</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MODAL: UNIVERSAL AI PROVIDERS & DYNAMIC MODEL DETECTION ────── -->
+  <div class="modal-backdrop" id="providers-modal">
+    <div class="doppel-shell modal-box glow-cyan" style="max-width:780px;width:95%;">
+      <div class="doppel-core">
+        <div class="card-header-bar">
+          <div class="card-header-title">
+            <span class="accent-tag">🧠</span>
+            <span>Universal AI Providers & Model Hub</span>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="closeProvidersHub()">✕</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+          Connect any AI provider on the internet (OpenAI, Claude, Gemini, Groq, DeepSeek, Mistral, Ollama, LM Studio, or custom OpenAI-compatible endpoints) with one-click automatic model detection.
+        </p>
+
+        <!-- Provider Hub Tabs -->
+        <div style="display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid var(--border-inner);padding-bottom:10px;">
+          <button class="btn-3d btn-3d-cyan" id="tab-prov-text" onclick="setProvidersTab('text')" style="padding:6px 14px;font-size:11px;">
+            📝 Text & Reasoning LLMs
+          </button>
+          <button class="btn-3d btn-3d-ghost" id="tab-prov-media" onclick="setProvidersTab('media')" style="padding:6px 14px;font-size:11px;">
+            🎨 Image & Video Models
+          </button>
+        </div>
+
+        <!-- Tab 1: Text Models -->
+        <div id="prov-panel-text">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Provider Type / Preset</label>
+              <select class="form-select" id="prov-preset-select" onchange="onProviderPresetChange()">
+                <option value="gemini">Google Gemini (Default High Speed)</option>
+                <option value="groq">Groq Cloud (Ultra Low Latency)</option>
+                <option value="openai">OpenAI (GPT-4o, o3-mini)</option>
+                <option value="anthropic">Anthropic Claude (Sonnet 3.5)</option>
+                <option value="deepseek">DeepSeek (V3 & R1 Reasoner)</option>
+                <option value="mistral">Mistral AI</option>
+                <option value="together">Together AI</option>
+                <option value="openrouter">OpenRouter (Unified Gateway)</option>
+                <option value="perplexity">Perplexity Sonar</option>
+                <option value="ollama">Local Ollama (localhost:11434)</option>
+                <option value="lmstudio">LM Studio (localhost:1234)</option>
+                <option value="custom">⚡ Custom OpenAI-Compatible Endpoint...</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Provider Name</label>
+              <input type="text" class="form-input" id="prov-name-input" value="Google Gemini" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Base URL / Endpoint</label>
+            <input type="text" class="form-input" id="prov-base-url-input" value="https://generativelanguage.googleapis.com/v1beta/openai" placeholder="https://api.openai.com/v1 or http://localhost:11434/v1" />
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <label class="form-label">API Key (Optional for local Ollama/LM Studio)</label>
+              <button class="btn btn-xs btn-ghost" onclick="toggleMask('prov-api-key-input')">👁 Show/Hide</button>
+            </div>
+            <input type="password" class="form-input" id="prov-api-key-input" placeholder="sk-... or api key" />
+          </div>
+
+          <!-- Auto Detection Action Bar -->
+          <div style="background:var(--bg-surface-elev);border:1px solid var(--border-inner);border-radius:12px;padding:14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div style="font-weight:700;font-size:13px;color:var(--text-main);">Auto-Detect Available Models</div>
+              <div style="font-size:11px;color:var(--text-muted);" id="prov-detect-status">Probes GET /models or /api/tags dynamically</div>
+            </div>
+            <button class="btn-3d btn-3d-purple" id="btn-detect-models" onclick="triggerDetectModels()">
+              <span>⚡</span> AUTO-DETECT MODELS
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Active Model to Use</label>
+            <select class="form-select" id="prov-model-select">
+              <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+            </select>
+          </div>
+
+          <div class="btn-row" style="justify-content:flex-end;gap:10px;">
+            <button class="btn btn-ghost" onclick="closeProvidersHub()">Close</button>
+            <button class="btn-3d btn-3d-cyan" onclick="saveAndActivateProvider()">
+              <span>✓ Save & Activate Model</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 2: Image & Video Models -->
+        <div id="prov-panel-media" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">Image Generation Engine</label>
+            <select class="form-select" id="prov-image-model-select">
+              <option value="flux_free:black-forest-labs/FLUX.1-schnell">FLUX.1 Schnell ($0 Free High Quality)</option>
+              <option value="dall_e_3:dall-e-3">OpenAI DALL-E 3 HD</option>
+              <option value="sd3:sd3-medium">Stability AI Stable Diffusion 3.5</option>
+              <option value="imagen3:imagen-3.0-generate-001">Google Imagen 3 (Vertex Cloud)</option>
+              <option value="midjourney_proxy:mj-v6">Midjourney v6.1 (API Proxy)</option>
+            </select>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Used for slide backgrounds, visual metaphors, and infographics.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Vertical Video / Reel Engine</label>
+            <select class="form-select" id="prov-video-model-select">
+              <option value="luma:dream-machine-v1">Luma Dream Machine (Cinematic 3D)</option>
+              <option value="runway:gen3a_turbo">Runway Gen-3 Alpha Turbo</option>
+              <option value="kling:kling-v1.5">Kling AI 1.5 (High Fidelity Motion)</option>
+              <option value="pika:pika-v2">Pika 2.0 (Dynamic Physics)</option>
+            </select>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Used to generate B-roll background footage and kinetic motion reels.</div>
+          </div>
+
+          <div class="btn-row" style="justify-content:flex-end;gap:10px;margin-top:20px;">
+            <button class="btn btn-ghost" onclick="closeProvidersHub()">Close</button>
+            <button class="btn-3d btn-3d-emerald" onclick="saveMediaModels()">
+              <span>✓ Save Media Engines</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MODAL: VIRAL PROMPT LIBRARY VAULT ────────────────────────────── -->
+  <div class="modal-backdrop" id="prompts-modal">
+    <div class="doppel-shell modal-box glow-cyan" style="max-width:860px;width:95%;max-height:90vh;display:flex;flex-direction:column;">
+      <div class="doppel-core" style="overflow-y:auto;padding:24px;">
+        <div class="card-header-bar">
+          <div class="card-header-title">
+            <span class="accent-tag">💡</span>
+            <span>30+ Battle-Tested Viral Prompts & Frameworks</span>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="closePromptsModal()">✕</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+          Curated viral hooks and retention frameworks inspired by top creator accounts. Click any prompt to immediately load it into the creator studio.
+        </p>
+
+        <!-- Category Filter Pills -->
+        <div class="pillar-pills-selector" id="prompts-cat-filters" style="margin-bottom:16px;">
+          <div class="pillar-pill selected" onclick="filterPromptCategory('all', this)">All Categories</div>
+        </div>
+
+        <div id="prompts-list-container" style="display:flex;flex-direction:column;gap:12px;">
+          <!-- Dynamically populated from /api/prompts -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MODAL: DESIGN TEMPLATES VAULT ─────────────────────────────────── -->
+  <div class="modal-backdrop" id="templates-modal">
+    <div class="doppel-shell modal-box glow-cyan" style="max-width:880px;width:95%;max-height:90vh;display:flex;flex-direction:column;">
+      <div class="doppel-core" style="overflow-y:auto;padding:24px;">
+        <div class="card-header-bar">
+          <div class="card-header-title">
+            <span class="accent-tag">🎨</span>
+            <span>Carousel & Video Design Templates</span>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="closeTemplatesModal()">✕</button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
+          High-conversion typography styles and color palettes crafted for modern tech and business audiences.
+        </p>
+
+        <h4 style="font-size:13px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">
+          1080×1350 Instagram Carousels
+        </h4>
+        <div class="templates-grid" id="templates-carousel-grid" style="margin-bottom:24px;">
+          <!-- Dynamically populated from /api/templates -->
+        </div>
+
+        <h4 style="font-size:13px;font-weight:700;color:var(--violet);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">
+          9:16 Vertical Video Reels & Shorts
+        </h4>
+        <div class="templates-grid" id="templates-video-grid">
+          <!-- Dynamically populated from /api/templates -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MODAL: ADMIN MULTI-USER MANAGEMENT ────────────────────────────── -->
+  <div class="modal-backdrop" id="users-modal">
+    <div class="doppel-shell modal-box glow-cyan" style="max-width:780px;width:95%;">
+      <div class="doppel-core">
+        <div class="card-header-bar">
+          <div class="card-header-title">
+            <span class="accent-tag">👑</span>
+            <span>Master User & Subscription Management</span>
+            <span class="nav-badge" style="background:#ef4444;color:#fff;font-weight:700;">ADMIN</span>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="closeUsersAdminModal()">✕</button>
+        </div>
+        <div style="overflow-x:auto;margin-top:12px;">
+          <table class="queue-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Plan / Tier</th>
+                <th>Change Tier</th>
+              </tr>
+            </thead>
+            <tbody id="users-admin-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -4347,6 +5012,846 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
 
 
+    // ═══════════════════════════════════════════════════════════════════════
+    // SIMPLE MODE VS PRO PIPELINE MODE CONTROLLER
+    // ═══════════════════════════════════════════════════════════════════════
+    let currentStudioMode = 'simple';
+    let simpleFormat = 'carousel';
+    let simpleSelectedTemplate = 'dark_quantum';
+    let simpleSlides = [];
+    let currentSimpleSlideIdx = 0;
+    let currentUser = null;
+    let allPromptsData = { categories: [] };
+    let allTemplatesData = { carousel_templates: [], video_reel_templates: [] };
+    let allProvidersData = {};
+
+    function setStudioMode(mode) {
+      playSound('click');
+      currentStudioMode = mode;
+      localStorage.setItem('autogram_studio_mode', mode);
+
+      const simpleBtn = document.getElementById('btn-mode-simple');
+      const proBtn = document.getElementById('btn-mode-pro');
+      const simplePanel = document.getElementById('simple-creator-panel');
+      const proPanel = document.getElementById('pro-pipeline-panel');
+      const titleText = document.getElementById('page-title-text');
+
+      if (mode === 'simple') {
+        if (simpleBtn) simpleBtn.classList.add('active');
+        if (proBtn) proBtn.classList.remove('active');
+        if (simplePanel) simplePanel.style.display = 'block';
+        if (proPanel) proPanel.style.display = 'none';
+        if (titleText) titleText.textContent = 'Simple Creator';
+      } else {
+        if (proBtn) proBtn.classList.add('active');
+        if (simpleBtn) simpleBtn.classList.remove('active');
+        if (simplePanel) simplePanel.style.display = 'none';
+        if (proPanel) proPanel.style.display = 'block';
+        if (titleText) titleText.textContent = 'Pro Mission Control';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // MULTI-USER AUTHENTICATION & ACCESS CONTROL
+    // ═══════════════════════════════════════════════════════════════════════
+    let currentAuthTab = 'login';
+
+    function getAuthHeaders() {
+      const token = localStorage.getItem('autogram_session_token');
+      return token ? { 'Authorization': `Bearer ${token}` } : {};
+    }
+
+    async function checkUserAuth() {
+      const token = localStorage.getItem('autogram_session_token');
+      const pill = document.getElementById('user-auth-pill');
+      if (!pill) return;
+
+      if (!token) {
+        pill.innerHTML = `
+          <button class="btn-3d btn-3d-ghost" style="padding: 6px 12px; font-size: 11px;" onclick="openAuthModal()">
+            <span>🔑</span> Sign In
+          </button>
+        `;
+        return;
+      }
+
+      try {
+        const res = await fetch(API_BASE + '/api/auth/me', { headers: getAuthHeaders() }).then(r => r.json());
+        if (res.ok && res.user) {
+          currentUser = res.user;
+          const isAdmin = res.user.role === 'admin';
+          const tierBadge = isAdmin ? 'ADMIN VIP' : (res.user.tier || 'STARTER').toUpperCase();
+          const tagClass = isAdmin ? 'user-role-admin' : (res.user.tier === 'agency_pro' ? 'user-role-pro' : 'user-role-starter');
+
+          pill.innerHTML = `
+            <div class="user-profile-badge" onclick="onUserProfileClick()" title="Click to view profile & options">
+              <span>${isAdmin ? '👑' : '👤'}</span>
+              <span>${escapeHtml(res.user.username)}</span>
+              <span class="user-role-tag ${tagClass}">${tierBadge}</span>
+            </div>
+          `;
+        } else {
+          localStorage.removeItem('autogram_session_token');
+          pill.innerHTML = `
+            <button class="btn-3d btn-3d-ghost" style="padding: 6px 12px; font-size: 11px;" onclick="openAuthModal()">
+              <span>🔑</span> Sign In
+            </button>
+          `;
+        }
+      } catch (e) {
+        console.warn('Auth check error:', e);
+      }
+    }
+
+    function onUserProfileClick() {
+      playSound('click');
+      if (!currentUser) return;
+      if (currentUser.role === 'admin') {
+        if (confirm(`Logged in as Master Admin (${currentUser.username}).\n\nClick OK to open Master User Management, or Cancel to Sign Out.`)) {
+          openUsersAdminModal();
+        } else {
+          logoutUser();
+        }
+      } else {
+        if (confirm(`Logged in as ${currentUser.username} (${(currentUser.tier || 'starter').toUpperCase()} Plan).\n\nClick OK to Sign Out.`)) {
+          logoutUser();
+        }
+      }
+    }
+
+    function openAuthModal() {
+      playSound('click');
+      const modal = document.getElementById('auth-modal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeAuthModal() {
+      playSound('click');
+      const modal = document.getElementById('auth-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function setAuthTab(tab) {
+      playSound('click');
+      currentAuthTab = tab;
+      const tabLogin = document.getElementById('auth-tab-login');
+      const tabSignup = document.getElementById('auth-tab-signup');
+      const emailGroup = document.getElementById('auth-email-group');
+      const tierGroup = document.getElementById('auth-tier-group');
+      const submitBtn = document.getElementById('auth-submit-btn');
+      const title = document.getElementById('auth-modal-title');
+
+      if (tab === 'login') {
+        tabLogin.style.background = 'var(--cyan)';
+        tabLogin.style.color = '#03131e';
+        tabLogin.style.fontWeight = '700';
+        tabSignup.style.background = 'transparent';
+        tabSignup.style.color = 'var(--text-secondary)';
+        emailGroup.style.display = 'none';
+        tierGroup.style.display = 'none';
+        submitBtn.innerHTML = '<span>Sign In</span>';
+        title.textContent = 'Sign In to Autogram';
+      } else {
+        tabSignup.style.background = 'var(--cyan)';
+        tabSignup.style.color = '#03131e';
+        tabSignup.style.fontWeight = '700';
+        tabLogin.style.background = 'transparent';
+        tabLogin.style.color = 'var(--text-secondary)';
+        emailGroup.style.display = 'block';
+        tierGroup.style.display = 'block';
+        submitBtn.innerHTML = '<span>Create Account</span>';
+        title.textContent = 'Create Free or Pro Account';
+      }
+    }
+
+    async function submitAuth() {
+      playSound('click');
+      const username = (document.getElementById('auth-username').value || '').trim();
+      const password = (document.getElementById('auth-password').value || '').trim();
+
+      if (!username || !password) {
+        showToast('Please enter both username and password', 'error');
+        return;
+      }
+
+      if (currentAuthTab === 'login') {
+        try {
+          const res = await fetch(API_BASE + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          }).then(r => r.json());
+
+          if (res.ok && res.token) {
+            localStorage.setItem('autogram_session_token', res.token);
+            showToast(`Welcome back, ${res.user.username}! ✓`, 'success');
+            closeAuthModal();
+            checkUserAuth();
+          } else {
+            showToast(res.error || 'Invalid username or password', 'error');
+          }
+        } catch (e) {
+          showToast('Login connection error', 'error');
+        }
+      } else {
+        const email = (document.getElementById('auth-email').value || '').trim();
+        const tier = document.getElementById('auth-tier').value || 'starter';
+        try {
+          const res = await fetch(API_BASE + '/api/auth/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password, email, tier })
+          }).then(r => r.json());
+
+          if (res.ok && res.token) {
+            localStorage.setItem('autogram_session_token', res.token);
+            showToast(`Account created for ${res.user.username}! Welcome aboard 🚀`, 'success');
+            closeAuthModal();
+            checkUserAuth();
+          } else {
+            showToast(res.error || 'Signup failed', 'error');
+          }
+        } catch (e) {
+          showToast('Signup connection error', 'error');
+        }
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('autogram_session_token');
+      currentUser = null;
+      showToast('Logged out successfully', 'info');
+      checkUserAuth();
+    }
+
+    async function openUsersAdminModal() {
+      playSound('click');
+      const modal = document.getElementById('users-modal');
+      if (modal) modal.classList.add('open');
+      loadUsersAdmin();
+    }
+
+    function closeUsersAdminModal() {
+      playSound('click');
+      const modal = document.getElementById('users-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    async function loadUsersAdmin() {
+      const tbody = document.getElementById('users-admin-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading users...</td></tr>';
+      try {
+        const res = await fetch(API_BASE + '/api/auth/users', { headers: getAuthHeaders() }).then(r => r.json());
+        if (res.ok && res.users) {
+          tbody.innerHTML = res.users.map(u => `
+            <tr>
+              <td style="font-family:var(--font-mono);font-size:11px;">#${u.id}</td>
+              <td style="font-weight:700;color:#fff;">${escapeHtml(u.username)}</td>
+              <td style="color:var(--text-secondary);font-size:12px;">${escapeHtml(u.email || '—')}</td>
+              <td><span class="user-role-tag ${u.role === 'admin' ? 'user-role-admin' : 'user-role-starter'}">${u.role.toUpperCase()}</span></td>
+              <td><span style="font-weight:700;color:var(--cyan);">${(u.tier || 'starter').toUpperCase()}</span></td>
+              <td>
+                <select class="form-select" style="padding:4px 8px;font-size:11px;" onchange="updateUserTier(${u.id}, this.value)">
+                  <option value="starter" ${u.tier === 'starter' ? 'selected' : ''}>Starter ($29)</option>
+                  <option value="growth" ${u.tier === 'growth' ? 'selected' : ''}>Growth ($79)</option>
+                  <option value="agency_pro" ${u.tier === 'agency_pro' ? 'selected' : ''}>Agency Pro ($199)</option>
+                  <option value="owner" ${u.tier === 'owner' ? 'selected' : ''}>VIP Owner ($0)</option>
+                </select>
+              </td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color:var(--crimson);">Failed to load users: ${e}</td></tr>`;
+      }
+    }
+
+    async function updateUserTier(userId, newTier) {
+      try {
+        const res = await fetch(API_BASE + `/api/auth/users/${userId}/tier`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+          body: JSON.stringify({ tier: newTier })
+        }).then(r => r.json());
+        if (res.ok) {
+          showToast(`Updated user #${userId} plan to ${newTier.toUpperCase()} ✓`, 'success');
+        } else {
+          showToast(res.error || 'Failed to update plan', 'error');
+        }
+      } catch (e) {
+        showToast('Network error updating plan', 'error');
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // UNIVERSAL AI PROVIDERS & DYNAMIC MODEL HUB
+    // ═══════════════════════════════════════════════════════════════════════
+    function openProvidersHub() {
+      playSound('click');
+      const modal = document.getElementById('providers-modal');
+      if (modal) modal.classList.add('open');
+      loadProviders();
+    }
+
+    function closeProvidersHub() {
+      playSound('click');
+      const modal = document.getElementById('providers-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function setProvidersTab(tab) {
+      playSound('click');
+      const tabText = document.getElementById('tab-prov-text');
+      const tabMedia = document.getElementById('tab-prov-media');
+      const pText = document.getElementById('prov-panel-text');
+      const pMedia = document.getElementById('prov-panel-media');
+
+      if (tab === 'text') {
+        tabText.className = 'btn-3d btn-3d-cyan';
+        tabMedia.className = 'btn-3d btn-3d-ghost';
+        pText.style.display = 'block';
+        pMedia.style.display = 'none';
+      } else {
+        tabMedia.className = 'btn-3d btn-3d-emerald';
+        tabText.className = 'btn-3d btn-3d-ghost';
+        pText.style.display = 'none';
+        pMedia.style.display = 'block';
+      }
+    }
+
+    async function loadProviders() {
+      try {
+        const res = await fetch(API_BASE + '/api/providers').then(r => r.json());
+        if (res.ok) {
+          allProvidersData = res;
+          // Set preset selector
+          const presetSelect = document.getElementById('prov-preset-select');
+          if (presetSelect && res.presets) {
+            presetSelect.value = res.active_text_provider in res.presets ? res.active_text_provider : 'custom';
+            onProviderPresetChange();
+          }
+
+          // Populate Media Models
+          const imgSelect = document.getElementById('prov-image-model-select');
+          if (imgSelect && res.image_models) {
+            imgSelect.innerHTML = res.image_models.map(m => `
+              <option value="${m.id}:${m.model_id}" ${res.active_image_model === m.model_id ? 'selected' : ''}>
+                ${m.name} (${m.provider})
+              </option>
+            `).join('');
+          }
+
+          const vidSelect = document.getElementById('prov-video-model-select');
+          if (vidSelect && res.video_models) {
+            vidSelect.innerHTML = res.video_models.map(m => `
+              <option value="${m.id}:${m.model_id}" ${res.active_video_model === m.model_id ? 'selected' : ''}>
+                ${m.name} (${m.provider})
+              </option>
+            `).join('');
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load providers:', e);
+      }
+    }
+
+    function onProviderPresetChange() {
+      const val = document.getElementById('prov-preset-select').value;
+      const presets = allProvidersData.presets || {};
+      const nameInput = document.getElementById('prov-name-input');
+      const urlInput = document.getElementById('prov-base-url-input');
+      const modelSelect = document.getElementById('prov-model-select');
+
+      if (val === 'custom') {
+        nameInput.value = 'Custom Endpoint';
+        urlInput.value = 'http://localhost:11434/v1';
+        modelSelect.innerHTML = '<option value="default-model">default-model (Click Auto-Detect)</option>';
+      } else if (presets[val]) {
+        const p = presets[val];
+        nameInput.value = p.name;
+        urlInput.value = p.base_url;
+        modelSelect.innerHTML = (p.models || [p.default_model]).map(m => `
+          <option value="${m}" ${allProvidersData.active_text_model === m ? 'selected' : ''}>${m}</option>
+        `).join('');
+      }
+    }
+
+    async function triggerDetectModels() {
+      playSound('click');
+      const baseUrl = (document.getElementById('prov-base-url-input').value || '').trim();
+      const apiKey = (document.getElementById('prov-api-key-input').value || '').trim();
+      const statusEl = document.getElementById('prov-detect-status');
+      const btn = document.getElementById('btn-detect-models');
+
+      if (!baseUrl) {
+        showToast('Please enter an endpoint Base URL', 'error');
+        return;
+      }
+
+      statusEl.textContent = 'Probing endpoint GET /models...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(API_BASE + '/api/providers/detect-models', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ base_url: baseUrl, api_key: apiKey })
+        }).then(r => r.json());
+
+        if (res.ok && res.models && res.models.length > 0) {
+          statusEl.textContent = `✓ Detected ${res.models.length} supported models!`;
+          statusEl.style.color = 'var(--emerald)';
+          const modelSelect = document.getElementById('prov-model-select');
+          modelSelect.innerHTML = res.models.map(m => `<option value="${m}">${m}</option>`).join('');
+          showToast(`Auto-detected ${res.models.length} models! ✓`, 'success');
+        } else {
+          statusEl.textContent = 'Detection failed: ' + (res.error || 'No models returned');
+          statusEl.style.color = 'var(--crimson)';
+          showToast(res.error || 'Could not auto-detect models', 'error');
+        }
+      } catch (e) {
+        statusEl.textContent = 'Connection error during auto-detection';
+        showToast('Connection error', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function saveAndActivateProvider() {
+      playSound('click');
+      const preset = document.getElementById('prov-preset-select').value;
+      const name = document.getElementById('prov-name-input').value.trim();
+      const baseUrl = document.getElementById('prov-base-url-input').value.trim();
+      const apiKey = document.getElementById('prov-api-key-input').value.trim();
+      const modelId = document.getElementById('prov-model-select').value;
+
+      if (!modelId) {
+        showToast('Please select a model', 'error');
+        return;
+      }
+
+      try {
+        if (preset === 'custom') {
+          await fetch(API_BASE + '/api/providers/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: name.toLowerCase().replace(/\s+/g, '_'),
+              name: name,
+              base_url: baseUrl,
+              api_key: apiKey,
+              default_model: modelId,
+              models: [modelId]
+            })
+          });
+        }
+
+        const res = await fetch(API_BASE + '/api/providers/set-active', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider_id: preset, model_id: modelId })
+        }).then(r => r.json());
+
+        if (res.ok) {
+          const topLabel = document.getElementById('top-llm-label');
+          if (topLabel) topLabel.textContent = `${name} (${modelId})`;
+          showToast(`Active AI model set to ${modelId}! 🚀`, 'success');
+          closeProvidersHub();
+        }
+      } catch (e) {
+        showToast('Failed to activate provider', 'error');
+      }
+    }
+
+    async function saveMediaModels() {
+      playSound('click');
+      const imgVal = document.getElementById('prov-image-model-select').value.split(':');
+      const vidVal = document.getElementById('prov-video-model-select').value.split(':');
+
+      try {
+        await fetch(API_BASE + '/api/providers/set-media-model', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ media_type: 'image', provider_id: imgVal[0], model_id: imgVal[1] })
+        });
+        await fetch(API_BASE + '/api/providers/set-media-model', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ media_type: 'video', provider_id: vidVal[0], model_id: vidVal[1] })
+        });
+        showToast('Media generation engines updated! ✓', 'success');
+        closeProvidersHub();
+      } catch (e) {
+        showToast('Failed to save media engines', 'error');
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // VIRAL PROMPTS & TEMPLATES LIBRARY
+    // ═══════════════════════════════════════════════════════════════════════
+    async function loadPrompts() {
+      try {
+        const res = await fetch(API_BASE + '/api/prompts').then(r => r.json());
+        if (res.ok && res.categories) {
+          allPromptsData = res;
+          const filterCont = document.getElementById('prompts-cat-filters');
+          if (filterCont) {
+            filterCont.innerHTML = `
+              <div class="pillar-pill selected" onclick="filterPromptCategory('all', this)">All Categories</div>
+              ${res.categories.map(c => `
+                <div class="pillar-pill" onclick="filterPromptCategory('${c.id}', this)">${c.name}</div>
+              `).join('')}
+            `;
+          }
+          renderPromptsList('all');
+        }
+      } catch (e) {
+        console.warn('Failed to load prompts:', e);
+      }
+    }
+
+    function openPromptsModal() {
+      playSound('click');
+      const modal = document.getElementById('prompts-modal');
+      if (modal) modal.classList.add('open');
+      if (!allPromptsData.categories || allPromptsData.categories.length === 0) {
+        loadPrompts();
+      }
+    }
+
+    function closePromptsModal() {
+      playSound('click');
+      const modal = document.getElementById('prompts-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function filterPromptCategory(catId, el) {
+      playSound('click');
+      const pills = document.querySelectorAll('#prompts-cat-filters .pillar-pill');
+      pills.forEach(p => p.classList.remove('selected'));
+      if (el) el.classList.add('selected');
+      renderPromptsList(catId);
+    }
+
+    function renderPromptsList(catId) {
+      const cont = document.getElementById('prompts-list-container');
+      if (!cont) return;
+
+      let promptsToRender = [];
+      (allPromptsData.categories || []).forEach(cat => {
+        if (catId === 'all' || cat.id === catId) {
+          (cat.prompts || []).forEach(p => {
+            promptsToRender.push({ ...p, categoryName: cat.name });
+          });
+        }
+      });
+
+      cont.innerHTML = promptsToRender.map(p => `
+        <div style="background:var(--bg-surface-elev);border:1px solid var(--border-inner);border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:16px;">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <span style="font-weight:700;font-size:14px;color:#fff;">${escapeHtml(p.title)}</span>
+              <span class="slot-pillar" style="font-size:10px;">${escapeHtml(p.categoryName)}</span>
+            </div>
+            <div style="font-size:12px;color:var(--cyan);margin-bottom:6px;font-style:italic;">"${escapeHtml(p.hook)}"</div>
+            <div style="font-size:11px;color:var(--text-muted);">${(p.slides_outline || []).slice(0, 3).join(' · ')}...</div>
+          </div>
+          <button class="btn-3d btn-3d-cyan" style="padding:8px 14px;font-size:11px;" onclick="applyPrompt('${p.id}')">
+            <span>Use Prompt ⚡</span>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function applyPrompt(promptId) {
+      playSound('click');
+      let found = null;
+      (allPromptsData.categories || []).forEach(cat => {
+        const match = (cat.prompts || []).find(p => p.id === promptId);
+        if (match) found = match;
+      });
+
+      if (found) {
+        const simpleTopic = document.getElementById('simple-topic-input');
+        const studioTopic = document.getElementById('studio-topic-input');
+        if (simpleTopic) simpleTopic.value = found.title;
+        if (studioTopic) studioTopic.value = found.title;
+        showToast(`Loaded prompt: "${found.title}" ✓`, 'success');
+        closePromptsModal();
+      }
+    }
+
+    function selectQuickSimplePrompt(topic) {
+      playSound('click');
+      const input = document.getElementById('simple-topic-input');
+      if (input) input.value = topic;
+      showToast(`Selected prompt: "${topic}" ✓`, 'info');
+    }
+
+    function suggestRandomSimplePrompt() {
+      playSound('click');
+      const list = [
+        'Open Source Alternatives to Expensive SaaS ($500/mo Savings)',
+        '7 Modern CLI Tools Replacing 40-Year-Old Unix Commands',
+        'Why 80% of RAG Systems Fail in Production & How to Fix It',
+        'System Architecture: How Netflix Streams 4K at Scale',
+        'Why You Don\'t Need Microservices: The Majestic Monolith',
+        'How Stripe Processes $1 Trillion with Zero Double Charges',
+        '7 Hook Formulas That Guarantee 80%+ Carousel Swipe Rate'
+      ];
+      const randomPick = list[Math.floor(Math.random() * list.length)];
+      const input = document.getElementById('simple-topic-input');
+      if (input) input.value = randomPick;
+      showToast('Loaded viral idea! ⚡', 'info');
+    }
+
+    async function loadTemplates() {
+      try {
+        const res = await fetch(API_BASE + '/api/templates').then(r => r.json());
+        if (res.ok) {
+          allTemplatesData = res;
+          renderSimpleTemplatesList();
+          renderVaultTemplates();
+        }
+      } catch (e) {
+        console.warn('Failed to load templates:', e);
+      }
+    }
+
+    function renderSimpleTemplatesList() {
+      const cont = document.getElementById('simple-templates-list');
+      if (!cont) return;
+
+      const items = simpleFormat === 'carousel'
+        ? (allTemplatesData.carousel_templates || [])
+        : (allTemplatesData.video_reel_templates || []);
+
+      cont.innerHTML = items.map((t, i) => `
+        <div class="template-card-tile ${simpleSelectedTemplate === t.id ? 'selected' : ''}" onclick="selectSimpleTemplate('${t.id}')">
+          <div class="template-preview-bar" style="background:${t.preview_gradient || 'linear-gradient(135deg, #0a0a0f, #00f2fe)'}">
+            ${t.name.split(' ')[0]}
+          </div>
+          <div style="font-weight:700;font-size:12px;color:#fff;">${t.name}</div>
+          <div style="font-size:11px;color:var(--text-muted);">${t.badge || t.aspect_ratio || ''}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderVaultTemplates() {
+      const carGrid = document.getElementById('templates-carousel-grid');
+      const vidGrid = document.getElementById('templates-video-grid');
+
+      if (carGrid && allTemplatesData.carousel_templates) {
+        carGrid.innerHTML = allTemplatesData.carousel_templates.map(t => `
+          <div class="template-card-tile" style="padding:16px;">
+            <div class="template-preview-bar" style="background:${t.preview_gradient};height:72px;border-radius:10px;margin-bottom:8px;">
+              ${t.name}
+            </div>
+            <div style="font-weight:700;font-size:13px;color:#fff;">${t.name}</div>
+            <div style="font-size:11px;color:var(--cyan);">${t.category} · ${t.default_slides} Slides</div>
+            <p style="font-size:11px;color:var(--text-secondary);line-height:1.4;margin:6px 0;">${t.description}</p>
+            <button class="btn-3d btn-3d-cyan" style="width:100%;padding:6px;font-size:11px;margin-top:8px;" onclick="applyTemplate('${t.id}')">
+              <span>Use Template</span>
+            </button>
+          </div>
+        `).join('');
+      }
+
+      if (vidGrid && allTemplatesData.video_reel_templates) {
+        vidGrid.innerHTML = allTemplatesData.video_reel_templates.map(t => `
+          <div class="template-card-tile" style="padding:16px;">
+            <div class="template-preview-bar" style="background:linear-gradient(135deg, #180524, #a855f7);height:72px;border-radius:10px;margin-bottom:8px;">
+              ${t.name}
+            </div>
+            <div style="font-weight:700;font-size:13px;color:#fff;">${t.name}</div>
+            <div style="font-size:11px;color:var(--violet);">${t.badge} · ${t.duration}</div>
+            <p style="font-size:11px;color:var(--text-secondary);line-height:1.4;margin:6px 0;">${t.description}</p>
+            <button class="btn-3d btn-3d-purple" style="width:100%;padding:6px;font-size:11px;margin-top:8px;" onclick="applyTemplate('${t.id}')">
+              <span>Use Reel Template</span>
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function setSimpleFormat(fmt) {
+      playSound('click');
+      simpleFormat = fmt;
+      const cBtn = document.getElementById('btn-format-carousel');
+      const rBtn = document.getElementById('btn-format-reel');
+      if (fmt === 'carousel') {
+        cBtn.className = 'btn-3d btn-3d-cyan';
+        rBtn.className = 'btn-3d btn-3d-ghost';
+      } else {
+        rBtn.className = 'btn-3d btn-3d-purple';
+        cBtn.className = 'btn-3d btn-3d-ghost';
+      }
+      renderSimpleTemplatesList();
+    }
+
+    function selectSimpleTemplate(id) {
+      playSound('click');
+      simpleSelectedTemplate = id;
+      renderSimpleTemplatesList();
+    }
+
+    function openTemplatesModal() {
+      playSound('click');
+      const modal = document.getElementById('templates-modal');
+      if (modal) modal.classList.add('open');
+      if (!allTemplatesData.carousel_templates || allTemplatesData.carousel_templates.length === 0) {
+        loadTemplates();
+      }
+    }
+
+    function closeTemplatesModal() {
+      playSound('click');
+      const modal = document.getElementById('templates-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function applyTemplate(id) {
+      playSound('click');
+      simpleSelectedTemplate = id;
+      renderSimpleTemplatesList();
+      showToast(`Applied template: ${id} ✓`, 'success');
+      closeTemplatesModal();
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SIMPLE CREATOR ENGINE: 1-CLICK GENERATE, PREVIEW & PUBLISH
+    // ═══════════════════════════════════════════════════════════════════════
+    async function generateSimpleContent() {
+      playSound('click');
+      const topicInput = document.getElementById('simple-topic-input');
+      const topic = (topicInput && topicInput.value.trim()) || 'Open Source Alternatives to Expensive SaaS';
+      const statusEl = document.getElementById('simple-gen-status');
+      const genBtn = document.getElementById('btn-simple-generate');
+      const pubBtn = document.getElementById('btn-simple-publish');
+      const dlBtn = document.getElementById('btn-simple-download');
+      const previewDeck = document.getElementById('simple-preview-deck');
+
+      statusEl.textContent = 'Synthesizing 7-10 slide viral carousel...';
+      statusEl.style.color = 'var(--cyan)';
+      genBtn.disabled = true;
+
+      try {
+        const res = await fetch(API_BASE + '/api/content/synthesize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+          body: JSON.stringify({
+            topic: topic,
+            pillar: 'AI Tool Breakdown',
+            template: simpleSelectedTemplate,
+            format: simpleFormat
+          })
+        }).then(r => r.json());
+
+        if (res.ok || res.status === 'ok' || res.carousel) {
+          statusEl.textContent = '✓ Content synthesized successfully!';
+          statusEl.style.color = 'var(--emerald)';
+          showToast('Content created & ready to preview! ✓', 'success');
+          triggerCelebration();
+
+          if (pubBtn) pubBtn.style.display = 'inline-flex';
+          if (dlBtn) dlBtn.style.display = 'inline-flex';
+
+          loadLatestRunForSimplePreview();
+        } else {
+          statusEl.textContent = 'Note: ' + (res.error || 'Triggered in background');
+          loadLatestRunForSimplePreview();
+        }
+      } catch (e) {
+        statusEl.textContent = 'Generating carousel run...';
+        loadLatestRunForSimplePreview();
+      } finally {
+        genBtn.disabled = false;
+      }
+    }
+
+    async function loadLatestRunForSimplePreview() {
+      try {
+        const res = await fetch(API_BASE + '/runs').then(r => r.json());
+        if (res.runs && res.runs.length > 0) {
+          const latest = res.runs[0];
+          simpleSlides = latest.slides || [];
+          currentSimpleSlideIdx = 0;
+          if (simpleSlides.length > 0) {
+            const previewDeck = document.getElementById('simple-preview-deck');
+            if (previewDeck) previewDeck.style.display = 'block';
+            updateSimpleSlideView(latest);
+            const pubBtn = document.getElementById('btn-simple-publish');
+            const dlBtn = document.getElementById('btn-simple-download');
+            if (pubBtn) pubBtn.style.display = 'inline-flex';
+            if (dlBtn) dlBtn.style.display = 'inline-flex';
+          }
+        }
+      } catch (e) {}
+    }
+
+    function updateSimpleSlideView(run) {
+      const img = document.getElementById('simple-slide-img');
+      const indicator = document.getElementById('simple-slide-indicator');
+      const title = document.getElementById('simple-preview-title');
+
+      if (!simpleSlides.length) return;
+      const slide = simpleSlides[currentSimpleSlideIdx];
+      if (img) img.src = slide.url || `${API_BASE}/${slide.path}`;
+      if (indicator) indicator.textContent = `Slide ${currentSimpleSlideIdx + 1} of ${simpleSlides.length}`;
+      if (title && run) title.textContent = run.topic || 'Generated Carousel';
+    }
+
+    function prevSimpleSlide() {
+      if (currentSimpleSlideIdx > 0) {
+        currentSimpleSlideIdx--;
+        updateSimpleSlideView();
+      }
+    }
+
+    function nextSimpleSlide() {
+      if (currentSimpleSlideIdx < simpleSlides.length - 1) {
+        currentSimpleSlideIdx++;
+        updateSimpleSlideView();
+      }
+    }
+
+    async function publishSimpleContent() {
+      playSound('click');
+      showToast('Publishing carousel live to Instagram...', 'info');
+      try {
+        const res = await fetch(API_BASE + '/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+          body: JSON.stringify({ mode: 'live' })
+        }).then(r => r.json());
+
+        if (res.ok) {
+          showToast('Published live to Instagram successfully! 🚀', 'success');
+          triggerCelebration();
+        } else {
+          showToast(res.error || 'Publication error', 'error');
+        }
+      } catch (e) {
+        showToast('Publication connection error', 'error');
+      }
+    }
+
+    function downloadSimpleContent() {
+      playSound('click');
+      if (!simpleSlides.length) return;
+      showToast('Downloading slide images...', 'info');
+      simpleSlides.forEach((s, idx) => {
+        setTimeout(() => {
+          const a = document.createElement('a');
+          a.href = s.url || `${API_BASE}/${s.path}`;
+          a.download = `slide_${idx + 1}.jpg`;
+          a.target = '_blank';
+          a.click();
+        }, idx * 250);
+      });
+    }
+
     // ── Toast System ─────────────────────────────────────────────────────
     function showToast(message, type = 'info') {
       const cont = document.getElementById('toast-container');
@@ -4365,6 +5870,10 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ── Initialization ───────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
       try { applyTheme(localStorage.getItem('autogram_theme') || 'dark'); } catch (e) { applyTheme('dark'); }
+      checkUserAuth();
+      loadTemplates();
+      setStudioMode(localStorage.getItem('autogram_studio_mode') || 'simple');
+      loadLatestRunForSimplePreview();
       refreshStatus();
       loadSchedule();
       loadRuns();

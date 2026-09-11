@@ -41,17 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (annualLabel) annualLabel.classList.add('active');
       if (monthlyLabel) monthlyLabel.classList.remove('active');
 
-      if (priceStarter) priceStarter.textContent = '$397';
-      if (priceGrowth) priceGrowth.textContent = '$797';
-      if (priceEnterprise) priceEnterprise.textContent = '$1,997';
+      if (priceStarter) priceStarter.textContent = '$24';
+      if (priceGrowth) priceGrowth.textContent = '$65';
+      if (priceEnterprise) priceEnterprise.textContent = '$165';
     } else {
       switchPill.classList.remove('annual');
       if (monthlyLabel) monthlyLabel.classList.add('active');
       if (annualLabel) annualLabel.classList.remove('active');
 
-      if (priceStarter) priceStarter.textContent = '$497';
-      if (priceGrowth) priceGrowth.textContent = '$997';
-      if (priceEnterprise) priceEnterprise.textContent = '$2,497';
+      if (priceStarter) priceStarter.textContent = '$29';
+      if (priceGrowth) priceGrowth.textContent = '$79';
+      if (priceEnterprise) priceEnterprise.textContent = '$199';
     }
   }
 

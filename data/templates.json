@@ -1,0 +1,163 @@
+{
+  "carousel_templates": [
+    {
+      "id": "dark_quantum",
+      "name": "Dark Quantum (Signature)",
+      "badge": "Popular",
+      "category": "Tech & Engineering",
+      "description": "Ultra-sleek obsidian background (#0a0a0f) with neon cyan/emerald gradients, mono badge accents, and glassmorphic stat cards.",
+      "aspect_ratio": "4:5 (1080x1350)",
+      "default_slides": 7,
+      "preview_gradient": "linear-gradient(135deg, #0a0a0f 0%, #031e24 50%, #00f2fe 100%)",
+      "colors": {
+        "bg": "#0a0a0f",
+        "card_bg": "rgba(255, 255, 255, 0.04)",
+        "accent": "#00f2fe",
+        "secondary": "#4facfe",
+        "text": "#ffffff",
+        "muted": "#94a3b8"
+      },
+      "typography": {
+        "title": "Inter Display / Syne",
+        "body": "Inter",
+        "code": "JetBrains Mono"
+      }
+    },
+    {
+      "id": "neumorphic_minimalist",
+      "name": "Neumorphic Minimalist",
+      "badge": "Clean",
+      "category": "Design & Product",
+      "description": "Clean, high-contrast dark graphite slate (#121316) with subtle inner bevels, pure white headlines, and electric violet accents.",
+      "aspect_ratio": "4:5 (1080x1350)",
+      "default_slides": 8,
+      "preview_gradient": "linear-gradient(135deg, #121316 0%, #1e1b4b 50%, #8b5cf6 100%)",
+      "colors": {
+        "bg": "#121316",
+        "card_bg": "#1c1e24",
+        "accent": "#8b5cf6",
+        "secondary": "#ec4899",
+        "text": "#f8fafc",
+        "muted": "#a1a1aa"
+      },
+      "typography": {
+        "title": "Plus Jakarta Sans",
+        "body": "Plus Jakarta Sans",
+        "code": "Fira Code"
+      }
+    },
+    {
+      "id": "cyberpunk_amber",
+      "name": "Cyberpunk Amber & Gold",
+      "badge": "Viral",
+      "category": "Crypto & Finance",
+      "description": "High-contrast midnight dark (#09090b) with intense amber/gold glow, terminal-style data callouts, and punchy value-driven headlines.",
+      "aspect_ratio": "4:5 (1080x1350)",
+      "default_slides": 7,
+      "preview_gradient": "linear-gradient(135deg, #09090b 0%, #451a03 50%, #f59e0b 100%)",
+      "colors": {
+        "bg": "#09090b",
+        "card_bg": "rgba(245, 158, 11, 0.05)",
+        "accent": "#f59e0b",
+        "secondary": "#fbbf24",
+        "text": "#fffbeb",
+        "muted": "#d97706"
+      },
+      "typography": {
+        "title": "Cabinet Grotesk",
+        "body": "Inter",
+        "code": "JetBrains Mono"
+      }
+    },
+    {
+      "id": "editorial_swiss_light",
+      "name": "Editorial Swiss Light",
+      "badge": "Day Mode",
+      "category": "Business & Strategy",
+      "description": "Warm off-white background (#f8fafc) with brutalist typography, ultra-crisp borders, sharp drop-shadows, and deep cobalt blue accents.",
+      "aspect_ratio": "4:5 (1080x1350)",
+      "default_slides": 6,
+      "preview_gradient": "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #2563eb 100%)",
+      "colors": {
+        "bg": "#f8fafc",
+        "card_bg": "#ffffff",
+        "accent": "#2563eb",
+        "secondary": "#0f172a",
+        "text": "#0f172a",
+        "muted": "#64748b"
+      },
+      "typography": {
+        "title": "General Sans / Archivo",
+        "body": "Inter",
+        "code": "JetBrains Mono"
+      }
+    },
+    {
+      "id": "saas_bento_grid",
+      "name": "SaaS Bento Grid",
+      "badge": "Modern",
+      "category": "SaaS & Teardowns",
+      "description": "Apple-style bento box layouts with subtle glass borders, metric badges, pill tags, and soft emerald green success highlights.",
+      "aspect_ratio": "4:5 (1080x1350)",
+      "default_slides": 8,
+      "preview_gradient": "linear-gradient(135deg, #030712 0%, #064e3b 50%, #10b981 100%)",
+      "colors": {
+        "bg": "#030712",
+        "card_bg": "#111827",
+        "accent": "#10b981",
+        "secondary": "#06b6d4",
+        "text": "#f9fafb",
+        "muted": "#9ca3af"
+      },
+      "typography": {
+        "title": "Inter Display",
+        "body": "Inter",
+        "code": "Fira Code"
+      }
+    }
+  ],
+  "video_reel_templates": [
+    {
+      "id": "reel_kinetic_hook",
+      "name": "Kinetic Hook & Rapid Subtitles",
+      "badge": "Highest Retention",
+      "aspect_ratio": "9:16 (1080x1920)",
+      "duration": "30-45s",
+      "description": "Fast-paced kinetic word-by-word yellow/white subtitles, ambient tech background visuals, punchy beat drops.",
+      "structure": [
+        "0-3s: Visual pattern interrupt + Bold Question",
+        "3-15s: 3 Fast bullet points with on-screen highlight",
+        "15-25s: Proof / Real benchmark or code demonstration",
+        "25-30s: Clear CTA: 'Read the caption for links'"
+      ]
+    },
+    {
+      "id": "reel_curated_screencast",
+      "name": "Screencast & Terminal Demo",
+      "badge": "Dev Favorite",
+      "aspect_ratio": "9:16 (1080x1920)",
+      "duration": "45-60s",
+      "description": "Picture-in-picture terminal commands with glowing typing animation, side callouts, and high-impact synth audio.",
+      "structure": [
+        "0-5s: 'Watch this CLI command do in 2 seconds what usually takes 1 hour'",
+        "5-30s: Step-by-step execution in high-contrast terminal",
+        "30-45s: Output breakdown and production caveat",
+        "45-60s: Follow for daily developer tools"
+      ]
+    },
+    {
+      "id": "reel_contrarian_breakdown",
+      "name": "Contrarian Tech Opinion",
+      "badge": "High Comments",
+      "aspect_ratio": "9:16 (1080x1920)",
+      "duration": "30-40s",
+      "description": "Split screen or full-screen bold typography with dynamic background blur and sound effects on key phrases.",
+      "structure": [
+        "0-4s: Contrarian thesis statement",
+        "4-18s: Why the mainstream advice is costing startups thousands",
+        "18-32s: The counter-intuitive alternative that actually scales",
+        "32-40s: 'Disagree? Tell me why in the comments'"
+      ]
+    }
+  ]
+}
