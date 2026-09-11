@@ -10,12 +10,12 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 CONTENT_PILLARS = [
-    "AI Tool Breakdown",
-    "Prompting & Workflow",
-    "Marketing Psychology",
-    "Tech Industry Explainer",
-    "Career & Skills",
-    "Myth-Bust / Contrarian"
+    "FOSS SaaS Alternatives",
+    "Trending GitHub Spotlight",
+    "Local AI & Edge Compute",
+    "Developer Power Tools & CLI",
+    "Self-Hosted Architecture",
+    "Open Source Economics & Contrarian"
 ]
 
 class TopicScorer:
@@ -32,7 +32,7 @@ class TopicScorer:
 
     def score_candidate(self, candidate: dict, memory: dict) -> float:
         """
-        Calculates normalized score (0-100) based on criteria in Section 7.2 of the blueprint.
+        Calculates normalized score (0-100) based on relevance, utility, and FOSS signals.
         """
         topic = candidate.get("topic", "").lower()
         
@@ -51,9 +51,9 @@ class TopicScorer:
         diversity_bonus = 0.0
         if recent_pillars:
             if pillar not in recent_pillars[:3]:
-                diversity_bonus += 15.0  # Encourage rotation to fresh pillars
-            if recent_pillars and pillar == recent_pillars[0]:
-                diversity_bonus -= 10.0  # Avoid back-to-back same pillar
+                diversity_bonus += 10.0  # Encourage rotation to fresh pillars
+            elif len(recent_pillars) >= 3 and all(p == pillar for p in recent_pillars[:3]):
+                diversity_bonus -= 5.0  # Avoid excessive consecutive posts of same pillar
 
         # Scoring factors
         evidence = candidate.get("evidence_strength", 0.8) * 20
@@ -62,7 +62,17 @@ class TopicScorer:
         save_share = candidate.get("save_share_score", 0.85) * 25
         saturation_penalty = candidate.get("saturation_risk", 0.2) * 10
 
-        total_score = evidence + novelty + utility + save_share + diversity_bonus - saturation_penalty
+        # FOSS & GitHub high-leverage signals
+        foss_bonus = 0.0
+        sources_str = " ".join(candidate.get("sources", [])).lower()
+        if "github.com" in sources_str or candidate.get("source_type") == "github_repository":
+            foss_bonus += 10.0  # Proven repo with code
+        if candidate.get("stars", 0) > 500 or "star" in topic:
+            foss_bonus += 5.0  # Star validation & developer adoption
+        if any(k in topic for k in ["alternative", "self-hosted", "docker", "local", "foss", "open source", "zero-cost", "replace"]):
+            foss_bonus += 10.0  # High save/share utility keyword
+
+        total_score = evidence + novelty + utility + save_share + diversity_bonus + foss_bonus - saturation_penalty
         return round(max(0.0, min(100.0, total_score)), 1)
 
     def select_best_topic(self, candidates: list[dict]) -> dict:

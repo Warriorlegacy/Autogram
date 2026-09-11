@@ -60,16 +60,17 @@ class SourceFetcher:
 
     def fetch_trending_niche_signals(self) -> list[dict]:
         """
-        Queries real-time developer and AI trending discussions from Hacker News Algolia API.
-        Captures explosive signals in: AI Automation, Agentic Workflows, Developer Tools,
-        and Content Distribution.
+        Queries real-time developer and FOSS trending discussions from Hacker News Algolia API.
+        Captures explosive signals across all 6 FOSS and developer productivity pillars.
         """
         trending_records = []
         queries = [
-            ("AI agent OR LLM OR workflow", "AI Tool Breakdown"),
-            ("Claude OR Cursor OR autonomous coding", "Prompting & Workflow"),
-            ("content engine OR solopreneur automation", "Marketing Psychology"),
-            ("DeepSeek OR open weights OR local LLM", "Tech Industry Explainer")
+            ("open source OR self-hosted OR alternative to", "FOSS SaaS Alternatives"),
+            ("Show HN OR github repo OR new release", "Trending GitHub Spotlight"),
+            ("Ollama OR local LLM OR DeepSeek OR vLLM", "Local AI & Edge Compute"),
+            ("CLI tool OR terminal OR developer tool OR rust", "Developer Power Tools & CLI"),
+            ("docker-compose OR homelab OR reverse proxy OR caddy", "Self-Hosted Architecture"),
+            ("open source license OR AGPL OR MIT OR BSL", "Open Source Economics & Contrarian")
         ]
 
         headers = {
@@ -79,7 +80,7 @@ class SourceFetcher:
         for q, pillar in queries:
             try:
                 enc_query = urllib.parse.quote(q)
-                url = f"https://hn.algolia.com/api/v1/search?query={enc_query}&tags=story&hitsPerPage=5"
+                url = f"https://hn.algolia.com/api/v1/search?query={enc_query}&tags=story&hitsPerPage=4"
                 req = urllib.request.Request(url, headers=headers)
                 with urllib.request.urlopen(req, timeout=4) as resp:
                     payload = json.loads(resp.read().decode("utf-8"))
@@ -101,7 +102,7 @@ class SourceFetcher:
                         rec = {
                             "source_id": f"HN-{hit.get('objectID')}",
                             "source_title": clean_title,
-                            "publisher": "Hacker News Developer Trends",
+                            "publisher": "Hacker News FOSS Trends",
                             "pillar": pillar,
                             "published_at": hit.get("created_at", datetime.utcnow().isoformat()),
                             "url": link,
@@ -113,19 +114,68 @@ class SourceFetcher:
             except Exception as e:
                 logger.debug(f"Live trend query '{q}' skipped: {e}")
 
-        logger.info(f"Discovered {len(trending_records)} real-time trending niche signals.")
+        logger.info(f"Discovered {len(trending_records)} real-time trending FOSS signals.")
         return trending_records
+
+    def fetch_github_trending(self) -> list[dict]:
+        """
+        Discovers trending open source repositories from GitHub API.
+        Captures newly starred FOSS tools, developer utilities, and local AI engines.
+        """
+        records = []
+        try:
+            url = "https://api.github.com/search/repositories?q=stars:>500+is:public+archived:false&sort=updated&order=desc&per_page=6"
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Autogram/2.5",
+                "Accept": "application/vnd.github+json"
+            }
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                for repo in data.get("items", []):
+                    name = repo.get("full_name", "")
+                    desc = repo.get("description") or "High-leverage open source tool"
+                    stars = repo.get("stargazers_count", 0)
+                    lang = repo.get("language") or "Code"
+                    topics = repo.get("topics", [])
+                    license_name = (repo.get("license") or {}).get("spdx_id", "FOSS")
+
+                    pillar = "Trending GitHub Spotlight"
+                    desc_lower = (desc + " " + " ".join(topics)).lower()
+                    if any(w in desc_lower for w in ["alternative", "replace", "saas", "workflow", "automation"]):
+                        pillar = "FOSS SaaS Alternatives"
+                    elif any(w in desc_lower for w in ["ai", "llm", "local", "model", "inference", "ollama"]):
+                        pillar = "Local AI & Edge Compute"
+                    elif any(w in desc_lower for w in ["cli", "terminal", "tool", "shell", "git"]):
+                        pillar = "Developer Power Tools & CLI"
+                    elif any(w in desc_lower for w in ["docker", "server", "host", "proxy", "cloud"]):
+                        pillar = "Self-Hosted Architecture"
+
+                    records.append({
+                        "source_id": f"GH-{repo.get('id', 0)}",
+                        "source_title": f"{name}: {desc[:90]}",
+                        "publisher": f"GitHub Trending ({license_name})",
+                        "pillar": pillar,
+                        "published_at": repo.get("updated_at", datetime.utcnow().isoformat()),
+                        "url": repo.get("html_url", ""),
+                        "excerpt": f"Trending open source repository with {stars:,} stars ({lang}, {license_name}): {desc}",
+                        "source_type": "github_repository",
+                        "trust_score": 0.98
+                    })
+        except Exception as e:
+            logger.debug(f"GitHub trending fetch skipped: {e}")
+        return records
 
     def acquire_sources(self, live_fetch: bool = True) -> list[dict]:
         """
         Gathers source records from curated seed records, live RSS feeds,
-        and real-time niche trend APIs. Persists all records to database.
+        GitHub Trending Repos, and Hacker News FOSS signals.
         """
         all_sources = self.load_seed_records()
         seen_titles = {s.get("source_title", "").lower() for s in all_sources}
 
         if live_fetch:
-            # 1. Fetch real-time trending niche discussions
+            # 1. Fetch real-time trending Hacker News discussions
             try:
                 live_trends = self.fetch_trending_niche_signals()
                 for t in live_trends:
@@ -135,7 +185,17 @@ class SourceFetcher:
             except Exception as e:
                 logger.warning(f"Live trend search warning: {e}")
 
-            # 2. Ingest live RSS feeds
+            # 2. Fetch real-time GitHub Trending Repositories
+            try:
+                gh_repos = self.fetch_github_trending()
+                for g in gh_repos:
+                    if g.get("source_title", "").lower() not in seen_titles:
+                        all_sources.append(g)
+                        seen_titles.add(g.get("source_title", "").lower())
+            except Exception as e:
+                logger.warning(f"GitHub trending search warning: {e}")
+
+            # 3. Ingest live RSS feeds
             if self.seed_file.exists():
                 try:
                     data = json.loads(self.seed_file.read_text(encoding="utf-8"))
@@ -159,3 +219,4 @@ class SourceFetcher:
         return all_sources
 
 fetcher = SourceFetcher()
+

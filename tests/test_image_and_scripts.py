@@ -60,6 +60,41 @@ def test_script_writer_reels_script():
     assert "HOOK" in reel["formatted_text"]
     assert "CALL TO ACTION" in reel["formatted_text"]
 
+def test_script_writer_x_thread():
+    sample_carousel = {
+        "topic": "Coolify: Self-Hosted Heroku & Vercel Alternative",
+        "pillar": "FOSS SaaS Alternatives",
+        "slides": [
+            {"slide_number": 1, "headline": "Stop Paying $200/mo on Cloud Hosting", "body": "Here is the open source PaaS."},
+            {"slide_number": 2, "headline": "Coolify Overview", "body": "Self-hosted PaaS with Docker.", "proof_or_example": "35,000 GitHub stars, AGPL."},
+            {"slide_number": 3, "headline": "Architecture", "body": "Runs on any Linux server with Traefik."},
+            {"slide_number": 4, "headline": "1-Line Setup", "body": "Run curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash", "proof_or_example": "curl install.sh | bash"},
+            {"slide_number": 5, "headline": "Comparison Matrix", "body": "$0/mo vs $200/mo."},
+            {"slide_number": 6, "headline": "Honest Gotchas", "body": "Requires 2GB RAM minimum."}
+        ]
+    }
+    thread = script_writer.generate_x_thread(sample_carousel)
+    assert "1/" in thread
+    assert "Coolify" in thread
+    assert "FOSS" in thread
+
+def test_script_writer_linkedin_post():
+    sample_carousel = {
+        "topic": "Stirling-PDF: Open Source Local PDF Manipulation",
+        "pillar": "FOSS SaaS Alternatives",
+        "slides": [
+            {"slide_number": 1, "headline": "Why Are You Still Paying for Adobe Acrobat?", "body": "PDF editing belongs on your local machine."},
+            {"slide_number": 2, "headline": "Stirling-PDF", "body": "Full-featured open source web UI.", "proof_or_example": "50,000+ stars."},
+            {"slide_number": 3, "headline": "Architecture", "body": "Java Spring Boot + Docker."},
+            {"slide_number": 4, "headline": "Setup", "body": "docker run -p 8080:8080 frooodle/s-pdf", "proof_or_example": "docker run -p 8080:8080"}
+        ]
+    }
+    post = script_writer.generate_linkedin_post(sample_carousel)
+    assert "SaaS subscription fatigue" in post
+    assert "Stirling-PDF" in post
+    assert "#OpenSource" in post
+
+
 def test_image_generator_prompt_enhancement():
     enhanced = image_generator._enhance_prompt("A minimalist data server rack", style_preset="cyber-minimalist")
     assert "minimalist data server rack" in enhanced
@@ -84,7 +119,7 @@ def test_publisher_dry_run_and_boolean_container():
 def test_uploader_public_cdn_fallback():
     from src.storage.uploader import uploader
     # When given dummy paths, ensures formatted URLs are absolute HTTP/HTTPS
-    urls = uploader.upload_slide_images(["output/test/slide_01.jpg"], "2026-09-10")
+    urls = uploader.upload_slide_images(["output/test/slide_01.jpg"], "2026-09-10", dry_run=True)
     assert len(urls) == 1
     assert urls[0].startswith("http://") or urls[0].startswith("https://")
 

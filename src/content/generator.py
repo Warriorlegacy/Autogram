@@ -359,12 +359,12 @@ Return ONLY valid JSON.
                     break
         if not data.get("trigger_word"):
             t_lower = (topic.get("topic") or "").lower()
-            for cand in ["PROMPTS", "AGENCY", "OUTBOUND", "CONTENT", "STACK", "AGENTS", "DEV", "SYSTEM", "SCALE", "BLUEPRINT"]:
+            for cand in ["FOSS", "DOCKER", "BLUEPRINT", "STACK", "DEV", "SYSTEM", "SCALE"]:
                 if cand.lower() in t_lower:
                     data["trigger_word"] = cand
                     break
             if not data.get("trigger_word"):
-                data["trigger_word"] = "SYSTEM"
+                data["trigger_word"] = "FOSS"
         for s in data.get("slides", []):
             if s.get("layout") == "cta":
                 s["trigger_word"] = data["trigger_word"]
@@ -383,15 +383,33 @@ Return ONLY valid JSON.
             "dive into": "examine",
             "at its core": "fundamentally",
             "unleash": "activate",
+            "revolutionary tool": "production tool",
+            "next-gen ai": "modern AI",
+            "ultimate secret": "core mechanism",
+            "must-have app": "key tool",
+            "stands as a testament to": "demonstrates",
+            "in conclusion": "summary",
+            "it's important to note": "note that"
         }
         import re
         for s in data.get("slides", []):
-            for field in ["headline", "body", "proof_or_example", "meta_chips"]:
-                val = s.get(field)
-                if val and isinstance(val, str):
+            for field, val in list(s.items()):
+                if isinstance(val, str):
                     for banned, repl in banned_replacements.items():
                         pattern = re.compile(re.escape(banned), re.IGNORECASE)
                         s[field] = pattern.sub(repl, s[field])
+                elif isinstance(val, list):
+                    new_list = []
+                    for item in val:
+                        if isinstance(item, str):
+                            item_str = item
+                            for banned, repl in banned_replacements.items():
+                                pattern = re.compile(re.escape(banned), re.IGNORECASE)
+                                item_str = pattern.sub(repl, item_str)
+                            new_list.append(item_str)
+                        else:
+                            new_list.append(item)
+                    s[field] = new_list
 
         if data.get("caption") and isinstance(data["caption"], str):
             for banned, repl in banned_replacements.items():

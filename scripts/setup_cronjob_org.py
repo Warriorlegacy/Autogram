@@ -64,7 +64,7 @@ def create_render_keepalive(api_key: str) -> dict:
     }
     payload = {
         "job": {
-            "title": "Autogram Render Dashboard Keep-Alive",
+            "title": "Autogram Render Dashboard Keep-Alive (Every 10m)",
             "url": "https://autogram-dashboard.onrender.com/health",
             "enabled": True,
             "saveResponses": False,
@@ -72,7 +72,7 @@ def create_render_keepalive(api_key: str) -> dict:
             "schedule": {
                 "timezone": "UTC",
                 "hours": [-1],
-                "minutes": [-1],  # Every minute or interval handled by cron-job.org
+                "minutes": [0, 10, 20, 30, 40, 50],
                 "mdays": [-1],
                 "months": [-1],
                 "wdays": [-1]
@@ -89,23 +89,34 @@ def main():
         sys.exit(1)
 
     api_key = sys.argv[1].strip()
-    print(f"Connecting to cron-job.org API with provided key...")
+    print("Connecting to cron-job.org API with provided key...")
     print(f"Target repository: {REPO}")
     print("=" * 60)
 
     success_count = 0
     for slot in SLOTS:
-        print(f"Creating job: {slot['title']}...")
-        res = create_slot_job(api_key, slot["title"], slot["hour"], slot["minute"])
+        # Normalize title to ASCII
+        clean_title = slot['title'].replace("—", "-")
+        print(f"Creating job: {clean_title}...")
+        res = create_slot_job(api_key, clean_title, slot["hour"], slot["minute"])
         if res["status_code"] in [200, 201]:
             job_id = res["response"].get("jobId", "OK")
-            print(f"  ✓ SUCCESS -> Job ID: {job_id}")
+            print(f"  [+] SUCCESS -> Job ID: {job_id}")
             success_count += 1
         else:
-            print(f"  ✗ FAILED ({res['status_code']}): {res['response']}")
+            print(f"  [-] FAILED ({res['status_code']}): {res['response']}")
+
+    # Also create Render keep-alive
+    print("Creating job: Render Dashboard Keep-Alive (Every 10m)...")
+    res_keep = create_render_keepalive(api_key)
+    if res_keep["status_code"] in [200, 201]:
+        job_id = res_keep["response"].get("jobId", "OK")
+        print(f"  [+] SUCCESS -> Keep-Alive Job ID: {job_id}")
+    else:
+        print(f"  [-] Keep-Alive notice ({res_keep['status_code']}): {res_keep['response']}")
 
     print("=" * 60)
-    print(f"Finished! {success_count}/{len(SLOTS)} publishing slots configured successfully.")
+    print(f"Finished! {success_count}/{len(SLOTS)} publishing slots + keep-alive configured successfully.")
 
 if __name__ == "__main__":
     main()

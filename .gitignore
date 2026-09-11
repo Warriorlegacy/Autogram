@@ -24,3 +24,5 @@ npm-debug.log
 temp_guide.html
 *.zip
 daily-carousel-artifacts/
+.firecrawl/
+

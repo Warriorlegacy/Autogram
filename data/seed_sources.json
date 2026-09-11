@@ -1,184 +1,184 @@
 {
   "rss_feeds": [
     {
-      "name": "Simon Willison AI & LLMs",
+      "name": "Hacker News Show HN (New FOSS Projects)",
+      "url": "https://hnrss.org/show",
+      "source_type": "developer_community",
+      "trust_score": 0.95
+    },
+    {
+      "name": "Hacker News Open Source & FOSS",
+      "url": "https://hnrss.org/frontpage?q=open+source+OR+github+OR+self-hosted",
+      "source_type": "developer_community",
+      "trust_score": 0.94
+    },
+    {
+      "name": "Simon Willison Engineering Weblog",
       "url": "https://simonwillison.net/atom/everything/",
       "source_type": "engineering_research",
       "trust_score": 0.96
     },
     {
-      "name": "Hacker News AI & Agents",
-      "url": "https://hnrss.org/newest?q=AI+OR+LLM+OR+Agent+OR+Claude",
-      "source_type": "developer_community",
-      "trust_score": 0.90
-    },
-    {
-      "name": "TechCrunch AI",
-      "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
-      "source_type": "industry_journalism",
-      "trust_score": 0.88
-    },
-    {
-      "name": "ArXiv AI Papers",
-      "url": "https://rss.arxiv.org/rss/cs.AI",
-      "source_type": "academic",
-      "trust_score": 0.95
+      "name": "Lobste.rs Open Source Discussions",
+      "url": "https://lobste.rs/t/open-source.rss",
+      "source_type": "engineering_research",
+      "trust_score": 0.92
     }
   ],
   "curated_records": [
     {
-      "source_id": "SRC-2026-PILLAR1-01",
-      "source_title": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "publisher": "Berkeley AI Research",
-      "pillar": "AI Tool Breakdown",
+      "source_id": "FOSS-P1-01",
+      "source_title": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "publisher": "Coolify Open Source",
+      "pillar": "FOSS SaaS Alternatives",
       "published_at": "2026-09-08T10:00:00Z",
-      "url": "https://bair.berkeley.edu/blog/compound-ai-systems/",
-      "excerpt": "State-of-the-art results are increasingly obtained by compound systems with multiple components (LLMs, retrievers, code interpreters, validators) rather than a single monolithic model. Modular verification and self-correction reduce error propagation by over 60%.",
-      "source_type": "research_blog",
-      "trust_score": 0.96
+      "url": "https://github.com/coollabsio/coolify",
+      "excerpt": "Coolify is an open-source & self-hostable all-in-one PaaS that replaces Vercel, Netlify, and Heroku. It deploys Next.js, Docker, databases, and cron jobs directly onto your own $5/month Hetzner or DigitalOcean VPS with zero vendor lock-in.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
     },
     {
-      "source_id": "SRC-2026-PILLAR1-02",
-      "source_title": "Deterministic UI Rendering vs Diffusion Models: The Typography Problem",
-      "publisher": "Engineering Design Quarterly",
-      "pillar": "AI Tool Breakdown",
+      "source_id": "FOSS-P1-02",
+      "source_title": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "publisher": "n8n Engineering",
+      "pillar": "FOSS SaaS Alternatives",
       "published_at": "2026-09-07T14:30:00Z",
-      "url": "https://example.com/deterministic-rendering",
-      "excerpt": "Generative image diffusion models inherently introduce text hallucinations and font blurring. Combining programmatic Chromium headless rendering with LLM-structured JSON yields 100% crisp, error-free typography at $0 compute cost.",
-      "source_type": "engineering_paper",
-      "trust_score": 0.95
+      "url": "https://github.com/n8n-io/n8n",
+      "excerpt": "While Zapier charges $59/mo for basic multi-step tasks, self-hosted n8n handles unlimited workflow executions, custom JavaScript/Python execution, AI agent tool calling, and 400+ API integrations on a single docker-compose container for $0 compute cost.",
+      "source_type": "github_repository",
+      "trust_score": 0.97
     },
     {
-      "source_id": "SRC-2026-PILLAR1-03",
-      "source_title": "Local Small Language Models in Production: 3B Parameters with Tool Calling",
-      "publisher": "Applied ML Systems",
-      "pillar": "AI Tool Breakdown",
+      "source_id": "FOSS-P1-03",
+      "source_title": "Documenso: The Open Source DocuSign Alternative",
+      "publisher": "Documenso",
+      "pillar": "FOSS SaaS Alternatives",
       "published_at": "2026-09-06T12:00:00Z",
-      "url": "https://example.com/slm-production",
-      "excerpt": "Fine-tuned 3B to 8B parameter models running on-device or on consumer GPUs achieve 98% accuracy on structured JSON generation while slashing cloud API expenses to zero.",
-      "source_type": "engineering_paper",
-      "trust_score": 0.93
+      "url": "https://github.com/documenso/documenso",
+      "excerpt": "DocuSign enterprise plans cost $40 per user per month. Documenso is an open-source signing platform built with Next.js, Prisma, and PostgreSQL that gives you cryptographic signing, audit trails, and self-hosted control.",
+      "source_type": "github_repository",
+      "trust_score": 0.95
     },
     {
-      "source_id": "SRC-2026-PILLAR2-01",
-      "source_title": "Context Window Degradation: Why Truncation Trumps Bloated Contexts",
-      "publisher": "Prompt Architecture Review",
-      "pillar": "Prompting & Workflow",
+      "source_id": "FOSS-P2-01",
+      "source_title": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
+      "publisher": "Open-WebUI Project",
+      "pillar": "Trending GitHub Spotlight",
       "published_at": "2026-09-05T09:00:00Z",
-      "url": "https://example.com/context-degradation",
-      "excerpt": "Injecting over 32k tokens of unstructured context causes attention dilution where reasoning accuracy drops by 34%. Pre-filtering data through deterministic scoring layers preserves reasoning fidelity.",
-      "source_type": "technical_report",
-      "trust_score": 0.94
+      "url": "https://github.com/open-webui/open-webui",
+      "excerpt": "Gaining over 75k GitHub stars, Open-WebUI provides a ChatGPT-equivalent experience running 100% locally or self-hosted. Features include Ollama integration, document RAG, voice calls, custom prompt pipelines, and multi-user RBAC.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
     },
     {
-      "source_id": "SRC-2026-PILLAR2-02",
-      "source_title": "Self-Correcting Agentic Pipelines: Bounded Loops vs Runaway Retries",
-      "publisher": "Autonomous Systems Institute",
-      "pillar": "Prompting & Workflow",
+      "source_id": "FOSS-P2-02",
+      "source_title": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
+      "publisher": "BerriAI",
+      "pillar": "Trending GitHub Spotlight",
       "published_at": "2026-09-04T15:00:00Z",
-      "url": "https://example.com/bounded-agent-loops",
-      "excerpt": "Unconstrained retry loops in agentic software lead to recursive hallucinations and quota exhaustion. Implementing strict 2-attempt revisions with fallback heuristics resolves 91% of edge-case failures safely.",
-      "source_type": "academic",
-      "trust_score": 0.95
+      "url": "https://github.com/BerriAI/litellm",
+      "excerpt": "LiteLLM standardizes calls to Bedrock, Azure, Anthropic, Gemini, Groq, and Ollama into OpenAI format with automatic failover, load balancing, budget tracking, and spend guardrails in production.",
+      "source_type": "github_repository",
+      "trust_score": 0.96
     },
     {
-      "source_id": "SRC-2026-PILLAR2-03",
-      "source_title": "Belief-Desire-Intention (BDI) Architectures for AI Automation",
-      "publisher": "Cognitive Agent Lab",
-      "pillar": "Prompting & Workflow",
+      "source_id": "FOSS-P2-03",
+      "source_title": "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "publisher": "Stirling-Tools",
+      "pillar": "Trending GitHub Spotlight",
       "published_at": "2026-09-03T11:20:00Z",
-      "url": "https://example.com/bdi-agents",
-      "excerpt": "Separating agent knowledge (beliefs) from goals (desires) and active execution plans (intentions) produces deterministic workflows that withstand asynchronous environment disruptions.",
-      "source_type": "academic",
-      "trust_score": 0.92
-    },
-    {
-      "source_id": "SRC-2026-PILLAR3-01",
-      "source_title": "The Death of Top-of-Funnel Fluff: How Evidence-Led Content Wins B2B Buyers",
-      "publisher": "B2B Marketing Institute",
-      "pillar": "Marketing Psychology",
-      "published_at": "2026-09-02T16:00:00Z",
-      "url": "https://example.com/evidence-led-marketing",
-      "excerpt": "Enterprise decision makers ignore generic thought-leadership carousels. Content citing specific architectural tradeoffs, benchmarks, and production failure modes converts at 4.2x higher rates into enterprise pipeline.",
-      "source_type": "industry_analysis",
-      "trust_score": 0.93
-    },
-    {
-      "source_id": "SRC-2026-PILLAR3-02",
-      "source_title": "Save-and-Share Mechanics: The Psychology of Reference-Grade Carousels",
-      "publisher": "Digital Behavioral Science",
-      "pillar": "Marketing Psychology",
-      "published_at": "2026-09-01T10:45:00Z",
-      "url": "https://example.com/save-share-psychology",
-      "excerpt": "Instagram algorithm prioritizes Saves and DMs over Likes. Users save content that functions as permanent reference material—cheatsheets, failure post-mortems, and architectural blueprints.",
-      "source_type": "research_paper",
-      "trust_score": 0.94
-    },
-    {
-      "source_id": "SRC-2026-PILLAR4-01",
-      "source_title": "GPU Cluster Economics: The Real Cost of Training vs Inference in 2026",
-      "publisher": "Silicon & Cloud Infrastructure",
-      "pillar": "Tech Industry Explainer",
-      "published_at": "2026-08-31T08:30:00Z",
-      "url": "https://example.com/gpu-economics",
-      "excerpt": "Inference compute now consumes 82% of enterprise AI budgets. Teams that migrate from proprietary model endpoints to quantized open weights on edge inference chips cut monthly cloud spend by $40k+.",
-      "source_type": "industry_journalism",
-      "trust_score": 0.92
-    },
-    {
-      "source_id": "SRC-2026-PILLAR4-02",
-      "source_title": "Meta Graph API v23 Changes: Stricter Quotas and Direct Content Publishing",
-      "publisher": "Social Platform Engineering",
-      "pillar": "Tech Industry Explainer",
-      "published_at": "2026-08-30T13:15:00Z",
-      "url": "https://example.com/meta-graph-api-v23",
-      "excerpt": "Meta has transitioned developer APIs toward server-to-server container creation. Unofficial scraping and session-hijack bots face immediate account bans, making official Graph API pipelines essential for longevity.",
-      "source_type": "technical_brief",
-      "trust_score": 0.96
-    },
-    {
-      "source_id": "SRC-2026-PILLAR5-01",
-      "source_title": "From Code Monkey to Systems Architect: The 2026 Engineering Transition",
-      "publisher": "Software Engineering Perspectives",
-      "pillar": "Career & Skills",
-      "published_at": "2026-08-29T17:00:00Z",
-      "url": "https://example.com/systems-architect-transition",
-      "excerpt": "When AI writes 70% of routine syntax, high-earning engineers differentiate through orchestration, threat modeling, schema governance, and deterministic verification gates.",
-      "source_type": "industry_analysis",
-      "trust_score": 0.91
-    },
-    {
-      "source_id": "SRC-2026-PILLAR5-02",
-      "source_title": "The Zero-Debt Automation Stack: Building Pipelines That Run Themselves",
-      "publisher": "Modern DevOps Weekly",
-      "pillar": "Career & Skills",
-      "published_at": "2026-08-28T14:20:00Z",
-      "url": "https://example.com/zero-debt-automation",
-      "excerpt": "Building production pipelines that cost $0.00/mo and survive upstream API outages requires stateless design, local fallback engines, and automated health monitoring.",
-      "source_type": "developer_guide",
-      "trust_score": 0.94
-    },
-    {
-      "source_id": "SRC-2026-PILLAR6-01",
-      "source_title": "Why 90% of Fine-Tuning Projects Are a Waste of Capital",
-      "publisher": "Applied AI Contrarian",
-      "pillar": "Myth-Bust / Contrarian",
-      "published_at": "2026-08-27T11:00:00Z",
-      "url": "https://example.com/fine-tuning-myth",
-      "excerpt": "Most enterprise teams fine-tune models to inject facts—a fatal mistake. Fine-tuning alters tone and style; retrieval-augmented generation (RAG) and tool calling inject facts with 10x higher fidelity at 1% of the cost.",
-      "source_type": "research_editorial",
+      "url": "https://github.com/Stirling-Tools/Stirling-PDF",
+      "excerpt": "Stop uploading sensitive contracts to random freemium PDF sites. Stirling-PDF runs locally via Docker, offering OCR, PDF splitting, merging, redaction, compression, and signature verification with zero telemetry.",
+      "source_type": "github_repository",
       "trust_score": 0.95
     },
     {
-      "source_id": "SRC-2026-PILLAR6-02",
-      "source_title": "The $10,000/Month Agency Retainer Is Obsolete",
-      "publisher": "Venture Operations Review",
-      "pillar": "Myth-Bust / Contrarian",
-      "published_at": "2026-08-26T09:30:00Z",
-      "url": "https://example.com/agency-retainer-obsolete",
-      "excerpt": "Traditional social media marketing agencies rely on manual copywriters and Canva designers who burn out after 30 days. Autonomous deterministic pipelines deliver higher signal consistency at zero marginal cost.",
-      "source_type": "executive_brief",
+      "source_id": "FOSS-P3-01",
+      "source_title": "Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
+      "publisher": "Ollama Project",
+      "pillar": "Local AI & Edge Compute",
+      "published_at": "2026-09-02T16:00:00Z",
+      "url": "https://github.com/ollama/ollama",
+      "excerpt": "Ollama packages open-weight model weights, quantization configs, and GPU acceleration into a single CLI tool. Run SOTA 8B and 14B reasoning models on your MacBook or Linux machine with sub-second token latency.",
+      "source_type": "github_repository",
+      "trust_score": 0.99
+    },
+    {
+      "source_id": "FOSS-P3-02",
+      "source_title": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "publisher": "UC Berkeley vLLM Team",
+      "pillar": "Local AI & Edge Compute",
+      "published_at": "2026-09-01T10:45:00Z",
+      "url": "https://github.com/vllm-project/vllm",
+      "excerpt": "By introducing PagedAttention for KV cache management, vLLM delivers 24x higher throughput than HuggingFace Transformers. It has become the industry standard for self-hosting high-concurrency LLM inference on private GPU clusters.",
+      "source_type": "engineering_paper",
+      "trust_score": 0.97
+    },
+    {
+      "source_id": "FOSS-P4-01",
+      "source_title": "LazyGit: Simple Terminal UI for Git Commands",
+      "publisher": "Jesse Duffield",
+      "pillar": "Developer Power Tools & CLI",
+      "published_at": "2026-08-31T08:30:00Z",
+      "url": "https://github.com/jesseduffield/lazygit",
+      "excerpt": "LazyGit turns complex interactive rebasing, hunk staging, and merge conflict resolution into instant single-keystroke operations in the terminal. Used by thousands of engineers to eliminate GUI git bloat.",
+      "source_type": "github_repository",
       "trust_score": 0.96
+    },
+    {
+      "source_id": "FOSS-P4-02",
+      "source_title": "Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
+      "publisher": "Andrew Gallant (BurntSushi)",
+      "pillar": "Developer Power Tools & CLI",
+      "published_at": "2026-08-30T13:15:00Z",
+      "url": "https://github.com/BurntSushi/ripgrep",
+      "excerpt": "Written in Rust, ripgrep recursively searches directories for regex patterns while automatically respecting .gitignore rules and skipping binary files. Benchmarks show it searching 100k+ file repositories in under 200ms.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P5-01",
+      "source_title": "Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
+      "publisher": "Caddy Web Server",
+      "pillar": "Self-Hosted Architecture",
+      "published_at": "2026-08-29T17:00:00Z",
+      "url": "https://github.com/caddyserver/caddy",
+      "excerpt": "Say goodbye to complex NGINX certbot renew cron jobs. Caddy obtains and renews Let's Encrypt TLS certificates automatically by default and proxies requests with memory-safe Go architecture.",
+      "source_type": "github_repository",
+      "trust_score": 0.97
+    },
+    {
+      "source_id": "FOSS-P5-02",
+      "source_title": "PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
+      "publisher": "PocketBase Project",
+      "pillar": "Self-Hosted Architecture",
+      "published_at": "2026-08-28T14:20:00Z",
+      "url": "https://github.com/pocketbase/pocketbase",
+      "excerpt": "PocketBase bundles realtime database, auth, file storage, and an admin UI into a single standalone binary. Perfect for SaaS MVPs and internal tools that need production persistence on $4/month hardware.",
+      "source_type": "github_repository",
+      "trust_score": 0.96
+    },
+    {
+      "source_id": "FOSS-P6-01",
+      "source_title": "The Open Source Bait-and-Switch: Why Startups Relicense from MIT to BSL",
+      "publisher": "FOSS Economics Review",
+      "pillar": "Open Source Economics & Contrarian",
+      "published_at": "2026-08-27T11:00:00Z",
+      "url": "https://example.com/foss-licensing-realities",
+      "excerpt": "Analyzing the economic transition of Redis, Terraform, and Elastic. When VC-funded open source companies face cloud provider competition, they abandon permissive licenses. Why true community-governed FOSS (AGPL/Linux Foundation) survives.",
+      "source_type": "industry_analysis",
+      "trust_score": 0.96
+    },
+    {
+      "source_id": "FOSS-P6-02",
+      "source_title": "The Hidden Costs of Self-Hosting: When Paying for SaaS Actually Makes Sense",
+      "publisher": "Systems Architecture Quarterly",
+      "pillar": "Open Source Economics & Contrarian",
+      "published_at": "2026-08-26T09:30:00Z",
+      "url": "https://example.com/self-hosting-economics",
+      "excerpt": "Self-hosting is free in software licenses, but costs engineer hours in backups, patching, security audits, and failover. A practitioner framework for calculating when to self-host vs when your time is worth more than a $20/month SaaS invoice.",
+      "source_type": "executive_brief",
+      "trust_score": 0.95
     }
   ]
 }

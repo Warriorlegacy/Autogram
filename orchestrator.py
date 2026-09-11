@@ -79,7 +79,9 @@ def run_pipeline(dry_run: bool = False) -> dict:
             "practicality_score": 0.92,
             "save_share_score": 0.90,
             "saturation_risk": 0.15,
-            "sources": [s.get("url")]
+            "sources": [s.get("url")] if s.get("url") else [],
+            "source_type": s.get("source_type", ""),
+            "stars": s.get("stars", 0)
         })
 
     selection = scorer.select_best_topic(candidates)
@@ -169,6 +171,33 @@ def run_pipeline(dry_run: bool = False) -> dict:
     reels_file = out_dir / "reels_script.md"
     reels_file.write_text(reels_meta["formatted_text"], encoding="utf-8")
     logger.info(f"Generated accompanying 35s Reels script -> {reels_file.name}")
+
+    # Generate production edit-plan (Makerzz Section 8 separation of audio script & visual cuts)
+    try:
+        edit_plan_meta = script_writer.generate_edit_plan(carousel)
+        edit_plan_file = out_dir / "edit_plan.json"
+        edit_plan_file.write_text(json.dumps(edit_plan_meta, indent=2), encoding="utf-8")
+        logger.info(f"Generated video production edit plan -> {edit_plan_file.name}")
+    except Exception as e:
+        logger.warning(f"Could not generate edit plan: {e}")
+
+    # Repurpose into Viral X / Twitter Thread
+    try:
+        x_thread_text = script_writer.generate_x_thread(carousel)
+        x_thread_file = out_dir / "x_thread.txt"
+        x_thread_file.write_text(x_thread_text, encoding="utf-8")
+        logger.info(f"Generated viral X/Twitter thread -> {x_thread_file.name}")
+    except Exception as e:
+        logger.warning(f"Could not generate X thread: {e}")
+
+    # Repurpose into Executive LinkedIn Post
+    try:
+        linkedin_text = script_writer.generate_linkedin_post(carousel)
+        linkedin_file = out_dir / "linkedin_post.txt"
+        linkedin_file.write_text(linkedin_text, encoding="utf-8")
+        logger.info(f"Generated executive LinkedIn post -> {linkedin_file.name}")
+    except Exception as e:
+        logger.warning(f"Could not generate LinkedIn post: {e}")
 
     # 7. Asset Staging & Upload (Layer D)
     logger.info("Phase 7: Asset Staging / Upload...")

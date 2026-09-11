@@ -2,10 +2,31 @@
   "recent_posts": [
     {
       "date": "2026-09-11",
-      "pillar": "AI Tool Breakdown",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "hook": "Ditch Zapier's $59/mo plan. Self-hosted n8n automates workflows for $0 compute cost.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-11",
+      "pillar": "Developer Power Tools & CLI",
       "topic": "Datasette 1.0a39 and 0.65.4 security releases",
-      "hook": "Datasette 1.0a39 and 0.65.4 security releases: Why your team's operational efficiency just got a major boost",
+      "hook": "Datasette 1.0a39 and 0.65.4 security releases: Open source SQLite exploration and publishing",
       "score": 95
+    },
+    {
+      "date": "2026-09-11",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Replace Vercel and Heroku with Coolify: Self-Hosted, Zero Vendor Lock-In, $5/month VPS",
+      "score": 100
+    },
+    {
+      "date": "2026-09-11",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Monolithic LLMs are a thing of the past \u2013 compound AI systems outperform them by 60%.",
+      "score": 100
     },
     {
       "date": "2026-09-11",

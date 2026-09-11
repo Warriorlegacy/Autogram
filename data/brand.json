@@ -6,12 +6,12 @@
   "name": "Piyush | Growth Systems",
   "footer_text": "@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS",
   "sign_off": "My name is Piyush. Stop posting. Start shipping.",
-  "positioning": "Engineering compound AI automation, autonomous workflows, and Gary Vee-style content engines for high-output builders and founders.",
+  "positioning": "Demystifying Free & Open Source Software (FOSS), high-leverage developer tools, local AI architectures, and self-hosted infrastructure for high-output builders and founders.",
   "target_audience": [
+    "Software Engineers & Systems Developers",
     "Tech Founders & Solopreneurs",
-    "AI Engineers & Automation Builders",
-    "Growth Engineers & Modern Marketers",
-    "Agency Owners & High-Output Creators"
+    "DevOps & Self-Hosting Enthusiasts",
+    "AI Builders & Open Source Contributors"
   ],
   "voice": [
     "authoritative",
@@ -19,21 +19,21 @@
     "hyper-practical",
     "zero-fluff",
     "contrarian",
-    "document-dont-create"
+    "open-source-first"
   ],
   "content_pillars": [
-    "AI Architecture & Agentic Workflows",
-    "Document, Don't Create (Content Autopilot)",
-    "Developer Tools & Claude/LLM Stacks",
-    "Solo AI Architecture & Cost Reduction",
-    "Production Systems & Failure Modes",
-    "Contrarian Engineering & Scaling Realities"
+    "FOSS SaaS Alternatives",
+    "Trending GitHub Spotlight",
+    "Local AI & Edge Compute",
+    "Developer Power Tools & CLI",
+    "Self-Hosted Architecture",
+    "Open Source Economics & Contrarian"
   ],
   "follow_triggers": {
-    "cta_headline": "Get the document-don't-create autopilot on your account.",
-    "cta_subtext": "13 PLATFORMS · 6–7 A DAY · 10 MIN A WEEK · SIGNHIFY.STUDIO",
-    "button_text": "RUN IT ON YOUR ACCOUNT →",
-    "comment_lead_magnet": "Comment 'DOCUMENT' to get the full automation blueprint sent to your DMs."
+    "cta_headline": "Replace expensive SaaS with self-hosted open source software.",
+    "cta_subtext": "BATTLE-TESTED REPOS · 1-COMMAND DOCKER RUNS · SIGNHIFY.STUDIO",
+    "button_text": "GET THE FREE FOSS STACK →",
+    "comment_lead_magnet": "Comment 'FOSS' to get the full GitHub repo link, setup commands, and docker-compose blueprint sent to your DMs."
   },
   "avoid": [
     "generic hype",
@@ -47,7 +47,11 @@
     "dive into",
     "at its core",
     "seamless",
-    "robust"
+    "robust",
+    "revolutionary tool",
+    "next-gen AI",
+    "ultimate secret",
+    "must-have app"
   ],
   "design": {
     "colors": {
