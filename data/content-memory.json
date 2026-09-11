@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-11",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "The Chain-of-Density Prompt: How to Condense 10,000-Word Docs into 5 Dense Insights",
+      "hook": "Stop paying for bloated summarization SaaS. This 100% open source prompt runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-11",
       "pillar": "Trending GitHub Spotlight",
       "topic": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
       "hook": "Stop paying for ChatGPT Plus. This 100% open source repo runs on your own hardware.",
