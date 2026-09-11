@@ -1,9 +1,11 @@
 name: Dashboard Keep-Alive Heartbeat
 
 on:
-  schedule:
-    # Ping every 14 minutes to prevent Render free-tier idle spin down
-    - cron: "*/14 * * * *"
+  # NOTE: Frequent crons (like */14) cause GitHub Actions to throttle/deprioritize all scheduled
+  # workflows in the repository, causing daily-post.yml to miss its publishing slots.
+  # Use free external pingers (cron-job.org or UptimeRobot) to keep Render awake instead.
+  # schedule:
+  #   - cron: "*/14 * * * *"
   workflow_dispatch: {}
 
 jobs:
