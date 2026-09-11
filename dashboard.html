@@ -106,26 +106,80 @@
       --border-inner:   rgba(16, 34, 42, 0.08);
     }
 
-    /* Day-mode fixes for hardcoded dark fills */
+    /* Day-mode comprehensive component styling */
     [data-theme="light"] .topbar {
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom-color: rgba(16, 34, 42, 0.08);
     }
     [data-theme="light"] .telemetry-chip,
     [data-theme="light"] .theme-toggle-btn {
       background: rgba(16, 34, 42, 0.05);
+      border-color: rgba(16, 34, 42, 0.12);
+      color: var(--text-main);
     }
-    [data-theme="light"] .page-title {
+    [data-theme="light"] .theme-toggle-btn:hover {
+      background: rgba(16, 34, 42, 0.09);
+      border-color: var(--cyan);
+    }
+    [data-theme="light"] .page-title,
+    [data-theme="light"] .brand-title {
       color: var(--text-main);
     }
     [data-theme="light"] .sidebar {
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: 10px 0 40px rgba(16, 34, 42, 0.08);
+      background: rgba(255, 255, 255, 0.95);
+      border-right-color: rgba(16, 34, 42, 0.08);
+      box-shadow: 10px 0 40px rgba(16, 34, 42, 0.05);
     }
     [data-theme="light"] .sidebar-footer {
-      background: rgba(16, 34, 42, 0.03);
+      background: rgba(16, 34, 42, 0.02);
+      border-top-color: rgba(16, 34, 42, 0.08);
     }
-    [data-theme="light"] .brand-title {
+    [data-theme="light"] .nav-item {
+      color: var(--text-muted);
+    }
+    [data-theme="light"] .nav-item:hover,
+    [data-theme="light"] .nav-item.active {
+      background: rgba(14, 111, 119, 0.08);
+      color: var(--cyan);
+    }
+    [data-theme="light"] .doppel-shell {
+      background: #FFFFFF;
+      border-color: rgba(16, 34, 42, 0.1);
+      box-shadow: 0 4px 20px rgba(16, 34, 42, 0.03);
+    }
+    [data-theme="light"] .doppel-shell:hover {
+      border-color: rgba(16, 34, 42, 0.2);
+    }
+    [data-theme="light"] .control-input,
+    [data-theme="light"] input[type="text"],
+    [data-theme="light"] input[type="number"],
+    [data-theme="light"] select,
+    [data-theme="light"] textarea {
+      background: #F8FAFC;
+      border-color: rgba(16, 34, 42, 0.15);
       color: var(--text-main);
+    }
+    [data-theme="light"] .btn-ghost,
+    [data-theme="light"] .btn-makerzz-ghost,
+    [data-theme="light"] .btn-makerzz-white {
+      background: rgba(16, 34, 42, 0.05);
+      color: var(--text-main);
+      border-color: rgba(16, 34, 42, 0.15);
+    }
+    [data-theme="light"] .btn-ghost:hover,
+    [data-theme="light"] .btn-makerzz-ghost:hover,
+    [data-theme="light"] .btn-makerzz-white:hover {
+      background: rgba(16, 34, 42, 0.09);
+      border-color: rgba(16, 34, 42, 0.25);
+    }
+    [data-theme="light"] .platform-tile,
+    [data-theme="light"] .slot-card,
+    [data-theme="light"] .modal-box {
+      background: #FFFFFF;
+      border-color: rgba(16, 34, 42, 0.1);
+    }
+    [data-theme="light"] ::-webkit-scrollbar-thumb {
+      background: rgba(16, 34, 42, 0.15);
     }
 
     *, *::before, *::after {
@@ -2974,6 +3028,13 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       const cur = document.documentElement.getAttribute('data-theme') || 'dark';
       applyTheme(cur === 'light' ? 'dark' : 'light');
     }
+
+    // Cross-tab theme sync with landing page
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'autogram_theme' && e.newValue) {
+        applyTheme(e.newValue);
+      }
+    });
 
     // ── Navigation & View Switching ──────────────────────────────────────
     function switchView(viewId, el) {

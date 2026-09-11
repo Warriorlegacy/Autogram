@@ -1,8 +1,28 @@
-/**
- * Master Application Scripts (Pricing Toggle, Terminal Emulator, Booking Modal)
- */
+// 0. Day / Night Mode Toggle
+window.applyTheme = function(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem('autogram_theme', theme); } catch (e) {}
+  const icon = document.getElementById('theme-toggle-icon');
+  const label = document.getElementById('theme-toggle-label');
+  if (icon) icon.textContent = theme === 'light' ? '☀️' : '🌙';
+  if (label) label.textContent = theme === 'light' ? 'LIGHT' : 'DARK';
+};
+
+window.toggleTheme = function() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  window.applyTheme(cur === 'light' ? 'dark' : 'light');
+};
+
+// Cross-tab sync between landing page and dashboard
+window.addEventListener('storage', (e) => {
+  if (e.key === 'autogram_theme' && e.newValue) {
+    window.applyTheme(e.newValue);
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('autogram_theme') || 'dark';
+  window.applyTheme(savedTheme);
   // 1. Pricing Annual / Monthly Switch Toggle
   const switchPill = document.getElementById('pricing-switch');
   const monthlyLabel = document.getElementById('monthly-toggle-label');

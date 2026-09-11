@@ -12,6 +12,15 @@
   <meta property="og:description" content="Zero-touch daily carousels written by editorial intelligence, rendered with deterministic typography, and published via Meta's official API.">
   <meta property="og:type" content="website">
 
+  <!-- Day / Night Theme Pre-Paint Initializer -->
+  <script>
+    try {
+      document.documentElement.setAttribute('data-theme', localStorage.getItem('autogram_theme') || 'dark');
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+
   <!-- Google Fonts Preconnect & High-Performance Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,6 +76,10 @@
         </ul>
 
         <div class="nav-actions">
+          <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleTheme()" title="Switch Day / Night Mode">
+            <span id="theme-toggle-icon">🌙</span>
+            <span id="theme-toggle-label">DARK</span>
+          </button>
           <a href="dashboard.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 13px; font-weight: 800;">
             <span>⚡ Mission Cockpit</span>
           </a>

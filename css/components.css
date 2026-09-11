@@ -872,3 +872,216 @@
   background: rgba(0, 240, 255, 0.04);
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
 }
+
+/* ==========================================================================
+   9. Day / Light Mode Component Overrides
+   ========================================================================== */
+[data-theme="light"] .simulator-wrapper {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.06), 0 0 1px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .phone-mockup {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .phone-notch {
+  background: #E2E8F0;
+}
+
+[data-theme="light"] .slide-screen {
+  background: #F8FAFC;
+}
+
+[data-theme="light"] .deck-nav-btn {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #0F172A;
+}
+
+[data-theme="light"] .deck-nav-btn:hover {
+  background: var(--neon-cyan);
+  color: #FFFFFF;
+}
+
+[data-theme="light"] .slide-dot {
+  background: #CBD5E1;
+}
+
+[data-theme="light"] .pillar-tab {
+  background: #F1F5F9;
+  border-color: #E2E8F0;
+  color: #475569;
+}
+
+[data-theme="light"] .pillar-tab:hover,
+[data-theme="light"] .pillar-tab.active {
+  background: rgba(0, 119, 153, 0.1);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+[data-theme="light"] .telemetry-card {
+  background: #F8FAFC;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] .telemetry-card:hover {
+  background: #FFFFFF;
+  border-color: rgba(0, 119, 153, 0.3);
+}
+
+[data-theme="light"] .telemetry-title {
+  color: #0F172A;
+}
+
+[data-theme="light"] .telemetry-body {
+  color: #334155;
+}
+
+[data-theme="light"] .badge-pill {
+  background: #F1F5F9;
+  border-color: #E2E8F0;
+  color: #334155;
+}
+
+[data-theme="light"] .arch-card {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06), 0 0 1px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .arch-card:hover {
+  border-color: rgba(0, 119, 153, 0.3);
+  box-shadow: 0 20px 40px -10px rgba(0, 119, 153, 0.12);
+}
+
+[data-theme="light"] .arch-title {
+  color: #0F172A;
+}
+
+[data-theme="light"] .arch-desc {
+  color: #475569;
+}
+
+[data-theme="light"] .roi-container {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .slider-label {
+  color: #0F172A;
+}
+
+[data-theme="light"] .range-slider {
+  background: #E2E8F0;
+}
+
+[data-theme="light"] .range-slider::-webkit-slider-thumb {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 119, 153, 0.4);
+}
+
+[data-theme="light"] .roi-results-box {
+  background: linear-gradient(135deg, rgba(0, 119, 153, 0.05), rgba(109, 40, 217, 0.05));
+  border-color: rgba(0, 119, 153, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 119, 153, 0.08);
+}
+
+[data-theme="light"] .roi-metric-main {
+  color: #0F172A;
+}
+
+[data-theme="light"] .roi-stat-item strong {
+  color: #0F172A;
+}
+
+[data-theme="light"] .roi-stat-item span {
+  color: #64748B;
+}
+
+[data-theme="light"] .switch-pill {
+  background: #E2E8F0;
+  border-color: #CBD5E1;
+}
+
+[data-theme="light"] .switch-circle {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0, 119, 153, 0.4);
+}
+
+[data-theme="light"] .pricing-card {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="light"] .pricing-card.featured {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1.5px solid var(--neon-cyan);
+  box-shadow: 0 20px 50px -10px rgba(0, 119, 153, 0.15);
+}
+
+[data-theme="light"] .plan-name,
+[data-theme="light"] .price-num {
+  color: #0F172A;
+}
+
+[data-theme="light"] .plan-desc {
+  color: #64748B;
+}
+
+[data-theme="light"] .plan-feature-item {
+  color: #334155;
+}
+
+[data-theme="light"] .faq-card {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+}
+
+[data-theme="light"] .faq-card:hover {
+  background: #FFFFFF;
+  border-color: rgba(0, 119, 153, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 119, 153, 0.08);
+}
+
+[data-theme="light"] .faq-title {
+  color: #0F172A;
+}
+
+[data-theme="light"] .faq-body {
+  color: #475569;
+}
+
+[data-theme="light"] .modal-box {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.15);
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.18);
+}
+
+[data-theme="light"] .form-input {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  color: #0F172A;
+}
+
+[data-theme="light"] .form-input:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 16px rgba(0, 119, 153, 0.2);
+}
+
+[data-theme="light"] .portal-paywall-card {
+  background: #F8FAFC;
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="light"] .portal-paywall-card:hover {
+  border-color: var(--neon-cyan);
+}
