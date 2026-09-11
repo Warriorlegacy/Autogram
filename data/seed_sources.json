@@ -234,6 +234,28 @@
       "excerpt": "A 5-phase iterative search prompt that breaks broad industry questions into search matrices, conducts source triangulation, and outputs a 10-point actionable executive briefing.",
       "source_type": "prompt_code",
       "trust_score": 0.97
+    },
+    {
+      "source_id": "PROMPT-VIRAL-06",
+      "source_title": "Skeleton-of-Thought (SoT): The Secret Prompt Framework That Accelerates LLMs by 4x",
+      "publisher": "Prompt Engineering Secrets",
+      "pillar": "Local AI & Edge Compute",
+      "published_at": "2026-09-10T11:00:00Z",
+      "url": "https://arxiv.org/abs/2307.15337",
+      "excerpt": "Based on UC Berkeley research: decouples generation into a skeleton blueprint followed by parallel point expansion. Eliminates token generation bottlenecks and slashes response latency by 2.5x to 4x.",
+      "source_type": "prompt_code",
+      "trust_score": 0.99
+    },
+    {
+      "source_id": "PROMPT-VIRAL-07",
+      "source_title": "The AppSec Red-Team Megaprompt: Scanning Pull Requests for 0-Day Flaws and SQLi in 10 Seconds",
+      "publisher": "Developer Security Lab",
+      "pillar": "Developer Power Tools & CLI",
+      "published_at": "2026-09-11T09:00:00Z",
+      "url": "https://github.com/signhify/prompt-vault/blob/main/appsec_redteam.md",
+      "excerpt": "Simulates an offensive application security auditor scanning code for OWASP Top 10 vulnerabilities, unauthenticated IDORs, and SSRF flaws with exploit PoCs and hardened code patches.",
+      "source_type": "prompt_code",
+      "trust_score": 0.98
     }
   ]
 }

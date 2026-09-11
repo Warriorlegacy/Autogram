@@ -240,6 +240,16 @@ class TrendAnalyzer:
             return "The 3-Persona Prompt that beats standard ChatGPT reasoning by 74%."
         elif "reverse-engineer" in combined_text:
             return "The Secret Megaprompt to extract complete system architectures from any app."
+        elif "skeleton-of-thought" in combined_text or "sot" in combined_text:
+            return "Generate 10 pages in 5 seconds. The secret prompt that speeds up LLMs by 4x."
+        elif "sql" in combined_text and ("zero-hallucination" in combined_text or "guard" in combined_text):
+            return "Never write a broken SQL query again. The zero-hallucination schema prompt."
+        elif "security" in combined_text or "auditor" in combined_text or "red-team" in combined_text:
+            return "The AppSec Red-Team prompt that finds 0-day bugs in your code in 10 seconds."
+        elif "chain-of-verification" in combined_text or "cove" in combined_text:
+            return "Stop ChatGPT from lying. The Meta AI self-correcting prompt architecture."
+        elif "deep-research" in combined_text:
+            return "The Autonomous Deep Research prompt that replaces 6 hours of research in 60s."
         elif "docker" in combined_text or "self-host" in combined_text:
             return f"The 1-Click Setup: How to self-host {topic.split(':')[0]} in 60 seconds."
         else:
