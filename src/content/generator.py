@@ -43,14 +43,30 @@ class ContentGenerator:
         return {"brand_name": "Autogram AI", "handle": "@autogram.ai"}
 
     def _build_user_prompt(self, topic: dict, sources: list[dict]) -> str:
+        dossier = topic.get("dossier", {})
+        dossier_section = ""
+        if dossier:
+            dossier_section = f"""
+VERIFIED DEEP RESEARCH FACTS:
+- Tool / Topic: {dossier.get('topic')}
+- Replaces SaaS: {dossier.get('replaces_saas')} (SaaS Cost: {dossier.get('saas_cost_estimate')}) vs FOSS: {dossier.get('foss_cost')}
+- GitHub Stars: {dossier.get('stars', 0):,}
+- Software License: {dossier.get('license')}
+- Exact 1-Line Setup Command: `{dossier.get('deployment_command')}`
+- Tech Stack / Architecture: {dossier.get('architecture_stack')}
+- Honest Gotchas & Trade-offs: {json.dumps(dossier.get('honest_tradeoffs', []))}
+- Research Evidence: {json.dumps(dossier.get('research_evidence', []))}
+"""
         return f"""
 TOPIC: {topic.get('topic')}
-PILLAR: {topic.get('pillar', 'AI Tool Breakdown')}
+PILLAR: {topic.get('pillar', 'FOSS SaaS Alternatives')}
 ANGLE: {topic.get('angle', '')}
-SOURCES: {json.dumps(sources[:3], indent=2)}
+{dossier_section}
+SOURCES: {json.dumps(sources[:4], indent=2)}
 
-Build a cohesive, high-value 7-10 slide Instagram carousel in strict JSON following your instructions.
+Build an exceptionally cohesive, save-worthy 7-10 slide (default 8 slides) Instagram carousel in strict JSON.
 Slide roles: hook, standard, checklist, comparison, diagram, framework, takeaway, cta.
+Embed the verified deep research facts (real stars, exact docker setup command, real SaaS contrast).
 Return ONLY valid JSON.
 """
 

@@ -15,6 +15,7 @@ def test_full_pipeline_dry_run():
     today = manifest["date"]
     out_dir = Path("output") / today
     assert (out_dir / "content.json").exists()
+    assert (out_dir / "research_dossier.json").exists()
     assert (out_dir / "caption.txt").exists()
     assert (out_dir / "manifest.json").exists()
     assert (out_dir / "slide_01.jpg").exists()

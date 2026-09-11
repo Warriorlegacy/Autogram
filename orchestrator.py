@@ -90,9 +90,33 @@ def run_pipeline(dry_run: bool = False) -> dict:
     logger.info(f"Pillar: '{winner_topic.get('pillar')}'")
     logger.info(f"Reason: {selection.get('reason')}")
 
+    # Phase 2b: Deep Technical Research & Fact-Enrichment ("Proof, Not Promises")
+    logger.info("Phase 2b: Conducting Deep Technical Research on Selected Topic...")
+    from src.research.deep_researcher import deep_researcher
+    dossier = deep_researcher.research_topic(winner_topic)
+    
+    # Persist deep research dossier as durable audit proof
+    dossier_file = out_dir / "research_dossier.json"
+    dossier_file.write_text(json.dumps(dossier, indent=2), encoding="utf-8")
+    logger.info(f"Persisted deep research dossier artifact -> {dossier_file.name}")
+
+    enriched_topic = {**winner_topic, "dossier": dossier}
+    targeted_sources = [{
+        "source_id": "SRC-DEEP-01",
+        "source_title": f"Technical Research Dossier: {dossier['topic']}",
+        "publisher": dossier.get("github_repo") or dossier.get("replaces_saas") or "Technical Research Lab",
+        "url": dossier.get("url", ""),
+        "excerpt": (
+            f"Stars: {dossier.get('stars', 0):,}. License: {dossier.get('license')}. "
+            f"Replaces: {dossier.get('replaces_saas')} (SaaS Cost: {dossier.get('saas_cost_estimate')}, FOSS: {dossier.get('foss_cost')}). "
+            f"Quick Run: {dossier.get('deployment_command')}. Stack: {dossier.get('architecture_stack')}. "
+            f"Trade-offs: {'; '.join(dossier.get('honest_tradeoffs', []))}."
+        )
+    }] + sources
+
     # 3. Creative Production & Drafting (Layer C)
-    logger.info("Phase 3: Generating Carousel Copy...")
-    carousel = generator.generate_carousel(winner_topic, sources)
+    logger.info("Phase 3: Generating Carousel Copy with Deep Research Grounding...")
+    carousel = generator.generate_carousel(enriched_topic, targeted_sources)
     carousel["publication_date"] = today_str
 
     # Phase 3b: Optional Visual Hero Asset Synthesis (FLUX.1)
