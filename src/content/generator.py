@@ -424,30 +424,20 @@ Return ONLY valid JSON.
             "it's important to note": "note that"
         }
         import re
-        for s in data.get("slides", []):
-            for field, val in list(s.items()):
-                if isinstance(val, str):
-                    for banned, repl in banned_replacements.items():
-                        pattern = re.compile(re.escape(banned), re.IGNORECASE)
-                        s[field] = pattern.sub(repl, s[field])
-                elif isinstance(val, list):
-                    new_list = []
-                    for item in val:
-                        if isinstance(item, str):
-                            item_str = item
-                            for banned, repl in banned_replacements.items():
-                                pattern = re.compile(re.escape(banned), re.IGNORECASE)
-                                item_str = pattern.sub(repl, item_str)
-                            new_list.append(item_str)
-                        else:
-                            new_list.append(item)
-                    s[field] = new_list
+        patterns = [(re.compile(r'\b' + re.escape(banned) + r'\b', re.IGNORECASE), repl) for banned, repl in banned_replacements.items()]
 
-        if data.get("caption") and isinstance(data["caption"], str):
-            for banned, repl in banned_replacements.items():
-                pattern = re.compile(re.escape(banned), re.IGNORECASE)
-                data["caption"] = pattern.sub(repl, data["caption"])
+        def _scrub(val):
+            if isinstance(val, str):
+                for pat, repl in patterns:
+                    val = pat.sub(repl, val)
+                return val
+            elif isinstance(val, list):
+                return [_scrub(x) for x in val]
+            elif isinstance(val, dict):
+                return {k: _scrub(v) for k, v in val.items()}
+            return val
 
+        data = _scrub(data)
         return data
 
     def generate_with_huggingface(self, topic: dict, sources: list[dict]) -> dict:

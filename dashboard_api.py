@@ -420,7 +420,7 @@ def api_schedule():
         sched["ok"] = True
         return jsonify(sched)
 
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
 
     # 1. Update general settings or slots
     if "daily_slots" in data:
@@ -460,7 +460,7 @@ def api_schedule_delete(item_id):
 def api_scheduler_toggle():
     global scheduler_thread, scheduler_running
     sched = read_schedule()
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
     enable = data.get("enable", not scheduler_running)
 
     with scheduler_lock:
@@ -486,7 +486,7 @@ def api_publish():
     """
     Directly publishes an output run or custom carousel to Instagram.
     """
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
     run_date = data.get("date")
     dry_run = data.get("mode", "dry-run") == "dry-run"
     custom_caption = data.get("caption")
@@ -794,7 +794,7 @@ def api_instagram_auto_dm():
     """Trigger autonomous in-house Auto-DM and comment-reply scanner."""
     try:
         from src.instagram.dm_automator import dm_automator
-        data = request.json or {}
+        data = request.get_json(silent=True) or {}
         limit = int(data.get("limit_posts", 5))
         dry = data.get("dry_run", read_env().get("DRY_RUN", "true").lower() == "true")
         
@@ -838,7 +838,7 @@ def api_env_get():
 
 @app.route("/api/env", methods=["POST"])
 def api_env_set():
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
     for key, value in data.items():
         if key and not key.startswith("#"):
             write_env_key(key, str(value))
@@ -869,7 +869,7 @@ def api_pipeline_status():
 @app.route("/api/pipeline/run", methods=["POST"])
 def api_pipeline_run():
     global pipeline_status, pipeline_log, pipeline_proc
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
     mode = data.get("mode", "dry-run")  # "dry-run" | "live"
 
     with pipeline_lock:
@@ -1559,7 +1559,7 @@ def api_platform_assets(platform_id):
 @app.route("/api/calculator/evaluate", methods=["POST"])
 def api_calculator_evaluate():
     """Makerzz §4.2 Credit Dial calculation engine."""
-    data = request.json or {}
+    data = request.get_json(silent=True) or {}
     carousels = int(data.get("carousels") or data.get("carousels_per_month") or 30)
     reels = int(data.get("reels") or data.get("reels_per_month") or 14)
     scans = int(data.get("scans") or data.get("profile_scans_per_month") or 12)

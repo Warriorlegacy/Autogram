@@ -98,6 +98,7 @@
   const prevBtn = document.getElementById('deck-prev-btn');
   const nextBtn = document.getElementById('deck-next-btn');
   const dotsContainer = document.getElementById('slide-dots-container');
+  const thumbnailsReel = document.getElementById('slide-thumbnails-reel');
 
   function initDots() {
     if (!dotsContainer) return;
@@ -107,6 +108,33 @@
       dot.className = `slide-dot ${idx === currentIndex ? 'active' : ''}`;
       dot.addEventListener('click', () => updateSlide(idx));
       dotsContainer.appendChild(dot);
+    });
+  }
+
+  function initThumbnails() {
+    if (!thumbnailsReel) return;
+    thumbnailsReel.innerHTML = '';
+    SLIDES_DATA.forEach((s, idx) => {
+      const thumb = document.createElement('div');
+      thumb.className = `slide-thumb-card ${idx === currentIndex ? 'active' : ''}`;
+      thumb.style.cssText = `
+        flex-shrink: 0;
+        width: 60px;
+        height: 75px;
+        border-radius: 8px;
+        border: 2px solid ${idx === currentIndex ? 'var(--neon-cyan)' : 'rgba(255,255,255,0.1)'};
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: ${idx === currentIndex ? '0 0 12px rgba(0, 240, 255, 0.4)' : 'none'};
+      `;
+      thumb.innerHTML = `
+        <img src="${s.image}" alt="Slide ${s.num}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        <span style="position: absolute; bottom: 3px; right: 3px; background: rgba(0,0,0,0.8); font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: #FFF; padding: 1px 4px; border-radius: 4px; line-height: 1.2;">0${s.num}</span>
+      `;
+      thumb.addEventListener('click', () => updateSlide(idx));
+      thumbnailsReel.appendChild(thumb);
     });
   }
 
@@ -137,6 +165,21 @@
     dots.forEach((d, i) => {
       d.className = `slide-dot ${i === currentIndex ? 'active' : ''}`;
     });
+
+    // Update thumbnails reel
+    if (thumbnailsReel) {
+      const thumbs = thumbnailsReel.querySelectorAll('.slide-thumb-card');
+      thumbs.forEach((t, i) => {
+        const isActive = i === currentIndex;
+        t.style.borderColor = isActive ? 'var(--neon-cyan)' : 'rgba(255,255,255,0.1)';
+        t.style.boxShadow = isActive ? '0 0 14px rgba(0, 240, 255, 0.45)' : 'none';
+        t.style.transform = isActive ? 'scale(1.06)' : 'scale(1)';
+      });
+      const activeThumb = thumbs[currentIndex];
+      if (activeThumb) {
+        activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
   }
 
   if (prevBtn) prevBtn.addEventListener('click', () => updateSlide(currentIndex - 1));
@@ -154,5 +197,6 @@
   });
 
   initDots();
+  initThumbnails();
   updateSlide(0);
 })();

@@ -34,6 +34,8 @@ def validate_slide_content(slide: dict) -> list[str]:
         )
     return warnings
 
+import time
+
 def validate_image_file(image_path: str | Path) -> dict:
     """Validate rendered image dimensions, format, and aspect ratio."""
     path = Path(image_path)
@@ -44,23 +46,34 @@ def validate_image_file(image_path: str | Path) -> dict:
     if file_size > MAX_FILE_SIZE_BYTES:
         raise ValidationError(f"File {path.name} size ({file_size} bytes) exceeds 8MB limit.")
 
-    with Image.open(path) as img:
-        width, height = img.size
-        aspect = width / height
-        
-        if width != TARGET_WIDTH or height != TARGET_HEIGHT:
-            raise ValidationError(
-                f"Image {path.name} resolution is {width}x{height}, expected {TARGET_WIDTH}x{TARGET_HEIGHT}."
-            )
-        
-        if abs(aspect - TARGET_ASPECT_RATIO) > 0.01:
-            raise ValidationError(
-                f"Image {path.name} aspect ratio {aspect:.3f} does not match 4:5 (0.800)."
-            )
+    width = height = 0
+    format_name = ""
+    for attempt in range(5):
+        try:
+            with Image.open(path) as img:
+                img.load()
+                width, height = img.size
+                format_name = (img.format or "").upper()
+                break
+        except Exception as e:
+            if attempt == 4:
+                raise ValidationError(f"Image {path.name} could not be identified: {e}")
+            time.sleep(0.1)
 
-        format_name = (img.format or "").upper()
-        if format_name not in ["JPEG", "JPG", "PNG"]:
-            raise ValidationError(f"Image {path.name} format is {format_name}, expected JPEG or PNG.")
+    aspect = width / height if height else 0
+
+    if width != TARGET_WIDTH or height != TARGET_HEIGHT:
+        raise ValidationError(
+            f"Image {path.name} resolution is {width}x{height}, expected {TARGET_WIDTH}x{TARGET_HEIGHT}."
+        )
+
+    if abs(aspect - TARGET_ASPECT_RATIO) > 0.01:
+        raise ValidationError(
+            f"Image {path.name} aspect ratio {aspect:.3f} does not match 4:5 (0.800)."
+        )
+
+    if format_name not in ["JPEG", "JPG", "PNG"]:
+        raise ValidationError(f"Image {path.name} format is {format_name}, expected JPEG or PNG.")
 
     return {
         "valid": True,

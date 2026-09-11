@@ -1630,7 +1630,9 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <a href="index.html" class="brand-mark" onclick="playSound('click')">
-          <div class="brand-glyph">A</div>
+          <div class="brand-glyph" style="background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.3); padding: 4px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+            <img src="assets/signhify-logo-vector.png" alt="Signhify Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;">
+          </div>
           <div>
             <div class="brand-title">AUTOGRAM<span>.AI</span></div>
             <div class="brand-subtitle">Zero-Touch Carousel Engine</div>
@@ -1727,6 +1729,11 @@
           </button>
 
           <!-- Telemetry Chips -->
+          <div class="telemetry-chip" id="engine-telemetry-chip" title="Core Python Engine (Render Cloud / Local)">
+            <div class="chip-pulse" id="engine-status-dot"></div>
+            <span id="engine-status-label">ENGINE: CONNECTING...</span>
+          </div>
+
           <div class="telemetry-chip">
             <div class="chip-pulse" id="meta-token-pulse"></div>
             <span id="meta-token-label">Meta API Connected</span>
@@ -2993,11 +3000,74 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
        ═══════════════════════════════════════════════════════════════════════ -->
   <script>
     // ── API Root Auto-Detection (Render & Local & Vercel) ───────────────────
-    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? (window.location.port === '5050' ? '/api' : 'http://localhost:5050/api')
-      : (window.location.hostname.includes('vercel.app')
-          ? (localStorage.getItem('autogram_api_base') || 'https://autogram-dashboard.onrender.com/api')
-          : '/api');
+    const API_BASE = (function() {
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return window.location.port === '5050' ? '/api' : 'http://localhost:5050/api';
+      }
+      if (window.location.hostname.includes('onrender.com')) {
+        return '/api';
+      }
+      // On Vercel or any other origin, route directly to live Render cloud backend
+      return localStorage.getItem('autogram_api_base') || 'https://autogram-dashboard.onrender.com/api';
+    })();
+
+    // ── Essential Utility Helpers & Aliases ──────────────────────────
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function setExecutionMode(mode) {
+      if (typeof selectExecutionMode === 'function') {
+        selectExecutionMode(mode);
+      } else {
+        currentExecutionMode = mode;
+      }
+    }
+
+    function switchNavTab(tab) {
+      switchView(tab === 'studio' ? 'publishing' : tab);
+    }
+
+    function copyToClipboard(text, successMsg = 'Copied to clipboard! 📋') {
+      if (!text) {
+        showToast('Nothing to copy', 'info');
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          playSound('click');
+          showToast(successMsg, 'success');
+        }).catch(() => {
+          fallbackCopy(text, successMsg);
+        });
+      } else {
+        fallbackCopy(text, successMsg);
+      }
+    }
+
+    function fallbackCopy(text, successMsg) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        playSound('click');
+        showToast(successMsg, 'success');
+      } catch (e) {
+        showToast('Could not copy to clipboard', 'error');
+      } finally {
+        document.body.removeChild(ta);
+      }
+    }
 
     let currentExecutionMode = 'dry-run';
     let pollTimer = null;
@@ -3038,6 +3108,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     // ── Navigation & View Switching ──────────────────────────────────────
     function switchView(viewId, el) {
+      if (viewId === 'studio') viewId = 'publishing';
       playSound('warp');
       document.querySelectorAll('.cockpit-view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -3316,11 +3387,15 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                 <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
                   ${starsText}${c.description}
                 </div>
-                <button class="btn-makerzz-ghost" style="width:100%;font-size:11px;padding:8px 14px;justify-content:center;" onclick="loadTopicToStudio('${c.title.replace(/'/g, "\\'")}', '${c.pillar}')">
+                <button class="btn-makerzz-ghost load-trend-btn" style="width:100%;font-size:11px;padding:8px 14px;justify-content:center;">
                   ⚡ Load into Studio
                 </button>
               </div>
             `;
+            const b = card.querySelector('.load-trend-btn');
+            if (b) {
+              b.addEventListener('click', () => loadTopicToStudio(c.title, c.pillar));
+            }
             grid.appendChild(card);
           });
         }
@@ -3422,12 +3497,22 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         schedulerRunningState = s.scheduler_daemon_running;
         updateDaemonUI(schedulerRunningState);
 
+        // Engine status chip
+        const engineDot = document.getElementById('engine-status-dot');
+        const engineLabel = document.getElementById('engine-status-label');
+        if (engineDot) engineDot.className = 'chip-pulse';
+        if (engineLabel) engineLabel.textContent = 'ENGINE: ONLINE';
+
         if (showFeedback) {
           playSound('click');
           showToast('Telemetry synchronized with Core Engine ✓', 'success');
         }
       } catch (err) {
         console.warn('Status sync notice:', err);
+        const engineDot = document.getElementById('engine-status-dot');
+        const engineLabel = document.getElementById('engine-status-label');
+        if (engineDot) engineDot.className = 'chip-pulse amber';
+        if (engineLabel) engineLabel.textContent = 'ENGINE: CONNECTING (WAKING UP)';
       }
     }
 
@@ -3472,7 +3557,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <td><span style="font-family:var(--font-mono);font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bg-surface-hover);">${q.status || 'QUEUED'}</span></td>
               <td>
                 <div class="btn-row">
-                  <button class="btn btn-sm btn-ghost" onclick="executeQueuedItem('${q.id}', '${q.topic}')" title="Run immediately">▶ Run</button>
+                  <button class="btn btn-sm btn-ghost" onclick="executeQueuedItem('${q.id}')" title="Run immediately">▶ Run</button>
                   <button class="btn btn-sm btn-danger" onclick="deleteQueuedItem('${q.id}')" title="Cancel post">✕</button>
                 </div>
               </td>
@@ -3576,9 +3661,9 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       }
     }
 
-    async function executeQueuedItem(id, topic) {
+    async function executeQueuedItem(id) {
       playSound('click');
-      showToast(`Executing queued item: ${topic}...`, 'info');
+      showToast(`Executing queued item...`, 'info');
       switchView('pipeline');
       startPipeline();
     }
@@ -3786,10 +3871,12 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     }
 
     function copyStudioCaption() {
-      playSound('click');
-      const cap = document.getElementById('studio-caption-box').value;
-      navigator.clipboard.writeText(cap);
-      showToast('Caption & hashtags copied to clipboard! 📋', 'success');
+      const cap = document.getElementById('studio-caption-box') ? document.getElementById('studio-caption-box').value : '';
+      if (!cap) {
+        showToast('No caption to copy. Generate one first!', 'info');
+        return;
+      }
+      copyToClipboard(cap, 'Caption & hashtags copied to clipboard! 📋');
     }
 
     async function copyStudioReel() {
@@ -3797,9 +3884,12 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       try {
         const res = await fetch(API_BASE + '/platform/assets/youtube');
         const data = await res.json();
-        const content = data.content || '';
-        await navigator.clipboard.writeText(content);
-        showToast('35s Reels / Video Script copied to clipboard! 🎥', 'success');
+        const content = data.content || (data.asset && data.asset.content) || '';
+        if (!content) {
+          showToast('No video script found for this run', 'info');
+          return;
+        }
+        copyToClipboard(content, '35s Reels / Video Script copied to clipboard! 🎥');
       } catch (err) {
         showToast('Failed to copy reels script: ' + err.message, 'error');
       }
