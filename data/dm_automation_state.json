@@ -1,0 +1,36 @@
+{
+  "processed_comments": {
+    "sim_c_4745_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_24745",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789117326.727896
+    },
+    "sim_c_4745_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_26730",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789117328.2602904
+    },
+    "sim_c_8310_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_88310",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789117690.309941
+    },
+    "sim_c_8310_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_90312",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789117692.3255332
+    }
+  }
+}

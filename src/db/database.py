@@ -115,6 +115,20 @@ class Database:
             )
             """)
 
+            # 6. auto_dm_log
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS auto_dm_log (
+                comment_id TEXT PRIMARY KEY,
+                media_id TEXT,
+                username TEXT,
+                comment_text TEXT,
+                keyword TEXT,
+                public_reply_id TEXT,
+                dm_status TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """)
+
             conn.commit()
 
     def record_source(self, record: dict):

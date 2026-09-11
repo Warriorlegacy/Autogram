@@ -223,6 +223,7 @@ def scheduler_worker():
 
     last_day_str = None
     triggered_today = set()
+    last_dm_scan_ts = 0.0
 
     while True:
         with scheduler_lock:
@@ -287,6 +288,21 @@ def scheduler_worker():
             if queue_changed:
                 sched["queue"] = updated_queue
                 write_schedule(sched)
+
+            # 3. Autonomous In-House Auto-DM scan (runs periodically every 20 minutes)
+            if time.time() - last_dm_scan_ts > 1200:
+                last_dm_scan_ts = time.time()
+                try:
+                    from src.instagram.dm_automator import dm_automator
+                    dm_automator.dry_run = (read_env().get("DRY_RUN", "true").lower() == "true")
+                    dm_res = dm_automator.scan_and_automate(limit_posts=3)
+                    if dm_res.get("actions_executed", 0) > 0:
+                        with pipeline_lock:
+                            pipeline_log.append(
+                                f"[{now_dt.strftime('%H:%M:%S')}] [AUTO-DM] Autonomous scan dispatched {dm_res['actions_executed']} automated DMs ✓"
+                            )
+                except Exception as dm_err:
+                    print(f"[AUTO-DM SCHEDULER ERROR] {dm_err}")
 
         except Exception as e:
             print(f"[SCHEDULER ERROR] {e}")
@@ -771,6 +787,40 @@ def api_token_refresh():
         return jsonify(res)
     except Exception as e:
         return jsonify({"status": "error", "error": str(e)}), 500
+
+@app.route("/api/instagram/auto-dm", methods=["POST"])
+def api_instagram_auto_dm():
+    """Trigger autonomous in-house Auto-DM and comment-reply scanner."""
+    try:
+        from src.instagram.dm_automator import dm_automator
+        data = request.json or {}
+        limit = int(data.get("limit_posts", 5))
+        dry = data.get("dry_run", read_env().get("DRY_RUN", "true").lower() == "true")
+        
+        dm_automator.dry_run = dry
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [AUTO-DM] Running manual comment-scan (dry_run={dry})...")
+
+        res = dm_automator.scan_and_automate(limit_posts=limit)
+        with pipeline_lock:
+            pipeline_log.append(
+                f"[{datetime.now().strftime('%H:%M:%S')}] [AUTO-DM] Scan complete! {res.get('actions_executed', 0)} DMs dispatched across {res.get('comments_checked', 0)} comments ✓"
+            )
+        return jsonify({"ok": True, "summary": res})
+    except Exception as e:
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [AUTO-DM ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+@app.route("/api/instagram/auto-dm/stats", methods=["GET"])
+def api_instagram_auto_dm_stats():
+    """Retrieve live statistics for in-house Auto-DM engine."""
+    try:
+        from src.instagram.dm_automator import dm_automator
+        stats = dm_automator.get_stats()
+        return jsonify({"ok": True, "stats": stats})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
 
 @app.route("/api/env", methods=["GET"])
 def api_env_get():

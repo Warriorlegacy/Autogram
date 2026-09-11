@@ -1,0 +1,49 @@
+name: Autonomous Instagram Auto-DM Engine (Option A)
+
+on:
+  schedule:
+    # Runs every 30 minutes around the clock to scan and reply to new comments
+    - cron: "15,45 * * * *"
+  workflow_dispatch: {}    # Manual trigger button in GitHub Actions UI
+  repository_dispatch:
+    types: [auto-dm-scan]
+
+jobs:
+  auto-dm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Execute Autonomous In-House Auto-DM & Comment-Reply Scan
+        run: |
+          echo "Starting Autonomous Comment & DM Scan for @signhify.studio..."
+          python orchestrator.py --auto-dm
+        env:
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
+          DRY_RUN: ${{ secrets.DRY_RUN || 'false' }}
+
+      - name: Commit Auto-DM State (Deduplication)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/dm_automation_state.json autopilot.db || true
+          git diff --cached --quiet || git commit -m "chore(auto-dm): update comment deduplication state [skip ci]"
+          git push || echo "Push skipped or not permitted"

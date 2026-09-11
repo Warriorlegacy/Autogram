@@ -145,4 +145,36 @@ The entire project is verified and passing:
 - `tests/test_licensing.py` — 6/6 passed (HMAC license gate, owner key bypass).
 - `tests/test_renderer.py` — 3/3 passed (Playwright rendering across themes).
 - `tests/test_content_generation.py` — 4/4 passed (Pillars generation, QA gate, topic scoring).
-- **Total:** 35/35 tests passing cleanly with zero errors.
+- `tests/test_dm_automator.py` — 6/6 passed (Keyword matching, comment deduplication, public reply generation, private DM payload, stats retrieval, dry-run scan).
+- **Total:** 41/41 tests passing cleanly with zero errors.
+
+---
+
+## 7. Option A: In-House Auto-DM & Comment-Reply Engine
+
+Instead of paying $15–$150+/month to ManyChat or dealing with contact limits and manual OAuth logins, Autogram implements an in-house, zero-cost, autonomous DM engine directly through Meta's official Graph API:
+
+### Architecture
+- **Module:** [`src/instagram/dm_automator.py`](file:///d:/Autogram/src/instagram/dm_automator.py)
+- **Official Endpoint:** Meta Graph API v21.0 / v23.0 Private Replies:
+  - `POST /{comment_id}/replies` — Randomized public comment reply (4 variations per trigger).
+  - `POST /{ig_user_id}/messages` with `{"recipient": {"comment_id": comment_id}, "message": {"text": ...}}` — Private DM delivering requested blueprint.
+- **Triggers & Blueprints:**
+  1. `FOSS` (patterns: `foss`, `self-host`, `docker`, `blueprint`, `setup`):
+     - Public Reply: *"Just sent the full Docker setup & GitHub link to your DMs! 🚀"*
+     - DM Delivery: Master GitHub vault link (`https://github.com/signhify/open-source-vault`) + 1-click Docker commands.
+  2. `PROMPT` (patterns: `prompt`, `code`, `megaprompt`, `chatgpt`, `secret`):
+     - Public Reply: *"Just sent the complete prompt code & variables to your DMs! 🔥"*
+     - DM Delivery: Prompt vault link (`https://github.com/signhify/prompt-vault`) + instructions tested on GPT-4o, Claude 3.5 Sonnet, DeepSeek-R1.
+- **Deduplication & Persistence:**
+  - SQLite table `auto_dm_log` in `autopilot.db`.
+  - Fallback state file [`data/dm_automation_state.json`](file:///d:/Autogram/data/dm_automation_state.json).
+  - A comment is never messaged more than once.
+- **Execution Channels:**
+  - **Pipeline Phase 9b:** Scans comments immediately following every publication drop.
+  - **Background Daemon:** Runs every 20 minutes inside `dashboard_api.py` `scheduler_worker`.
+  - **CLI Trigger:** `python orchestrator.py --auto-dm [--dry-run]`
+  - **Dashboard API:** `POST /api/instagram/auto-dm` and `GET /api/instagram/auto-dm/stats`
+  - **Interactive Cockpit UI:** Dedicated "Auto-DM Engine" view in `dashboard.html` with real-time stats, activity log, and 1-click scan button.
+  - **Cloud Automation:** GitHub Actions workflow [`.github/workflows/auto-dm.yml`](file:///d:/Autogram/.github/workflows/auto-dm.yml) running every 30 minutes 24/7.
+

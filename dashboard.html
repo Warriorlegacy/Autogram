@@ -1480,6 +1480,10 @@
           <span class="nav-icon">✍️</span> Content Studio & Publish
           <span class="nav-badge live">LIVE</span>
         </div>
+        <div class="nav-item" data-view="autodm" onclick="switchView('autodm', this)">
+          <span class="nav-icon">💬</span> Auto-DM Engine
+          <span class="nav-badge" style="background:var(--emerald);color:#000;font-weight:700;">FREE</span>
+        </div>
         <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
           <span class="nav-icon">🚀</span> Pipeline Console
         </div>
@@ -1873,6 +1877,137 @@
           </div><!-- /studio-grid -->
 
         </div><!-- /view-publishing -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW: IN-HOUSE AUTO-DM & COMMENT-REPLY ENGINE (OPTION A)
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-autodm">
+
+          <!-- Header & Quick Trigger Shell -->
+          <div class="doppel-shell glow-cyan">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="accent-tag">◈</span> IN-HOUSE AUTO-DM & COMMENT ENGINE (OPTION A)
+                  <span class="nav-badge" style="background:var(--emerald);color:#000;font-weight:700;margin-left:8px;">100% FREE & AUTONOMOUS</span>
+                </div>
+                <div class="btn-row">
+                  <button class="btn btn-ghost" onclick="triggerAutoDMScan(true)" title="Simulate comment scanning without sending real messages">
+                    🧪 Test Dry-Run
+                  </button>
+                  <button class="btn btn-primary" onclick="triggerAutoDMScan(false)" title="Scan recent comments and dispatch live replies and DMs">
+                    ⚡ Scan & Dispatch DMs Now
+                  </button>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+                Direct Meta Graph API Private Replies integration (v21.0). Zero monthly SaaS fees, no 1,000-contact limits, and no third-party OAuth barriers. Automatically detects <strong style="color:var(--cyan)">FOSS</strong> and <strong style="color:var(--violet)">PROMPT</strong> comments, sends randomized public replies to fuel the Instagram recommendation algorithm, and dispatches the exact GitHub/Docker or prompt blueprints straight into the user's inbox.
+              </p>
+
+              <!-- Telemetry Metrics Grid -->
+              <div class="metric-grid" style="margin-bottom:0;">
+                <div class="slot-node">
+                  <div class="slot-time" id="autodm-stat-total-dms">0</div>
+                  <div class="slot-label">Total DMs Dispatched</div>
+                  <div class="slot-pillar">PRIVATE REPLIES</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--emerald);" id="autodm-stat-comments-checked">0</div>
+                  <div class="slot-label">Comments Handled</div>
+                  <div class="slot-pillar">DEDUPLICATED</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--cyan);" id="autodm-stat-foss-count">0</div>
+                  <div class="slot-label">FOSS Blueprints Sent</div>
+                  <div class="slot-pillar">GITHUB + DOCKER</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--violet);" id="autodm-stat-prompt-count">0</div>
+                  <div class="slot-label">Prompt Blueprints Sent</div>
+                  <div class="slot-pillar">VIRAL PROMPTS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Triggers & Blueprint Payloads -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <!-- Trigger 1: FOSS -->
+            <div class="doppel-shell glow-cyan">
+              <div class="doppel-core">
+                <div class="card-header-bar">
+                  <div class="card-header-title">
+                    <span style="color:var(--cyan);">📦</span> TRIGGER: "FOSS"
+                  </div>
+                  <span class="slot-pillar">ACTIVE</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">
+                  Keywords: <code style="color:var(--cyan);">foss, self-host, docker, blueprint, setup</code>
+                </div>
+                <div style="font-size:11px;font-family:var(--font-mono);background:var(--bg-surface-elev);padding:12px;border-radius:8px;border:1px solid var(--border-inner);color:var(--text-secondary);white-space:pre-wrap;line-height:1.5;">Hey builder! 👋
+
+Here is the complete self-hosting blueprint and 1-line Docker setup from our recent breakdown:
+
+📦 GitHub Master Vault: https://github.com/signhify/open-source-vault
+⚡ 1-Line Commands & Configs: https://github.com/signhify/open-source-vault/blob/main/quickstart.md
+
+Stop paying $100s/mo in SaaS bills. Follow @signhify.studio for daily battle-tested open source tools! 🚀</div>
+              </div>
+            </div>
+
+            <!-- Trigger 2: PROMPT -->
+            <div class="doppel-shell glow-violet">
+              <div class="doppel-core">
+                <div class="card-header-bar">
+                  <div class="card-header-title">
+                    <span style="color:var(--violet);">🧠</span> TRIGGER: "PROMPT"
+                  </div>
+                  <span class="slot-pillar" style="background:var(--violet-dim);color:var(--violet);">ACTIVE</span>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">
+                  Keywords: <code style="color:var(--violet);">prompt, code, megaprompt, chatgpt, secret</code>
+                </div>
+                <div style="font-size:11px;font-family:var(--font-mono);background:var(--bg-surface-elev);padding:12px;border-radius:8px;border:1px solid var(--border-inner);color:var(--text-secondary);white-space:pre-wrap;line-height:1.5;">Here is the full copy-paste prompt code + variables from our breakdown! 🚀
+
+🧠 Master Prompt Vault: https://github.com/signhify/prompt-vault
+🎯 Tested On: GPT-4o, Claude 3.5 Sonnet, DeepSeek-R1, o3-mini
+📋 Copy-paste template: https://github.com/signhify/prompt-vault/blob/main/viral_prompts.md
+
+Make sure to replace [INPUT_DATA] before running.
+Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Activity Log Table -->
+          <div class="doppel-shell">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="accent-tag">◈</span> RECENT AUTOMATED DM DISPATCHES
+                </div>
+                <button class="btn btn-ghost" onclick="loadAutoDMStats()" style="font-size:11px;">🔄 Refresh Logs</button>
+              </div>
+              <div style="overflow-x:auto;">
+                <table class="queue-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Commenter</th>
+                      <th>Comment Text</th>
+                      <th>Trigger</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="autodm-activity-tbody">
+                    <tr><td colspan="5" style="text-align:center;color:var(--text-dim);">No comments processed yet. Click "Scan & Dispatch DMs Now" to run.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /view-autodm -->
 
         <!-- ══════════════════════════════════════════════════════════════════
              VIEW 4: NEURAL PIPELINE CONSOLE
@@ -2386,6 +2521,7 @@
         overview: 'Mission Control',
         scheduling: 'Autonomous Post Scheduler & Queue',
         publishing: 'AI Content Studio & Instant Publish',
+        autodm: 'In-House Auto-DM & Comment Engine',
         pipeline: 'Neural Pipeline Console',
         outputs: 'Slide Vault & History',
         memory: 'Neural Memory & Knowledge Graph',
@@ -2395,6 +2531,7 @@
       document.getElementById('page-title-text').textContent = titleMap[viewId] || 'Mission Control';
 
       if (viewId === 'scheduling') loadSchedule();
+      if (viewId === 'autodm') loadAutoDMStats();
       if (viewId === 'outputs') loadRuns();
       if (viewId === 'memory') loadMemory();
       if (viewId === 'settings') loadEnv();
@@ -2998,6 +3135,69 @@
           el.className = 'phase-node active';
         }
       });
+    // ── In-House Auto-DM Engine Operations (Option A) ────────────────────
+    async function loadAutoDMStats() {
+      try {
+        const res = await fetch(API_BASE + '/instagram/auto-dm/stats');
+        if (!res.ok) return;
+        const data = await res.json();
+        const s = data.stats || {};
+        
+        const elTotal = document.getElementById('autodm-stat-total-dms');
+        const elComments = document.getElementById('autodm-stat-comments-checked');
+        const elFoss = document.getElementById('autodm-stat-foss-count');
+        const elPrompt = document.getElementById('autodm-stat-prompt-count');
+
+        if (elTotal) elTotal.textContent = s.total_dms_sent || '0';
+        if (elComments) elComments.textContent = s.total_comments_handled || '0';
+        if (elFoss) elFoss.textContent = (s.by_keyword && s.by_keyword.FOSS) || '0';
+        if (elPrompt) elPrompt.textContent = (s.by_keyword && s.by_keyword.PROMPT) || '0';
+
+        const tbody = document.getElementById('autodm-activity-tbody');
+        if (!tbody) return;
+        const actions = s.recent_actions || [];
+        if (actions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);">No automated DMs recorded yet. Click "Scan & Dispatch DMs Now" above.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = actions.map(a => `
+          <tr>
+            <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">${a.timestamp ? a.timestamp.substring(11, 19) || a.timestamp : 'Just now'}</td>
+            <td style="font-weight:600;color:#fff;">@${escapeHtml(a.username || 'user')}</td>
+            <td style="color:var(--text-secondary);max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(a.comment_text || 'Trigger comment')}</td>
+            <td><span class="slot-pillar" style="${a.keyword === 'FOSS' ? '' : 'background:var(--violet-dim);color:var(--violet);'}">${escapeHtml(a.keyword || 'KEYWORD')}</span></td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:${a.dm_status === 'DM_SENT' ? 'var(--emerald)' : 'var(--amber)'}; font-weight:700;">
+              ${a.dm_status === 'DM_SENT' ? '● DM DISPATCHED' : '🟡 PUBLIC ONLY'}
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.warn('Auto-DM stats load error:', e);
+      }
+    }
+
+    async function triggerAutoDMScan(dryRun = false) {
+      playSound('click');
+      showToast(dryRun ? 'Starting safe Dry-Run comment scan...' : 'Starting live Instagram comment scan & DM dispatch...', 'info');
+      try {
+        const res = await fetch(API_BASE + '/instagram/auto-dm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dry_run: dryRun, limit_posts: 5 })
+        });
+        const json = await res.json();
+        if (json.ok) {
+          const sum = json.summary || {};
+          playSound('success');
+          showToast(`Auto-DM Scan complete! ${sum.actions_executed || 0} DMs dispatched across ${sum.comments_checked || 0} comments.`, 'success');
+          loadAutoDMStats();
+        } else {
+          showToast('Auto-DM scan failed: ' + (json.error || 'Unknown error'), 'error');
+        }
+      } catch (err) {
+        showToast('Auto-DM connection error: ' + err.message, 'error');
+      }
     }
 
     // ── Slide Vault ──────────────────────────────────────────────────────

@@ -285,6 +285,15 @@ def run_pipeline(dry_run: bool = False) -> dict:
     db.update_publication_status(carousel["content_id"], media_id, status="PUBLISHED")
     optimizer.update_memory_with_post(carousel, score=qa_result.get("score", 90))
 
+    # Phase 9b: Autonomous Comment-Reply & Auto-DM Scanning
+    try:
+        from src.instagram.dm_automator import dm_automator
+        dm_automator.dry_run = dry_run or settings.dry_run
+        dm_summary = dm_automator.scan_and_automate(limit_posts=3)
+        logger.info(f"Phase 9b: Auto-DM Scan completed ({dm_summary.get('actions_executed', 0)} automated responses dispatched).")
+    except Exception as e:
+        logger.warning(f"Phase 9b Auto-DM scan skipped: {e}")
+
     manifest = {
         "content_id": carousel["content_id"],
         "date": today_str,
@@ -360,6 +369,7 @@ def main():
     parser.add_argument("--generate-script", action="store_true", help="Generate carousel script and caption only")
     parser.add_argument("--generate-reel", action="store_true", help="Generate 30-45s Reels / Shorts video script")
     parser.add_argument("--schedule", action="store_true", help="Run local autonomous daily scheduler daemon")
+    parser.add_argument("--auto-dm", action="store_true", help="Scan recent posts, auto-reply to comments, and dispatch private DMs")
     parser.add_argument("--license-key", type=str, help="Client license key or Owner master key")
 
     args = parser.parse_args()
@@ -440,6 +450,22 @@ def main():
         sources = fetcher.acquire_sources()
         print(f"Sources Loaded: {len(sources)}")
         print("Health Check Complete: OK")
+        return
+
+    if args.auto_dm:
+        from src.instagram.dm_automator import dm_automator
+        dry = args.dry_run or settings.dry_run
+        dm_automator.dry_run = dry
+        summary = dm_automator.scan_and_automate(limit_posts=5)
+        print("\n" + "="*50)
+        print("INSTAGRAM AUTO-DM & COMMENT-REPLY SCAN RESULTS")
+        print("="*50)
+        print(f"Posts Scanned: {summary['media_scanned']}")
+        print(f"Comments Checked: {summary['comments_checked']}")
+        print(f"Automated DMs Dispatched: {summary['actions_executed']}")
+        for act in summary['details']:
+            print(f" -> @{act['username']}: matched [{act['keyword']}] -> {act['dm_status']}")
+        print("="*50 + "\n")
         return
 
     if args.schedule:
