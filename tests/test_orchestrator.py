@@ -18,8 +18,9 @@ def test_full_pipeline_dry_run():
     assert (out_dir / "research_dossier.json").exists()
     assert (out_dir / "caption.txt").exists()
     assert (out_dir / "manifest.json").exists()
-    assert (out_dir / "slide_01.jpg").exists()
+    assert (out_dir / "viral_analysis.json").exists()
     assert (out_dir / "reels_script.md").exists()
     assert (out_dir / "edit_plan.json").exists()
     assert (out_dir / "x_thread.txt").exists()
     assert (out_dir / "linkedin_post.txt").exists()
+    assert manifest.get("viral_score", 0) >= 85.0

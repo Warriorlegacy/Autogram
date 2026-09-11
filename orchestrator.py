@@ -65,8 +65,10 @@ def run_pipeline(dry_run: bool = False) -> dict:
     if not sources:
         raise RuntimeError("No source records available.")
 
-    # 2. Topic Scoring & Selection (Layer B with 6-Pillar Strategic Rotation)
-    logger.info("Phase 2: Topic Scoring & Selection (6-Pillar Rotation)...")
+    # 2. Niche Trend Analysis & Strict Virality Gate (Score >= 85.0)
+    logger.info("Phase 2: Niche Trend Analysis & Virality Gate (Score >= 85.0)...")
+    from src.research.trend_analyzer import trend_analyzer
+
     candidates = []
     for idx, s in enumerate(sources):
         pillar = s.get("pillar") or CONTENT_PILLARS[idx % len(CONTENT_PILLARS)]
@@ -81,12 +83,45 @@ def run_pipeline(dry_run: bool = False) -> dict:
             "saturation_risk": 0.15,
             "sources": [s.get("url")] if s.get("url") else [],
             "source_type": s.get("source_type", ""),
-            "stars": s.get("stars", 0)
+            "stars": s.get("stars", 0),
+            "excerpt": s.get("excerpt", "")
         })
 
-    selection = scorer.select_best_topic(candidates)
+    # Filter out anything that cannot go viral
+    viral_candidates, viral_report = trend_analyzer.filter_viral_candidates(candidates)
+    if not viral_candidates:
+        logger.warning("No live candidates passed Virality Gate. Failing over to verified viral seed topics...")
+        seed_records = fetcher.load_seed_records()
+        seed_candidates = [{
+            "topic": s.get("source_title"),
+            "angle": f"Why {s.get('source_title')} fundamentally impacts operational efficiency",
+            "pillar": s.get("pillar", "FOSS SaaS Alternatives"),
+            "evidence_strength": 0.98,
+            "novelty_score": 0.90,
+            "practicality_score": 0.95,
+            "save_share_score": 0.95,
+            "saturation_risk": 0.1,
+            "sources": [s.get("url")] if s.get("url") else [],
+            "source_type": s.get("source_type", ""),
+            "stars": s.get("stars", 10000),
+            "excerpt": s.get("excerpt", "")
+        } for s in seed_records]
+        viral_candidates, viral_report = trend_analyzer.filter_viral_candidates(seed_candidates)
+
+    # Persist viral analysis report
+    viral_file = out_dir / "viral_analysis.json"
+    viral_file.write_text(json.dumps(viral_report, indent=2), encoding="utf-8")
+    logger.info(f"Persisted viral trend analysis artifact -> {viral_file.name}")
+
+    selection = scorer.select_best_topic(viral_candidates)
     winner_topic = selection["winner"]
-    logger.info(f"Selected Topic: '{winner_topic.get('topic')}'")
+    if winner_topic.get("viral_hook"):
+        winner_topic["hook"] = winner_topic["viral_hook"]
+        winner_topic["angle"] = winner_topic["viral_hook"]
+
+    logger.info(f"Selected Winning Viral Topic: '{winner_topic.get('topic')}'")
+    logger.info(f"Viral Score: {winner_topic.get('viral_score')} | Tier: {winner_topic.get('viral_tier')}")
+    logger.info(f"Viral Hook: '{winner_topic.get('viral_hook')}'")
     logger.info(f"Pillar: '{winner_topic.get('pillar')}'")
     logger.info(f"Reason: {selection.get('reason')}")
 
@@ -263,6 +298,8 @@ def run_pipeline(dry_run: bool = False) -> dict:
         "image_files": [Path(p).name for p in rendered_image_paths],
         "image_urls": public_image_urls,
         "qa_score": qa_result.get("score"),
+        "viral_score": winner_topic.get("viral_score"),
+        "viral_tier": winner_topic.get("viral_tier"),
         "status": "PUBLISHED" if not (dry_run or settings.dry_run) else "SIMULATED_PUBLISH"
     }
 
