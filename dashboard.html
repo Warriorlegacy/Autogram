@@ -10,8 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300..900;1,300..900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Three.js CDN for 3D WebGL Quantum Lattice -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <!-- Day/night: set before first paint to avoid flash -->
   <script>
@@ -113,7 +111,7 @@
       background: rgba(255, 255, 255, 0.88);
     }
     [data-theme="light"] .telemetry-chip,
-    [data-theme="light"] .audio-synth-btn {
+    [data-theme="light"] .theme-toggle-btn {
       background: rgba(16, 34, 42, 0.05);
     }
     [data-theme="light"] .page-title {
@@ -130,6 +128,30 @@
       color: var(--text-main);
     }
 
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* Sleek Custom Dark Scrollbars (eliminates ugly light-gray OS scrollbars) */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+    }
+
     html, body {
       width: 100%;
       min-height: 100vh;
@@ -144,32 +166,21 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       2. BACKGROUND — clean editorial dark, no WebGL/scanlines
-       ═══════════════════════════════════════════════════════════════════════ */
-    #dashboard-webgl {
-      display: none;
-    }
-
-    .cyber-scanlines,
-    .cyber-noise,
-    #confetti-canvas {
-      display: none;
-    }
-
-    /* ═══════════════════════════════════════════════════════════════════════
-       3. COCKPIT SHELL LAYOUT
+       2. COCKPIT SHELL LAYOUT
        ═══════════════════════════════════════════════════════════════════════ */
     .cockpit-layout {
       position: relative;
       z-index: 2;
       display: flex;
       min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
     }
 
     /* ── Sidebar ── */
     .sidebar {
-      width: 280px;
-      background: rgba(7, 10, 16, 0.85);
+      width: 255px;
+      background: rgba(7, 10, 16, 0.92);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       border-right: 1px solid var(--border-outer);
@@ -181,31 +192,33 @@
       bottom: 0;
       z-index: 100;
       box-shadow: 10px 0 40px rgba(0,0,0,0.5);
+      overflow: hidden;
     }
 
     .sidebar-header {
-      padding: 24px 20px 20px;
+      padding: 18px 16px 14px;
       border-bottom: 1px solid var(--border-inner);
+      flex-shrink: 0;
     }
 
     .brand-mark {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
     }
 
     .brand-glyph {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       background: var(--makerzz-teal);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: 20px;
+      font-size: 17px;
       color: #ffffff;
       flex-shrink: 0;
       position: relative;
@@ -221,10 +234,11 @@
 
     .brand-title {
       font-family: var(--font-display);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       color: #fff;
+      line-height: 1.2;
     }
 
     .brand-title span {
@@ -232,10 +246,10 @@
     }
 
     .brand-subtitle {
-      font-size: 10px;
+      font-size: 9.5px;
       font-family: var(--font-mono);
       color: var(--text-dim);
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       margin-top: 2px;
       text-transform: uppercase;
     }
@@ -243,34 +257,35 @@
     /* Navigation Links */
     .sidebar-nav {
       flex: 1;
-      padding: 14px 10px;
+      padding: 10px 8px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
       overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .nav-section-label {
       font-size: 9px;
       font-family: var(--font-mono);
       color: var(--text-dim);
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      padding: 12px 14px 4px;
+      padding: 10px 10px 4px;
     }
 
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 11px 14px;
-      border-radius: 12px;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
       color: var(--text-secondary);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 500;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: all 0.22s var(--ease-out-expo);
+      transition: all 0.18s var(--ease-out-expo);
       user-select: none;
       position: relative;
     }
@@ -279,13 +294,13 @@
       background: var(--bg-surface-elev);
       color: var(--text-main);
       border-color: rgba(255, 255, 255, 0.05);
-      transform: translateX(3px);
+      transform: translateX(2px);
     }
 
     .nav-item.active {
-      background: rgba(14, 111, 119, 0.12);
+      background: rgba(14, 111, 119, 0.14);
       color: #fff;
-      border-color: rgba(14, 111, 119, 0.30);
+      border-color: rgba(14, 111, 119, 0.35);
     }
 
     .nav-item.active::before {
@@ -300,8 +315,8 @@
     }
 
     .nav-icon {
-      font-size: 16px;
-      width: 20px;
+      font-size: 15px;
+      width: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -311,10 +326,10 @@
     .nav-badge {
       margin-left: auto;
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 12px;
+      padding: 1px 6px;
+      border-radius: 10px;
       background: var(--makerzz-teal);
       color: #ffffff;
     }
@@ -324,23 +339,24 @@
     }
 
     .sidebar-footer {
-      padding: 16px 20px;
+      padding: 12px 14px;
       border-top: 1px solid var(--border-inner);
       background: rgba(4, 6, 10, 0.6);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .portal-back-btn {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-muted);
       text-decoration: none;
-      padding: 8px 12px;
-      border-radius: 8px;
+      padding: 7px 10px;
+      border-radius: 6px;
       border: 1px solid var(--border-inner);
       background: rgba(255,255,255,0.02);
       transition: all 0.2s ease;
@@ -356,58 +372,64 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 11px;
+      font-size: 10.5px;
       font-family: var(--font-mono);
       color: var(--text-dim);
     }
 
     /* ── Main Content Area ── */
     .cockpit-main {
-      margin-left: 280px;
+      margin-left: 255px;
       flex: 1;
+      min-width: 0;
+      max-width: calc(100vw - 255px);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       position: relative;
+      overflow-x: hidden;
     }
 
     /* ── Topbar ── */
     .topbar {
-      height: 68px;
-      background: rgba(7, 10, 16, 0.8);
+      height: 60px;
+      background: rgba(7, 10, 16, 0.82);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border-bottom: 1px solid var(--border-outer);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 32px;
+      padding: 0 28px;
       position: sticky;
       top: 0;
       z-index: 90;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .topbar-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
+      flex-shrink: 0;
     }
 
     .page-title {
       font-family: var(--font-display);
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .page-title-badge {
       font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 6px;
+      font-size: 9.5px;
+      padding: 2px 7px;
+      border-radius: 5px;
       background: var(--cyan-dim);
       border: 1px solid var(--cyan-hairline);
       color: var(--makerzz-teal);
@@ -416,21 +438,25 @@
     .topbar-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     /* Topbar Telemetry Chips */
     .telemetry-chip {
-      font-size: 11px;
+      font-size: 10.5px;
       font-family: var(--font-mono);
-      padding: 6px 12px;
-      border-radius: 24px;
+      padding: 5px 10px;
+      border-radius: 6px;
       background: rgba(17, 22, 36, 0.8);
       border: 1px solid var(--border-outer);
       color: var(--text-secondary);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .chip-pulse {
@@ -449,50 +475,57 @@
       background: var(--amber);
     }
 
-    /* Sound Synthesizer Audio Button */
-    .audio-synth-btn {
+    /* Theme Toggle & Quick Action Buttons */
+    .theme-toggle-btn {
       background: rgba(17, 22, 36, 0.8);
       border: 1px solid var(--border-outer);
-      border-radius: 24px;
-      padding: 6px 14px;
+      border-radius: 6px;
+      padding: 5px 10px;
       color: var(--text-secondary);
       font-family: var(--font-mono);
       font-size: 11px;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.18s ease;
+      flex-shrink: 0;
     }
 
-    .audio-synth-btn:hover {
-      border-color: var(--cyan-hairline);
-      color: var(--cyan);
+    .theme-toggle-btn:hover {
+      border-color: var(--makerzz-teal);
+      color: var(--text-main);
+      background: var(--bg-surface-elev);
     }
 
-    .audio-bars {
+    .topbar-action-btn {
+      background: var(--makerzz-amber);
+      color: var(--makerzz-ink);
+      font-family: var(--font-display);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(16, 34, 42, 0.15);
+      box-shadow: 0 2px 0 rgba(16, 34, 42, 0.2);
+      cursor: pointer;
       display: flex;
-      align-items: flex-end;
-      gap: 2px;
-      height: 12px;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
     }
 
-    .audio-bar {
-      width: 2px;
-      height: 4px;
-      background: var(--cyan);
-      border-radius: 1px;
-      transition: height 0.15s ease;
+    .topbar-action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 0 rgba(16, 34, 42, 0.25);
+      filter: brightness(1.05);
     }
 
-    .audio-synth-btn.active .audio-bar:nth-child(1) { animation: barDance 0.8s infinite 0.1s; }
-    .audio-synth-btn.active .audio-bar:nth-child(2) { animation: barDance 0.8s infinite 0.3s; }
-    .audio-synth-btn.active .audio-bar:nth-child(3) { animation: barDance 0.8s infinite 0.2s; }
-    .audio-synth-btn.active .audio-bar:nth-child(4) { animation: barDance 0.8s infinite 0.4s; }
-
-    @keyframes barDance {
-      0%, 100% { height: 3px; }
-      50% { height: 12px; }
+    .topbar-action-btn:active {
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
@@ -500,10 +533,13 @@
        ═══════════════════════════════════════════════════════════════════════ */
     .content-viewport {
       flex: 1;
-      padding: 32px;
+      padding: 24px 28px 48px;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 22px;
+      max-width: 1600px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
@@ -563,46 +599,58 @@
     /* ═══════════════════════════════════════════════════════════════════════
        5. BUTTON SYSTEM — makerzz 3D-push pills
        ═══════════════════════════════════════════════════════════════════════ */
-    .btn {
+    .btn,
+    .btn-makerzz-amber,
+    .btn-makerzz-teal,
+    .btn-makerzz-ghost,
+    .btn-makerzz-white,
+    .btn-ghost {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 20px;
-      border-radius: 999px;
-      font-size: 13px;
+      gap: 7px;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 12.5px;
       font-weight: 700;
       font-family: var(--font-display);
       cursor: pointer;
-      border: 2px solid var(--makerzz-ink);
-      box-shadow: var(--makerzz-shadow-3d);
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      border: 1px solid transparent;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
       user-select: none;
       white-space: nowrap;
       text-decoration: none;
+      box-sizing: border-box;
+      line-height: 1.2;
     }
 
-    .btn:active {
-      transform: translateY(3px);
-      box-shadow: var(--makerzz-shadow-active);
+    .btn:active,
+    .btn-makerzz-amber:active,
+    .btn-makerzz-teal:active {
+      transform: translateY(1px);
     }
 
-    .btn:disabled {
+    .btn:disabled,
+    .btn-makerzz-amber:disabled {
       opacity: 0.45;
       cursor: not-allowed;
       pointer-events: none;
     }
 
     /* Primary — amber pill (makerzz signature CTA) */
+    .btn-makerzz-amber,
     .btn-island-primary,
     .btn-primary {
       background: var(--makerzz-amber);
       color: var(--makerzz-ink);
+      border-color: rgba(16, 34, 42, 0.15);
+      box-shadow: 0 2px 0 rgba(16, 34, 42, 0.2);
     }
+    .btn-makerzz-amber:hover,
     .btn-island-primary:hover:not(:disabled),
     .btn-primary:hover:not(:disabled) {
       background: #ffd054;
-      transform: translateY(-2px);
-      box-shadow: var(--makerzz-shadow-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 0 rgba(16, 34, 42, 0.25);
     }
 
     /* Violet pill */
@@ -613,34 +661,35 @@
     }
     .btn-island-violet:hover:not(:disabled) {
       background: #9d74f7;
-      transform: translateY(-2px);
-      box-shadow: var(--makerzz-shadow-hover);
+      transform: translateY(-1px);
     }
 
     /* Teal pill */
     .btn-makerzz-teal {
       background: var(--makerzz-teal);
       color: #ffffff;
+      border-color: rgba(14, 111, 119, 0.3);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
     }
     .btn-makerzz-teal:hover {
       background: #11828c;
-      transform: translateY(-2px);
-      box-shadow: var(--makerzz-shadow-hover);
+      transform: translateY(-1px);
     }
 
     /* Ghost pill */
     .btn-makerzz-ghost,
-    .btn-makerzz-white {
+    .btn-makerzz-white,
+    .btn-ghost {
       background: rgba(255, 255, 255, 0.05);
       color: var(--text-main);
-      border-color: rgba(255, 255, 255, 0.12);
+      border-color: var(--border-outer);
     }
     .btn-makerzz-ghost:hover,
-    .btn-makerzz-white:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
-      box-shadow: var(--makerzz-shadow-hover);
+    .btn-makerzz-white:hover,
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
     }
 
     /* Icon tray inside button */
@@ -659,80 +708,7 @@
       transform: translateX(2px);
     }
 
-    /* ═══════════════════════════════════════════════════════════════════════
-       MAKERZZ FLOATING ISLAND NAV (§5.2)
-       ═══════════════════════════════════════════════════════════════════════ */
-    .makerzz-island-nav {
-      position: sticky;
-      top: 16px;
-      z-index: 50;
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: center;
-      padding: 0 16px;
-    }
 
-    .makerzz-nav-pills {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(11, 15, 25, 0.82);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 6px;
-      border-radius: 999px;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      overflow-x: auto;
-      max-width: 100%;
-    }
-
-    .makerzz-pill-item {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-family: var(--font-display);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 8px 16px;
-      border-radius: 999px;
-      cursor: pointer;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.18s var(--ease-out-expo);
-      user-select: none;
-      text-decoration: none;
-    }
-
-    .makerzz-pill-item:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    .makerzz-pill-item.active {
-      background: var(--makerzz-amber);
-      color: var(--makerzz-ink);
-      font-weight: 800;
-      box-shadow: rgb(16, 34, 42) 0px 3px 0px;
-    }
-
-    .makerzz-pill-item.active .badge-mini-free {
-      background: var(--makerzz-ink);
-      color: var(--makerzz-amber);
-    }
-
-    .badge-mini-free {
-      font-size: 9px;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      background: var(--emerald);
-      color: #000;
-      padding: 2px 6px;
-      border-radius: 999px;
-      letter-spacing: 0.05em;
-    }
 
     /* 13-Platform Grid Styling (§5.2 of Makerzz Report) */
     .platform-wall-grid {
@@ -850,8 +826,10 @@
     .btn-row {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
@@ -860,8 +838,10 @@
     .cockpit-view {
       display: none;
       flex-direction: column;
-      gap: 24px;
-      animation: viewFadeIn 0.35s var(--ease-out-expo);
+      gap: 20px;
+      animation: viewFadeIn 0.3s var(--ease-out-expo);
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .cockpit-view.active {
@@ -871,28 +851,44 @@
     @keyframes viewFadeIn {
       from {
         opacity: 0;
-        transform: translateY(12px) scale(0.995);
+        transform: translateY(8px);
       }
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
     }
 
-    /* ── Metric Hologram Grid ── */
+    /* ── Metric Hologram Grid (Equal 4-Column Responsive, Never Overflowing) ── */
     .metric-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 1200px) {
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .metric-card {
-      padding: 20px;
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       position: relative;
       overflow: hidden;
+      box-sizing: border-box;
+      min-width: 0;
     }
 
     .metric-card::after {
@@ -917,24 +913,28 @@
       font-family: var(--font-mono);
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .metric-icon-bubble {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border-inner);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 13px;
+      flex-shrink: 0;
     }
 
     .metric-value {
       font-family: var(--font-display);
-      font-size: 32px;
+      font-size: clamp(20px, 2.2vw, 30px);
       font-weight: 700;
       line-height: 1.1;
       color: #fff;
@@ -946,20 +946,35 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* ── Spotlight Banner (Latest Generated / Published Post) ── */
     .spotlight-banner {
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1fr 240px;
       gap: 24px;
       align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 1100px) {
+      .spotlight-banner {
+        grid-template-columns: 1fr;
+      }
+      .spotlight-3d-deck {
+        display: none;
+      }
     }
 
     .spotlight-info {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
+      min-width: 0;
     }
 
     .spotlight-pill {
@@ -967,21 +982,22 @@
       align-items: center;
       gap: 6px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--cyan);
       background: var(--cyan-dim);
       border: 1px solid var(--cyan-hairline);
-      padding: 4px 10px;
+      padding: 3px 9px;
       border-radius: 20px;
       width: fit-content;
     }
 
     .spotlight-topic {
       font-family: var(--font-display);
-      font-size: 22px;
+      font-size: clamp(16px, 1.8vw, 22px);
       font-weight: 700;
       color: #fff;
       line-height: 1.35;
+      word-break: break-word;
     }
 
     .spotlight-meta-chips {
@@ -1011,20 +1027,22 @@
     }
 
     .holo-slide-card {
-      width: 220px;
-      height: 275px; /* 4:5 aspect ratio */
+      width: 200px;
+      height: 250px; /* 4:5 aspect ratio */
       background: linear-gradient(145deg, #0f1422, #070a12);
       border: 1px solid var(--border-outer);
-      border-radius: 16px;
-      transform: rotateY(-8deg) rotateX(4deg);
-      transition: all 0.4s var(--ease-out-expo);
-      padding: 18px;
+      border-radius: 14px;
+      transform: rotateY(-6deg) rotateX(3deg);
+      transition: all 0.3s var(--ease-out-expo);
+      padding: 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      box-sizing: border-box;
+      max-width: 100%;
     }
 
     .holo-slide-card:hover {
@@ -1552,16 +1570,6 @@
 </head>
 <body>
 
-  <!-- 3D Three.js WebGL Holographic Lattice Canvas -->
-  <canvas id="dashboard-webgl"></canvas>
-  
-  <!-- Cyber Scanlines & Ambient Noise Overlay -->
-  <div class="cyber-scanlines" id="cyber-scanlines"></div>
-  <div class="cyber-noise"></div>
-
-  <!-- Confetti Canvas for Dopamine Celebration -->
-  <canvas id="confetti-canvas"></canvas>
-
   <div class="cockpit-layout">
 
     <!-- ─── SIDEBAR ──────────────────────────────────────────────────────── -->
@@ -1578,53 +1586,54 @@
 
       <!-- Navigation Menu -->
       <nav class="sidebar-nav">
-        <div class="nav-section-label">Dashboard</div>
+        <div class="nav-section-label">Core Workspace</div>
         <div class="nav-item active" data-view="overview" onclick="switchView('overview', this)">
           <span class="nav-icon">📊</span> Overview
         </div>
         <div class="nav-item" data-view="publishing" onclick="switchView('publishing', this)">
-          <span class="nav-icon">✍️</span> Studio
+          <span class="nav-icon">✍️</span> Content Studio
           <span class="nav-badge live">LIVE</span>
         </div>
+        <div class="nav-item" data-view="integrations" onclick="switchView('integrations', this)">
+          <span class="nav-icon">🔗</span> Channels & Syndication
+          <span class="nav-badge" style="background:var(--makerzz-teal);font-weight:700;">13</span>
+        </div>
+
+        <div class="nav-section-label">Automations</div>
         <div class="nav-item" data-view="scheduling" onclick="switchView('scheduling', this)">
-          <span class="nav-icon">📅</span> Schedule
-          <span class="nav-badge" id="nav-queue-badge">3</span>
+          <span class="nav-icon">📅</span> 7x Daily Schedule
+          <span class="nav-badge" id="nav-queue-badge">7</span>
         </div>
         <div class="nav-item" data-view="autodm" onclick="switchView('autodm', this)">
-          <span class="nav-icon">💬</span> Auto-DM
+          <span class="nav-icon">💬</span> Auto-DM Engine
           <span class="nav-badge" style="background:var(--emerald);color:#000;font-weight:700;">FREE</span>
         </div>
-
-        <div class="nav-section-label">Grow</div>
-        <div class="nav-item" data-view="integrations" onclick="switchView('integrations', this)">
-          <span class="nav-icon">🔗</span> Integrations
+        <div class="nav-item" data-view="cronjob" onclick="switchView('cronjob', this)">
+          <span class="nav-icon">⏰</span> Cloud Webhooks
+          <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;">CRON</span>
         </div>
+
+        <div class="nav-section-label">Intelligence</div>
         <div class="nav-item" data-view="trends" onclick="switchView('trends', this)">
-          <span class="nav-icon">📈</span> Trends
+          <span class="nav-icon">📈</span> Virality Gate
         </div>
         <div class="nav-item" data-view="proof" onclick="switchView('proof', this)">
-          <span class="nav-icon">🛡️</span> Proof
+          <span class="nav-icon">🛡️</span> Research Dossiers
         </div>
-        <div class="nav-item" data-view="cronjob" onclick="switchView('cronjob', this)">
-          <span class="nav-icon">⏰</span> Cron Scheduler
-          <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;">WEBHOOKS</span>
-        </div>
-
-        <div class="nav-section-label">Content</div>
         <div class="nav-item" data-view="outputs" onclick="switchView('outputs', this)">
-          <span class="nav-icon">🖼️</span> Slides
+          <span class="nav-icon">🖼️</span> Slide Vault
           <span class="nav-badge" id="nav-runs-badge">0</span>
         </div>
         <div class="nav-item" data-view="memory" onclick="switchView('memory', this)">
-          <span class="nav-icon">🧠</span> Memory
+          <span class="nav-icon">🧠</span> Content Memory
         </div>
 
-        <div class="nav-section-label">System</div>
+        <div class="nav-section-label">System & Ops</div>
         <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
-          <span class="nav-icon">🚀</span> Pipeline
+          <span class="nav-icon">🚀</span> Pipeline Console
         </div>
         <div class="nav-item" data-view="settings" onclick="switchView('settings', this)">
-          <span class="nav-icon">⚙️</span> Settings
+          <span class="nav-icon">⚙️</span> Configuration
         </div>
       </nav>
 
@@ -1652,21 +1661,15 @@
         </div>
 
         <div class="topbar-right">
-          <!-- Day / Night Mode Toggle -->
-          <button class="audio-synth-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch day / night mode">
-            <span id="theme-toggle-icon">🌙</span>
-            <span id="theme-toggle-label">DARK</span>
+          <!-- Quick Autopilot Action Button -->
+          <button class="topbar-action-btn" onclick="startLiveAutopilot()" title="Trigger autonomous publishing cycle">
+            <span>⚡</span> Run Autopilot
           </button>
 
-          <!-- Audio Synthesizer Button -->
-          <button class="audio-synth-btn active" id="audio-toggle-btn" onclick="toggleAudio()" title="Toggle High-Tech UI Synthesizer Sound FX">
-            <div class="audio-bars">
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-            </div>
-            <span id="audio-label">FX ON</span>
+          <!-- Day / Night Mode Toggle -->
+          <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch day / night mode">
+            <span id="theme-toggle-icon">🌙</span>
+            <span id="theme-toggle-label">DARK</span>
           </button>
 
           <!-- Telemetry Chips -->
@@ -1676,7 +1679,7 @@
           </div>
 
           <div class="telemetry-chip">
-            <span style="color:var(--cyan)">⚡ LLM:</span>
+            <span style="color:var(--makerzz-teal)">⚡ LLM:</span>
             <span id="top-llm-label">Gemini 2.5 Flash</span>
           </div>
 
@@ -1686,42 +1689,6 @@
           </div>
         </div>
       </header>
-
-      <!-- Makerzz.space Sticky Floating Island Pill Nav (§5.2) -->
-      <nav class="makerzz-island-nav" id="makerzz-island-nav" aria-label="Social Autopilot Controls">
-        <div class="makerzz-nav-pills">
-          <button class="makerzz-pill-item active" data-view="overview" onclick="switchView('overview', this)">
-            ⚡ Mission Control
-          </button>
-          <button class="makerzz-pill-item" data-view="publishing" onclick="switchView('publishing', this)">
-            ✍️ Studio
-          </button>
-          <button class="makerzz-pill-item" data-view="scheduling" onclick="switchView('scheduling', this)">
-            📅 Calendar (7x)
-          </button>
-          <button class="makerzz-pill-item" data-view="autodm" onclick="switchView('autodm', this)">
-            💬 Auto-DM <span class="badge-mini-free">FREE</span>
-          </button>
-          <button class="makerzz-pill-item" data-view="integrations" onclick="switchView('integrations', this)">
-            🔗 Connect (13)
-          </button>
-          <button class="makerzz-pill-item" data-view="trends" onclick="switchView('trends', this)">
-            📈 Trends
-          </button>
-          <button class="makerzz-pill-item" data-view="proof" onclick="switchView('proof', this)">
-            🛡️ Proof & Ledger
-          </button>
-          <button class="makerzz-pill-item" data-view="cronjob" onclick="switchView('cronjob', this)">
-            ⏰ Cron-Job.org
-          </button>
-          <button class="makerzz-pill-item" data-view="pipeline" onclick="switchView('pipeline', this)">
-            🚀 Console
-          </button>
-          <button class="makerzz-pill-item" data-view="settings" onclick="switchView('settings', this)">
-            ⚙️ Settings
-          </button>
-        </div>
-      </nav>
 
       <!-- Dynamic Views Container -->
       <div class="content-viewport">
@@ -2858,18 +2825,15 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
             </div>
           </div>
 
-          <!-- Audio & Visual Preferences -->
+          <!-- Visual Theme Preferences -->
           <div class="doppel-shell">
             <div class="doppel-core">
               <div class="card-header-bar">
-                <div class="card-header-title"><span class="accent-tag">◈</span> Cockpit Audio & Visual Preferences</div>
+                <div class="card-header-title"><span class="accent-tag">◈</span> Interface Appearance</div>
               </div>
               <div class="btn-row">
-                <button class="btn btn-ghost" id="btn-toggle-scanlines" onclick="toggleScanlines()">
-                  <span>Toggle Cyber Scanlines</span>
-                </button>
-                <button class="btn btn-ghost" id="btn-toggle-3d" onclick="toggle3DBackground()">
-                  <span>Toggle 3D Hologram Lattice</span>
+                <button class="btn btn-ghost" id="btn-theme-switch" onclick="toggleTheme()">
+                  <span>☀️ / 🌙 Toggle Dark & Light Mode</span>
                 </button>
               </div>
             </div>
@@ -2987,97 +2951,13 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     let latestOutputRun = null;
     let activeDeckSlideIndex = 0;
     let currentDeckSlides = [];
-    let audioEnabled = true;
-
-    // ── Web Audio API Sci-Fi Synthesizer ─────────────────────────────────
-    const AudioEngine = {
-      ctx: null,
-      init() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) this.ctx = new AudioContext();
-        }
-      },
-      tick() {
-        if (!audioEnabled) return;
-        this.init();
-        if (!this.ctx) return;
-        try {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(1200, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.03);
-          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start();
-          osc.stop(this.ctx.currentTime + 0.03);
-        } catch(e){}
-      },
-      warp() {
-        if (!audioEnabled) return;
-        this.init();
-        if (!this.ctx) return;
-        try {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(320, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(1400, this.ctx.currentTime + 0.18);
-          gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start();
-          osc.stop(this.ctx.currentTime + 0.18);
-        } catch(e){}
-      },
-      success() {
-        if (!audioEnabled) return;
-        this.init();
-        if (!this.ctx) return;
-        try {
-          const notes = [523.25, 659.25, 783.99, 1046.50]; // C E G C
-          notes.forEach((freq, i) => {
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + i * 0.08);
-            gain.gain.setValueAtTime(0.08, this.ctx.currentTime + i * 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.08 + 0.28);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.start(this.ctx.currentTime + i * 0.08);
-            osc.stop(this.ctx.currentTime + i * 0.08 + 0.3);
-          });
-        } catch(e){}
-      },
-      alert() {
-        if (!audioEnabled) return;
-        this.init();
-        if (!this.ctx) return;
-        try {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(260, this.ctx.currentTime);
-          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start();
-          osc.stop(this.ctx.currentTime + 0.2);
-        } catch(e){}
-      }
-    };
-
+    // ── Sound & FX Stubs (Silent No-Ops for clean UX) ─────────────────
     function playSound(type) {
-      if (type === 'click') AudioEngine.tick();
-      else if (type === 'warp') AudioEngine.warp();
-      else if (type === 'success') AudioEngine.success();
-      else if (type === 'alert') AudioEngine.alert();
+      // Silent no-op preserves onclick compatibility without audio bloat
+    }
+
+    function triggerCelebration() {
+      // Silent no-op preserves celebration triggers without canvas bloat
     }
 
     // ── Day / Night Mode (persisted) ───────────────────────────────────
@@ -3095,184 +2975,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       applyTheme(cur === 'light' ? 'dark' : 'light');
     }
 
-    function toggleAudio() {
-      audioEnabled = !audioEnabled;
-      const btn = document.getElementById('audio-toggle-btn');
-      const label = document.getElementById('audio-label');
-      if (audioEnabled) {
-        btn.classList.add('active');
-        label.textContent = 'FX ON';
-        AudioEngine.tick();
-        showToast('UI Sound Synthesizer: Enabled', 'info');
-      } else {
-        btn.classList.remove('active');
-        label.textContent = 'MUTED';
-        showToast('UI Sound Synthesizer: Muted', 'info');
-      }
-    }
-
-    // ── Confetti Particle Celebration Engine ─────────────────────────────
-    function triggerCelebration() {
-      const canvas = document.getElementById('confetti-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const particles = [];
-      const colors = ['#0E6F77', '#8B5CF6', '#10B981', '#FFC22B', '#FFFFFF'];
-
-      for (let i = 0; i < 90; i++) {
-        particles.push({
-          x: canvas.width / 2,
-          y: canvas.height / 2,
-          vx: (Math.random() - 0.5) * 18,
-          vy: (Math.random() - 0.7) * 20,
-          size: Math.random() * 6 + 3,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: 1,
-          rot: Math.random() * 360,
-          rotSpeed: (Math.random() - 0.5) * 10
-        });
-      }
-
-      function renderParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let activeCount = 0;
-
-        particles.forEach(p => {
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.45; // gravity
-          p.alpha -= 0.015;
-          p.rot += p.rotSpeed;
-
-          if (p.alpha > 0) {
-            activeCount++;
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate((p.rot * Math.PI) / 180);
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = Math.max(0, p.alpha);
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = p.color;
-            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-            ctx.restore();
-          }
-        });
-
-        if (activeCount > 0) {
-          requestAnimationFrame(renderParticles);
-        } else {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-      }
-      renderParticles();
-      playSound('success');
-    }
-
-    // ── 3D Three.js WebGL Holographic Quantum Scene ─────────────────────
-    (function init3DQuantum() {
-      const canvas = document.getElementById('dashboard-webgl');
-      if (!canvas || typeof THREE === 'undefined') return;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 50;
-
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      // Quantum Torus Knot Lattice
-      const knotGeo = new THREE.TorusKnotGeometry(14, 2.6, 128, 16);
-      const knotMat = new THREE.MeshBasicMaterial({
-        color: 0x00F0FF,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.14
-      });
-      const knot = new THREE.Mesh(knotGeo, knotMat);
-      scene.add(knot);
-
-      // Outer Violet Halo Ring
-      const ringGeo = new THREE.TorusGeometry(22, 0.35, 16, 100);
-      const ringMat = new THREE.MeshBasicMaterial({
-        color: 0x8B5CF6,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.22
-      });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.rotation.x = Math.PI / 3;
-      scene.add(ring);
-
-      // Cyber Particle Nebula
-      const count = 1000;
-      const positions = new Float32Array(count * 3);
-      const colors = new Float32Array(count * 3);
-      const cCyan = new THREE.Color(0x00F0FF);
-      const cViolet = new THREE.Color(0x8B5CF6);
-
-      for (let i = 0; i < count; i++) {
-        const i3 = i * 3;
-        positions[i3] = (Math.random() - 0.5) * 160;
-        positions[i3 + 1] = (Math.random() - 0.5) * 160;
-        positions[i3 + 2] = (Math.random() - 0.5) * 160;
-
-        const mix = Math.random() > 0.5 ? cCyan : cViolet;
-        colors[i3] = mix.r;
-        colors[i3 + 1] = mix.g;
-        colors[i3 + 2] = mix.b;
-      }
-
-      const pGeo = new THREE.BufferGeometry();
-      pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      pGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-      const pMat = new THREE.PointsMaterial({
-        size: 0.8,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.6
-      });
-      const points = new THREE.Points(pGeo, pMat);
-      scene.add(points);
-
-      // Parallax mouse interaction
-      let mouseX = 0, mouseY = 0;
-      window.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
-        mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
-      });
-
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      function animate() {
-        requestAnimationFrame(animate);
-        knot.rotation.x += 0.003;
-        knot.rotation.y += 0.004;
-        ring.rotation.z += 0.002;
-        points.rotation.y -= 0.001;
-
-        knot.position.x += (mouseX * 40 - knot.position.x) * 0.05;
-        knot.position.y += (-mouseY * 40 - knot.position.y) * 0.05;
-
-        renderer.render(scene, camera);
-      }
-      animate();
-    })();
-
     // ── Navigation & View Switching ──────────────────────────────────────
     function switchView(viewId, el) {
       playSound('warp');
       document.querySelectorAll('.cockpit-view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.querySelectorAll('.makerzz-pill-item').forEach(p => p.classList.remove('active'));
 
       const target = document.getElementById('view-' + viewId);
       if (target) target.classList.add('active');
@@ -3280,22 +2987,19 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       const foundNav = document.querySelector(`.nav-item[data-view="${viewId}"]`);
       if (foundNav) foundNav.classList.add('active');
 
-      const foundPill = document.querySelector(`.makerzz-pill-item[data-view="${viewId}"]`);
-      if (foundPill) foundPill.classList.add('active');
-
       const titleMap = {
         overview: 'Overview',
-        scheduling: 'Schedule',
-        publishing: 'Studio',
-        autodm: 'Auto-DM',
-        integrations: 'Integrations',
-        trends: 'Trends',
-        proof: 'Proof',
-        cronjob: 'Cron Scheduler',
-        pipeline: 'Pipeline',
-        outputs: 'Slides',
-        memory: 'Memory',
-        settings: 'Settings'
+        scheduling: '7x Daily Schedule',
+        publishing: 'Content Studio',
+        autodm: 'Auto-DM Engine',
+        integrations: 'Channels & Syndication',
+        trends: 'Virality Gate',
+        proof: 'Research Dossiers',
+        cronjob: 'Cloud Webhooks',
+        pipeline: 'Pipeline Console',
+        outputs: 'Slide Vault',
+        memory: 'Content Memory',
+        settings: 'Configuration'
       };
 
       document.getElementById('page-title-text').textContent = titleMap[viewId] || 'Overview';
@@ -4490,18 +4194,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       }
     }
 
-    // ── Visual FX Toggles ────────────────────────────────────────────────
-    function toggleScanlines() {
-      playSound('click');
-      const el = document.getElementById('cyber-scanlines');
-      if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    }
 
-    function toggle3DBackground() {
-      playSound('click');
-      const el = document.getElementById('dashboard-webgl');
-      if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    }
 
     // ── Toast System ─────────────────────────────────────────────────────
     function showToast(message, type = 'info') {

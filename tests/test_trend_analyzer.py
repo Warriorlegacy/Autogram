@@ -73,7 +73,7 @@ def test_trend_analyzer_filter_candidates():
             "source_type": "github_repository"
         }
     ]
-    approved, report = trend_analyzer.filter_viral_candidates(candidates)
+    approved, report = trend_analyzer.filter_viral_candidates(candidates, memory={})
     assert len(approved) == 2
     assert approved[0]["topic"] == "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite" or approved[0]["topic"] == "n8n Workflow Automation: Unlimited Zapier for $0"
     assert report["approved_count"] == 2
