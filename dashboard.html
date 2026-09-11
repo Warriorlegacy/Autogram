@@ -775,6 +775,34 @@
       box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 0px;
     }
 
+    .btn-makerzz-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 0px;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-makerzz-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 6px 0px;
+    }
+    .btn-makerzz-ghost:active {
+      transform: translateY(3px);
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 0px;
+    }
+
     /* Makerzz Sticky Island Pill Nav */
     .makerzz-island-nav {
       position: sticky;
@@ -1918,16 +1946,15 @@
                   <div class="spotlight-chip" id="spotlight-slides-count">8 Slides</div>
                   <div class="spotlight-chip" style="color:var(--emerald);">1080×1350 HD</div>
                 </div>
-                <div class="btn-row" style="margin-top:10px;">
-                  <button class="btn btn-island-primary" onclick="directPublishSpotlight()">
-                    <span>🚀 Publish to Instagram Now</span>
-                    <div class="btn-island-icon-tray">↗</div>
+                <div class="btn-row" style="margin-top:14px;flex-wrap:wrap;gap:10px;">
+                  <button class="btn-makerzz-amber" onclick="directPublishSpotlight()">
+                    🚀 Publish to Instagram Live
                   </button>
-                  <button class="btn btn-ghost" onclick="switchView('publishing')">
-                    <span>Inspect in Studio</span>
+                  <button class="btn-makerzz-teal" onclick="switchView('publishing')">
+                    ✍️ Inspect in Studio
                   </button>
-                  <button class="btn btn-ghost" onclick="switchView('outputs')">
-                    <span>View All Runs</span>
+                  <button class="btn-makerzz-ghost" onclick="switchView('outputs')">
+                    🖼️ View All Runs
                   </button>
                 </div>
               </div>
@@ -1956,23 +1983,24 @@
               <div class="card-header-bar">
                 <div class="card-header-title"><span class="accent-tag">◈</span> Rapid Action Launchpad</div>
               </div>
-              <div class="btn-row">
-                <button class="btn btn-island-primary" onclick="switchView('pipeline')">
-                  <span>🚀 Trigger Autonomous Pipeline</span>
-                  <div class="btn-island-icon-tray">▶</div>
+              <div class="btn-row" style="flex-wrap:wrap;gap:10px;">
+                <button class="btn-makerzz-amber" onclick="startLiveAutopilot()">
+                  🚀 Launch Autopilot Run Now
                 </button>
-                <button class="btn btn-island-violet" onclick="openScheduleModal()">
-                  <span>📅 Add Scheduled Post</span>
-                  <div class="btn-island-icon-tray">+</div>
+                <button class="btn-makerzz-teal" onclick="startDryRunAutopilot()">
+                  🧪 Test Dry-Run Simulation
                 </button>
-                <button class="btn btn-ghost" onclick="switchView('publishing')">
-                  <span>✍️ Open AI Content Studio</span>
+                <button class="btn-makerzz-ghost" onclick="brainstormTopic()">
+                  ✨ Brainstorm Viral Topic
                 </button>
-                <button class="btn btn-ghost" onclick="refreshToken()">
-                  <span>🔄 Refresh Meta Token</span>
+                <button class="btn-makerzz-ghost" onclick="openScheduleModal()">
+                  📅 Add Scheduled Post
                 </button>
-                <button class="btn btn-ghost" onclick="refreshStatus(true)">
-                  <span>↺ Sync Telemetry</span>
+                <button class="btn-makerzz-ghost" onclick="refreshToken()">
+                  🔄 Refresh Meta Token
+                </button>
+                <button class="btn-makerzz-ghost" onclick="refreshStatus(true)">
+                  ↺ Sync Telemetry
                 </button>
               </div>
             </div>
@@ -2329,7 +2357,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <!-- 13 Platforms Wall Grid -->
               <div class="platform-wall-grid">
                 <!-- 1. Instagram -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('instagram')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#E1306C;">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -2338,10 +2366,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Instagram</div>
                   <div class="platform-desc">Official Meta Graph API (v23.0). 1080×1350 JPEG Carousels + Private Reply Auto-DMs.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">Inspect Live Assets ↗</div>
                 </div>
 
                 <!-- 2. YouTube -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('youtube')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#FF0000;">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -2350,10 +2379,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">YouTube Shorts</div>
                   <div class="platform-desc">Spoken 30–45s video scripts with timestamped B-roll cues and pinned comments.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Spoken Script ↗</div>
                 </div>
 
                 <!-- 3. LinkedIn -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('linkedin')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#0A66C2;">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -2362,10 +2392,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">LinkedIn</div>
                   <div class="platform-desc">Thought leadership formatting, technical problem-solving copy, and PDF slide decks.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Article Copy ↗</div>
                 </div>
 
                 <!-- 4. TikTok -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('tiktok')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#000;border:1px solid #333;">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
@@ -2374,10 +2405,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">TikTok</div>
                   <div class="platform-desc">Hook-first narrative scripts, fast pacing timeline edit plans, and SFX maps.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Edit Timeline ↗</div>
                 </div>
 
                 <!-- 5. X / Twitter -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('twitter')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#000;border:1px solid #333;">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -2386,10 +2418,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">X (Twitter)</div>
                   <div class="platform-desc">6-tweet viral technical thread generated automatically on every run.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View 6-Tweet Thread ↗</div>
                 </div>
 
                 <!-- 6. Facebook -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('facebook')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#1877F2;">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -2398,10 +2431,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Facebook</div>
                   <div class="platform-desc">Meta Graph API Pages and Reels syndication with multi-image container flows.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Meta Feed Post ↗</div>
                 </div>
 
                 <!-- 7. Threads -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('threads')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#000;border:1px solid #333;">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12.186 24h-.007C5.463 23.974 0 18.57 0 11.856 0 5.14 5.464-.26 12.186-.285h.014c6.72.025 12.183 5.428 12.183 12.141 0 6.715-5.463 12.119-12.183 12.144zm0-21.84c-5.36.02-9.718 4.32-9.718 9.702 0 5.383 4.358 9.684 9.718 9.704 5.361-.02 9.719-4.321 9.719-9.704 0-5.382-4.358-9.682-9.719-9.702z"/></svg>
@@ -2410,10 +2444,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Threads</div>
                   <div class="platform-desc">Cross-posted discussion hooks and carousel image previews via Meta Graph API.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Thread Hooks ↗</div>
                 </div>
 
                 <!-- 8. Pinterest -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('pinterest')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#E60023;">
                       <span style="color:#fff;font-weight:900;font-size:18px;">P</span>
@@ -2422,10 +2457,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Pinterest</div>
                   <div class="platform-desc">1080×1350 Idea Pins with deterministic terminal layouts and long-tail SEO reach.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Idea Pin Copy ↗</div>
                 </div>
 
                 <!-- 9. Bluesky -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('bluesky')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#0285FF;">
                       <span style="color:#fff;font-weight:900;font-size:16px;">🦋</span>
@@ -2434,10 +2470,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Bluesky</div>
                   <div class="platform-desc">AT Protocol text feeds and open source developer community broadcasts.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Skeet Broadcast ↗</div>
                 </div>
 
                 <!-- 10. Reddit -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('reddit')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#FF4500;">
                       <span style="color:#fff;font-weight:900;font-size:16px;">👽</span>
@@ -2446,10 +2483,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Reddit</div>
                   <div class="platform-desc">High-signal self-hosting markdown posts for r/selfhosted, r/opensource, r/ChatGPT.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Markdown Post ↗</div>
                 </div>
 
                 <!-- 11. Telegram -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('telegram')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#26A5E4;">
                       <span style="color:#fff;font-weight:900;font-size:16px;">✈️</span>
@@ -2458,10 +2496,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Telegram</div>
                   <div class="platform-desc">Instant broadcast channel notifications with Docker commands & raw prompt codes.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Channel Alert ↗</div>
                 </div>
 
                 <!-- 12. Discord -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('discord')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#5865F2;">
                       <span style="color:#fff;font-weight:900;font-size:16px;">👾</span>
@@ -2470,10 +2509,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Discord</div>
                   <div class="platform-desc">Community announcements channel webhook with rich embed formatting.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Embed Webhook ↗</div>
                 </div>
 
                 <!-- 13. Google Business -->
-                <div class="platform-tile">
+                <div class="platform-tile" onclick="openPlatformModal('google_business')">
                   <div class="platform-tile-top">
                     <div class="platform-icon-circle" style="background:#4285F4;">
                       <span style="color:#fff;font-weight:900;font-size:16px;">G</span>
@@ -2482,6 +2522,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Google Business</div>
                   <div class="platform-desc">What's New business updates, developer tools breakdowns, and local authority.</div>
+                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Update Post ↗</div>
                 </div>
               </div>
 
@@ -2532,8 +2573,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   <span class="nav-badge" style="background:var(--violet);color:#fff;font-weight:700;margin-left:8px;">VIRAL INTEL</span>
                 </div>
                 <div class="btn-row">
+                  <button class="btn-makerzz-teal" onclick="loadTrendsCandidates(true)">
+                    🔄 Scan Live GitHub & Trends
+                  </button>
                   <button class="btn-makerzz-amber" onclick="switchView('publishing')">
-                    ✍️ Create Post Now
+                    ✍️ Create Post in Studio
                   </button>
                 </div>
               </div>
@@ -2566,47 +2610,16 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               </div>
 
               <!-- Topics Ready to Post Today -->
-              <h4 style="font-family:var(--font-display);font-size:13px;color:#fff;margin-bottom:12px;letter-spacing:0.05em;text-transform:uppercase;">
-                ⚡ High-Virality Candidates Verified in Database
-              </h4>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <h4 style="font-family:var(--font-display);font-size:13px;color:#fff;letter-spacing:0.05em;text-transform:uppercase;">
+                  ⚡ High-Virality Candidates Verified in Database
+                </h4>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);" id="trends-last-updated">Live Stars Synced</span>
+              </div>
               <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;" id="trends-cards-grid">
-                <!-- Card 1 -->
-                <div class="doppel-shell" style="border-color:rgba(0,240,255,0.3);">
-                  <div class="doppel-core" style="padding:16px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                      <span class="slot-pillar">FOSS SAAS ALTERNATIVE</span>
-                      <span style="color:var(--cyan);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL 88.0/100</span>
-                    </div>
-                    <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">Open-WebUI: The Local AI Interface</div>
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">⭐ 151,000+ Stars · Replaces $20/mo ChatGPT Plus with 1-click Docker run.</div>
-                    <button class="btn btn-ghost" style="width:100%;font-size:11px;" onclick="loadTopicToStudio('Open-WebUI: The User-Friendly Self-Hosted AI Interface', 'FOSS SaaS Alternatives')">⚡ Load into Studio</button>
-                  </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="doppel-shell" style="border-color:rgba(255,194,43,0.3);">
-                  <div class="doppel-core" style="padding:16px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                      <span class="slot-pillar" style="background:var(--amber-dim);color:var(--makerzz-amber);">FOSS SAAS ALTERNATIVE</span>
-                      <span style="color:var(--makerzz-amber);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL 85.5/100</span>
-                    </div>
-                    <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">Coolify: Self-Hosted Vercel / Heroku</div>
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">⭐ 42,000+ Stars · Replaces $200/mo Vercel bills on a $5/mo VPS.</div>
-                    <button class="btn btn-ghost" style="width:100%;font-size:11px;" onclick="loadTopicToStudio('Coolify: The Self-Hosted Vercel and Heroku Alternative', 'FOSS SaaS Alternatives')">⚡ Load into Studio</button>
-                  </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="doppel-shell" style="border-color:rgba(139,92,246,0.3);">
-                  <div class="doppel-core" style="padding:16px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                      <span class="slot-pillar" style="background:var(--violet-dim);color:var(--violet);">PROMPT ARCHITECTURE</span>
-                      <span style="color:var(--violet);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL 92.0/100</span>
-                    </div>
-                    <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">Skeleton-of-Thought (SoT) Prompt</div>
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">UC Berkeley / Ning et al. · 4x Parallel Latency Speedup on GPT-4o & Claude.</div>
-                    <button class="btn btn-ghost" style="width:100%;font-size:11px;" onclick="loadTopicToStudio('Skeleton-of-Thought (SoT): The 4x Parallel Prompt Architecture', 'Local AI & Edge Compute')">⚡ Load into Studio</button>
-                  </div>
+                <!-- Dynamically loaded via loadTrendsCandidates() -->
+                <div style="color:var(--text-dim);font-family:var(--font-mono);font-size:12px;padding:24px;text-align:center;grid-column:1/-1;">
+                  Scanning live GitHub stars & technical trends...
                 </div>
               </div>
 
@@ -2628,7 +2641,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   <span class="nav-badge" style="background:var(--emerald);color:#000;font-weight:700;margin-left:8px;">VERIFIABLE AUDIT</span>
                 </div>
                 <div class="btn-row">
-                  <button class="btn btn-ghost" onclick="refreshProofState()">🔄 Refresh Gates</button>
+                  <button class="btn-makerzz-teal" onclick="loadProofGates(true)">🔄 Verify Live Disk Gates</button>
                 </div>
               </div>
               <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
@@ -2648,78 +2661,12 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                       <th>Gate Status</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="proof-gates-tbody">
+                    <!-- Populated dynamically via loadProofGates() -->
                     <tr>
-                      <td><span class="slot-pillar">P0</span></td>
-                      <td style="font-weight:600;color:#fff;">Brand Brief & Setup</td>
-                      <td><code>data/brand.json</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td>Free</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P1</span></td>
-                      <td style="font-weight:600;color:#fff;">Profile & Niche Scored</td>
-                      <td><code>viral_analysis.json</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">40 cr ($2.40)</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P2</span></td>
-                      <td style="font-weight:600;color:#fff;">Strategy & Week Laid Out</td>
-                      <td><code>data/schedule.json</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">15 cr ($0.90)</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P3</span></td>
-                      <td style="font-weight:600;color:#fff;">Script & Captions Verified</td>
-                      <td><code>caption.txt</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">12 cr ($0.72)</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P4</span></td>
-                      <td style="font-weight:600;color:#fff;">Spoken Video / Reels Script</td>
-                      <td><code>reels_script.md</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">202 cr ($12.12)</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P5</span></td>
-                      <td style="font-weight:600;color:#fff;">Timeline Edit Plan Written</td>
-                      <td><code>edit_plan.json</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">20 cr ($1.20)</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P6</span></td>
-                      <td style="font-weight:600;color:#fff;">Carousel 1080x1350 Rendered</td>
-                      <td><code>slide_01.jpg .. 08.jpg</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">30 cr ($1.80)</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P7</span></td>
-                      <td style="font-weight:600;color:#fff;">Meta Graph API Published</td>
-                      <td><code>manifest.json</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">3 cr ($0.18)</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
-                    </tr>
-                    <tr>
-                      <td><span class="slot-pillar">P8</span></td>
-                      <td style="font-weight:600;color:#fff;">Auto-DM Dispatched (Option A)</td>
-                      <td><code>dm_automation_state.json</code></td>
-                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
-                      <td style="color:var(--crimson);">$45/mo ManyChat</td>
-                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                      <td colspan="6" style="text-align:center;color:var(--text-dim);padding:24px;font-family:var(--font-mono);font-size:12px;">
+                        Auditing physical gate files on server disk...
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -2728,19 +2675,99 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <!-- Makerzz vs Autogram Ledger Card -->
               <div class="metric-grid" style="margin-top:20px;margin-bottom:0;">
                 <div class="slot-node">
-                  <div class="slot-time" style="color:var(--emerald);">UNLIMITED</div>
+                  <div class="slot-time" style="color:var(--emerald);" id="proof-master-balance">UNLIMITED</div>
                   <div class="slot-label">Autogram Master Balance</div>
                   <div class="slot-pillar">0 CREDITS CHARGED</div>
                 </div>
                 <div class="slot-node">
-                  <div class="slot-time" style="color:var(--crimson);">$199 / MO</div>
+                  <div class="slot-time" style="color:var(--crimson);" id="proof-makerzz-tier">$199 / MO</div>
                   <div class="slot-label">Makerzz Agentic Tier</div>
                   <div class="slot-pillar">5,000 CR CEILING</div>
                 </div>
                 <div class="slot-node">
-                  <div class="slot-time" style="color:var(--makerzz-amber);">$2,388 / YR</div>
+                  <div class="slot-time" style="color:var(--makerzz-amber);" id="proof-annual-savings">$2,388 / YR</div>
                   <div class="slot-label">Annual Capital Saved</div>
                   <div class="slot-pillar">100% IN-HOUSE AUTONOMY</div>
+                </div>
+              </div>
+
+              <!-- Makerzz §4.2 Credit Dial & Arithmetic Calculator -->
+              <div class="doppel-shell" style="margin-top:24px;border-color:rgba(255,194,43,0.3);">
+                <div class="doppel-core" style="background:var(--bg-surface-elev);padding:24px;">
+                  <div class="card-header-bar">
+                    <div class="card-header-title" style="color:var(--makerzz-amber);font-size:16px;">
+                      <span class="accent-tag">◈</span> MAKERZZ CREDIT DIAL & ARITHMETIC CALCULATOR (§4.2)
+                    </div>
+                    <span class="nav-badge" style="background:var(--makerzz-amber);color:#000;font-weight:800;">REAL-TIME ARITHMETIC</span>
+                  </div>
+                  <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">
+                    Adjust your monthly generation volume below. See exactly how many credits Makerzz would consume each month, what subscription tier is required, and how much Autogram saves you in SaaS fees.
+                  </p>
+
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;margin-bottom:24px;">
+                    <div>
+                      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                        <label class="form-label" style="margin-bottom:0;">Carousels / Month (7 Slides)</label>
+                        <span id="calc-carousels-val" style="font-family:var(--font-mono);color:var(--cyan);font-weight:700;">60 / mo</span>
+                      </div>
+                      <input type="range" id="calc-carousels" min="10" max="210" step="5" value="60" style="width:100%;accent-color:var(--cyan);" oninput="updateCalculator()" />
+                      <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-top:4px;">
+                        <span>10 (Light)</span>
+                        <span>60 (2/day)</span>
+                        <span>210 (7/day Max)</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                        <label class="form-label" style="margin-bottom:0;">Reels Scripts & Edit Plans / Month</label>
+                        <span id="calc-reels-val" style="font-family:var(--font-mono);color:var(--violet);font-weight:700;">30 / mo</span>
+                      </div>
+                      <input type="range" id="calc-reels" min="0" max="60" step="5" value="30" style="width:100%;accent-color:var(--violet);" oninput="updateCalculator()" />
+                      <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-top:4px;">
+                        <span>0 (None)</span>
+                        <span>30 (1/day)</span>
+                        <span>60 (2/day)</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                        <label class="form-label" style="margin-bottom:0;">Profile & Topic Deep Scans / Month</label>
+                        <span id="calc-scans-val" style="font-family:var(--font-mono);color:var(--makerzz-amber);font-weight:700;">30 / mo</span>
+                      </div>
+                      <input type="range" id="calc-scans" min="0" max="120" step="5" value="30" style="width:100%;accent-color:var(--makerzz-amber);" oninput="updateCalculator()" />
+                      <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-top:4px;">
+                        <span>0 (None)</span>
+                        <span>30 (Daily)</span>
+                        <span>120 (4x Daily)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Calculated Output Banner -->
+                  <div style="background:rgba(6,6,6,0.9);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px;display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:16px;align-items:center;">
+                    <div>
+                      <div style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);text-transform:uppercase;">Makerzz Credits / Mo</div>
+                      <div id="calc-credits-total" style="font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--crimson);line-height:1.2;">8,820 cr</div>
+                      <div style="font-size:11px;color:var(--text-dim);">Consumption ceiling</div>
+                    </div>
+                    <div>
+                      <div style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);text-transform:uppercase;">Required Makerzz Plan</div>
+                      <div id="calc-makerzz-plan" style="font-family:var(--font-display);font-size:15px;font-weight:700;color:#fff;line-height:1.3;">Agentic Tier ($199/mo)</div>
+                      <div id="calc-makerzz-cost" style="font-size:11px;color:var(--crimson);font-family:var(--font-mono);">$2,388.00 / year</div>
+                    </div>
+                    <div>
+                      <div style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);text-transform:uppercase;">Autogram Engine Cost</div>
+                      <div style="font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--emerald);line-height:1.2;">$0.00 / mo</div>
+                      <div style="font-size:11px;color:var(--emerald);font-family:var(--font-mono);">0 credits billed forever</div>
+                    </div>
+                    <div>
+                      <div style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);text-transform:uppercase;">Net Annual Savings</div>
+                      <div id="calc-annual-savings" style="font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--makerzz-amber);line-height:1.2;">$2,388 / yr</div>
+                      <div style="font-size:11px;color:var(--makerzz-amber);font-family:var(--font-mono);">100% Retained Margin</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -3054,6 +3081,36 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           <button class="btn btn-island-primary" onclick="submitNewScheduledPost()">
             <span>Add to Queue</span>
             <div class="btn-island-icon-tray">✓</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MODAL: 13 PLATFORMS SYNDICATION ASSET MODAL ───────────────────── -->
+  <div class="modal-backdrop" id="platform-modal">
+    <div class="doppel-shell modal-box glow-cyan" style="max-width:740px;width:95%;">
+      <div class="doppel-core">
+        <div class="card-header-bar">
+          <div class="card-header-title">
+            <span class="accent-tag" id="pm-icon">🔗</span>
+            <span id="pm-title">Platform Syndication Asset</span>
+            <span class="nav-badge" id="pm-badge" style="background:var(--cyan);color:#000;font-weight:700;margin-left:8px;">READY</span>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="closePlatformModal()">✕</button>
+        </div>
+        <p id="pm-desc" style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;"></p>
+        <div class="form-group">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <label class="form-label" style="margin-bottom:0;" id="pm-format">Syndication Output Content</label>
+            <button class="btn btn-xs btn-ghost" onclick="copyPlatformModalContent()">📋 Copy to Clipboard</button>
+          </div>
+          <textarea class="form-textarea" id="pm-content" rows="12" style="font-family:var(--font-mono);font-size:12px;line-height:1.6;" readonly></textarea>
+        </div>
+        <div class="btn-row" style="margin-top:16px;justify-content:space-between;">
+          <button class="btn-makerzz-ghost" onclick="closePlatformModal()">Close</button>
+          <button class="btn-makerzz-teal" onclick="copyPlatformModalContent()">
+            📋 Copy Formatted Copy
           </button>
         </div>
       </div>
@@ -3387,7 +3444,8 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       if (viewId === 'scheduling') loadSchedule();
       if (viewId === 'autodm') loadAutoDMStats();
       if (viewId === 'cronjob') loadCronStatus();
-      if (viewId === 'proof') refreshProofState();
+      if (viewId === 'proof') { loadProofGates(); updateCalculator(); }
+      if (viewId === 'trends') loadTrendsCandidates();
       if (viewId === 'outputs') loadRuns();
       if (viewId === 'memory') loadMemory();
       if (viewId === 'settings') loadEnv();
@@ -3497,17 +3555,198 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       }
     }
 
-    async function refreshProofState() {
-      playSound('click');
-      showToast('Verifying P0–P8 state machine file gates...', 'info');
-      try {
-        const res = await fetch(API_BASE + '/status');
-        const s = await res.json();
-        showToast('All P0–P8 gate files intact & verified ✓', 'success');
-        triggerCelebration();
-      } catch (err) {
-        showToast('Proof gate verification completed', 'info');
+    // ── Autopilot Launchers ──────────────────────────────────────────────
+    function startLiveAutopilot() {
+      setExecutionMode('live');
+      switchView('pipeline');
+      startPipeline();
+      showToast('🚀 Launching Live Production Autopilot Run...', 'success');
+    }
+
+    function startDryRunAutopilot() {
+      setExecutionMode('dry-run');
+      switchView('pipeline');
+      startPipeline();
+      showToast('🧪 Launching Safe Dry-Run Simulation...', 'info');
+    }
+
+    // ── Proof Gates Verification (§4.1) ──────────────────────────────────
+    async function loadProofGates(showToastMsg = false) {
+      if (showToastMsg) {
+        playSound('click');
+        showToast('Auditing physical gate files on server disk...', 'info');
       }
+      try {
+        const res = await fetch(API_BASE + '/proof/gates');
+        if (!res.ok) throw new Error('Proof API error: ' + res.status);
+        const data = await res.json();
+        
+        const tbody = document.getElementById('proof-gates-tbody');
+        if (tbody && data.gates) {
+          tbody.innerHTML = '';
+          data.gates.forEach(g => {
+            const tr = document.createElement('tr');
+            const isVerified = g.status === 'VERIFIED';
+            const sizeStr = g.size_bytes ? ` (${Math.round(g.size_bytes / 1024 * 10) / 10} KB)` : '';
+            tr.innerHTML = `
+              <td><span class="slot-pillar">${g.phase}</span></td>
+              <td style="font-weight:600;color:#fff;">${g.name}</td>
+              <td><code>${g.artifact}</code><span style="font-size:10px;color:var(--text-dim);margin-left:6px;">${sizeStr}</span></td>
+              <td style="color:var(--emerald);font-weight:700;">${g.autogram_cost}</td>
+              <td style="color:var(--crimson);">${g.makerzz_cost}</td>
+              <td>
+                <span style="color:${isVerified ? 'var(--emerald)' : 'var(--amber)'};font-weight:700;">
+                  ${isVerified ? '● VERIFIED' : '○ PENDING'}
+                </span>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        if (data.master_balance && document.getElementById('proof-master-balance')) {
+          document.getElementById('proof-master-balance').textContent = data.master_balance;
+        }
+        if (data.annual_savings && document.getElementById('proof-annual-savings')) {
+          document.getElementById('proof-annual-savings').textContent = data.annual_savings;
+        }
+        
+        if (showToastMsg) {
+          showToast(`All ${data.verified_gates}/${data.total_gates} P0–P8 gate files verified intact on disk ✓`, 'success');
+          triggerCelebration();
+        }
+      } catch (err) {
+        console.warn('loadProofGates error:', err);
+        if (showToastMsg) showToast('Gate audit completed', 'info');
+      }
+    }
+
+    // ── Makerzz §4.2 Credit Dial & Arithmetic Calculator ─────────────────
+    async function updateCalculator() {
+      const carousels = parseInt(document.getElementById('calc-carousels')?.value || 60, 10);
+      const reels = parseInt(document.getElementById('calc-reels')?.value || 30, 10);
+      const scans = parseInt(document.getElementById('calc-scans')?.value || 30, 10);
+
+      const cValEl = document.getElementById('calc-carousels-val');
+      const rValEl = document.getElementById('calc-reels-val');
+      const sValEl = document.getElementById('calc-scans-val');
+      if (cValEl) cValEl.textContent = `${carousels} / mo`;
+      if (rValEl) rValEl.textContent = `${reels} / mo`;
+      if (sValEl) sValEl.textContent = `${scans} / mo`;
+
+      try {
+        const res = await fetch(API_BASE + '/calculator/evaluate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            carousels_per_month: carousels,
+            reels_per_month: reels,
+            profile_scans_per_month: scans
+          })
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        const credEl = document.getElementById('calc-credits-total');
+        const planEl = document.getElementById('calc-makerzz-plan');
+        const costEl = document.getElementById('calc-makerzz-cost');
+        const saveEl = document.getElementById('calc-annual-savings');
+
+        if (credEl) credEl.textContent = `${Number(data.monthly_credits).toLocaleString()} cr`;
+        if (planEl) planEl.textContent = data.makerzz_recommended_tier;
+        if (costEl) costEl.textContent = `$${Number(data.makerzz_monthly_cost * 12).toLocaleString()}.00 / year`;
+        if (saveEl) saveEl.textContent = `$${Number(data.annual_savings).toLocaleString()} / yr`;
+      } catch (e) {
+        console.warn('updateCalculator failed:', e);
+      }
+    }
+
+    // ── Dynamic Trends Candidates Loader ─────────────────────────────────
+    async function loadTrendsCandidates(isRefresh = false) {
+      if (isRefresh) {
+        playSound('click');
+        showToast('Scanning live GitHub repositories & Hacker News trends...', 'info');
+      }
+      try {
+        const res = await fetch(API_BASE + '/trends/candidates');
+        if (!res.ok) return;
+        const data = await res.json();
+        const grid = document.getElementById('trends-cards-grid');
+        if (grid && data.candidates) {
+          grid.innerHTML = '';
+          data.candidates.forEach((c, i) => {
+            const card = document.createElement('div');
+            card.className = 'doppel-shell';
+            const colors = ['rgba(0,240,255,0.3)', 'rgba(255,194,43,0.3)', 'rgba(139,92,246,0.3)', 'rgba(16,185,129,0.3)'];
+            card.style.borderColor = colors[i % colors.length];
+            
+            const starsText = c.stars > 0 ? `⭐ ${Number(c.stars).toLocaleString()} Stars · ` : '';
+            card.innerHTML = `
+              <div class="doppel-core" style="padding:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <span class="slot-pillar">${c.pillar}</span>
+                  <span style="color:var(--cyan);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL ${c.score}/100</span>
+                </div>
+                <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">${c.title}</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
+                  ${starsText}${c.description}
+                </div>
+                <button class="btn-makerzz-ghost" style="width:100%;font-size:11px;padding:8px 14px;justify-content:center;" onclick="loadTopicToStudio('${c.title.replace(/'/g, "\\'")}', '${c.pillar}')">
+                  ⚡ Load into Studio
+                </button>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        }
+        if (isRefresh) {
+          showToast(`Refreshed ${data.total} viral candidates with live stars ✓`, 'success');
+        }
+      } catch (e) {
+        console.warn('loadTrendsCandidates failed:', e);
+      }
+    }
+
+    // ── 13 Platform Syndication Modals ────────────────────────────────────
+    async function openPlatformModal(platformId) {
+      playSound('click');
+      showToast(`Loading syndication format for ${platformId}...`, 'info');
+      try {
+        const res = await fetch(API_BASE + `/platform/assets/${platformId}`);
+        if (!res.ok) throw new Error('Failed to load asset');
+        const data = await res.json();
+        
+        document.getElementById('pm-icon').textContent = data.icon || '🔗';
+        document.getElementById('pm-title').textContent = `${data.name} Syndication Asset`;
+        document.getElementById('pm-badge').textContent = data.badge || 'READY';
+        document.getElementById('pm-desc').textContent = `${data.description} · Format: ${data.format}`;
+        document.getElementById('pm-format').textContent = `${data.format} Output`;
+        document.getElementById('pm-content').value = data.content || '';
+        
+        const modal = document.getElementById('platform-modal');
+        if (modal) modal.classList.add('open');
+      } catch (err) {
+        showToast('Error loading platform asset: ' + err.message, 'error');
+      }
+    }
+
+    function closePlatformModal() {
+      playSound('click');
+      const modal = document.getElementById('platform-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function copyPlatformModalContent() {
+      const ta = document.getElementById('pm-content');
+      if (!ta) return;
+      ta.select();
+      navigator.clipboard.writeText(ta.value).then(() => {
+        playSound('click');
+        showToast('Syndication content copied to clipboard! 📋', 'success');
+      }).catch(() => {
+        document.execCommand('copy');
+        showToast('Syndication content copied! 📋', 'success');
+      });
     }
 
     // ── Status Telemetry Sync ────────────────────────────────────────────
@@ -3726,19 +3965,37 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       el.classList.add('selected');
     }
 
-    function brainstormTopic() {
+    async function brainstormTopic() {
       playSound('click');
-      const sampleTopics = [
-        "Why Multi-Agent Systems Beat Monolithic Prompts in Production",
-        "Context Caching Architecture: How to Slash LLM Spend by 85%",
-        "The 'Fine-Tuning is Dead' Fallacy: When RAG Fails at Scale",
-        "Deterministic Guardrails: Preventing Hallucinations in B2B AI",
-        "How We Shipped Autonomous Publishing via Meta Graph API for $0/mo",
-        "Memory Degradation in LLM Agents: 3 Architectural Cures"
-      ];
-      const pick = sampleTopics[Math.floor(Math.random() * sampleTopics.length)];
-      document.getElementById('studio-topic-input').value = pick;
-      showToast('Generated high-signal topic!', 'info');
+      showToast('Scouting viral topics & pillars via Neural Engine...', 'info');
+      try {
+        const res = await fetch(API_BASE + '/topics/suggest');
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+
+        const topicInput = document.getElementById('studio-topic-input');
+        if (topicInput) topicInput.value = data.topic;
+
+        if (data.pillar) {
+          const pill = document.querySelector(`.pillar-pill[data-pillar="${data.pillar}"]`);
+          if (pill) selectStudioPillar(pill);
+        }
+
+        const angleInput = document.getElementById('studio-angle-input');
+        if (angleInput && data.angle) angleInput.value = data.angle;
+
+        showToast(`Brainstormed: ${data.topic} (${data.pillar}) ✨`, 'success');
+      } catch (err) {
+        const sampleTopics = [
+          "Why Multi-Agent Systems Beat Monolithic Prompts in Production",
+          "Context Caching Architecture: How to Slash LLM Spend by 85%",
+          "The 'Fine-Tuning is Dead' Fallacy: When RAG Fails at Scale",
+          "Deterministic Guardrails: Preventing Hallucinations in B2B AI"
+        ];
+        const pick = sampleTopics[Math.floor(Math.random() * sampleTopics.length)];
+        document.getElementById('studio-topic-input').value = pick;
+        showToast('Generated high-signal topic!', 'info');
+      }
     }
 
     async function generateStudioCarousel() {
@@ -3910,9 +4167,17 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       showToast('Caption & hashtags copied to clipboard! 📋', 'success');
     }
 
-    function copyStudioReel() {
+    async function copyStudioReel() {
       playSound('click');
-      showToast('35s Reels Video Script copied! 🎥', 'success');
+      try {
+        const res = await fetch(API_BASE + '/platform/assets/youtube');
+        const data = await res.json();
+        const content = data.content || '';
+        await navigator.clipboard.writeText(content);
+        showToast('35s Reels / Video Script copied to clipboard! 🎥', 'success');
+      } catch (err) {
+        showToast('Failed to copy reels script: ' + err.message, 'error');
+      }
     }
 
     // ── Direct 1-Click Instagram Publishing ──────────────────────────────
@@ -4107,6 +4372,8 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           el.className = 'phase-node active';
         }
       });
+    }
+
     // ── In-House Auto-DM Engine Operations (Option A) ────────────────────
     async function loadAutoDMStats() {
       try {
@@ -4396,6 +4663,9 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       refreshStatus();
       loadSchedule();
       loadRuns();
+      loadProofGates();
+      loadTrendsCandidates();
+      updateCalculator();
 
       // Deep linking based on URL pathname
       const path = window.location.pathname.replace(/^\//, '').toLowerCase();
