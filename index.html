@@ -12,6 +12,11 @@
   <meta property="og:description" content="Zero-touch daily carousels written by editorial intelligence, rendered with deterministic typography, and published via Meta's official API.">
   <meta property="og:type" content="website">
 
+  <!-- Google Fonts Preconnect & High-Performance Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/landing.css">
   <link rel="stylesheet" href="css/components.css">
@@ -62,15 +67,15 @@
         </ul>
 
         <div class="nav-actions">
-          <a href="dashboard.html" class="btn btn-primary" style="padding: 10px 18px; font-size: 13px; background: linear-gradient(135deg, #00F0FF, #8B5CF6); color: #04060A; box-shadow: 0 0 20px rgba(0,240,255,0.4); font-weight: 800;">
+          <a href="dashboard.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 13px; font-weight: 800;">
             <span>⚡ Mission Cockpit</span>
           </a>
           <a href="#" id="open-portal-btn" class="btn btn-secondary trigger-portal-modal" style="padding: 10px 18px; font-size: 13px;">
             <span>Client Portal</span>
           </a>
-          <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot">
+          <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 10px 18px; font-size: 13px;">
             <span>Deploy Autopilot</span>
-            <span>→</span>
+            <span class="btn-icon-circle">→</span>
           </a>
         </div>
       </nav>
@@ -86,8 +91,7 @@
         </div>
 
         <h1 class="hero-title">
-          Turn Instagram Into An <br>
-          <span class="text-gradient">Autonomous B2B Acquisition</span> Engine
+          Turn Instagram Into An <span class="text-gradient">Autonomous B2B Acquisition</span> Engine
         </h1>
 
         <p class="hero-subtext">
@@ -95,13 +99,13 @@
         </p>
 
         <div class="hero-cta-group">
-          <a href="dashboard.html" class="btn btn-primary" style="padding: 18px 36px; font-size: 17px; background: linear-gradient(135deg, #00F0FF, #8B5CF6); color: #04060A; box-shadow: 0 0 32px rgba(0, 240, 255, 0.45); font-weight: 800;">
+          <a href="dashboard.html" class="btn btn-primary" style="padding: 16px 32px; font-size: 16px; font-weight: 800;">
             <span>Launch Neural Dashboard</span>
-            <span>⚡</span>
+            <span class="btn-icon-circle">⚡</span>
           </a>
-          <a href="#pricing" class="btn btn-secondary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 18px 34px; font-size: 17px;">
+          <a href="#pricing" class="btn btn-secondary trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 16px 30px; font-size: 16px;">
             <span>Deploy My Autopilot</span>
-            <span>→</span>
+            <span class="btn-icon-circle">→</span>
           </a>
         </div>
 
@@ -189,12 +193,12 @@
                 <span>Verified Proof / Benchmark Metric</span>
                 <span style="color: var(--neon-emerald);">CONFIDENCE: 98%</span>
               </div>
-              <p id="slide-proof" class="telemetry-body" style="font-family: var(--font-mono); font-size: 15px; color: #E2E8F0;">
+              <p id="slide-proof" class="telemetry-body" style="font-family: var(--font-mono); font-size: 14.5px; color: #E2E8F0;">
                 Benchmarked across 1.2M automated agent operations.
               </p>
             </div>
 
-            <div class="telemetry-card" style="border-left: 4px solid var(--neon-cyan);">
+            <div class="telemetry-card">
               <div class="telemetry-header">
                 <span>Instagram Caption Preview</span>
                 <span>FRONT-LOADED HOOK</span>
@@ -212,55 +216,63 @@
     </div>
   </section>
 
-  <!-- 5-Layer Autonomous Architecture Teardown -->
+  <!-- 6-Layer Autonomous Architecture Teardown -->
   <section id="architecture" class="section">
     <div class="container">
       <div class="text-center">
         <div class="section-tag">System Architecture</div>
-        <h2 class="section-title">The 5-Layer Autonomous Pipeline</h2>
+        <h2 class="section-title">The 6-Layer Autonomous Pipeline</h2>
         <p class="section-desc">
           Automate the mechanics aggressively; automate judgment conservatively. Why compound architecture beats fragile single-prompt scripts.
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; margin-top: 60px;">
-        <div class="telemetry-card" style="border-top: 4px solid var(--neon-cyan);">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-cyan); margin-bottom: 8px;">LAYER A</div>
-          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Knowledge Ingestion</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
-            Continuously ingests RSS, engineering whitepapers, and curated industry sources. Validates sources and deduplicates content into persistent database records.
+      <div class="arch-grid">
+        <div class="arch-card" style="--card-accent: var(--neon-cyan);">
+          <div class="arch-tag">LAYER A · INGESTION</div>
+          <h3 class="arch-title">Knowledge Ingestion</h3>
+          <p class="arch-desc">
+            Continuously ingests ArXiv, engineering whitepapers, GitHub trending repos, and curated RSS. Validates sources and deduplicates into persistent database records.
           </p>
         </div>
 
-        <div class="telemetry-card" style="border-top: 4px solid var(--neon-indigo);">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-indigo); margin-bottom: 8px;">LAYER B</div>
-          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Content Intelligence</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
-            Scores 10–20 candidates across novelty, evidence strength, utility, and save/share potential. Checks anti-repetition memory to prevent topic recycling.
+        <div class="arch-card" style="--card-accent: var(--neon-indigo);">
+          <div class="arch-tag">LAYER B · INTELLIGENCE</div>
+          <h3 class="arch-title">Content Intelligence</h3>
+          <p class="arch-desc">
+            Scores candidates across novelty, evidence strength, utility, and virality. Enforces 6-pillar rotation and anti-repetition memory to prevent topic recycling.
           </p>
         </div>
 
-        <div class="telemetry-card" style="border-top: 4px solid var(--neon-violet);">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-violet); margin-bottom: 8px;">LAYER C</div>
-          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Fact-Checking & QA Gate</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
-            Compares claims against evidence. Enforces the banned cliché filter and runs an automated 0–100 editorial scoring gate with bounded 2-pass retries.
+        <div class="arch-card" style="--card-accent: var(--neon-violet);">
+          <div class="arch-tag">LAYER C · VERIFICATION</div>
+          <h3 class="arch-title">Fact-Checking & QA Gate</h3>
+          <p class="arch-desc">
+            Cross-checks technical statements against evidence. Enforces the zero-cliché filter and runs an automated 0–100 editorial scoring gate with bounded retries.
           </p>
         </div>
 
-        <div class="telemetry-card" style="border-top: 4px solid var(--neon-emerald);">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-emerald); margin-bottom: 8px;">LAYER D</div>
-          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Deterministic Slide Renderer</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
-            Playwright headless Chromium renders 8 bespoke HTML/CSS templates into pixel-perfect 1080×1350 JPEG slides with zero font shifts or AI image glitches.
+        <div class="arch-card" style="--card-accent: var(--neon-emerald);">
+          <div class="arch-tag">LAYER D · SYNTHESIS</div>
+          <h3 class="arch-title">Deterministic Slide Renderer</h3>
+          <p class="arch-desc">
+            Playwright headless Chromium renders 8 bespoke HTML/CSS templates into pixel-perfect 1080×1350 JPEG slides with zero font shifts or AI visual glitches.
           </p>
         </div>
 
-        <div class="telemetry-card" style="border-top: 4px solid var(--neon-amber);">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--neon-amber); margin-bottom: 8px;">LAYER E</div>
-          <h3 style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 12px;">Meta Publishing & Feedback</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
-            Container-based official Meta Graph API publishing with auto-refreshing 60-day tokens and rolling analytics optimization for saves and shares.
+        <div class="arch-card" style="--card-accent: var(--neon-amber);">
+          <div class="arch-tag">LAYER E · DISTRIBUTION</div>
+          <h3 class="arch-title">Meta Publishing Engine</h3>
+          <p class="arch-desc">
+            Container-based official Meta Graph API publishing with auto-refreshing 60-day tokens and automated first-comment engagement injection.
+          </p>
+        </div>
+
+        <div class="arch-card" style="--card-accent: var(--neon-cyan);">
+          <div class="arch-tag">LAYER F · EVOLUTION</div>
+          <h3 class="arch-title">Memory & Growth Loop</h3>
+          <p class="arch-desc">
+            Syncs published posts to SQLite and persistent JSON ledger, optimizes save/share weights weekly, and triggers real-time keyword Auto-DM responses.
           </p>
         </div>
       </div>
@@ -300,7 +312,7 @@
                 <span id="spend-val" class="slider-value">$3,500 / mo</span>
               </div>
               <input type="range" id="spend-slider" class="range-slider" min="1000" max="8000" value="3500" step="250">
-              <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono);">
+              <div class="slider-ticks">
                 <span>$1,000/mo</span>
                 <span>$3,500/mo</span>
                 <span>$8,000/mo</span>
@@ -333,7 +345,7 @@
             <div style="margin-top: 28px;">
               <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%;">
                 <span>Lock In This ROI Today</span>
-                <span>→</span>
+                <span class="btn-icon-circle">→</span>
               </a>
             </div>
           </div>
@@ -384,9 +396,12 @@
               <li class="plan-feature-item"><span class="feature-check">✓</span> Email & Slack Exception Alerts</li>
             </ul>
           </div>
-          <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Starter Autopilot" style="width: 100%;">
-            <span>Deploy Starter</span>
-          </a>
+          <div class="pricing-btn-wrapper">
+            <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Starter Autopilot" style="width: 100%;">
+              <span>Deploy Starter</span>
+              <span class="btn-icon-circle">→</span>
+            </a>
+          </div>
         </div>
 
         <!-- Tier 2: Growth Autopilot (Featured) -->
@@ -409,10 +424,12 @@
               <li class="plan-feature-item"><span class="feature-check">✓</span> Weekly Analytics Learning & Score Optimization</li>
             </ul>
           </div>
-          <a href="#" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%;">
-            <span>Deploy Growth Autopilot</span>
-            <span>→</span>
-          </a>
+          <div class="pricing-btn-wrapper">
+            <a href="#" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%;">
+              <span>Deploy Growth Autopilot</span>
+              <span class="btn-icon-circle">→</span>
+            </a>
+          </div>
         </div>
 
         <!-- Tier 3: Enterprise Swarm -->
@@ -433,9 +450,12 @@
               <li class="plan-feature-item"><span class="feature-check">✓</span> Dedicated Solutions Engineer & Custom SLAs</li>
             </ul>
           </div>
-          <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Enterprise Swarm" style="width: 100%;">
-            <span>Talk to Enterprise</span>
-          </a>
+          <div class="pricing-btn-wrapper">
+            <a href="#" class="btn btn-secondary trigger-booking-modal" data-plan="Enterprise Swarm" style="width: 100%;">
+              <span>Talk to Enterprise</span>
+              <span class="btn-icon-circle">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -459,7 +479,7 @@
             <span class="t-dot yellow"></span>
             <span class="t-dot green"></span>
           </div>
-          <div class="terminal-title">bash — autogram-cli@engine-v2.4</div>
+          <div class="terminal-title">bash — autogram-cli@engine-v2.5</div>
           <div class="terminal-quick-cmds">
             <button class="t-cmd-btn" data-cmd="status">--status</button>
             <button class="t-cmd-btn" data-cmd="generate">--generate</button>
@@ -469,12 +489,12 @@
         </div>
 
         <div id="terminal-body" class="terminal-body">
-          <div class="terminal-line info">Autogram Autonomous Kernel v2.4 initialized. Ready for instructions.</div>
+          <div class="terminal-line info">Autogram Autonomous Kernel v2.5 initialized. Ready for instructions.</div>
           <div class="terminal-line">Type or click the commands above to inspect system telemetry...</div>
           <div class="terminal-line info">> autogram --status</div>
-          <div class="terminal-line">[SYS] System Kernel: v2.4-STABLE</div>
-          <div class="terminal-line">[NET] Meta Graph API: CONNECTED (Quota: 1/50)</div>
-          <div class="terminal-line">[AI] LLM Pipeline: READY (Gemini Free / Groq / Free Engine)</div>
+          <div class="terminal-line">[SYS] System Kernel: v2.5-QUANTUM</div>
+          <div class="terminal-line">[NET] Meta Graph API: CONNECTED (Account: @signhify.studio)</div>
+          <div class="terminal-line">[AI] Multi-LLM Pipeline: ACTIVE (Gemini / Groq / OpenRouter)</div>
           <div class="terminal-line success">[OK] All 7 automated quality tests passing. Zero operational debt.</div>
         </div>
       </div>
@@ -487,26 +507,29 @@
       <div class="text-center">
         <div class="section-tag">FAQ</div>
         <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-desc">
+          Everything you need to know about autonomous B2B publishing, Meta compliance, and fail-closed safety gates.
+        </p>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 48px;">
-        <div class="telemetry-card">
-          <h3 style="font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 8px;">Does this comply with Meta and Instagram's policies?</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+      <div class="faq-grid">
+        <div class="faq-card">
+          <h3 class="faq-title">Does this comply with Meta and Instagram's policies?</h3>
+          <p class="faq-body">
             Yes, 100%. We publish strictly through Meta's official Content Publishing Graph API for Professional Creator/Business accounts. We do NOT perform any banned engagement botting (like auto-following or comment pods). Growth is driven purely by high-signal content retention.
           </p>
         </div>
 
-        <div class="telemetry-card">
-          <h3 style="font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 8px;">What if the AI generates a factual error?</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+        <div class="faq-card">
+          <h3 class="faq-title">What if the AI generates a factual error?</h3>
+          <p class="faq-body">
             Autogram features a strict 2-tier safety gate: Layer C cross-checks all factual statements against verified sources and applies a fail-closed rule. Plus, you have an optional 10-minute weekly staging review window before any scheduled carousel goes live.
           </p>
         </div>
 
-        <div class="telemetry-card">
-          <h3 style="font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 8px;">Will this cost me anything in API or server bills?</h3>
-          <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+        <div class="faq-card">
+          <h3 class="faq-title">Will this cost me anything in API or server bills?</h3>
+          <p class="faq-body">
             Zero dollars. The engine is architected to utilize free AI tiers (Google Gemini 1,500 req/day free, Groq, or our built-in offline knowledge engine), free image rendering with local Chromium, free asset hosting tunnels, and free GitHub Actions runner minutes.
           </p>
         </div>

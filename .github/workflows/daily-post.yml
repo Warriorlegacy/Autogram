@@ -96,9 +96,10 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main || true
           git add data/content-memory.json autopilot.db data/dm_automation_state.json || true
           git diff --cached --quiet || git commit -m "chore(memory): record published carousel and auto-dm state [skip ci]"
-          git push || echo "Push skipped or not permitted"
+          git push origin main || echo "Push skipped or not permitted"
 
       - name: Upload Generated Carousel Artifacts
         if: always()

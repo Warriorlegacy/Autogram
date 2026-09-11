@@ -25,4 +25,6 @@ temp_guide.html
 *.zip
 daily-carousel-artifacts/
 .firecrawl/
-
+.codebase-memory/
+.kilo/
+.kilocode/
