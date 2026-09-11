@@ -3,6 +3,13 @@
     {
       "date": "2026-09-11",
       "pillar": "Developer Power Tools & CLI",
+      "topic": "The Reverse-Engineering System Prompt: Extracting Code, Architecture & API Contracts from Any URL",
+      "hook": "Stop paying for expensive proprietary cloud software. This 100% open source prompt runs on your own LLM.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-11",
+      "pillar": "Developer Power Tools & CLI",
       "topic": "Reverse\u2011Engineering Megaprompt: Open Source Alternative to SaaS Reverse\u2011Engineering Tools",
       "hook": "Stop paying $150/mo for SaaS. Reverse\u2011engineer any app yourself.",
       "score": 100
