@@ -83,6 +83,7 @@ The pipeline is triggered automatically via `cron-job.org` calling GitHub Action
 | `8429362` | **20:30 IST** | 15:00 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
 | `8429364` | **22:30 IST** | 17:00 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
 | `8429366` | **Every 10 min** | Every 10 min | Render Flask API Keep-Alive (`https://...onrender.com/health`) | **Active** |
+| `8430206` | **Every 15 min** | Every 15 min | Render 24/7 Auto-DM & Comment Scanner (`/api/cron/auto-dm`) | **Active** |
 
 - **Dispatch Event:** `publish_scheduled_slot`
 - **Workflow:** `.github/workflows/daily-post.yml` runs Ubuntu 24.04 with Playwright Chromium to render slides and publish.
