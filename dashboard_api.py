@@ -33,7 +33,7 @@ def get_brand_config() -> dict:
             return json.loads(BRAND_PATH.read_text(encoding="utf-8"))
         except Exception:
             pass
-    return {"handle": "@signhify.studio", "watermark": "@SIGNHIFY.STUDIO", "name": "Piyush | Growth Systems"}
+    return {"handle": "@signhify.studio", "watermark": "SIGNHIFY.STUDIO", "name": "Piyush | Growth Systems"}
 
 app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path="")
 CORS(app)

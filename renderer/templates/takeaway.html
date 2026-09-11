@@ -60,7 +60,7 @@
   <div class="slide-canvas {{ meta.theme_class | default('theme-blueprint') }}">
     <header class="slide-header">
       <div class="header-copyright">© 2026 // DISTILLED LAW</div>
-      <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
+      <div class="header-watermark">{{ brand.watermark | default('SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 
@@ -98,7 +98,7 @@
     </main>
 
     <footer class="slide-footer-editorial">
-      <div class="footer-handle-row">{{ brand.footer_text | default('@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS') }}</div>
+      <div class="footer-handle-row">{{ brand.footer_text | default('SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS') }}</div>
       <div class="pagination-dots">
         {% for i in range(1, meta.total_slides + 1) %}
         <div class="p-dot {% if i == slide.slide_number %}active{% endif %}"></div>

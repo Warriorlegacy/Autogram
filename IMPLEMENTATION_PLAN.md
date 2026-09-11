@@ -1,179 +1,243 @@
-# Autogram — Implementation Plan
+# Autogram Dashboard Redesign — Implementation Plan
 
-## Current State Assessment
-
-### What Works Well
-- The 5-layer pipeline is functional and well-structured in `orchestrator.py`
-- Multi-LLM fallback chain in `generator.py` is robust (9 providers, zero-cost guaranteed)
-- Playwright-based renderer produces deterministic 1080×1350 JPEGs
-- Flask dashboard with scheduler daemon is self-contained
-- GitHub Actions CI runs 7 daily slots with Render webhook failover
-- Cryptographic license gate is correctly implemented
-- SQLite schema covers content, sources, metrics, and experiments
-
-### Critical Technical Debt
-1. **No package management** (`pyproject.toml` / `setup.py` missing). `requirements.txt` is the only source of truth.
-2. **Hardcoded API key** in `src/storage/uploader.py` line 34 (`freeimage.host`).
-3. **No linter, typechecker, or formatter** in CI or local dev.
-4. **Scheduler logic is duplicated** between `orchestrator.py::run_scheduler` and `dashboard_api.py::scheduler_worker`.
-5. **`dashboard_api.py` subprocess invocation reads `DRY_RUN` from `.env` at launch**, not at runtime; changing `.env` requires restart.
-6. **No migration system** for `autopilot.db` schema changes.
-7. **Renderer requires outbound network** (Google Fonts CDN). Fails in locked-down CI without cache.
-8. **Tests have network dependencies** (`test_growth_engine.py::test_publish_endpoint_auto_generates_caption_and_hashtags` requires output artifacts).
-9. **`package.json` uses `uv pip install`** but the actual environment uses standard `pip`.
-10. **No structured error recovery** for failed Meta container creation (timeout after 180s with no retry).
+**Date:** 2026-09-11
+**Reference:** https://makerzz.space
+**Target:** https://autogram-dashboard.onrender.com/dashboard (dashboard.html + index.html)
 
 ---
 
-## Phase 1 — Hardening & Developer Experience (Weeks 1-2)
+## 1. Current State Analysis
 
-### 1.1 Add Standard Python Tooling
-- Add `pyproject.toml` with `[build-system]` (setuptools) and `[project]` metadata.
-- Add `ruff` + `black` config.
-- Add `mypy` strict config for `src/`.
-- Add `pre-commit` hooks: ruff, black, mypy.
-- **Why:** The repo currently has zero static analysis. `pydantic-settings` usage implies modern Python style, but there is no enforcement.
+### What exists
+| File | What it does | Lines |
+|---|---|---|
+| `dashboard.html` | Monolith SPA — 4,696 lines, inline CSS + HTML + JS | ~4,700 |
+| `index.html` | Marketing landing page | 770 |
+| `css/landing.css` | Landing page design tokens + layout | 397 |
+| `css/components.css` | Simulator, pricing, terminal, modal, toast | 771 |
+| `js/*.js` | Three.js scene, carousel simulator, ROI calc, auth | 5 files |
+| `renderer/css/design-system.css` | Slide renderer tokens (850+ lines) | — |
 
-### 1.2 Remove Hardcoded Secrets
-- Move `freeimage.host` API key to `.env` as `FREEIMAGE_API_KEY`.
-- Update `uploader.py` to read from `settings.freeimage_api_key` with a fallback to the existing key for backward compatibility, but emit a warning.
-- **Why:** Hardcoded keys in source control are a security risk, even if the service is free-tier.
+### Current design identity
+- **Dark OLED cyber-terminal** — neon cyan/violet glows, scanlines, WebGL 3D lattice, "Neural Mission Control" branding
+- **Fonts:** Archivo + Space Grotesk + JetBrains Mono
+- **Palette:** `#060606` void, `#00F0FF` cyan, `#8B5CF6` violet, `#10B981` emerald, `#FFC22B` amber
+- **Cards:** Double-bezel "doppel-shell" with frosted glass inner core
 
-### 1.3 Centralize Scheduler Logic
-- Extract the 7-slot scheduling loop into `src/scheduler/daemon.py`.
-- Have both `orchestrator.py --schedule` and `dashboard_api.py` import and run the same daemon.
-- **Why:** Duplicated logic in two files means bug fixes must be applied twice.
-
-### 1.4 Add Database Migrations
-- Introduce `alembic` for SQLite schema versioning.
-- Write initial migration for the 5 existing tables.
-- **Why:** Schema changes (e.g., adding indexes, new columns) currently require manual `ALTER TABLE` statements with no rollback path.
-
-### 1.5 Improve Test Reliability
-- Add pytest fixtures for temporary output directories and mocked uploader.
-- Make `test_growth_engine.py::test_publish_endpoint_auto_generates_caption_and_hashtags` skip gracefully when no output runs exist (instead of returning 404).
-- Add `pytest-xdist` for parallel test execution.
-- **Why:** Tests should not depend on external state or network calls.
+### Makerzz reference identity
+- **Clean editorial dark** — no scanlines, no 3D lattices, no terminal aesthetic
+- **Fonts:** Archivo (display) + Space Grotesk (body) + JetBrains Mono (code) — same stack, different application
+- **Palette:** `#060606` void, `#0E6F77` teal, `#FFC22B` amber, `#10222A` ink — **warm, not neon**
+- **Buttons:** Pill-shaped (`border-radius: 999px`), 3D shadow (`box-shadow: 0px 5px 0px`), amber primary
+- **Cards:** Flat with subtle borders, no glow effects, no double-bezel
+- **Layout:** Generous whitespace, single-column hero, no sidebar dashboard
 
 ---
 
-## Phase 2 — Resilience & Observability (Weeks 3-4)
+## 2. Gap Analysis: What to Change
 
-### 2.1 Structured Logging
-- Replace `logging.basicConfig` with structlog or `logging` with JSON formatter.
-- Emit `pipeline_start`, `pipeline_end`, `quality_gate_rejection`, `meta_publish_success` events.
-- **Why:** Currently logs are plain text. Structured logs make debugging production failures (especially in GitHub Actions) much faster.
+### HIGH PRIORITY (visual identity shift)
 
-### 2.2 Retry & Circuit Breaker for Meta API
-- Wrap Meta Graph API calls (`publisher.py`) with `tenacity` retry (exponential backoff, max 3 retries).
-- Add circuit breaker for repeated 4xx/5xx failures to avoid burning quota.
-- **Why:** The 180s container wait has no retry. A transient Meta outage kills the entire pipeline.
+| # | Area | Current (Autogram) | Target (Makerzz-like) | Effort |
+|---|---|---|---|---|
+| 1 | **Remove scanlines + noise overlays** | `body::after` scanlines, `.cyber-scanlines`, `.cyber-noise` | Clean solid backgrounds | Delete 3 CSS rules |
+| 2 | **Remove WebGL 3D lattice** | `#dashboard-webgl` Three.js canvas | No 3D background | Remove `<canvas>` + script |
+| 3 | **Button system** | Neon glow pill buttons with cyan glow shadows | 3D push-effect pill buttons with `box-shadow: 0px 5px 0px #10222A` | Rewrite `.btn` classes |
+| 4 | **Card system** | Double-bezel doppel-shell with frosted glass | Flat cards with `1px solid rgba(255,255,255,0.08)` borders | Rewrite `.doppel-shell` |
+| 5 | **Color accent** | Cyan `#00F0FF` as primary accent | Teal `#0E6F77` + Amber `#FFC22B` as primary accents | Update CSS variables |
+| 6 | **Typography tone** | "NEURAL MISSION CONTROL v2.5" sci-fi labels | Clean, editorial, product-focused labels | Rewrite headings/copy |
+| 7 | **Sidebar** | 280px fixed sidebar with nav items | Makerzz has no sidebar — uses top nav or no nav in app | Decision needed |
 
-### 2.3 Renderer Font Cache
-- Bundle Google Fonts locally or use `playwright install-deps` + font cache in CI.
-- Add a `--no-fonts` flag to `render_sample()` for offline environments.
-- **Why:** Renderer fails silently in locked-down CI. Deterministic rendering is the product's core value proposition.
+### MEDIUM PRIORITY (layout + UX)
 
-### 2.4 Health Check Endpoints
-- Expand `/health` in `dashboard_api.py` to include:
-  - DB connectivity check
-  - Playwright browser availability
-  - LLM provider reachability (lightweight ping)
-  - Meta token validity (lightweight Graph API call)
-- **Why:** Current health check is a static string. Operators cannot tell if the engine is actually functional.
+| # | Area | Change | Effort |
+|---|---|---|---|
+| 8 | **Hero/dashboard header** | Replace terminal telemetry bar with clean status bar | Rewrite topbar HTML+CSS |
+| 9 | **Streak/level badges** | Remove gamification chrome (🔥 streak, LVL 9) | Delete sidebar streak card |
+| 10 | **Pipeline terminal** | Replace terminal console with clean step-by-step progress | New component |
+| 11 | **Platform grid** | Makerzz: horizontal icon row with labels. Ours: grid of cards with status | Restyle to match |
+| 12 | **Pricing section** | Makerzz: 3 clean cards with bullet lists. Ours: already close but with neon glow | Remove glow, add 3D shadow |
+| 13 | **FAQ/accordion** | Makerzz has clean FAQ. Ours: none on dashboard | Add FAQ component |
+| 14 | **Footer** | Makerzz: minimal 3-column footer. Ours: none on dashboard | Add minimal footer |
 
-### 2.5 Content Memory Indexes
-- Add SQLite indexes on `content_items(publication_date)`, `content_items(status)`, `source_records(content_hash)`.
-- Add a `recent_topics` materialized view for fast anti-repetition lookups.
-- **Why:** `scorer.py` loads the full `content-memory.json` into memory. As history grows, this will become a bottleneck.
+### LOW PRIORITY (polish)
 
----
-
-## Phase 3 — Pipeline Extensibility (Weeks 5-6)
-
-### 3.1 Pipeline as DAG
-- Refactor `run_pipeline()` from a linear sequence into a DAG of named stages.
-- Each stage returns a result dict; stages can be skipped or retried independently.
-- Add a `--stage` flag to run individual stages (e.g., `--stage render-only`).
-- **Why:** Currently the pipeline is a monolith. Debugging a single stage failure requires running the full pipeline.
-
-### 3.2 Plugin Architecture for LLM Providers
-- Define a `LLMProvider` protocol in `src/content/providers/base.py`.
-- Move each provider method (`generate_with_gemini`, `generate_with_groq`, etc.) into its own class.
-- Register providers via entry points or a simple registry dict.
-- **Why:** Adding a new provider currently requires editing `generator.py` directly. A plugin system keeps the core clean.
-
-### 3.3 Output Artifact Validation
-- Add a post-render validation step that checks every slide against `renderer/validate.py` rules.
-- Fail the pipeline early if a slide exceeds 80-char headlines or 240-char body.
-- **Why:** Currently validation is a warning-only log message. Bad slides can still be published.
-
-### 3.4 Carousel Template Registry
-- Move `LAYOUT_TO_TEMPLATE` into `data/brand.json` or a dedicated `templates/registry.json`.
-- Allow brand profiles to specify custom template mappings per pillar.
-- **Why:** Template selection is currently hardcoded in `render.py`. Brand customization is a customer requirement.
+| # | Area | Change | Effort |
+|---|---|---|---|
+| 15 | **Animations** | Makerzz: subtle fade-in, no confetti/particles | Remove confetti canvas |
+| 16 | **Mobile responsive** | Makerzz: clean mobile layout. Ours: sidebar breaks on mobile | Add mobile hamburger/nav |
+| 17 | **Font weights** | Makerzz: lighter weights for body (400-500), bold only for headings | Audit weight usage |
 
 ---
 
-## Phase 4 — Production Readiness (Weeks 7-8)
+## 3. Implementation Phases
 
-### 4.1 GitHub Actions Improvements
-- Add `actions/cache` for `~/.cache/ms-playwright` (already present, verify it works).
-- Add a lint job that runs `ruff check src/` on every PR.
-- Add a test job that runs `pytest tests/ -v --tb=short`.
-- Add a deployment gate: only deploy to Render if tests pass.
-- **Why:** CI currently only runs the publish job. There is no quality gate before code reaches production.
+### Phase 1: Design Token Migration (30 min)
+**Goal:** Make the CSS variables match makerzz's palette and typography
 
-### 4.2 Render.com Health Monitoring
-- Add a cron job that pings `/health` every 10 minutes and sends an alert if the dashboard is down.
-- Configure Render to restart the service if `/health` fails 3x in a row.
-- **Why:** Render free tier spins down after 15 minutes of inactivity. The keep-alive workflow exists but does not verify actual engine health.
-
-### 4.3 Secrets Management
-- Audit all `os.environ.get()` and `settings.*` accesses in `dashboard_api.py` and `orchestrator.py`.
-- Ensure no secret is ever returned by an API endpoint (verify `redact()` covers all sensitive keys).
-- Rotate the hardcoded `freeimage.host` key if it has ever been committed.
-- **Why:** `dashboard_api.py::api_env_get` redacts some keys, but the allowlist may be incomplete.
-
-### 4.4 Performance Profiling
-- Profile `orchestrator.py --run-all` end-to-end. Target: < 5 minutes total.
-- Identify bottlenecks: LLM API latency (multiple providers tried), Playwright launch overhead, image upload cascade.
-- Add timing metrics to `pipeline_manifest.json`.
-- **Why:** The pipeline currently has no performance budgets. Slow runs will cause scheduler slot overlaps.
-
-### 4.5 Multi-Account Support (Enterprise)
-- Extend `data/brand.json` schema to support multiple brand profiles.
-- Add brand selection to `dashboard_api.py` publish and generate endpoints.
-- Update scheduler to cycle through enabled brands.
-- **Why:** The pricing page advertises "Up to 3 Distinct Brand Accounts" for Enterprise, but the engine only supports one brand profile.
-
----
-
-## Execution Order
+**Files to edit:** `dashboard.html` `:root` block (lines 26-88)
 
 ```
-Phase 1.1 (pyproject.toml + ruff/black)
-    → Phase 1.2 (remove hardcoded key)
-    → Phase 1.3 (centralize scheduler)
-    → Phase 1.4 (alembic migrations)
-    → Phase 1.5 (test reliability)
-
-Phase 2.1 (structured logging)
-    → Phase 2.2 (Meta retries)
-    → Phase 2.3 (font cache)
-    → Phase 2.4 (health endpoints)
-    → Phase 2.5 (memory indexes)
-
-Phase 3.1 (DAG pipeline)
-    → Phase 3.2 (LLM plugins)
-    → Phase 3.3 (artifact validation)
-    → Phase 3.4 (template registry)
-
-Phase 4.1 (CI improvements)
-    → Phase 4.2 (Render monitoring)
-    → Phase 4.3 (secrets audit)
-    → Phase 4.4 (profiling)
-    → Phase 4.5 (multi-account)
+Changes:
+- --makerzz-teal: #0E6F77 (keep, already exists)
+- --makerzz-amber: #FFC22B (keep, already exists)
+- Remove --cyan, --cyan-glow as PRIMARY accents
+- Make teal the primary interactive color
+- Make amber the CTA/primary action color
+- Keep violet/emerald as secondary badges only
 ```
 
-Phases are sequential because each builds on the previous. Within a phase, items marked with `→` are also sequential. Items not connected by arrows within the same phase can be parallelized.
+**Verify:** Every button, link, and badge still has visible contrast on `#060606` background.
+
+### Phase 2: Remove Cyber Chrome (15 min)
+**Goal:** Strip the sci-fi overlays that makerzz doesn't have
+
+**Delete these CSS rules from dashboard.html:**
+- `body::after` scanlines (lines ~118-132)
+- `.cyber-noise` (lines ~134-141)
+- `#confetti-canvas` (line ~143-148)
+- `#dashboard-webgl` canvas element + Three.js script tag
+
+**Delete from index.html:**
+- `css/landing.css` scanlines rule (lines 52-62)
+- `js/three-scene.js` script tag
+
+### Phase 3: Button System Rewrite (45 min)
+**Goal:** Replace neon glow buttons with makerzz-style 3D push buttons
+
+**Current:** `.btn-island-primary` with `box-shadow: 0 0 24px var(--cyan-glow)`
+**Target:** `.btn-makerzz-primary` with `box-shadow: 0px 5px 0px #10222A` (already partially implemented in lines 697-749)
+
+**Action:**
+1. Make `.btn-makerzz-amber` the default primary button
+2. Make `.btn-makerzz-white` the secondary button
+3. Remove `.btn-island-primary`, `.btn-island-violet`, `.btn-primary` glow variants
+4. Update all button references in HTML
+
+### Phase 4: Card System Rewrite (30 min)
+**Goal:** Replace doppel-shell cards with flat makerzz-style cards
+
+**Current:** `.doppel-shell` with backdrop-filter blur + double border
+**Target:** Simple `.card` with `background: var(--bg-surface)`, `border: 1px solid var(--border-outer)`, `border-radius: 16px`
+
+**Action:**
+1. Create `.card` class matching makerzz flat card style
+2. Replace all `.doppel-shell > .doppel-core` patterns
+3. Remove backdrop-filter blur from cards (keep it only on sidebar/topbar)
+
+### Phase 5: Layout Restructure (1-2 hrs)
+**Goal:** Restructure dashboard to match makerzz's clean single-column flow
+
+**Decision: Keep sidebar or go top-nav?**
+- Makerzz: no sidebar in app, top nav with pills
+- Current Autogram: 280px sidebar with 15+ nav items
+- **Recommendation:** Keep sidebar but make it collapsible on mobile, clean up nav items
+
+**Action:**
+1. Reduce sidebar width from 280px to 260px
+2. Remove streak/level gamification card from sidebar
+3. Clean up nav labels: "Command & Control" → "Dashboard", "Content Studio & Publish LIVE" → "Studio"
+4. Remove emoji prefixes from nav items
+5. Add a clean topbar with user avatar + minimal telemetry (not terminal-style)
+
+### Phase 6: Content/Copy Rewrite (1 hr)
+**Goal:** Replace sci-fi terminal copy with makerzz-style editorial copy
+
+**Examples:**
+| Current | Makerzz-style |
+|---|---|
+| "NEURAL MISSION CONTROL v2.5" | "Dashboard" |
+| "⚡ Mission Control" | "Overview" |
+| "✍️ Content Studio & Publish LIVE" | "Studio" |
+| "🛡️ Proof & Gate Ledger (P0-P8)" | "Pipeline" |
+| "🚀 Pipeline Console" | "Runs" |
+| "Live Telemetry" | "Status" |
+| "Autonomous 7x Daily Publishing Daemon" | "Auto-publishing schedule" |
+
+### Phase 7: Landing Page Alignment (1 hr)
+**Goal:** Make index.html match makerzz's landing page structure
+
+**Makerzz landing structure:**
+1. Clean top nav (logo + 6 links + CTA)
+2. Hero: "Paste your social media here" with input + platform pills
+3. "How it runs" — 4-step numbered flow with images
+4. "What you actually get" — screenshot walkthrough carousel
+5. "What autopilot means" — growth chart + feature grid
+6. "Where it posts" — platform icon row
+7. FAQ accordion
+8. CTA footer
+
+**Autogram current structure:**
+1. HUD telemetry bar + nav
+2. Hero: "Turn Instagram Into An Autonomous B2B Acquisition Engine"
+3. 3D Carousel Simulator
+4. Architecture section
+5. ROI Calculator
+6. Pricing cards
+7. Terminal console
+
+**Action:**
+1. Remove HUD telemetry bar from index.html
+2. Simplify hero to makerzz-style clean headline + input CTA
+3. Replace 3D simulator with clean screenshot walkthrough
+4. Replace terminal with FAQ accordion
+5. Keep pricing cards but restyle to match makerzz flat style
+
+---
+
+## 4. File Change Summary
+
+| File | Action | Est. Lines Changed |
+|---|---|---|
+| `dashboard.html` | Major edit — CSS tokens, remove scanlines, rewrite buttons/cards, restructure layout | ~800 |
+| `index.html` | Major edit — remove HUD bar, rewrite hero, add FAQ, clean up structure | ~300 |
+| `css/landing.css` | Medium edit — remove scanlines, update tokens to match new palette | ~50 |
+| `css/components.css` | Medium edit — restyle pricing cards, remove terminal glow | ~80 |
+| `js/three-scene.js` | Delete or gut (no 3D background) | -120 |
+| `js/app.js` | Minor — remove confetti, sound synthesizer references | ~30 |
+
+**New files needed:** None. All changes are edits to existing files.
+
+---
+
+## 5. What NOT to Change
+
+These Autogram features are stronger than makerzz and should stay:
+
+- **Sidebar navigation** — makerzz doesn't have a dashboard like this; our sidebar is better for power users
+- **Platform connection grid** — our 13-platform grid with status badges is more detailed
+- **Pipeline state machine visualization** — makerzz describes it in prose; we show it live
+- **Auto-DM engine** — unique feature, not in makerzz
+- **Cron-job.org webhook integration** — unique feature
+- **3D Slide Deck Inspector** — our carousel viewer is more interactive
+- **Brand.json design system** — the renderer design system is separate and should not change
+
+---
+
+## 6. Execution Order
+
+```
+Phase 1: Tokens        → 30 min  → Visual palette shifts immediately
+Phase 2: Remove chrome → 15 min  → Clean, less noisy
+Phase 3: Buttons       → 45 min  → Biggest visual impact
+Phase 4: Cards         → 30 min  → Consistency
+Phase 5: Layout        → 2 hrs   → Structural alignment
+Phase 6: Copy          → 1 hr    — Tone alignment
+Phase 7: Landing       → 1 hr    — Full alignment
+                       ────────
+                       ~5.5 hrs total
+```
+
+**Start with Phase 1+2+3 together** — these are all CSS-only changes that immediately make the dashboard feel makerzz-like without touching HTML structure.
+
+---
+
+## 7. Verification
+
+After each phase, check:
+1. `dashboard.html` renders in browser without JS errors
+2. `index.html` renders without broken layouts
+3. All buttons are clickable and have visible hover states
+4. No neon glow artifacts remain (unless intentional)
+5. Mobile viewport (< 768px) doesn't break
+6. Existing API calls in `dashboard_api.py` still work (no backend changes needed)

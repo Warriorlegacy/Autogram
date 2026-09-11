@@ -71,9 +71,9 @@ class CarouselRenderer:
         self.brand = brand_profile or {
             "brand_name": "Signhify Studio",
             "handle": "@signhify.studio",
-            "watermark": "@SIGNHIFY.STUDIO",
+            "watermark": "SIGNHIFY.STUDIO",
             "name": "Piyush | Growth Systems",
-            "footer_text": "@SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS",
+            "footer_text": "SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS",
             "sign_off": "My name is Piyush. Stop posting. Start shipping.",
             "colors": {}
         }

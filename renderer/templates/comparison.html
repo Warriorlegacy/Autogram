@@ -125,7 +125,7 @@
   <div class="slide-canvas {{ meta.theme_class | default('theme-blueprint') }}">
     <header class="slide-header">
       <div class="header-copyright">© 2026 // PARADIGM COMPARISON</div>
-      <div class="header-watermark">{{ brand.watermark | default('@SIGNHIFY.STUDIO') | upper }}</div>
+      <div class="header-watermark">{{ brand.watermark | default('SIGNHIFY.STUDIO') | upper }}</div>
       <div class="header-counter">{{ "%02d" | format(slide.slide_number) }} / {{ "%02d" | format(meta.total_slides) }}</div>
     </header>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AUTOGRAM AI — Neural Mission Control & Autonomous Studio</title>
+  <title>AUTOGRAM — Dashboard</title>
   
    <!-- Makerzz.space & Autogram Pro Fonts (Archivo, Space Grotesk, JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,6 +12,11 @@
 
   <!-- Three.js CDN for 3D WebGL Quantum Lattice -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Day/night: set before first paint to avoid flash -->
+  <script>
+    try { document.documentElement.setAttribute('data-theme', localStorage.getItem('autogram_theme') || 'dark'); } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+  </script>
 
   <style>
     /* ═══════════════════════════════════════════════════════════════════════
@@ -24,7 +29,7 @@
     }
 
     :root {
-      /* Makerzz.space Official Palette (§5.1 Reverse Engineering Report) */
+      /* Makerzz.space Design System — Premium Editorial Dark */
       --makerzz-void:       #060606;
       --makerzz-teal:       #0E6F77;
       --makerzz-teal-dark:  #0A545C;
@@ -36,35 +41,36 @@
       --makerzz-shadow-hover: rgb(16, 34, 42) 0px 7px 0px;
       --makerzz-shadow-active: rgb(16, 34, 42) 0px 2px 0px;
 
-      /* OLED Void Palette */
+      /* Base Palette */
       --bg-void:        #060606;
       --bg-base:        #070A10;
       --bg-surface:     #0B0F19;
       --bg-surface-elev:#111624;
       --bg-surface-hover:#161D2F;
       
-      /* Glowing Cyber Neon Accents */
-      --cyan:           #00F0FF;
-      --cyan-glow:      rgba(0, 240, 255, 0.35);
-      --cyan-dim:       rgba(0, 240, 255, 0.12);
-      --cyan-hairline:  rgba(0, 240, 255, 0.25);
+      /* Primary Accent — Teal (makerzz primary interactive) */
+      --cyan:           #0E6F77;
+      --cyan-glow:      rgba(14, 111, 119, 0.35);
+      --cyan-dim:       rgba(14, 111, 119, 0.12);
+      --cyan-hairline:  rgba(14, 111, 119, 0.30);
 
+      /* Secondary Accents */
       --violet:         #8B5CF6;
-      --violet-glow:    rgba(139, 92, 246, 0.35);
-      --violet-dim:     rgba(139, 92, 246, 0.12);
-      --violet-hairline:rgba(139, 92, 246, 0.25);
+      --violet-glow:    rgba(139, 92, 246, 0.25);
+      --violet-dim:     rgba(139, 92, 246, 0.10);
+      --violet-hairline:rgba(139, 92, 246, 0.20);
 
       --emerald:        #10B981;
-      --emerald-glow:   rgba(16, 185, 129, 0.35);
-      --emerald-dim:    rgba(16, 185, 129, 0.12);
+      --emerald-glow:   rgba(16, 185, 129, 0.25);
+      --emerald-dim:    rgba(16, 185, 129, 0.10);
 
       --amber:          #FFC22B;
-      --amber-glow:     rgba(255, 194, 43, 0.35);
-      --amber-dim:      rgba(255, 194, 43, 0.12);
+      --amber-glow:     rgba(255, 194, 43, 0.25);
+      --amber-dim:      rgba(255, 194, 43, 0.10);
 
       --crimson:        #EF4444;
-      --crimson-glow:   rgba(239, 68, 68, 0.35);
-      --crimson-dim:    rgba(239, 68, 68, 0.12);
+      --crimson-glow:   rgba(239, 68, 68, 0.25);
+      --crimson-dim:    rgba(239, 68, 68, 0.10);
 
       /* Typography */
       --text-main:      #F8FAFC;
@@ -72,19 +78,56 @@
       --text-muted:     #64748B;
       --text-dim:       #475569;
 
-      /* Borders & Hardware Outer Shell */
-      --border-outer:   rgba(255, 255, 255, 0.09);
-      --border-inner:   rgba(255, 255, 255, 0.05);
-      --border-active:  rgba(0, 240, 255, 0.4);
+      /* Borders */
+      --border-outer:   rgba(255, 255, 255, 0.08);
+      --border-inner:   rgba(255, 255, 255, 0.04);
+      --border-active:  rgba(14, 111, 119, 0.40);
 
-      /* Typography scale - Exact Makerzz Stack */
+      /* Typography Stack — matches makerzz exactly */
       --font-display:   'Archivo', 'Space Grotesk', -apple-system, sans-serif;
       --font-sans:      'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono:      'JetBrains Mono', monospace;
 
-      /* Motion physics */
+      /* Motion */
       --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
       --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Day mode — flip surfaces, text, borders; accents stay identical */
+    [data-theme="light"] {
+      --bg-void:        #FFFFFF;
+      --bg-base:        #F4F6F8;
+      --bg-surface:     #FFFFFF;
+      --bg-surface-elev:#F1F4F6;
+      --bg-surface-hover:#E8EEF1;
+      --text-main:      #10222A;
+      --text-secondary: #3D5560;
+      --text-muted:     #6B8490;
+      --text-dim:       #93A9B3;
+      --border-outer:   rgba(16, 34, 42, 0.14);
+      --border-inner:   rgba(16, 34, 42, 0.08);
+    }
+
+    /* Day-mode fixes for hardcoded dark fills */
+    [data-theme="light"] .topbar {
+      background: rgba(255, 255, 255, 0.88);
+    }
+    [data-theme="light"] .telemetry-chip,
+    [data-theme="light"] .audio-synth-btn {
+      background: rgba(16, 34, 42, 0.05);
+    }
+    [data-theme="light"] .page-title {
+      color: var(--text-main);
+    }
+    [data-theme="light"] .sidebar {
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 10px 0 40px rgba(16, 34, 42, 0.08);
+    }
+    [data-theme="light"] .sidebar-footer {
+      background: rgba(16, 34, 42, 0.03);
+    }
+    [data-theme="light"] .brand-title {
+      color: var(--text-main);
     }
 
     html, body {
@@ -101,50 +144,16 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       2. 3D WEBGL BACKGROUND & SCI-FI SCANLINES
+       2. BACKGROUND — clean editorial dark, no WebGL/scanlines
        ═══════════════════════════════════════════════════════════════════════ */
     #dashboard-webgl {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.65;
-      transition: opacity 0.5s ease;
+      display: none;
     }
 
-    .cyber-scanlines {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(255,255,255,0) 50%,
-        rgba(0, 0, 0, 0.25) 50%,
-        rgba(0, 0, 0, 0.25)
-      );
-      background-size: 100% 4px;
-      opacity: 0.45;
-    }
-
-    .cyber-noise {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background-image: radial-gradient(circle at 50% 20%, rgba(0, 240, 255, 0.04) 0%, transparent 60%),
-                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
-    }
-
+    .cyber-scanlines,
+    .cyber-noise,
     #confetti-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
+      display: none;
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
@@ -190,15 +199,14 @@
       width: 42px;
       height: 42px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      background: var(--makerzz-teal);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-display);
       font-weight: 800;
       font-size: 20px;
-      color: #04060A;
-      box-shadow: 0 0 20px var(--cyan-glow);
+      color: #ffffff;
       flex-shrink: 0;
       position: relative;
       overflow: hidden;
@@ -208,7 +216,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+      background: linear-gradient(to bottom, rgba(255,255,255,0.15), transparent);
     }
 
     .brand-title {
@@ -220,70 +228,16 @@
     }
 
     .brand-title span {
-      color: var(--cyan);
-      text-shadow: 0 0 12px var(--cyan-glow);
+      color: var(--makerzz-teal);
     }
 
     .brand-subtitle {
       font-size: 10px;
       font-family: var(--font-mono);
-      color: var(--text-muted);
+      color: var(--text-dim);
       letter-spacing: 0.14em;
       margin-top: 2px;
       text-transform: uppercase;
-    }
-
-    /* Streak & Dopamine HUD Badge */
-    .sidebar-streak-card {
-      margin: 16px 14px 4px;
-      padding: 12px 14px;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(139, 92, 246, 0.08));
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .streak-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .streak-flame {
-      font-size: 22px;
-      animation: flamePulse 1.8s infinite alternate ease-in-out;
-    }
-
-    @keyframes flamePulse {
-      0% { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 4px #F59E0B); }
-      100% { transform: scale(1.15) rotate(3deg); filter: drop-shadow(0 0 12px #EF4444); }
-    }
-
-    .streak-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: #F8FAFC;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .streak-subtitle {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      color: var(--amber);
-    }
-
-    .streak-level-pill {
-      background: rgba(245, 158, 11, 0.18);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: var(--amber);
-      font-size: 10px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 20px;
     }
 
     /* Navigation Links */
@@ -329,10 +283,9 @@
     }
 
     .nav-item.active {
-      background: linear-gradient(90deg, var(--cyan-dim), rgba(139, 92, 246, 0.08));
+      background: rgba(14, 111, 119, 0.12);
       color: #fff;
-      border-color: var(--cyan-hairline);
-      box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.08);
+      border-color: rgba(14, 111, 119, 0.30);
     }
 
     .nav-item.active::before {
@@ -343,8 +296,7 @@
       bottom: 20%;
       width: 3px;
       border-radius: 0 4px 4px 0;
-      background: var(--cyan);
-      box-shadow: 0 0 10px var(--cyan);
+      background: var(--makerzz-teal);
     }
 
     .nav-icon {
@@ -363,14 +315,12 @@
       font-weight: 700;
       padding: 2px 7px;
       border-radius: 12px;
-      background: var(--cyan);
-      color: #04060A;
-      box-shadow: 0 0 8px var(--cyan-glow);
+      background: var(--makerzz-teal);
+      color: #ffffff;
     }
 
     .nav-badge.live {
       background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald-glow);
     }
 
     .sidebar-footer {
@@ -460,7 +410,7 @@
       border-radius: 6px;
       background: var(--cyan-dim);
       border: 1px solid var(--cyan-hairline);
-      color: var(--cyan);
+      color: var(--makerzz-teal);
     }
 
     .topbar-right {
@@ -488,8 +438,6 @@
       height: 7px;
       border-radius: 50%;
       background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald);
-      animation: pulseGlow 1.8s infinite alternate;
     }
 
     @keyframes pulseGlow {
@@ -499,7 +447,6 @@
 
     .chip-pulse.amber {
       background: var(--amber);
-      box-shadow: 0 0 8px var(--amber);
     }
 
     /* Sound Synthesizer Audio Button */
@@ -559,37 +506,34 @@
       gap: 28px;
     }
 
-    /* Outer Shell: Machine Aluminum / Frosted Border Tray */
+    /* ═══════════════════════════════════════════════════════════════════════
+       CARD SYSTEM — flat editorial (makerzz-style)
+       ═══════════════════════════════════════════════════════════════════════ */
     .doppel-shell {
-      background: rgba(11, 15, 25, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: var(--bg-surface);
       border: 1px solid var(--border-outer);
-      border-radius: 22px;
-      padding: 2px;
-      transition: border-color 0.25s var(--ease-out-expo), transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo);
+      border-radius: 16px;
+      padding: 0;
+      transition: border-color 0.2s ease, transform 0.2s ease;
       position: relative;
     }
 
     .doppel-shell:hover {
-      border-color: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.14);
     }
 
     .doppel-shell.glow-cyan:hover {
       border-color: var(--cyan-hairline);
-      box-shadow: 0 8px 32px rgba(0, 240, 255, 0.08);
     }
 
     .doppel-shell.glow-violet:hover {
       border-color: var(--violet-hairline);
-      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.08);
     }
 
-    /* Inner Core: Dark OLED Chamber */
+    /* Inner Core — seamless blend (flattened double-bezel) */
     .doppel-core {
-      background: var(--bg-surface);
-      border-radius: 20px;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
+      background: transparent;
+      border-radius: 14px;
       padding: 22px;
     }
 
@@ -617,27 +561,29 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       5. BUTTON-IN-BUTTON & ISLAND CTA SYSTEM
+       5. BUTTON SYSTEM — makerzz 3D-push pills
        ═══════════════════════════════════════════════════════════════════════ */
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       padding: 10px 20px;
-      border-radius: 12px;
+      border-radius: 999px;
       font-size: 13px;
-      font-weight: 600;
-      font-family: var(--font-sans);
+      font-weight: 700;
+      font-family: var(--font-display);
       cursor: pointer;
-      border: none;
-      transition: all 0.2s var(--ease-out-expo);
+      border: 2px solid var(--makerzz-ink);
+      box-shadow: var(--makerzz-shadow-3d);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
       user-select: none;
       white-space: nowrap;
       text-decoration: none;
     }
 
     .btn:active {
-      transform: scale(0.97);
+      transform: translateY(3px);
+      box-shadow: var(--makerzz-shadow-active);
     }
 
     .btn:disabled {
@@ -646,21 +592,58 @@
       pointer-events: none;
     }
 
-    /* Primary Island Button with Button-in-Button Trailing Icon */
-    .btn-island-primary {
-      background: var(--cyan);
-      color: #04060A;
-      box-shadow: 0 0 24px var(--cyan-glow);
-      font-weight: 700;
-      padding-right: 8px;
+    /* Primary — amber pill (makerzz signature CTA) */
+    .btn-island-primary,
+    .btn-primary {
+      background: var(--makerzz-amber);
+      color: var(--makerzz-ink);
+    }
+    .btn-island-primary:hover:not(:disabled),
+    .btn-primary:hover:not(:disabled) {
+      background: #ffd054;
+      transform: translateY(-2px);
+      box-shadow: var(--makerzz-shadow-hover);
     }
 
-    .btn-island-primary:hover:not(:disabled) {
-      background: #38f4ff;
-      box-shadow: 0 0 32px rgba(0, 240, 255, 0.55);
-      transform: translateY(-1px);
+    /* Violet pill */
+    .btn-island-violet {
+      background: var(--violet);
+      color: #fff;
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+    .btn-island-violet:hover:not(:disabled) {
+      background: #9d74f7;
+      transform: translateY(-2px);
+      box-shadow: var(--makerzz-shadow-hover);
     }
 
+    /* Teal pill */
+    .btn-makerzz-teal {
+      background: var(--makerzz-teal);
+      color: #ffffff;
+    }
+    .btn-makerzz-teal:hover {
+      background: #11828c;
+      transform: translateY(-2px);
+      box-shadow: var(--makerzz-shadow-hover);
+    }
+
+    /* Ghost pill */
+    .btn-makerzz-ghost,
+    .btn-makerzz-white {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    .btn-makerzz-ghost:hover,
+    .btn-makerzz-white:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: var(--makerzz-shadow-hover);
+    }
+
+    /* Icon tray inside button */
     .btn-island-icon-tray {
       width: 28px;
       height: 28px;
@@ -672,138 +655,13 @@
       font-size: 14px;
       transition: transform 0.2s ease;
     }
-
     .btn-island-primary:hover .btn-island-icon-tray {
       transform: translateX(2px);
     }
 
-    .btn-island-violet {
-      background: var(--violet);
-      color: #fff;
-      box-shadow: 0 0 24px var(--violet-glow);
-      font-weight: 700;
-      padding-right: 8px;
-    }
-
-    .btn-island-violet:hover:not(:disabled) {
-      background: #9d74f7;
-      box-shadow: 0 0 32px rgba(139, 92, 246, 0.55);
-      transform: translateY(-1px);
-    }
-
     /* ═══════════════════════════════════════════════════════════════════════
-       MAKERZZ.SPACE SIGNATURE BUTTONS & FLOATING ISLAND NAV (§5.1 & §5.2)
+       MAKERZZ FLOATING ISLAND NAV (§5.2)
        ═══════════════════════════════════════════════════════════════════════ */
-    .btn-makerzz-primary, .btn-makerzz-amber {
-      background: var(--makerzz-amber);
-      color: var(--makerzz-ink);
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 13px;
-      letter-spacing: 0.02em;
-      padding: 10px 22px;
-      border-radius: 999px;
-      border: 2px solid var(--makerzz-ink);
-      box-shadow: var(--makerzz-shadow-3d);
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-    .btn-makerzz-primary:hover, .btn-makerzz-amber:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--makerzz-shadow-hover);
-      background: #ffd054;
-    }
-    .btn-makerzz-primary:active, .btn-makerzz-amber:active {
-      transform: translateY(3px);
-      box-shadow: var(--makerzz-shadow-active);
-    }
-
-    .btn-makerzz-white {
-      background: #ffffff;
-      color: var(--makerzz-ink);
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 10px 20px;
-      border-radius: 999px;
-      border: 2px solid var(--makerzz-ink);
-      box-shadow: var(--makerzz-shadow-3d);
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-    .btn-makerzz-white:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--makerzz-shadow-hover);
-    }
-    .btn-makerzz-white:active {
-      transform: translateY(3px);
-      box-shadow: var(--makerzz-shadow-active);
-    }
-
-    .btn-makerzz-teal {
-      background: var(--makerzz-teal);
-      color: #ffffff;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 10px 20px;
-      border-radius: 999px;
-      border: 2px solid rgba(0, 240, 255, 0.3);
-      box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 0px;
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-    .btn-makerzz-teal:hover {
-      background: #11828c;
-      transform: translateY(-2px);
-      box-shadow: rgba(0, 0, 0, 0.4) 0px 7px 0px;
-    }
-    .btn-makerzz-teal:active {
-      transform: translateY(3px);
-      box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 0px;
-    }
-
-    .btn-makerzz-ghost {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 10px 20px;
-      border-radius: 999px;
-      border: 2px solid rgba(255, 255, 255, 0.12);
-      box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 0px;
-      cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease, border-color 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-    .btn-makerzz-ghost:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
-      box-shadow: rgba(0, 0, 0, 0.3) 0px 6px 0px;
-    }
-    .btn-makerzz-ghost:active {
-      transform: translateY(3px);
-      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 0px;
-    }
-
-    /* Makerzz Sticky Island Pill Nav */
     .makerzz-island-nav {
       position: sticky;
       top: 16px;
@@ -946,9 +804,9 @@
     }
 
     .platform-status-badge.ready {
-      background: rgba(0, 240, 255, 0.12);
-      color: var(--cyan);
-      border: 1px solid rgba(0, 240, 255, 0.25);
+      background: var(--cyan-dim);
+      color: var(--makerzz-teal);
+      border: 1px solid var(--cyan-hairline);
     }
 
     .btn-ghost {
@@ -1156,9 +1014,8 @@
       width: 220px;
       height: 275px; /* 4:5 aspect ratio */
       background: linear-gradient(145deg, #0f1422, #070a12);
-      border: 1px solid var(--cyan-hairline);
+      border: 1px solid var(--border-outer);
       border-radius: 16px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 30px var(--cyan-dim);
       transform: rotateY(-8deg) rotateX(4deg);
       transition: all 0.4s var(--ease-out-expo);
       padding: 18px;
@@ -1172,8 +1029,7 @@
 
     .holo-slide-card:hover {
       transform: rotateY(0deg) rotateX(0deg) scale(1.05);
-      border-color: var(--cyan);
-      box-shadow: 0 20px 50px rgba(0, 240, 255, 0.25);
+      border-color: var(--makerzz-teal);
     }
 
     .holo-slide-role {
@@ -1209,7 +1065,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 24px;
-      background: linear-gradient(90deg, rgba(0, 240, 255, 0.04), rgba(139, 92, 246, 0.04));
+      background: var(--bg-surface-elev);
       border-radius: 18px;
       border: 1px solid var(--border-outer);
       margin-bottom: 24px;
@@ -1231,13 +1087,11 @@
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      box-shadow: 0 0 20px var(--emerald-glow);
     }
 
     .daemon-indicator-orb.stopped {
       background: var(--crimson-dim);
       border-color: var(--crimson);
-      box-shadow: 0 0 20px var(--crimson-glow);
     }
 
     .daemon-title {
@@ -1368,8 +1222,7 @@
     }
 
     .form-input:focus, .form-textarea:focus, .form-select:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 14px var(--cyan-glow);
+      border-color: var(--makerzz-teal);
     }
 
     .pillar-pills-selector {
@@ -1419,14 +1272,13 @@
       max-width: 320px;
       aspect-ratio: 4/5;
       background: #0B0F19;
-      border: 1px solid var(--cyan-hairline);
+      border: 1px solid var(--border-outer);
       border-radius: 14px;
       padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 20px var(--cyan-dim);
       transition: transform 0.3s ease;
     }
 
@@ -1503,9 +1355,8 @@
 
     .phase-node.active {
       background: var(--cyan-dim);
-      border-color: var(--cyan);
-      color: var(--cyan);
-      box-shadow: 0 0 16px var(--cyan-dim);
+      border-color: var(--makerzz-teal);
+      color: var(--makerzz-teal);
     }
 
     .phase-node.active .phase-node-num {
@@ -1639,8 +1490,7 @@
       max-height: 80vh;
       max-width: 90vw;
       border-radius: 14px;
-      border: 1px solid var(--cyan-hairline);
-      box-shadow: 0 0 50px rgba(0, 240, 255, 0.25);
+      border: 1px solid var(--border-outer);
     }
 
     /* Toast Stack */
@@ -1721,72 +1571,60 @@
           <div class="brand-glyph">A</div>
           <div>
             <div class="brand-title">AUTOGRAM<span>.AI</span></div>
-            <div class="brand-subtitle">NEURAL COCKPIT v2.5</div>
+            <div class="brand-subtitle">Zero-Touch Carousel Engine</div>
           </div>
         </a>
       </div>
 
-      <!-- Autonomous Streak Multiplier Card -->
-      <div class="sidebar-streak-card">
-        <div class="streak-left">
-          <span class="streak-flame">🔥</span>
-          <div>
-            <div class="streak-title">7-Day Streak</div>
-            <div class="streak-subtitle">Autonomous Mode</div>
-          </div>
-        </div>
-        <div class="streak-level-pill">LVL 9</div>
-      </div>
-
       <!-- Navigation Menu -->
       <nav class="sidebar-nav">
-        <div class="nav-section-label">Command & Control</div>
+        <div class="nav-section-label">Dashboard</div>
         <div class="nav-item active" data-view="overview" onclick="switchView('overview', this)">
-          <span class="nav-icon">⚡</span> Mission Control
+          <span class="nav-icon">📊</span> Overview
         </div>
         <div class="nav-item" data-view="publishing" onclick="switchView('publishing', this)">
-          <span class="nav-icon">✍️</span> Content Studio & Publish
+          <span class="nav-icon">✍️</span> Studio
           <span class="nav-badge live">LIVE</span>
         </div>
         <div class="nav-item" data-view="scheduling" onclick="switchView('scheduling', this)">
-          <span class="nav-icon">📅</span> Post Scheduler
+          <span class="nav-icon">📅</span> Schedule
           <span class="nav-badge" id="nav-queue-badge">3</span>
         </div>
         <div class="nav-item" data-view="autodm" onclick="switchView('autodm', this)">
-          <span class="nav-icon">💬</span> Auto-DM Engine (Option A)
+          <span class="nav-icon">💬</span> Auto-DM
           <span class="nav-badge" style="background:var(--emerald);color:#000;font-weight:700;">FREE</span>
         </div>
 
-        <div class="nav-section-label">Distribution & Virality</div>
+        <div class="nav-section-label">Grow</div>
         <div class="nav-item" data-view="integrations" onclick="switchView('integrations', this)">
-          <span class="nav-icon">🔗</span> Connect (13 Platforms)
+          <span class="nav-icon">🔗</span> Integrations
         </div>
         <div class="nav-item" data-view="trends" onclick="switchView('trends', this)">
-          <span class="nav-icon">📈</span> Daily Trends Scout
+          <span class="nav-icon">📈</span> Trends
         </div>
         <div class="nav-item" data-view="proof" onclick="switchView('proof', this)">
-          <span class="nav-icon">🛡️</span> Proof & Gate Ledger (P0-P8)
+          <span class="nav-icon">🛡️</span> Proof
         </div>
         <div class="nav-item" data-view="cronjob" onclick="switchView('cronjob', this)">
-          <span class="nav-icon">⏰</span> Cron-Job.org Cloud Hub
+          <span class="nav-icon">⏰</span> Cron Scheduler
           <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;">WEBHOOKS</span>
         </div>
 
-        <div class="nav-section-label">Archive & Intelligence</div>
+        <div class="nav-section-label">Content</div>
         <div class="nav-item" data-view="outputs" onclick="switchView('outputs', this)">
-          <span class="nav-icon">🖼️</span> Slide Vault
+          <span class="nav-icon">🖼️</span> Slides
           <span class="nav-badge" id="nav-runs-badge">0</span>
         </div>
         <div class="nav-item" data-view="memory" onclick="switchView('memory', this)">
-          <span class="nav-icon">🧠</span> Neural Memory
+          <span class="nav-icon">🧠</span> Memory
         </div>
 
-        <div class="nav-section-label">Infrastructure</div>
+        <div class="nav-section-label">System</div>
         <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
-          <span class="nav-icon">🚀</span> Pipeline Console
+          <span class="nav-icon">🚀</span> Pipeline
         </div>
         <div class="nav-item" data-view="settings" onclick="switchView('settings', this)">
-          <span class="nav-icon">⚙️</span> Core Config & Keys
+          <span class="nav-icon">⚙️</span> Settings
         </div>
       </nav>
 
@@ -1795,7 +1633,7 @@
           <span>←</span> Back to Public Portal
         </a>
         <div class="sidebar-meta-row">
-          <span>@signhify.studio</span>
+          <span>SIGNHIFY.STUDIO</span>
           <span style="color:var(--emerald);" id="sidebar-dry-tag">● LIVE MODE</span>
         </div>
       </div>
@@ -1808,12 +1646,18 @@
       <header class="topbar">
         <div class="topbar-left">
           <div class="page-title">
-            <span id="page-title-text">Mission Control</span>
+            <span id="page-title-text">Overview</span>
             <span class="page-title-badge" id="page-badge">LIVE TELEMETRY</span>
           </div>
         </div>
 
         <div class="topbar-right">
+          <!-- Day / Night Mode Toggle -->
+          <button class="audio-synth-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch day / night mode">
+            <span id="theme-toggle-icon">🌙</span>
+            <span id="theme-toggle-label">DARK</span>
+          </button>
+
           <!-- Audio Synthesizer Button -->
           <button class="audio-synth-btn active" id="audio-toggle-btn" onclick="toggleAudio()" title="Toggle High-Tech UI Synthesizer Sound FX">
             <div class="audio-bars">
@@ -1969,7 +1813,7 @@
                     </div>
                   </div>
                   <div class="holo-slide-footer">
-                    <span>@signhify.studio</span>
+                    <span>SIGNHIFY.STUDIO</span>
                     <span>1080×1350</span>
                   </div>
                 </div>
@@ -2183,7 +2027,7 @@
                     </p>
                   </div>
                   <div class="holo-slide-footer">
-                    <span>@signhify.studio</span>
+                    <span>SIGNHIFY.STUDIO</span>
                     <span style="color:var(--cyan)">AUTOGRAM AI</span>
                   </div>
                 </div>
@@ -2886,7 +2730,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         </div><!-- /view-cronjob -->
 
         <!-- ══════════════════════════════════════════════════════════════════
-             VIEW 4: NEURAL PIPELINE CONSOLE
+             VIEW 4: PIPELINE
              ══════════════════════════════════════════════════════════════════ -->
         <div class="cockpit-view" id="view-pipeline">
 
@@ -2944,8 +2788,8 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               </div>
 
               <div class="cyber-console" id="pipeline-console">
-                <span class="log-line sys">[AUTOGRAM-NEURAL-OS] Mission Control Pipeline Console initialized.</span>
-                <span class="log-line sys">[AUTOGRAM-NEURAL-OS] Ready for manual trigger or scheduled autonomous dispatch.</span>
+                <span class="log-line sys">[AUTOGRAM] Pipeline Console initialized.</span>
+                <span class="log-line sys">[AUTOGRAM] Ready for manual trigger or scheduled dispatch.</span>
               </div>
             </div>
           </div>
@@ -2970,7 +2814,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         </div><!-- /view-outputs -->
 
         <!-- ══════════════════════════════════════════════════════════════════
-             VIEW 6: NEURAL MEMORY & KNOWLEDGE GRAPH
+             VIEW 6: MEMORY
              ══════════════════════════════════════════════════════════════════ -->
         <div class="cockpit-view" id="view-memory">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
@@ -3236,6 +3080,21 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       else if (type === 'alert') AudioEngine.alert();
     }
 
+    // ── Day / Night Mode (persisted) ───────────────────────────────────
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('autogram_theme', theme); } catch (e) {}
+      const icon = document.getElementById('theme-toggle-icon');
+      const label = document.getElementById('theme-toggle-label');
+      if (icon) icon.textContent = theme === 'light' ? '☀️' : '🌙';
+      if (label) label.textContent = theme === 'light' ? 'LIGHT' : 'DARK';
+    }
+
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      applyTheme(cur === 'light' ? 'dark' : 'light');
+    }
+
     function toggleAudio() {
       audioEnabled = !audioEnabled;
       const btn = document.getElementById('audio-toggle-btn');
@@ -3261,7 +3120,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       canvas.height = window.innerHeight;
 
       const particles = [];
-      const colors = ['#00F0FF', '#8B5CF6', '#10B981', '#F59E0B', '#FFFFFF'];
+      const colors = ['#0E6F77', '#8B5CF6', '#10B981', '#FFC22B', '#FFFFFF'];
 
       for (let i = 0; i < 90; i++) {
         particles.push({
@@ -3425,21 +3284,21 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       if (foundPill) foundPill.classList.add('active');
 
       const titleMap = {
-        overview: 'Mission Control',
-        scheduling: 'Autonomous Post Scheduler & Queue',
-        publishing: 'AI Content Studio & Instant Publish',
-        autodm: 'In-House Auto-DM & Comment Engine',
-        integrations: 'Distribution Rails & Integrations',
-        trends: 'Real-Time Trend Scout & Virality Gate',
-        proof: 'Autonomous State Machine & Proof Verification',
-        cronjob: 'External Cloud Triggers (Cron-Job.org Hub)',
-        pipeline: 'Neural Pipeline Console',
-        outputs: 'Slide Vault & History',
-        memory: 'Neural Memory & Knowledge Graph',
-        settings: 'Core System Config & Credentials'
+        overview: 'Overview',
+        scheduling: 'Schedule',
+        publishing: 'Studio',
+        autodm: 'Auto-DM',
+        integrations: 'Integrations',
+        trends: 'Trends',
+        proof: 'Proof',
+        cronjob: 'Cron Scheduler',
+        pipeline: 'Pipeline',
+        outputs: 'Slides',
+        memory: 'Memory',
+        settings: 'Settings'
       };
 
-      document.getElementById('page-title-text').textContent = titleMap[viewId] || 'Mission Control';
+      document.getElementById('page-title-text').textContent = titleMap[viewId] || 'Overview';
 
       if (viewId === 'scheduling') loadSchedule();
       if (viewId === 'autodm') loadAutoDMStats();
@@ -4294,7 +4153,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     function clearPipelineLog() {
       playSound('click');
       const c = document.getElementById('pipeline-console');
-      c.innerHTML = '<span class="log-line sys">[AUTOGRAM-NEURAL-OS] Console cleared.</span>';
+      c.innerHTML = '<span class="log-line sys">[AUTOGRAM] Console cleared.</span>';
       resetPhaseNodes();
     }
 
@@ -4661,6 +4520,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     // ── Initialization ───────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
+      try { applyTheme(localStorage.getItem('autogram_theme') || 'dark'); } catch (e) { applyTheme('dark'); }
       refreshStatus();
       loadSchedule();
       loadRuns();

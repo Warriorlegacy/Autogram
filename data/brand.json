@@ -1,10 +1,10 @@
 {
   "brand_name": "Signhify Studio",
   "handle": "@signhify.studio",
-  "watermark": "@SIGNHIFY.STUDIO",
+  "watermark": "SIGNHIFY.STUDIO",
   "avatar_letter": "P",
   "name": "Piyush | FOSS & Secret Prompts",
-  "footer_text": "@SIGNHIFY.STUDIO · PIYUSH | FOSS & SECRET PROMPTS",
+  "footer_text": "SIGNHIFY.STUDIO · PIYUSH | FOSS & SECRET PROMPTS",
   "sign_off": "My name is Piyush. Stop posting. Start shipping.",
   "positioning": "Demystifying Free & Open Source Software (FOSS), viral ChatGPT prompt codes, high-leverage developer tools, local AI architectures, and self-hosted infrastructure for high-output builders and founders.",
   "target_audience": [
