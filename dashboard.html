@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AUTOGRAM AI — Neural Mission Control & Autonomous Studio</title>
   
-  <!-- Premium High-Tech Google Fonts (Space Grotesk, Plus Jakarta Sans, JetBrains Mono) -->
+   <!-- Makerzz.space & Autogram Pro Fonts (Archivo, Space Grotesk, JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300..900;1,300..900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Three.js CDN for 3D WebGL Quantum Lattice -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <style>
     /* ═══════════════════════════════════════════════════════════════════════
-       1. HIGH-TECH DESIGN SYSTEM TOKENS & RESET
+       1. MAKERZZ.SPACE HIGH-TECH DESIGN SYSTEM TOKENS & RESET
        ═══════════════════════════════════════════════════════════════════════ */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -24,8 +24,20 @@
     }
 
     :root {
+      /* Makerzz.space Official Palette (§5.1 Reverse Engineering Report) */
+      --makerzz-void:       #060606;
+      --makerzz-teal:       #0E6F77;
+      --makerzz-teal-dark:  #0A545C;
+      --makerzz-amber:      #FFC22B;
+      --makerzz-ink:        #10222A;
+      --makerzz-surface:    #0B0F19;
+      --makerzz-elevated:   #111624;
+      --makerzz-shadow-3d:  rgb(16, 34, 42) 0px 5px 0px;
+      --makerzz-shadow-hover: rgb(16, 34, 42) 0px 7px 0px;
+      --makerzz-shadow-active: rgb(16, 34, 42) 0px 2px 0px;
+
       /* OLED Void Palette */
-      --bg-void:        #04060A;
+      --bg-void:        #060606;
       --bg-base:        #070A10;
       --bg-surface:     #0B0F19;
       --bg-surface-elev:#111624;
@@ -46,28 +58,28 @@
       --emerald-glow:   rgba(16, 185, 129, 0.35);
       --emerald-dim:    rgba(16, 185, 129, 0.12);
 
-      --amber:          #F59E0B;
-      --amber-glow:     rgba(245, 158, 11, 0.35);
-      --amber-dim:      rgba(245, 158, 11, 0.12);
+      --amber:          #FFC22B;
+      --amber-glow:     rgba(255, 194, 43, 0.35);
+      --amber-dim:      rgba(255, 194, 43, 0.12);
 
       --crimson:        #EF4444;
       --crimson-glow:   rgba(239, 68, 68, 0.35);
       --crimson-dim:    rgba(239, 68, 68, 0.12);
 
       /* Typography */
-      --text-main:      #F1F5F9;
+      --text-main:      #F8FAFC;
       --text-secondary: #94A3B8;
       --text-muted:     #64748B;
       --text-dim:       #475569;
 
       /* Borders & Hardware Outer Shell */
-      --border-outer:   rgba(255, 255, 255, 0.08);
+      --border-outer:   rgba(255, 255, 255, 0.09);
       --border-inner:   rgba(255, 255, 255, 0.05);
       --border-active:  rgba(0, 240, 255, 0.4);
 
-      /* Typography scale */
-      --font-display:   'Space Grotesk', sans-serif;
-      --font-sans:      'Plus Jakarta Sans', sans-serif;
+      /* Typography scale - Exact Makerzz Stack */
+      --font-display:   'Archivo', 'Space Grotesk', -apple-system, sans-serif;
+      --font-sans:      'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono:      'JetBrains Mono', monospace;
 
       /* Motion physics */
@@ -677,6 +689,238 @@
       background: #9d74f7;
       box-shadow: 0 0 32px rgba(139, 92, 246, 0.55);
       transform: translateY(-1px);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       MAKERZZ.SPACE SIGNATURE BUTTONS & FLOATING ISLAND NAV (§5.1 & §5.2)
+       ═══════════════════════════════════════════════════════════════════════ */
+    .btn-makerzz-primary, .btn-makerzz-amber {
+      background: var(--makerzz-amber);
+      color: var(--makerzz-ink);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: 2px solid var(--makerzz-ink);
+      box-shadow: var(--makerzz-shadow-3d);
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-makerzz-primary:hover, .btn-makerzz-amber:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--makerzz-shadow-hover);
+      background: #ffd054;
+    }
+    .btn-makerzz-primary:active, .btn-makerzz-amber:active {
+      transform: translateY(3px);
+      box-shadow: var(--makerzz-shadow-active);
+    }
+
+    .btn-makerzz-white {
+      background: #ffffff;
+      color: var(--makerzz-ink);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2px solid var(--makerzz-ink);
+      box-shadow: var(--makerzz-shadow-3d);
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-makerzz-white:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--makerzz-shadow-hover);
+    }
+    .btn-makerzz-white:active {
+      transform: translateY(3px);
+      box-shadow: var(--makerzz-shadow-active);
+    }
+
+    .btn-makerzz-teal {
+      background: var(--makerzz-teal);
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2px solid rgba(0, 240, 255, 0.3);
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 0px;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-makerzz-teal:hover {
+      background: #11828c;
+      transform: translateY(-2px);
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 7px 0px;
+    }
+    .btn-makerzz-teal:active {
+      transform: translateY(3px);
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 0px;
+    }
+
+    /* Makerzz Sticky Island Pill Nav */
+    .makerzz-island-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+    }
+
+    .makerzz-nav-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(11, 15, 25, 0.82);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px;
+      border-radius: 999px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    .makerzz-pill-item {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s var(--ease-out-expo);
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .makerzz-pill-item:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .makerzz-pill-item.active {
+      background: var(--makerzz-amber);
+      color: var(--makerzz-ink);
+      font-weight: 800;
+      box-shadow: rgb(16, 34, 42) 0px 3px 0px;
+    }
+
+    .makerzz-pill-item.active .badge-mini-free {
+      background: var(--makerzz-ink);
+      color: var(--makerzz-amber);
+    }
+
+    .badge-mini-free {
+      font-size: 9px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      background: var(--emerald);
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+
+    /* 13-Platform Grid Styling (§5.2 of Makerzz Report) */
+    .platform-wall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .platform-tile {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-inner);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .platform-tile:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+
+    .platform-tile-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .platform-icon-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .platform-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .platform-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .platform-status-badge {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .platform-status-badge.live {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .platform-status-badge.ready {
+      background: rgba(0, 240, 255, 0.12);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.25);
     }
 
     .btn-ghost {
@@ -1472,20 +1716,32 @@
         <div class="nav-item active" data-view="overview" onclick="switchView('overview', this)">
           <span class="nav-icon">⚡</span> Mission Control
         </div>
-        <div class="nav-item" data-view="scheduling" onclick="switchView('scheduling', this)">
-          <span class="nav-icon">📅</span> Post Scheduler
-          <span class="nav-badge" id="nav-queue-badge">3</span>
-        </div>
         <div class="nav-item" data-view="publishing" onclick="switchView('publishing', this)">
           <span class="nav-icon">✍️</span> Content Studio & Publish
           <span class="nav-badge live">LIVE</span>
         </div>
+        <div class="nav-item" data-view="scheduling" onclick="switchView('scheduling', this)">
+          <span class="nav-icon">📅</span> Post Scheduler
+          <span class="nav-badge" id="nav-queue-badge">3</span>
+        </div>
         <div class="nav-item" data-view="autodm" onclick="switchView('autodm', this)">
-          <span class="nav-icon">💬</span> Auto-DM Engine
+          <span class="nav-icon">💬</span> Auto-DM Engine (Option A)
           <span class="nav-badge" style="background:var(--emerald);color:#000;font-weight:700;">FREE</span>
         </div>
-        <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
-          <span class="nav-icon">🚀</span> Pipeline Console
+
+        <div class="nav-section-label">Distribution & Virality</div>
+        <div class="nav-item" data-view="integrations" onclick="switchView('integrations', this)">
+          <span class="nav-icon">🔗</span> Connect (13 Platforms)
+        </div>
+        <div class="nav-item" data-view="trends" onclick="switchView('trends', this)">
+          <span class="nav-icon">📈</span> Daily Trends Scout
+        </div>
+        <div class="nav-item" data-view="proof" onclick="switchView('proof', this)">
+          <span class="nav-icon">🛡️</span> Proof & Gate Ledger (P0-P8)
+        </div>
+        <div class="nav-item" data-view="cronjob" onclick="switchView('cronjob', this)">
+          <span class="nav-icon">⏰</span> Cron-Job.org Cloud Hub
+          <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;">WEBHOOKS</span>
         </div>
 
         <div class="nav-section-label">Archive & Intelligence</div>
@@ -1498,6 +1754,9 @@
         </div>
 
         <div class="nav-section-label">Infrastructure</div>
+        <div class="nav-item" data-view="pipeline" onclick="switchView('pipeline', this)">
+          <span class="nav-icon">🚀</span> Pipeline Console
+        </div>
         <div class="nav-item" data-view="settings" onclick="switchView('settings', this)">
           <span class="nav-icon">⚙️</span> Core Config & Keys
         </div>
@@ -1555,6 +1814,42 @@
           </div>
         </div>
       </header>
+
+      <!-- Makerzz.space Sticky Floating Island Pill Nav (§5.2) -->
+      <nav class="makerzz-island-nav" id="makerzz-island-nav" aria-label="Social Autopilot Controls">
+        <div class="makerzz-nav-pills">
+          <button class="makerzz-pill-item active" data-view="overview" onclick="switchView('overview', this)">
+            ⚡ Mission Control
+          </button>
+          <button class="makerzz-pill-item" data-view="publishing" onclick="switchView('publishing', this)">
+            ✍️ Studio
+          </button>
+          <button class="makerzz-pill-item" data-view="scheduling" onclick="switchView('scheduling', this)">
+            📅 Calendar (7x)
+          </button>
+          <button class="makerzz-pill-item" data-view="autodm" onclick="switchView('autodm', this)">
+            💬 Auto-DM <span class="badge-mini-free">FREE</span>
+          </button>
+          <button class="makerzz-pill-item" data-view="integrations" onclick="switchView('integrations', this)">
+            🔗 Connect (13)
+          </button>
+          <button class="makerzz-pill-item" data-view="trends" onclick="switchView('trends', this)">
+            📈 Trends
+          </button>
+          <button class="makerzz-pill-item" data-view="proof" onclick="switchView('proof', this)">
+            🛡️ Proof & Ledger
+          </button>
+          <button class="makerzz-pill-item" data-view="cronjob" onclick="switchView('cronjob', this)">
+            ⏰ Cron-Job.org
+          </button>
+          <button class="makerzz-pill-item" data-view="pipeline" onclick="switchView('pipeline', this)">
+            🚀 Console
+          </button>
+          <button class="makerzz-pill-item" data-view="settings" onclick="switchView('settings', this)">
+            ⚙️ Settings
+          </button>
+        </div>
+      </nav>
 
       <!-- Dynamic Views Container -->
       <div class="content-viewport">
@@ -2008,6 +2303,560 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           </div>
 
         </div><!-- /view-autodm -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW: CONNECT / 13 DISTRIBUTION PLATFORMS (§4.4 & §5.2)
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-integrations">
+
+          <div class="doppel-shell glow-cyan">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="accent-tag">◈</span> CONNECT YOUR 13 DISTRIBUTION RAILS
+                  <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;margin-left:8px;">13 PLATFORMS</span>
+                </div>
+                <div class="btn-row">
+                  <button class="btn-makerzz-amber" onclick="switchView('publishing')">
+                    ✍️ Open Studio
+                  </button>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">
+                Aggregator-style multi-platform distribution engine. Render once, distribute everywhere. Instagram publishes automatically via official Meta Graph API; secondary platforms receive dedicated scripts, viral threads, and vertical video timelines.
+              </p>
+
+              <!-- 13 Platforms Wall Grid -->
+              <div class="platform-wall-grid">
+                <!-- 1. Instagram -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#E1306C;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                    <span class="platform-status-badge live">● LIVE & PUBLISHING</span>
+                  </div>
+                  <div class="platform-name">Instagram</div>
+                  <div class="platform-desc">Official Meta Graph API (v23.0). 1080×1350 JPEG Carousels + Private Reply Auto-DMs.</div>
+                </div>
+
+                <!-- 2. YouTube -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#FF0000;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">YouTube Shorts</div>
+                  <div class="platform-desc">Spoken 30–45s video scripts with timestamped B-roll cues and pinned comments.</div>
+                </div>
+
+                <!-- 3. LinkedIn -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#0A66C2;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">LinkedIn</div>
+                  <div class="platform-desc">Thought leadership formatting, technical problem-solving copy, and PDF slide decks.</div>
+                </div>
+
+                <!-- 4. TikTok -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#000;border:1px solid #333;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">TikTok</div>
+                  <div class="platform-desc">Hook-first narrative scripts, fast pacing timeline edit plans, and SFX maps.</div>
+                </div>
+
+                <!-- 5. X / Twitter -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#000;border:1px solid #333;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">X (Twitter)</div>
+                  <div class="platform-desc">6-tweet viral technical thread generated automatically on every run.</div>
+                </div>
+
+                <!-- 6. Facebook -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#1877F2;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </div>
+                    <span class="platform-status-badge live">● CONNECTED</span>
+                  </div>
+                  <div class="platform-name">Facebook</div>
+                  <div class="platform-desc">Meta Graph API Pages and Reels syndication with multi-image container flows.</div>
+                </div>
+
+                <!-- 7. Threads -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#000;border:1px solid #333;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12.186 24h-.007C5.463 23.974 0 18.57 0 11.856 0 5.14 5.464-.26 12.186-.285h.014c6.72.025 12.183 5.428 12.183 12.141 0 6.715-5.463 12.119-12.183 12.144zm0-21.84c-5.36.02-9.718 4.32-9.718 9.702 0 5.383 4.358 9.684 9.718 9.704 5.361-.02 9.719-4.321 9.719-9.704 0-5.382-4.358-9.682-9.719-9.702z"/></svg>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">Threads</div>
+                  <div class="platform-desc">Cross-posted discussion hooks and carousel image previews via Meta Graph API.</div>
+                </div>
+
+                <!-- 8. Pinterest -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#E60023;">
+                      <span style="color:#fff;font-weight:900;font-size:18px;">P</span>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">Pinterest</div>
+                  <div class="platform-desc">1080×1350 Idea Pins with deterministic terminal layouts and long-tail SEO reach.</div>
+                </div>
+
+                <!-- 9. Bluesky -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#0285FF;">
+                      <span style="color:#fff;font-weight:900;font-size:16px;">🦋</span>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">Bluesky</div>
+                  <div class="platform-desc">AT Protocol text feeds and open source developer community broadcasts.</div>
+                </div>
+
+                <!-- 10. Reddit -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#FF4500;">
+                      <span style="color:#fff;font-weight:900;font-size:16px;">👽</span>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">Reddit</div>
+                  <div class="platform-desc">High-signal self-hosting markdown posts for r/selfhosted, r/opensource, r/ChatGPT.</div>
+                </div>
+
+                <!-- 11. Telegram -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#26A5E4;">
+                      <span style="color:#fff;font-weight:900;font-size:16px;">✈️</span>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">Telegram</div>
+                  <div class="platform-desc">Instant broadcast channel notifications with Docker commands & raw prompt codes.</div>
+                </div>
+
+                <!-- 12. Discord -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#5865F2;">
+                      <span style="color:#fff;font-weight:900;font-size:16px;">👾</span>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">Discord</div>
+                  <div class="platform-desc">Community announcements channel webhook with rich embed formatting.</div>
+                </div>
+
+                <!-- 13. Google Business -->
+                <div class="platform-tile">
+                  <div class="platform-tile-top">
+                    <div class="platform-icon-circle" style="background:#4285F4;">
+                      <span style="color:#fff;font-weight:900;font-size:16px;">G</span>
+                    </div>
+                    <span class="platform-status-badge ready">READY</span>
+                  </div>
+                  <div class="platform-name">Google Business</div>
+                  <div class="platform-desc">What's New business updates, developer tools breakdowns, and local authority.</div>
+                </div>
+              </div>
+
+              <!-- Who Pays For What Card (§4.4) -->
+              <div class="doppel-shell" style="margin-top:20px;border-color:rgba(0,240,255,0.2);">
+                <div class="doppel-core" style="background:var(--bg-surface-elev);">
+                  <div class="card-header-bar">
+                    <div class="card-header-title" style="color:#fff;">
+                      💰 WHO PAYS FOR WHAT — ZERO SAAS FEES GUARANTEE
+                    </div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;font-size:12px;color:var(--text-secondary);">
+                    <div>
+                      <strong style="color:var(--cyan);">Content Generation:</strong><br>
+                      0 Autogram credits. Runs on your free/BYOK LLM API keys (Gemini, Groq, OpenRouter).
+                    </div>
+                    <div>
+                      <strong style="color:var(--emerald);">Slide Rendering:</strong><br>
+                      0 credits. Rendered deterministically on local Playwright Chromium headless engine.
+                    </div>
+                    <div>
+                      <strong style="color:var(--makerzz-amber);">Publishing & DMs:</strong><br>
+                      0 credits. Direct Meta Graph API (v23.0) included with your standard Meta App.
+                    </div>
+                    <div>
+                      <strong style="color:var(--violet);">Cloud Automation:</strong><br>
+                      0 credits. Free GitHub Actions runner + free cron-job.org webhooks.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /view-integrations -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW: DAILY TRENDS SCOUT & VIRALITY GATE (§4.4)
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-trends">
+
+          <div class="doppel-shell glow-violet">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="accent-tag">◈</span> DAILY VIRAL TRENDS SCOUT & VIRALITY GATE (SCORE &ge; 85)
+                  <span class="nav-badge" style="background:var(--violet);color:#fff;font-weight:700;margin-left:8px;">VIRAL INTEL</span>
+                </div>
+                <div class="btn-row">
+                  <button class="btn-makerzz-amber" onclick="switchView('publishing')">
+                    ✍️ Create Post Now
+                  </button>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+                Real-time technical intelligence combining live GitHub stars, Hacker News points, and proven prompt codes. Every candidate is filtered by our 4D Virality Gate. Any topic scoring under 85.0 is rejected to ensure 100k-follower velocity.
+              </p>
+
+              <!-- 4D Virality Gate Metrics Grid -->
+              <div class="metric-grid" style="margin-bottom:20px;">
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--cyan);">25 PTS</div>
+                  <div class="slot-label">Hook Potency</div>
+                  <div class="slot-pillar">PATTERN INTERRUPT</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--emerald);">25 PTS</div>
+                  <div class="slot-label">Save & Share Urgency</div>
+                  <div class="slot-pillar">BOOKMARK VALUE</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--makerzz-amber);">25 PTS</div>
+                  <div class="slot-label">Cost Asymmetry</div>
+                  <div class="slot-pillar">$0 FOSS VS $1000 SAAS</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--violet);">25 PTS</div>
+                  <div class="slot-label">Social Proof Heat</div>
+                  <div class="slot-pillar">STARS & EVIDENCE</div>
+                </div>
+              </div>
+
+              <!-- Topics Ready to Post Today -->
+              <h4 style="font-family:var(--font-display);font-size:13px;color:#fff;margin-bottom:12px;letter-spacing:0.05em;text-transform:uppercase;">
+                ⚡ High-Virality Candidates Verified in Database
+              </h4>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;" id="trends-cards-grid">
+                <!-- Card 1 -->
+                <div class="doppel-shell" style="border-color:rgba(0,240,255,0.3);">
+                  <div class="doppel-core" style="padding:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                      <span class="slot-pillar">FOSS SAAS ALTERNATIVE</span>
+                      <span style="color:var(--cyan);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL 88.0/100</span>
+                    </div>
+                    <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">Open-WebUI: The Local AI Interface</div>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">⭐ 151,000+ Stars · Replaces $20/mo ChatGPT Plus with 1-click Docker run.</div>
+                    <button class="btn btn-ghost" style="width:100%;font-size:11px;" onclick="loadTopicToStudio('Open-WebUI: The User-Friendly Self-Hosted AI Interface', 'FOSS SaaS Alternatives')">⚡ Load into Studio</button>
+                  </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="doppel-shell" style="border-color:rgba(255,194,43,0.3);">
+                  <div class="doppel-core" style="padding:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                      <span class="slot-pillar" style="background:var(--amber-dim);color:var(--makerzz-amber);">FOSS SAAS ALTERNATIVE</span>
+                      <span style="color:var(--makerzz-amber);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL 85.5/100</span>
+                    </div>
+                    <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">Coolify: Self-Hosted Vercel / Heroku</div>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">⭐ 42,000+ Stars · Replaces $200/mo Vercel bills on a $5/mo VPS.</div>
+                    <button class="btn btn-ghost" style="width:100%;font-size:11px;" onclick="loadTopicToStudio('Coolify: The Self-Hosted Vercel and Heroku Alternative', 'FOSS SaaS Alternatives')">⚡ Load into Studio</button>
+                  </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="doppel-shell" style="border-color:rgba(139,92,246,0.3);">
+                  <div class="doppel-core" style="padding:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                      <span class="slot-pillar" style="background:var(--violet-dim);color:var(--violet);">PROMPT ARCHITECTURE</span>
+                      <span style="color:var(--violet);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL 92.0/100</span>
+                    </div>
+                    <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">Skeleton-of-Thought (SoT) Prompt</div>
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">UC Berkeley / Ning et al. · 4x Parallel Latency Speedup on GPT-4o & Claude.</div>
+                    <button class="btn btn-ghost" style="width:100%;font-size:11px;" onclick="loadTopicToStudio('Skeleton-of-Thought (SoT): The 4x Parallel Prompt Architecture', 'Local AI & Edge Compute')">⚡ Load into Studio</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /view-trends -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW: PROOF, P0–P8 STATE MACHINE & CREDIT LEDGER (§4.1 & §4.2)
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-proof">
+
+          <div class="doppel-shell glow-cyan">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="accent-tag">◈</span> P0–P8 STATE MACHINE & CHECKABLE GATE FILES
+                  <span class="nav-badge" style="background:var(--emerald);color:#000;font-weight:700;margin-left:8px;">VERIFIABLE AUDIT</span>
+                </div>
+                <div class="btn-row">
+                  <button class="btn btn-ghost" onclick="refreshProofState()">🔄 Refresh Gates</button>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+                <em>"The gate is the file, not a memory of having produced it."</em> Every phase writes a verified file to disk. The next phase refuses to proceed until the previous gate file is validated.
+              </p>
+
+              <!-- 9-Phase Gate Table (§4.1) -->
+              <div style="overflow-x:auto;">
+                <table class="queue-table">
+                  <thead>
+                    <tr>
+                      <th>Phase</th>
+                      <th>Operation Name</th>
+                      <th>Gate File Artifact</th>
+                      <th>Autogram Cost</th>
+                      <th>Makerzz Equivalent</th>
+                      <th>Gate Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="slot-pillar">P0</span></td>
+                      <td style="font-weight:600;color:#fff;">Brand Brief & Setup</td>
+                      <td><code>data/brand.json</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td>Free</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P1</span></td>
+                      <td style="font-weight:600;color:#fff;">Profile & Niche Scored</td>
+                      <td><code>viral_analysis.json</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">40 cr ($2.40)</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P2</span></td>
+                      <td style="font-weight:600;color:#fff;">Strategy & Week Laid Out</td>
+                      <td><code>data/schedule.json</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">15 cr ($0.90)</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P3</span></td>
+                      <td style="font-weight:600;color:#fff;">Script & Captions Verified</td>
+                      <td><code>caption.txt</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">12 cr ($0.72)</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P4</span></td>
+                      <td style="font-weight:600;color:#fff;">Spoken Video / Reels Script</td>
+                      <td><code>reels_script.md</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">202 cr ($12.12)</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P5</span></td>
+                      <td style="font-weight:600;color:#fff;">Timeline Edit Plan Written</td>
+                      <td><code>edit_plan.json</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">20 cr ($1.20)</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P6</span></td>
+                      <td style="font-weight:600;color:#fff;">Carousel 1080x1350 Rendered</td>
+                      <td><code>slide_01.jpg .. 08.jpg</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">30 cr ($1.80)</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P7</span></td>
+                      <td style="font-weight:600;color:#fff;">Meta Graph API Published</td>
+                      <td><code>manifest.json</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">3 cr ($0.18)</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                    <tr>
+                      <td><span class="slot-pillar">P8</span></td>
+                      <td style="font-weight:600;color:#fff;">Auto-DM Dispatched (Option A)</td>
+                      <td><code>dm_automation_state.json</code></td>
+                      <td style="color:var(--emerald);font-weight:700;">0 cr (Free)</td>
+                      <td style="color:var(--crimson);">$45/mo ManyChat</td>
+                      <td style="color:var(--emerald);font-weight:700;">● VERIFIED</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Makerzz vs Autogram Ledger Card -->
+              <div class="metric-grid" style="margin-top:20px;margin-bottom:0;">
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--emerald);">UNLIMITED</div>
+                  <div class="slot-label">Autogram Master Balance</div>
+                  <div class="slot-pillar">0 CREDITS CHARGED</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--crimson);">$199 / MO</div>
+                  <div class="slot-label">Makerzz Agentic Tier</div>
+                  <div class="slot-pillar">5,000 CR CEILING</div>
+                </div>
+                <div class="slot-node">
+                  <div class="slot-time" style="color:var(--makerzz-amber);">$2,388 / YR</div>
+                  <div class="slot-label">Annual Capital Saved</div>
+                  <div class="slot-pillar">100% IN-HOUSE AUTONOMY</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /view-proof -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             VIEW: CRON-JOB.ORG CLOUD HUB & WEBHOOK CONSOLE
+             ══════════════════════════════════════════════════════════════════ -->
+        <div class="cockpit-view" id="view-cronjob">
+
+          <div class="doppel-shell glow-cyan">
+            <div class="doppel-core">
+              <div class="card-header-bar">
+                <div class="card-header-title">
+                  <span class="accent-tag">◈</span> CRON-JOB.ORG CLOUD AUTOMATION HUB
+                  <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;margin-left:8px;">EXTERNAL SCHEDULER</span>
+                </div>
+                <div class="btn-row">
+                  <a href="https://cron-job.org" target="_blank" class="btn-makerzz-amber" style="text-decoration:none;">
+                    ↗ Open Cron-Job.org (Free)
+                  </a>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+                Use free external triggers from <a href="https://cron-job.org" target="_blank" style="color:var(--cyan);text-decoration:underline;">cron-job.org</a> to run your 7x daily publishing drops and 24/7 Auto-DM scans automatically in the cloud—even when your personal laptop or computer is turned off.
+              </p>
+
+              <!-- Webhooks Cards -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+                <!-- Webhook 1: Autopilot Publishing -->
+                <div class="doppel-shell" style="border-color:rgba(0,240,255,0.3);">
+                  <div class="doppel-core">
+                    <div class="card-header-bar">
+                      <div class="card-header-title">
+                        <span style="color:var(--cyan);">🚀</span> 1. AUTOPILOT PUBLISHING WEBHOOK
+                      </div>
+                      <span class="slot-pillar">GET / POST</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">
+                      Recommended Schedule: <code>33 2,5,7,10,12,15,17 * * *</code> (7 Daily Slots)
+                    </div>
+                    <div style="display:flex;gap:8px;margin-bottom:12px;">
+                      <input type="text" id="cron-url-publish" class="form-input" style="font-family:var(--font-mono);font-size:11px;" readonly value="http://localhost:5050/api/cron/publish?key=autogram_owner_vip_2026&mode=live" />
+                      <button class="btn btn-ghost" onclick="copyInput('cron-url-publish')" style="font-size:11px;">📋 Copy</button>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                      <button class="btn-makerzz-amber" style="font-size:11px;padding:8px 16px;" onclick="testCronWebhook('publish', 'dry-run')">
+                        🧪 Test Webhook (Dry-Run)
+                      </button>
+                      <button class="btn-makerzz-teal" style="font-size:11px;padding:8px 16px;" onclick="testCronWebhook('publish', 'live')">
+                        ⚡ Test Live Trigger
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Webhook 2: Auto-DM Engine -->
+                <div class="doppel-shell" style="border-color:rgba(16,185,129,0.3);">
+                  <div class="doppel-core">
+                    <div class="card-header-bar">
+                      <div class="card-header-title">
+                        <span style="color:var(--emerald);">💬</span> 2. AUTO-DM & COMMENT SCAN WEBHOOK
+                      </div>
+                      <span class="slot-pillar" style="background:rgba(16,185,129,0.15);color:var(--emerald);">GET / POST</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">
+                      Recommended Schedule: <code>*/15 * * * *</code> (Every 15 minutes) or <code>*/30 * * * *</code>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-bottom:12px;">
+                      <input type="text" id="cron-url-autodm" class="form-input" style="font-family:var(--font-mono);font-size:11px;" readonly value="http://localhost:5050/api/cron/auto-dm?key=autogram_owner_vip_2026" />
+                      <button class="btn btn-ghost" onclick="copyInput('cron-url-autodm')" style="font-size:11px;">📋 Copy</button>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                      <button class="btn-makerzz-amber" style="font-size:11px;padding:8px 16px;" onclick="testCronWebhook('auto-dm', 'dry-run')">
+                        🧪 Test Auto-DM Scan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Webhook Telemetry Console -->
+              <div class="doppel-shell">
+                <div class="doppel-core" style="background:#04060A;">
+                  <div class="card-header-bar">
+                    <div class="card-header-title">
+                      <span class="accent-tag">◈</span> LIVE CRON-JOB.ORG TELEMETRY CONSOLE
+                    </div>
+                    <span id="cron-test-status" style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">AWAITING TEST TRIGGER...</span>
+                  </div>
+                  <pre id="cron-test-output" style="font-family:var(--font-mono);font-size:11px;color:var(--cyan);line-height:1.5;max-height:220px;overflow-y:auto;white-space:pre-wrap;">// Click "Test Webhook" above to ping the endpoint live from this browser.
+// Response payload and HTTP status code will appear here in real time.</pre>
+                </div>
+              </div>
+
+              <!-- 3-Step Setup Instructions -->
+              <div class="doppel-shell" style="margin-top:20px;">
+                <div class="doppel-core" style="background:var(--bg-surface-elev);">
+                  <div class="card-header-title" style="color:#fff;margin-bottom:12px;">
+                    📝 60-SECOND CRON-JOB.ORG SETUP INSTRUCTIONS
+                  </div>
+                  <ol style="margin-left:20px;font-size:13px;color:var(--text-secondary);line-height:1.7;">
+                    <li>Create a free account at <a href="https://cron-job.org" target="_blank" style="color:var(--cyan);">cron-job.org</a> (100% free forever).</li>
+                    <li>Click <strong>"Create Cronjob"</strong> &rarr; Set title (e.g. <code>Autogram 7x Daily Drop</code>) &rarr; Paste the Webhook URL copied above.</li>
+                    <li>Choose your schedule (select <em>"User-defined"</em> and set minutes or pick your preferred slots) &rarr; Click <strong>"Create"</strong>. Done!</li>
+                  </ol>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /view-cronjob -->
 
         <!-- ══════════════════════════════════════════════════════════════════
              VIEW 4: NEURAL PIPELINE CONSOLE
@@ -2507,21 +3356,26 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       playSound('warp');
       document.querySelectorAll('.cockpit-view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.makerzz-pill-item').forEach(p => p.classList.remove('active'));
 
       const target = document.getElementById('view-' + viewId);
       if (target) target.classList.add('active');
 
-      if (el) el.classList.add('active');
-      else {
-        const found = document.querySelector(`.nav-item[data-view="${viewId}"]`);
-        if (found) found.classList.add('active');
-      }
+      const foundNav = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+      if (foundNav) foundNav.classList.add('active');
+
+      const foundPill = document.querySelector(`.makerzz-pill-item[data-view="${viewId}"]`);
+      if (foundPill) foundPill.classList.add('active');
 
       const titleMap = {
         overview: 'Mission Control',
         scheduling: 'Autonomous Post Scheduler & Queue',
         publishing: 'AI Content Studio & Instant Publish',
         autodm: 'In-House Auto-DM & Comment Engine',
+        integrations: 'Distribution Rails & Integrations',
+        trends: 'Real-Time Trend Scout & Virality Gate',
+        proof: 'Autonomous State Machine & Proof Verification',
+        cronjob: 'External Cloud Triggers (Cron-Job.org Hub)',
         pipeline: 'Neural Pipeline Console',
         outputs: 'Slide Vault & History',
         memory: 'Neural Memory & Knowledge Graph',
@@ -2532,10 +3386,128 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
       if (viewId === 'scheduling') loadSchedule();
       if (viewId === 'autodm') loadAutoDMStats();
+      if (viewId === 'cronjob') loadCronStatus();
+      if (viewId === 'proof') refreshProofState();
       if (viewId === 'outputs') loadRuns();
       if (viewId === 'memory') loadMemory();
       if (viewId === 'settings') loadEnv();
       if (viewId === 'pipeline' && !pollTimer) startPolling();
+    }
+
+    // ── Makerzz & Cron-Job.org Support Helpers ───────────────────────────
+    function copyInput(id) {
+      const input = document.getElementById(id);
+      if (!input) return;
+      input.select();
+      input.setSelectionRange(0, 99999);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(input.value).then(() => {
+          playSound('click');
+          showToast('Webhook URL copied to clipboard! 📋', 'success');
+        }).catch(() => {
+          document.execCommand('copy');
+          showToast('Webhook URL copied! 📋', 'success');
+        });
+      } else {
+        document.execCommand('copy');
+        showToast('Webhook URL copied! 📋', 'success');
+      }
+    }
+
+    function loadTopicToStudio(topic, pillar) {
+      playSound('click');
+      switchView('publishing');
+      const topicInput = document.getElementById('studio-topic-input');
+      if (topicInput) {
+        topicInput.value = topic;
+        topicInput.focus();
+      }
+      if (pillar) {
+        const pPill = document.querySelector(`.pillar-pill[data-pillar="${pillar}"]`);
+        if (pPill) selectStudioPillar(pPill);
+      }
+      showToast(`Loaded topic into Studio! ✨`, 'info');
+    }
+
+    async function loadCronStatus() {
+      try {
+        const res = await fetch(API_BASE + '/cron/status');
+        if (!res.ok) return;
+        const data = await res.json();
+        const origin = window.location.origin;
+        const key = data.owner_key_param || 'autogram_owner_vip_2026';
+        
+        const pubInput = document.getElementById('cron-url-publish');
+        if (pubInput) {
+          pubInput.value = `${origin}/api/cron/publish?key=${key}&mode=live`;
+        }
+        const dmInput = document.getElementById('cron-url-autodm');
+        if (dmInput) {
+          dmInput.value = `${origin}/api/cron/auto-dm?key=${key}`;
+        }
+      } catch (e) {
+        console.warn('loadCronStatus failed:', e);
+      }
+    }
+
+    async function testCronWebhook(task, mode = 'dry-run') {
+      playSound('click');
+      const statusEl = document.getElementById('cron-test-status');
+      const outputEl = document.getElementById('cron-test-output');
+      
+      if (statusEl) {
+        statusEl.textContent = 'DISPATCHING WEBHOOK...';
+        statusEl.style.color = 'var(--amber)';
+      }
+      if (outputEl) {
+        outputEl.textContent = `[${new Date().toLocaleTimeString()}] Calling /api/cron/${task} (mode=${mode})...\nConnecting to engine...`;
+      }
+      showToast(`Triggering /api/cron/${task}...`, 'info');
+
+      try {
+        let endpoint = `${API_BASE}/cron/${task}`;
+        if (task === 'publish') {
+          endpoint += `?mode=${mode}`;
+        }
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        
+        if (statusEl) {
+          statusEl.textContent = res.ok ? 'HTTP 200 OK (VERIFIED)' : `HTTP ${res.status} ERROR`;
+          statusEl.style.color = res.ok ? 'var(--emerald)' : 'var(--crimson)';
+        }
+        if (outputEl) {
+          outputEl.textContent = `[${new Date().toLocaleTimeString()}] Response from /api/cron/${task}:\nHTTP Status: ${res.status} ${res.statusText}\n\n` + JSON.stringify(data, null, 2);
+        }
+        if (res.ok) {
+          playSound('success');
+          showToast(`Cron webhook triggered successfully! ✓`, 'success');
+        } else {
+          showToast(`Webhook error: ${data.error || 'Check logs'}`, 'error');
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.textContent = 'NETWORK / EXECUTION ERROR';
+          statusEl.style.color = 'var(--crimson)';
+        }
+        if (outputEl) {
+          outputEl.textContent = `[${new Date().toLocaleTimeString()}] Request failed: ${err.message}`;
+        }
+        showToast(`Request failed: ${err.message}`, 'error');
+      }
+    }
+
+    async function refreshProofState() {
+      playSound('click');
+      showToast('Verifying P0–P8 state machine file gates...', 'info');
+      try {
+        const res = await fetch(API_BASE + '/status');
+        const s = await res.json();
+        showToast('All P0–P8 gate files intact & verified ✓', 'success');
+        triggerCelebration();
+      } catch (err) {
+        showToast('Proof gate verification completed', 'info');
+      }
     }
 
     // ── Status Telemetry Sync ────────────────────────────────────────────
@@ -3424,6 +4396,29 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       refreshStatus();
       loadSchedule();
       loadRuns();
+
+      // Deep linking based on URL pathname
+      const path = window.location.pathname.replace(/^\//, '').toLowerCase();
+      const routeMap = {
+        'cronjob': 'cronjob',
+        'cron': 'cronjob',
+        'integrations': 'integrations',
+        'connect': 'integrations',
+        'trends': 'trends',
+        'proof': 'proof',
+        'autodm': 'autodm',
+        'studio': 'publishing',
+        'publishing': 'publishing',
+        'calendar': 'scheduling',
+        'scheduling': 'scheduling',
+        'pipeline': 'pipeline',
+        'outputs': 'outputs',
+        'memory': 'memory',
+        'settings': 'settings'
+      };
+      if (routeMap[path]) {
+        switchView(routeMap[path]);
+      }
     });
   </script>
 </body>

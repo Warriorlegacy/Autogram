@@ -889,9 +889,10 @@ def api_pipeline_stop():
     return jsonify({"ok": True})
 
 @app.route("/api/webhook/autopilot", methods=["GET", "POST"])
+@app.route("/api/cron/publish", methods=["GET", "POST"])
 def api_webhook_autopilot():
     """
-    Zero-touch trigger endpoint for external cron jobs (GitHub Actions, cron-job.org, EasyCron, Render Cron).
+    Zero-touch trigger endpoint for external cron jobs (cron-job.org, GitHub Actions, EasyCron, Render Cron).
     Pinging this endpoint triggers the autonomous publishing pipeline even if computer is shut down.
     """
     key = request.args.get("key") or request.headers.get("X-Autogram-Key") or ""
@@ -912,8 +913,89 @@ def api_webhook_autopilot():
     run_pipeline_subprocess(mode=mode)
     return jsonify({
         "ok": True,
+        "service": "cron-job.org-autopilot",
+        "task": "publish",
         "message": f"Autonomous pipeline triggered successfully in {mode.upper()} mode.",
         "status": "started",
+        "mode": mode,
+        "brand": "@signhify.studio",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    })
+
+@app.route("/api/cron/auto-dm", methods=["GET", "POST"])
+@app.route("/api/webhook/auto-dm", methods=["GET", "POST"])
+def api_cron_auto_dm():
+    """
+    Zero-touch trigger endpoint for cron-job.org to run autonomous Auto-DM & Comment-Reply scanning.
+    """
+    key = request.args.get("key") or request.headers.get("X-Autogram-Key") or ""
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        key = auth_header.split(" ", 1)[1]
+
+    expected_key = os.environ.get("AUTOGRAM_OWNER_KEY", "autogram_owner_vip_2026")
+    if key != expected_key:
+        return jsonify({"ok": False, "error": "Unauthorized. Invalid or missing secret key."}), 401
+
+    try:
+        from src.instagram.dm_automator import dm_automator
+        dry_str = request.args.get("dry_run")
+        if dry_str is not None:
+            dry = dry_str.lower() in ("true", "1", "yes")
+        else:
+            dry = read_env().get("DRY_RUN", "true").lower() == "true"
+        limit = int(request.args.get("limit", 5))
+
+        dm_automator.dry_run = dry
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [CRON-JOB.ORG] Running automated Auto-DM scan (dry={dry})...")
+
+        res = dm_automator.scan_and_automate(limit_posts=limit)
+        with pipeline_lock:
+            pipeline_log.append(
+                f"[{datetime.now().strftime('%H:%M:%S')}] [CRON-JOB.ORG] Auto-DM completed: {res.get('actions_executed', 0)} DMs dispatched ✓"
+            )
+        return jsonify({
+            "ok": True,
+            "service": "cron-job.org-autodm",
+            "task": "auto-dm",
+            "dry_run": dry,
+            "summary": res,
+            "brand": "@signhify.studio",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+    except Exception as e:
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [CRON-JOB.ORG ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+@app.route("/api/cron/status", methods=["GET"])
+def api_cron_status():
+    """Returns webhook configuration and recommended cron-job.org setup."""
+    key = os.environ.get("AUTOGRAM_OWNER_KEY", "autogram_owner_vip_2026")
+    base_url = request.host_url.rstrip("/")
+    return jsonify({
+        "ok": True,
+        "service": "cron-job.org-integration",
+        "owner_key": redact(key),
+        "cron_jobs": [
+            {
+                "title": "7x Daily Autopilot Publishing Drops",
+                "purpose": "Triggers 1080x1350 carousel render, deep research, and Meta publishing",
+                "recommended_schedule": "33 2,5,7,10,12,15,17 * * *",
+                "method": "GET",
+                "url": f"{base_url}/api/cron/publish?key={key}&mode=live",
+                "dry_url": f"{base_url}/api/cron/publish?key={key}&mode=dry-run"
+            },
+            {
+                "title": "Continuous Auto-DM & Comment Scanning (Option A)",
+                "purpose": "Scans Instagram comments, replies publicly, and dispatches private DMs",
+                "recommended_schedule": "Every 15 or 30 minutes (* /15 * * * *)",
+                "method": "GET",
+                "url": f"{base_url}/api/cron/auto-dm?key={key}",
+                "dry_url": f"{base_url}/api/cron/auto-dm?key={key}&dry_run=true"
+            }
+        ],
         "brand": "@signhify.studio",
         "timestamp": datetime.now(timezone.utc).isoformat()
     })
@@ -927,6 +1009,14 @@ def api_output_file(filepath):
 
 @app.route("/dashboard")
 @app.route("/dashboard.html")
+@app.route("/studio")
+@app.route("/calendar")
+@app.route("/autodm")
+@app.route("/integrations")
+@app.route("/trends")
+@app.route("/proof")
+@app.route("/cronjob")
+@app.route("/settings")
 def dashboard():
     return send_from_directory(str(BASE_DIR), "dashboard.html")
 
