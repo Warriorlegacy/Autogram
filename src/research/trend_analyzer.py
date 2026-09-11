@@ -12,16 +12,22 @@ from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
-# Minimum score to pass the Virality Gate
-VIRAL_GATE_THRESHOLD = 85.0
+# Minimum score to pass the Virality Gate (75.0 allows high-utility FOSS tools & prompts while killing slop)
+VIRAL_GATE_THRESHOLD = 75.0
 
 # Known SaaS cost benchmarks for calculating Cost Asymmetry
 SAAS_KILLER_BENCHMARKS = {
     "coolify": {"saas": "Vercel / Heroku", "cost": "$20 - $200+/mo", "points": 25.0},
+    "vercel": {"saas": "Vercel / Heroku", "cost": "$20 - $200+/mo", "points": 25.0},
     "n8n": {"saas": "Zapier / Make.com", "cost": "$59 - $299+/mo", "points": 25.0},
+    "zapier": {"saas": "Zapier / Make.com", "cost": "$59 - $299+/mo", "points": 25.0},
     "documenso": {"saas": "DocuSign / PandaDoc", "cost": "$40/user/mo", "points": 24.0},
+    "docusign": {"saas": "DocuSign / PandaDoc", "cost": "$40/user/mo", "points": 24.0},
     "stirling-pdf": {"saas": "Adobe Acrobat Pro", "cost": "$240/yr", "points": 25.0},
+    "stirling": {"saas": "Adobe Acrobat Pro", "cost": "$240/yr", "points": 25.0},
+    "adobe": {"saas": "Adobe Acrobat Pro", "cost": "$240/yr", "points": 25.0},
     "open-webui": {"saas": "ChatGPT Plus / Team", "cost": "$20 - $30/user/mo", "points": 24.0},
+    "chatgpt": {"saas": "ChatGPT Plus / Team", "cost": "$20 - $30/user/mo", "points": 24.0},
     "litellm": {"saas": "LangSmith / Portkey", "cost": "$99 - $499/mo", "points": 25.0},
     "pocketbase": {"saas": "Firebase / Supabase Cloud", "cost": "$25 - $100+/mo", "points": 24.0},
     "caddy": {"saas": "NGINX SSL / Cloudflare Paid", "cost": "$20 - $200/mo", "points": 23.0},
@@ -29,7 +35,11 @@ SAAS_KILLER_BENCHMARKS = {
     "penpot": {"saas": "Figma Professional", "cost": "$15/user/mo", "points": 24.0},
     "cal.com": {"saas": "Calendly Pro", "cost": "$16/user/mo", "points": 23.0},
     "affine": {"saas": "Miro / Notion", "cost": "$15 - $30/mo", "points": 23.0},
-    "ollama": {"saas": "Cloud LLM APIs", "cost": "Pay-per-token API bills", "points": 25.0}
+    "ollama": {"saas": "Cloud LLM APIs", "cost": "Pay-per-token API bills", "points": 25.0},
+    "vllm": {"saas": "Hyperscaler GPUs", "cost": "$500 - $2,000/mo", "points": 25.0},
+    "lazygit": {"saas": "GitKraken Pro", "cost": "$60/user/yr", "points": 24.0},
+    "ripgrep": {"saas": "Slow grep / IDE search", "cost": "Developer hours", "points": 23.0},
+    "datasette": {"saas": "Tableau / Snowflake", "cost": "$100+/mo", "points": 24.0}
 }
 
 # High-converting viral pattern interrupt triggers
@@ -255,11 +265,55 @@ class TrendAnalyzer:
         else:
             return f"Why the best engineers are switching to {topic.split(':')[0]} for $0."
 
-    def filter_viral_candidates(self, candidates: list[dict]) -> Tuple[list[dict], dict]:
+    def filter_viral_candidates(self, candidates: list[dict], memory: dict | None = None) -> Tuple[list[dict], dict]:
         """
-        Filters candidates against the Virality Gate (Score >= 85.0).
-        Returns only candidates guaranteed to have viral potential.
+        Filters candidates against the Virality Gate (Score >= 75.0) and Anti-Repetition Memory.
+        Guarantees that already-published topics are never approved when fresh topics are available.
         """
+        from pathlib import Path
+        if memory is None:
+            mem_path = Path(__file__).parent.parent.parent / "data" / "content-memory.json"
+            if mem_path.exists():
+                try:
+                    memory = json.loads(mem_path.read_text(encoding="utf-8"))
+                except Exception:
+                    memory = {}
+            else:
+                memory = {}
+
+        recent_posts = memory.get("recent_posts", []) if memory else []
+        recent_topics_lower = [p.get("topic", "").lower().strip() for p in recent_posts if p.get("topic")]
+
+        import difflib
+        tool_signatures = [
+            "open-webui", "openwebui", "coolify", "stirling", "n8n", "documenso", "ollama",
+            "vllm", "affine", "supabase", "pocketbase", "appwrite", "penpot", "plane",
+            "posthog", "umami", "ghost", "strapi", "directus", "typesense", "meilisearch",
+            "searxng", "authentik", "keycloak", "vaultwarden", "rustdesk", "immich",
+            "paperless", "hoppscotch", "nocodb", "baserow", "twenty", "cal.com",
+            "uptime-kuma", "grafana", "portainer", "datasette",
+            "chain-of-density", "tree-of-thought", "skeleton-of-thought",
+            "chain-of-verification", "megaprompt"
+        ]
+
+        def is_duplicate_of_recent(cand_topic: str) -> bool:
+            c_low = cand_topic.lower().strip()
+            if not c_low:
+                return False
+            for past in recent_topics_lower:
+                if not past:
+                    continue
+                if len(c_low) >= 8 and len(past) >= 8:
+                    if past in c_low or c_low in past:
+                        return True
+                if difflib.SequenceMatcher(None, c_low, past).ratio() >= 0.65:
+                    return True
+                for sig in tool_signatures:
+                    if sig in c_low and sig in past:
+                        return True
+            return False
+
+        effective_threshold = self.gate_threshold
         approved = []
         rejected = []
         all_evaluations = []
@@ -270,16 +324,44 @@ class TrendAnalyzer:
             cand["viral_tier"] = v_eval["viral_tier"]
             cand["viral_hook"] = v_eval["viral_hook"]
             cand["viral_metrics"] = v_eval["metrics"]
-            all_evaluations.append(v_eval)
+            
+            # Anti-repetition memory gate check
+            topic_str = cand.get("topic", "")
+            is_dup = is_duplicate_of_recent(topic_str)
+            cand["in_memory"] = is_dup
 
-            if v_eval["approved_by_viral_gate"]:
+            if is_dup:
+                cand["viral_score"] = 0.0
+                v_eval["viral_score"] = 0.0
+                v_eval["approved_by_viral_gate"] = False
+                v_eval["rejection_reason"] = "Rejected by Anti-Repetition Gate: Topic or tool already published in recent memory."
+                rejected.append({
+                    "topic": topic_str,
+                    "score": 0.0,
+                    "reason": "Duplicate: Already posted recently."
+                })
+            elif v_eval["viral_score"] >= effective_threshold:
+                cand["approved_by_viral_gate"] = True
                 approved.append(cand)
             else:
+                v_eval["approved_by_viral_gate"] = False
                 rejected.append({
-                    "topic": cand.get("topic"),
+                    "topic": topic_str,
                     "score": v_eval["viral_score"],
                     "reason": v_eval["rejection_reason"]
                 })
+            all_evaluations.append(v_eval)
+
+        # Dynamic backoff: if no unposted candidates passed at 75.0, check if high-quality unposted items exist at 65.0+
+        if not approved:
+            fresh_rejected = [c for c in candidates if not c.get("in_memory")]
+            for cand in fresh_rejected:
+                v_eval = self.calculate_viral_metrics(cand)
+                if v_eval["viral_score"] >= 65.0:
+                    cand["viral_score"] = v_eval["viral_score"]
+                    cand["approved_by_viral_gate"] = True
+                    approved.append(cand)
+                    logger.info(f"Dynamic Virality Gate backoff approved fresh topic: '{cand.get('topic')}' (Score: {cand['viral_score']})")
 
         # Sort approved by viral score descending
         approved.sort(key=lambda x: x.get("viral_score", 0), reverse=True)
@@ -289,7 +371,7 @@ class TrendAnalyzer:
         report = {
             "analysis_timestamp": datetime.now(timezone.utc).isoformat(),
             "niche": "Developer Tools, Open Source Software & Advanced AI Prompts",
-            "gate_threshold": self.gate_threshold,
+            "gate_threshold": effective_threshold,
             "total_evaluated": len(candidates),
             "approved_count": len(approved),
             "rejected_count": len(rejected),
@@ -299,7 +381,8 @@ class TrendAnalyzer:
                     "score": c.get("viral_score"),
                     "tier": c.get("viral_tier"),
                     "hook": c.get("viral_hook"),
-                    "metrics": c.get("viral_metrics")
+                    "metrics": c.get("viral_metrics"),
+                    "in_memory": c.get("in_memory", False)
                 }
                 for c in approved[:5]
             ],
@@ -307,8 +390,8 @@ class TrendAnalyzer:
         }
 
         logger.info(
-            f"Trend Analysis Complete: {len(approved)} viral candidates approved (Score >= {self.gate_threshold}), "
-            f"{len(rejected)} candidates pruned by Virality Gate."
+            f"Trend Analysis Complete: {len(approved)} viral candidates approved (Score >= {effective_threshold}), "
+            f"{len(rejected)} candidates pruned by Virality Gate (including anti-repetition memory deduplication)."
         )
 
         return approved, report

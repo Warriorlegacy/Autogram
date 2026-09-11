@@ -73,12 +73,12 @@ Return ONLY valid JSON.
     def generate_with_gemini(self, topic: dict, sources: list[dict]) -> dict:
         """
         100% Free Google Gemini API (1,500 free requests/day).
-        Tries active Google models: gemini-2.0-flash, gemini-1.5-flash, gemini-1.5-pro.
+        Tries active Google models: gemini-2.5-flash, gemini-flash-latest, gemini-pro-latest.
         """
         candidate_models = []
         if settings.llm_model and "gemini" in settings.llm_model:
             candidate_models.append(settings.llm_model)
-        candidate_models.extend(["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"])
+        candidate_models.extend(["gemini-2.5-flash", "gemini-flash-latest", "gemini-pro-latest"])
         
         # Deduplicate while preserving order
         seen = set()
@@ -100,7 +100,7 @@ Return ONLY valid JSON.
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={settings.gemini_api_key}"
             try:
                 logger.info(f"Attempting Gemini generation with model: {model}...")
-                resp = requests.post(url, json=payload, timeout=15)
+                resp = requests.post(url, json=payload, timeout=40)
                 if resp.status_code == 200:
                     candidates = resp.json().get("candidates", [])
                     raw_text = candidates[0]["content"]["parts"][0]["text"]
@@ -108,10 +108,15 @@ Return ONLY valid JSON.
                     if "slides" in data and len(data["slides"]) >= 5:
                         logger.info(f"Gemini generation successful with {model} ({len(data['slides'])} slides).")
                         return data
+                if resp.status_code == 429:
+                    logger.warning(f"Gemini quota exhausted (HTTP 429) for model '{model}'. Aborting Gemini to trigger instant failover.")
+                    raise RuntimeError(f"Gemini quota exhausted (429): {resp.text[:120]}")
                 resp.raise_for_status()
             except Exception as e:
                 last_err = e
                 logger.warning(f"Gemini model '{model}' failed: {e}. Trying fallback...")
+                if "429" in str(e):
+                    break
                 continue
         raise last_err or RuntimeError("All Gemini models failed")
 
@@ -157,7 +162,7 @@ Return ONLY valid JSON.
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
-        models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"]
+        models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
         last_err = None
         for model in models:
             payload = {
@@ -177,10 +182,15 @@ Return ONLY valid JSON.
                     if "slides" in data and len(data["slides"]) >= 5:
                         logger.info(f"Groq generation successful with {model}.")
                         return data
+                if resp.status_code in (401, 403):
+                    logger.warning(f"Groq authentication failed (HTTP {resp.status_code}): Invalid or expired GROQ_API_KEY. Aborting Groq for immediate failover.")
+                    raise ValueError(f"Groq API key unauthorized (HTTP {resp.status_code})")
                 resp.raise_for_status()
             except Exception as e:
                 last_err = e
                 logger.warning(f"Groq model '{model}' failed: {e}. Trying fallback...")
+                if "unauthorized" in str(e).lower() or "401" in str(e):
+                    break
                 continue
         raise last_err or RuntimeError("All Groq models failed")
 
@@ -200,9 +210,9 @@ Return ONLY valid JSON.
         }
         free_models = [
             "liquid/lfm-2.5-2.6b:free",
-            "google/gemma-4-26b-a4b-it:free",
-            "google/gemma-4-31b-it:free",
-            "nex-agi/nex-n2.5-mini:free"
+            "nex-agi/nex-n2.5-mini:free",
+            "nvidia/nemotron-3.5-lightning:free",
+            "inclusionai/ling-3.0-flash-vl:free"
         ]
         last_err = None
         for model in free_models:

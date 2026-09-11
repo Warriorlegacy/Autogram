@@ -87,8 +87,9 @@ def run_pipeline(dry_run: bool = False) -> dict:
             "excerpt": s.get("excerpt", "")
         })
 
-    # Filter out anything that cannot go viral
-    viral_candidates, viral_report = trend_analyzer.filter_viral_candidates(candidates)
+    # Filter out anything that cannot go viral and strictly deduplicate against memory
+    memory = scorer.load_memory()
+    viral_candidates, viral_report = trend_analyzer.filter_viral_candidates(candidates, memory=memory)
     if not viral_candidates:
         logger.warning("No live candidates passed Virality Gate. Failing over to verified viral seed topics...")
         seed_records = fetcher.load_seed_records()
@@ -106,14 +107,14 @@ def run_pipeline(dry_run: bool = False) -> dict:
             "stars": s.get("stars", 10000),
             "excerpt": s.get("excerpt", "")
         } for s in seed_records]
-        viral_candidates, viral_report = trend_analyzer.filter_viral_candidates(seed_candidates)
+        viral_candidates, viral_report = trend_analyzer.filter_viral_candidates(seed_candidates, memory=memory)
 
     # Persist viral analysis report
     viral_file = out_dir / "viral_analysis.json"
     viral_file.write_text(json.dumps(viral_report, indent=2), encoding="utf-8")
     logger.info(f"Persisted viral trend analysis artifact -> {viral_file.name}")
 
-    selection = scorer.select_best_topic(viral_candidates)
+    selection = scorer.select_best_topic(viral_candidates, memory=memory)
     winner_topic = selection["winner"]
     if winner_topic.get("viral_hook"):
         winner_topic["hook"] = winner_topic["viral_hook"]

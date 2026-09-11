@@ -4,28 +4,7 @@
       "date": "2026-09-11",
       "pillar": "Trending GitHub Spotlight",
       "topic": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "hook": "Ditch ChatGPT Plus for $0. This self-hosted AI interface gives you full control and data ownership.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-11",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "hook": "Ditch $20-$30/user/month for ChatGPT Plus. Self-host Open-WebUI and save forever.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-11",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "hook": "Replace $20-$30/user/month ChatGPT Plus with this 100% open source AI interface",
-      "score": 100
-    },
-    {
-      "date": "2026-09-11",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "hook": "Replace ChatGPT Plus ($20-$30/user/month) with Open-WebUI: $0 local AI interface for your team.",
+      "hook": "Stop paying for ChatGPT Plus. This 100% open source repo runs on your own hardware.",
       "score": 100
     },
     {
@@ -405,20 +384,6 @@
       "topic": "System prompts vs User instructions: Architectural separation",
       "hook": "Stop stuffing task rules into your user prompt. Here is why.",
       "score": 88
-    },
-    {
-      "date": "2026-09-06",
-      "pillar": "Marketing Psychology",
-      "topic": "Price anchoring in modern SaaS pricing tiers",
-      "hook": "Why your decoy enterprise tier is secretly killing mid-tier conversions.",
-      "score": 85
-    },
-    {
-      "date": "2026-09-08",
-      "pillar": "Tech Industry Explainer",
-      "topic": "The real bottleneck of autonomous AI agent workflows",
-      "hook": "The biggest AI bottleneck in 2026 isn't intelligence. It's state management.",
-      "score": 94
     }
   ],
   "winning_patterns": [

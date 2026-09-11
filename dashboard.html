@@ -3718,11 +3718,11 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         const data = await res.json();
         
         document.getElementById('pm-icon').textContent = data.icon || '🔗';
-        document.getElementById('pm-title').textContent = `${data.name} Syndication Asset`;
+        document.getElementById('pm-title').textContent = `${data.name || (data.asset && data.asset.name) || platformId.toUpperCase()} Syndication Asset`;
         document.getElementById('pm-badge').textContent = data.badge || 'READY';
-        document.getElementById('pm-desc').textContent = `${data.description} · Format: ${data.format}`;
-        document.getElementById('pm-format').textContent = `${data.format} Output`;
-        document.getElementById('pm-content').value = data.content || '';
+        document.getElementById('pm-desc').textContent = `${data.description || 'Syndication Copy'} · Format: ${data.format || (data.asset && data.asset.type) || 'Output'}`;
+        document.getElementById('pm-format').textContent = `${data.format || (data.asset && data.asset.type) || 'Syndication'} Output`;
+        document.getElementById('pm-content').value = data.content || (data.asset && data.asset.content) || '';
         
         const modal = document.getElementById('platform-modal');
         if (modal) modal.classList.add('open');

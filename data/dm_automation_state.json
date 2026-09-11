@@ -111,6 +111,70 @@
       "public_reply_id": "17971865685135359",
       "dm_status": "PUBLIC_ONLY",
       "timestamp": 1789130015.4129739
+    },
+    "sim_c_8455_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_8456",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789130811.0672626
+    },
+    "sim_c_8455_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_11069",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789130812.4071813
+    },
+    "sim_c_9624_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_69624",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789131571.560619
+    },
+    "sim_c_9624_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_71562",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789131573.8062148
+    },
+    "sim_c_6194_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_96194",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789131598.0429487
+    },
+    "sim_c_6194_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_98047",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789131599.7082293
+    },
+    "sim_c_4620_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_64621",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789132866.1613348
+    },
+    "sim_c_4620_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_66163",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789132868.0499685
     }
   }
 }
