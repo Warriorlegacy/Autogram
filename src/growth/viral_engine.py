@@ -96,7 +96,9 @@ class ViralGrowthEngine:
         "llm": ["#LargeLanguageModels", "#OpenSourceLLM", "#LocalInference"],
         "python": ["#PythonDeveloper", "#PythonAutomation", "#PyTorch"],
         "cloud": ["#CloudArchitecture", "#DevOps", "#Serverless"],
-        "cost": ["#ZeroCostStack", "#FinOps", "#SlashBurnRate"]
+        "cost": ["#ZeroCostStack", "#FinOps", "#SlashBurnRate"],
+        "prompt": ["#ChatGPTPrompts", "#PromptEngineering", "#SecretPrompts", "#PromptCodes", "#AIHacks"],
+        "chatgpt": ["#ChatGPT", "#ChatGPTPrompts", "#PromptCodes", "#OpenAI", "#PromptHacks"]
     }
 
     def build_viral_hashtags(self, pillar: str, topic: str = "", max_tags: int = 15) -> List[str]:
