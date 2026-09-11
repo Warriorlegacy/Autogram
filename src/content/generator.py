@@ -162,7 +162,13 @@ Return ONLY valid JSON.
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
-        models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
+        models = [
+            "openai/gpt-oss-120b",
+            "qwen/qwen3.6-27b",
+            "openai/gpt-oss-20b",
+            "llama-3.3-70b-versatile",
+            "llama-3.1-8b-instant"
+        ]
         last_err = None
         for model in models:
             payload = {
