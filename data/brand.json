@@ -30,10 +30,10 @@
     "Open Source Economics & Contrarian"
   ],
   "follow_triggers": {
-    "cta_headline": "Replace expensive SaaS with self-hosted FOSS & secret ChatGPT prompts.",
-    "cta_subtext": "BATTLE-TESTED REPOS · PROMPT CODES · SIGNHIFY.STUDIO",
-    "button_text": "GET THE FREE FOSS & PROMPT STACK →",
-    "comment_lead_magnet": "Comment 'FOSS' or 'PROMPT' to get the full GitHub repo link, docker-compose blueprint, and secret prompt codes sent to your DMs."
+    "cta_headline": "Deploy self-hosted AI engineering pipelines & viral prompt architectures.",
+    "cta_subtext": "FULL A.I. ENGINEERING STUDIO · SIGNHIFY.STUDIO",
+    "button_text": "GET THE STUDIO BLUEPRINT & PROMPT PACK →",
+    "comment_lead_magnet": "Comment 'BLUEPRINT' (followers only) or 'FOSS' to get our Full AI Engineering Studio Blueprint, master prompt vault, and portfolio PDF sent to your DMs."
   },
   "avoid": [
     "generic hype",

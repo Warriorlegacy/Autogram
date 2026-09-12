@@ -1,83 +1,115 @@
-# 🔓 THE SIGNHIFY STUDIO BLUEPRINT
-### *The exact systems, stacks & prompts behind a fully autonomous AI content engine — free forever.*
+# 🔓 THE SIGNHIFY STUDIO BLUEPRINT (2026 EDITION)
+### *Production Systems, Architecture, Stacks, Websites & Master Prompts*
 
-> **Signhify Studio is a FULL AI ENGINEERING STUDIO.** We design, build and ship autonomous content engines, agentic AI pipelines and viral short-form video systems — then give away the blueprints.
-> 🔗 **signhify.studio** · 📸 **@signhify.studio**
-
----
-
-## 1. WHAT THIS BLUEPRINT GIVES YOU
-
-1. The **$0 AI autonomy stack** (every tool, every key, every command).
-2. Our **live portfolio** — real systems you can inspect today.
-3. The **7-figure prompt pack** — copy-paste prompt architectures we run daily.
-4. How to **hire the studio** to build yours.
+> **Signhify Studio is a FULL AI ENGINEERING STUDIO (FULL A.I. ENGINEERING STUDIO).**  
+> We do not sell billable hours or marketing theories. We engineer self-hosted, zero-marginal-cost software systems, autonomous multi-agent pipelines, and viral short-form machines that compound enterprise attention 24/7.  
+> 🌐 **Website:** [signhify.studio](https://signhify.studio) · 📸 **Instagram:** [@signhify.studio](https://instagram.com/signhify.studio) · 💻 **GitHub:** [Warriorlegacy/Autogram](https://github.com/Warriorlegacy/Autogram)
 
 ---
 
-## 2. OUR WORK — LIVE PORTFOLIO
+## 1. What This Blueprint Gives You
 
-| System | What it does | Inspect it |
+1. **Our Production Works & Live PORTFOLIO** — Real systems actively running in production.
+2. **Our Verified WEBSITES & Ecosystem Hubs** — Interactive platforms and live mission control.
+3. **The Complete  Autonomy Stack** — Every free API, tool, key, and command to run zero-marginal-cost pipelines.
+4. **The Master Production PROMPT PACK** — Battle-tested prompt architectures you can copy-paste today.
+5. **HIRE THE STUDIO / Partner with Us** — How to hire our engineering team to deploy custom AI systems.
+
+---
+
+## 2. Our Live Systems & Production PORTFOLIO
+
+Inspect our verified, battle-tested software systems operating in production today:
+
+| Production System | Core Architecture | Verified Link / Status |
 |---|---|---|
-| **Autogram Engine** | Zero-touch Instagram machine: research → virality gate → carousels → stories → reels → auto-publish + auto-DM, 24 drops/day | `github.com/Warriorlegacy/Autogram` |
-| **$0 Video Pipeline** | MoneyPrinterTurbo + edge-TTS + Pexels + FFmpeg → 9:16 reels, auto-published | Same repo · `orchestrator.py --video` |
-| **Mission-Control Dashboard** | Live pipeline cockpit: queue, scheduler daemon, provider hub, prompt library | `autogram-dashboard.onrender.com/dashboard` |
-| **3D Theme-Reactive Landing** | 5-theme immersive site (quantum / cyberpunk / neumorphic / swiss / bento) | `autogram-ai.vercel.app` |
-
-**By the numbers:** 100+ automated tests green · 24 autonomous drops/day · $0/mo infra (free tiers + local compute) · 1080×1350 carousels, 1080×1920 stories & reels.
-
----
-
-## 3. OUR WEBSITES
-
-- 🏠 **signhify.studio** — the studio home. Services, work, contact.
-- 🚀 **autogram-ai.vercel.app** — live product landing + ROI simulator.
-- 🛰️ **autogram-dashboard.onrender.com/dashboard** — the live mission-control demo.
-- 💻 **github.com/Warriorlegacy/Autogram** — the open-source engine itself.
+| **Autogram Engine** | Zero-touch publishing engine: RSS/HN ingestion, LLM scoring, Playwright rendering (1080×1350), automated Graph API feed drops (7 Carousels / Day). | [github.com/Warriorlegacy/Autogram](https://github.com/Warriorlegacy/Autogram) |
+| **Autonomous Video Pipeline** | 9:16 vertical short-form generator: Pexels portrait stock, Edge-TTS neural voiceover, burned Anton subtitles, FFmpeg concatenation (10 Videos / Day). | [Watch Live Reel on Instagram](https://www.instagram.com/reel/DdL4bGNjIx-/) |
+| **In-House Auto-DM Funnel** | Self-hosted replacement for ManyChat: Meta Graph API private replies, keyword triggers (FOSS, PROMPT, BLUEPRINT), and 2-step follower-gating. | Autonomous background daemon |
+| **Mission Control Cockpit** | Real-time glassmorphism Flask dashboard: multi-provider LLM failover telemetry, scheduler status, and live prompt testing. | [autogram-dashboard.onrender.com/dashboard](https://autogram-dashboard.onrender.com/dashboard) |
+| **Theme-Reactive 3D Web Engine** | Modern immersive 5-theme web experience (quantum, cyberpunk, neumorphic, swiss, bento) with interactive ROI simulator. | [autogram-ai.vercel.app](https://autogram-ai.vercel.app) |
 
 ---
 
-## 4. THE $0 AUTONOMY STACK (COPY THIS)
+## 3. Verified Studio Ecosystem & Live WEBSITES
 
-| Layer | Tool | Cost |
+- 🏠 **[signhify.studio](https://signhify.studio)** — Official Studio Portal: Services, Case Studies & Inquiries.
+- 🚀 **[autogram-ai.vercel.app](https://autogram-ai.vercel.app)** — Live Interactive Showcase & Enterprise ROI Simulator.
+- 🛰️ **[autogram-dashboard.onrender.com](https://autogram-dashboard.onrender.com)** — Live Pipeline Telemetry, Health Checks & Scheduler Daemon.
+- 💻 **[github.com/Warriorlegacy/Autogram](https://github.com/Warriorlegacy/Autogram)** — Open Architecture, Source Code & Autonomous Workflows.
+
+---
+
+## 4. The Zero-Marginal-Cost Autonomous Stack (/Month)
+
+How Signhify Studio runs high-throughput autonomous media pipelines with  recurring cloud infrastructure fees:
+
+| Layer | Tool / Provider | Operating Cost | Capability & Quota |
+|---|---|---|---|
+| **LLM Reasoning** | Gemini 2.5 Flash / Groq / Ollama | **.00** | 14.4k req/day free tier + unlimited local compute |
+| **AI Voiceover** | Microsoft Edge-TTS Neural | **.00** | Studio-grade multilingual neural voices, zero API keys |
+| **Stock Footage** | Pexels Video Search API | **.00** | 4K/HD portrait video clips with 200 req/hr allowance |
+| **Assembly Engine** | FFmpeg + MoneyPrinterTurbo | **.00** | Hardware-accelerated 1080x1920 MP4 rendering |
+| **Public Staging** | Uguu.se / Catbox / Cloudflare R2 | **.00** | High-speed direct CDN endpoints for Meta ingestion |
+| **Publishing API** | Meta Graph API (v23.0) | **.00** | Direct container publishing (carousels, stories, reels) |
+| **Cloud Scheduler** | GitHub Actions Cloud Runners | **.00** | 2,000 free runner minutes/month (PC-off proof) |
+| **Video Captions** | Anton OFL Bold Typography | **.00** | High-contrast burned-in subtitles for mobile viewports |
+
+---
+
+## 5. The Master Production PROMPT PACK
+
+Deploy these copy-paste system prompt architectures directly in your workflows:
+
+### PROMPT 1: The AI Infrastructure & SaaS Auditor
+`	ext
+Audit every paid subscription and API bill in [TARGET_WORKFLOW]. For each tool, identify the single highest-rated self-hosted FOSS or local AI alternative. Return license, GitHub stars, 1-line Docker deployment command, hardware RAM requirements, and net annual dollar savings. Rank by ROI.
+`
+
+### PROMPT 2: The Chain-of-Density Knowledge Synthesizer
+`	ext
+Read [INPUT_SOURCE]. Produce a 5-sentence technical summary. Then execute 3 iterative compression passes. In each pass, add 3-5 missing domain entities and technical metrics while maintaining exact character length. Output only the final hyper-dense, zero-fluff synthesis.
+`
+
+### PROMPT 3: The 50-Second Viral Short-Form Video Machine
+`	ext
+Write a 50-second spoken Reels narration about [TECHNICAL_TOPIC]. Format: 3-second hook (violates an established industry assumption), Beat 1 (the underlying architectural flaw), Beat 2 (the breakthrough implementation with proof metric), Beat 3 (tactical command/code takeaway), CTA (comment [KEYWORD] to receive the repository). Length: 110-125 words. No emojis, no stage directions.
+`
+
+### PROMPT 4: The Contrarian Architecture Formulator
+`	ext
+Provide 5 contrarian, defensible architectural principles regarding [ENGINEERING_DOMAIN] that senior principal engineers strongly validate but junior developers routinely argue against. For each principle, supply the 1-sentence first-principles rationale and 1 real-world failure mode.
+`
+
+### PROMPT 5: The Technical Carousel Slide Architect
+`	ext
+Turn [TECHNICAL_TOPIC] into an 8-slide high-retention carousel:
+- Slide 1: High-contrast hook (under 8 words)
+- Slides 2-7: One atomic architectural concept per slide with a concrete benchmark or CLI snippet
+- Slide 8: Frictionless CTA to comment [KEYWORD] for the repository blueprint
+Zero banned marketing buzzwords ('game-changer', 'dive in', 'seamless'). High density only.
+`
+
+### PROMPT 6: The Enterprise High-Ticket Offer Architecture
+`	ext
+Deconstruct [CLIENT_AI_PROBLEM]. Architect a 3-tier enterprise solution: Tier 1 (Self-hosted POC & audit), Tier 2 (Custom Agentic Pipeline & RAG System with SLA), Tier 3 (Fully Managed Zero-Marginal-Cost Autonomous Engine). Define deliverables, timeline, risk reversal, and pricing anchor.
+`
+
+---
+
+## 6. Partner with Signhify Studio (HIRE THE STUDIO)
+
+We engineer custom autonomous systems for founders, creators, and enterprise teams who demand leverage over labor:
+
+| Studio Capability | Deliverables & Impact | Deployment Time |
 |---|---|---|
-| LLM reasoning | Groq free tier (14.4k req/day) → Gemini free → local Ollama | $0 |
-| Voiceover | Microsoft edge-TTS (neural voices, no key) | $0 |
-| Stock footage | Pexels free API | $0 |
-| Video assembly | FFmpeg + MoneyPrinterTurbo (local) | $0 |
-| Image hosting | IMGBB free API → catbox.moe / 0x0.st cascade | $0 |
-| Publishing | Meta Graph API (official, no SaaS middleman) | $0 |
-| Scheduling | GitHub Actions + cron-job.org + Windows Task Scheduler | $0 |
-| Video captions | Anton (OFL) burned in — condensed, punchy, viral-native | $0 |
+| **Autonomous Content Engines** | Zero-touch multi-platform machines (Carousels, Stories, Reels) with automated research, rendering, and auto-DM lead capture. | 7 – 10 Days |
+| **Custom Agentic Workflows** | Production multi-agent systems, document ingestion RAG pipelines, internal tooling automations, and CRM integrations. | 2 – 3 Weeks |
+| **Private Model Deployments** | On-premise / private cloud LLM serving (DeepSeek, Llama 3, vLLM, Ollama) with strict data privacy and zero API leakage. | 1 – 2 Weeks |
+
+### Ready to Deploy Your Autonomous System? (HIRE THE STUDIO)
+- 📩 **Direct Message:** Send the word **STUDIO** to **[@signhify.studio](https://instagram.com/signhify.studio)** on Instagram.
+- 🌐 **Project Inquiries:** Start directly at **[signhify.studio](https://signhify.studio)**.
 
 ---
-
-## 5. THE PROMPT PACK (COPY-PASTE STARTERS)
-
-**P1 — The $0 Auditor.** `List every paid tool in [WORKFLOW]. For each, name the best self-hosted FOSS replacement, its license, stars, and the exact 1-line deploy command. Rank by yearly savings.`
-
-**P2 — Chain-of-Density Summarizer.** `Read [ARTICLE]. Write a 5-sentence summary. Then rewrite it 3 times, each version DENSER — same length, more entities, zero filler. Return only the final version.`
-
-**P3 — Reel Script Machine.** `Write a 50-second spoken Reels script about [TOPIC]: hook in 3 seconds, 3 punchy beats with one proof-point each, CTA in the last line. 110-130 words. No stage directions, no emojis.`
-
-**P4 — Contrarian Takes.** `Give me 5 contrarian, defensible takes about [NICHE] that an experienced practitioner would nod at and a beginner would argue with. One line each, with the 1-sentence reason.`
-
-**P5 — Carousel Architect.** `Turn [TOPIC] into an 8-slide carousel: slide 1 hook (under 8 words), slides 2-7 one idea each with a proof chip, slide 8 CTA commenting [KEYWORD]. Zero fluff, zero banned hype words.`
-
-*Full tested vault drops daily at **@signhify.studio** — comment PROMPT on any post.*
-
----
-
-## 6. HIRE THE STUDIO
-
-We build for founders who'd rather own the machine than rent attention:
-
-- 🤖 **Autonomous content engines** (research → render → publish → DM, zero-touch)
-- 🎬 **Short-form video pipelines** (script → voice → stock → captions → scheduled drops)
-- 🕸️ **Agentic workflows & integrations** (APIs, dashboards, schedulers, SaaS replacements)
-
-📩 DM the word **STUDIO** to **@signhify.studio** — or start at **signhify.studio**.
-
----
-
-*© 2026 Signhify Studio — FULL AI ENGINEERING STUDIO. Ship systems, not posts. `signhify.studio`*
+*© 2026 Signhify Studio — FULL AI ENGINEERING STUDIO. Stop posting. Start shipping.*

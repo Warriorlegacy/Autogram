@@ -75,6 +75,11 @@ TRIGGERS = {
             "Almost yours! Hit Follow on @signhify.studio and comment FOLLOWED — the blueprint lands in your DMs 📩",
             "Followers get the goods 🔐 Follow @signhify.studio + reply FOLLOWED and check your inbox!"
         ],
+        "delivery_replies": [
+            "Verified! 🚀 Sent the full AI Engineering Studio Blueprint & Master Prompt Vault to your DMs! Check your inbox 📥",
+            "You're in! 🔓 Check your DMs for the full Signhify Studio Blueprint + PDF guide ⚡",
+            "Sent to your DMs! Enjoy the free AI engineering architecture & master prompts 🧠"
+        ],
         "claim_patterns": [r"\bfollowed\b", r"\bfollowing\b", r"\bdone\b", r"\bfollow\s*back\b", r"✅"],
         "dm_text": (
             "Welcome to the inner circle! 🔓\n\n"
@@ -83,7 +88,10 @@ TRIGGERS = {
             "📕 Full Blueprint (read online): " + BLUEPRINT_MD_URL + "\n"
             "📄 Blueprint PDF: " + BLUEPRINT_PDF_URL + "\n\n"
             "Built by Signhify Studio — FULL AI ENGINEERING STUDIO.\n"
-            "We ship autonomous content engines, agentic pipelines and viral short-form systems. 🔗 signhify.studio"
+            "We build autonomous agent systems, production RAG & fine-tuned LLM architectures, and zero-marginal-cost content engines.\n"
+            "🔗 Website: https://signhify.studio\n"
+            "⚡ App: https://autogram-ai.vercel.app\n"
+            "💼 Hire Us / Partner: partner@signhify.studio"
         )
     }
 }
@@ -484,9 +492,10 @@ class InstagramDMAutomator:
     ) -> Dict[str, Any]:
         """DMs the blueprint links to a follow-claimed user and clears PENDING."""
         cfg = TRIGGERS[keyword]
+        replies_pool = cfg.get("delivery_replies") or cfg.get("public_replies") or cfg["gate_replies"]
         public_reply_id = "sim_reply"
         try:
-            public_reply_id = self.send_public_reply(comment_id, random.choice(cfg["gate_replies"]))
+            public_reply_id = self.send_public_reply(comment_id, random.choice(replies_pool))
         except Exception as e:
             logger.warning(f"Could not send claim acknowledgement to comment {comment_id}: {e}")
 
