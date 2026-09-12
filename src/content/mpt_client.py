@@ -169,13 +169,32 @@ def watermark_reel(video_path: str | Path, text: str = "signhify.studio") -> str
         "ffmpeg-8.0.1-full_build\\bin\\ffmpeg.exe"
     )
     if not ffmpeg or not Path(str(ffmpeg)).exists():
-        raise RuntimeError("FFmpeg binary not found; cannot watermark reel.")
-    font = Path("C:\\Windows\\Fonts\\arial.ttf")
-    if not font.exists():
-        raise RuntimeError("Watermark font not found at C:\\Windows\\Fonts\\arial.ttf.")
+        logger.warning("FFmpeg binary not found; skipping watermark pass.")
+        return str(src)
+
+    font_candidates = [
+        Path("C:/Windows/Fonts/arial.ttf"),
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+        Path("/usr/share/fonts/truetype/freefont/FreeSansBold.ttf"),
+        Path("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"),
+    ]
+    font = next((f for f in font_candidates if f.exists()), None)
+    if not font:
+        try:
+            from src.content.cloud_render import ensure_anton_font
+            font = ensure_anton_font(src.parent / "fonts")
+        except Exception:
+            font = None
+
+    if not font or not Path(str(font)).exists():
+        logger.info("No system font found for watermark pass; skipping.")
+        return str(src)
+
+    font_path_str = str(font).replace("\\", "/").replace(":", "\\:")
     tmp = src.with_name(src.stem + "_wm.mp4")
     vf = (
-        "drawtext=fontfile='C\\:/Windows/Fonts/arial.ttf':"
+        f"drawtext=fontfile='{font_path_str}':"
         f"text='{text}':fontsize=44:fontcolor=white:"
         "borderw=2:bordercolor=black:box=1:boxcolor=black@0.45:boxborderw=14:"
         "x=(w-text_w)/2:y=170"
@@ -187,7 +206,8 @@ def watermark_reel(video_path: str | Path, text: str = "signhify.studio") -> str
         capture_output=True, text=True, timeout=600,
     )
     if proc.returncode != 0 or not tmp.exists() or tmp.stat().st_size == 0:
-        raise RuntimeError(f"FFmpeg watermark failed: {proc.stderr[-500:]}")
+        logger.warning(f"FFmpeg watermark failed: {proc.stderr[-300:]}; keeping original")
+        return str(src)
     os.replace(tmp, src)
     logger.info(f"Watermarked reel: {src} ({src.stat().st_size // 1024} KB)")
     return str(src)

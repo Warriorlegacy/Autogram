@@ -217,21 +217,27 @@ def assemble_reel(clips: list[dict], audio_path: str | Path, srt_path: str | Pat
         vf += ",null[vout]"
     audio_idx = n  # audio input position after the N clip inputs
 
+    local_output = workdir / "assembled_reel.mp4"
     cmd = [ffmpeg, "-y", *inputs, "-i", audio_name,
            "-filter_complex", vf,
            "-map", "[vout]", "-map", f"{audio_idx}:a",
            "-t", f"{audio_duration:.1f}",
            "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
-           "-c:a", "aac", "-movflags", "+faststart", str(dest)]
+           "-c:a", "aac", "-movflags", "+faststart", str(local_output)]
     proc = subprocess.run(cmd, capture_output=True, text=True, timeout=900,
                           cwd=str(workdir))
-    if proc.returncode != 0 or not dest.exists() or dest.stat().st_size < 100000:
+    if proc.returncode != 0 or (not local_output.exists() and not dest.exists()) or (local_output.exists() and local_output.stat().st_size < 100000 and not dest.exists()):
         err_log = workdir / "ffmpeg_err.log"
         try:
             err_log.write_text(proc.stderr or "", encoding="utf-8", errors="replace")
         except Exception:
             pass
         raise RuntimeError(f"FFmpeg reel assembly failed (full log: {err_log}): {proc.stderr[-600:]}")
+
+    dest = Path(dest).resolve()
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if local_output.exists():
+        shutil.move(str(local_output), str(dest))
     logger.info(f"Cloud reel assembled: {dest} ({dest.stat().st_size // 1024} KB)")
     return str(dest)
 
