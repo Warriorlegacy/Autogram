@@ -66,6 +66,7 @@ class MoneyPrinterTurboClient:
             "video_source": "pexels",
             "voice_name": voice_name,
             "voice_volume": 1.0,
+            "font_name": "Anton-Regular.ttf",
             "bgm_type": "random",
             "bgm_volume": 0.15,
             "subtitle_enabled": True,

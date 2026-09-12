@@ -20,11 +20,22 @@ from src.db.database import db
 logger = logging.getLogger(__name__)
 
 STATE_FILE = Path(__file__).parent.parent.parent / "data" / "dm_automation_state.json"
+FOLLOW_GATE_FILE = Path(__file__).parent.parent.parent / "data" / "dm_follow_gate.json"
+
+# Public raw links to the Signhify Studio blueprint (resolve after push to main)
+BLUEPRINT_MD_URL = "https://raw.githubusercontent.com/Warriorlegacy/Autogram/main/BLUEPRINT.md"
+BLUEPRINT_PDF_URL = "https://raw.githubusercontent.com/Warriorlegacy/Autogram/main/BLUEPRINT.pdf"
+
+# NOTE (platform limit, stated honestly): Meta's Instagram Graph API exposes no
+# followers-list endpoint, so silent follow-verification is impossible via the
+# official API. The enforceable gate is this two-step claim flow: first trigger
+# comment -> public "follow + reply FOLLOWED" ask (link withheld, user marked
+# PENDING); follow-up claim comment -> blueprint DM delivered + PENDING cleared.
 
 # Trigger keywords and matching rules
 TRIGGERS = {
     "FOSS": {
-        "patterns": [r"\bfoss\b", r"\bself-host(ed|ing)?\b", r"\bdocker\b", r"\bblueprint\b", r"\bsetup\b"],
+        "patterns": [r"\bfoss\b", r"\bself-host(ed|ing)?\b", r"\bdocker\b", r"\bsetup\b"],
         "public_replies": [
             "Just sent the full Docker setup & GitHub link to your DMs! 🚀",
             "Check your DMs! The 1-click self-host blueprint is on the way ⚡",
@@ -55,8 +66,29 @@ TRIGGERS = {
             "Make sure to replace [INPUT_DATA] before running.\n"
             "Follow @signhify.studio for daily tested AI prompt architectures! ⚡"
         )
+    },
+    "BLUEPRINT": {
+        "patterns": [r"\bblueprint\b", r"\bvault\b", r"\bstudio\b", r"\bportfolio\b", r"\bservices\b"],
+        "gated": True,
+        "gate_replies": [
+            "This blueprint is for followers only 🔒 Follow @signhify.studio, then reply FOLLOWED and I'll DM the full vault!",
+            "Almost yours! Hit Follow on @signhify.studio and comment FOLLOWED — the blueprint lands in your DMs 📩",
+            "Followers get the goods 🔐 Follow @signhify.studio + reply FOLLOWED and check your inbox!"
+        ],
+        "claim_patterns": [r"\bfollowed\b", r"\bfollowing\b", r"\bdone\b", r"\bfollow\s*back\b", r"✅"],
+        "dm_text": (
+            "Welcome to the inner circle! 🔓\n\n"
+            "Here is the complete SIGNHIFY STUDIO Blueprint — our works, portfolio, "
+            "websites, free AI stack and copy-paste prompt pack:\n\n"
+            "📕 Full Blueprint (read online): " + BLUEPRINT_MD_URL + "\n"
+            "📄 Blueprint PDF: " + BLUEPRINT_PDF_URL + "\n\n"
+            "Built by Signhify Studio — FULL AI ENGINEERING STUDIO.\n"
+            "We ship autonomous content engines, agentic pipelines and viral short-form systems. 🔗 signhify.studio"
+        )
     }
 }
+
+FOLLOW_CLAIM_PATTERNS = [r"\bfollowed\b", r"\bfollowing\b", r"\bdone\b", r"\bfollow\s*back\b", r"✅"]
 
 
 class InstagramDMAutomator:
@@ -79,6 +111,45 @@ class InstagramDMAutomator:
         if not self.state_file.exists():
             self.state_file.parent.mkdir(parents=True, exist_ok=True)
             self.state_file.write_text(json.dumps({"processed_comments": {}}, indent=2), encoding="utf-8")
+
+    def _load_gate(self) -> dict:
+        """Loads pending follow-gate claims {username_lower: {requested_at, delivered}}."""
+        try:
+            if FOLLOW_GATE_FILE.exists():
+                return json.loads(FOLLOW_GATE_FILE.read_text(encoding="utf-8")).get("pending", {})
+        except Exception:
+            pass
+        return {}
+
+    def _save_gate(self, pending: dict) -> None:
+        try:
+            FOLLOW_GATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+            FOLLOW_GATE_FILE.write_text(json.dumps({"pending": pending}, indent=2), encoding="utf-8")
+        except Exception as e:
+            logger.warning(f"Failed to persist follow-gate state: {e}")
+
+    def mark_gate_pending(self, username: str) -> None:
+        pending = self._load_gate()
+        key = (username or "").lower()
+        if key and (key not in pending or pending[key].get("delivered")):
+            pending[key] = {"requested_at": time.time(), "delivered": False}
+            self._save_gate(pending)
+
+    def is_gate_pending(self, username: str) -> bool:
+        entry = self._load_gate().get((username or "").lower(), {})
+        return bool(entry) and not entry.get("delivered")
+
+    def mark_gate_delivered(self, username: str) -> None:
+        pending = self._load_gate()
+        key = (username or "").lower()
+        if key in pending:
+            pending[key]["delivered"] = True
+            self._save_gate(pending)
+
+    @staticmethod
+    def is_follow_claim(text: str) -> bool:
+        text_lower = (text or "").lower()
+        return any(re.search(p, text_lower) for p in FOLLOW_CLAIM_PATTERNS)
 
     def load_processed_comments(self) -> set[str]:
         """Loads set of previously handled comment IDs to prevent duplicate DMs."""
@@ -152,7 +223,7 @@ class InstagramDMAutomator:
         stats = {
             "total_dms_sent": 0,
             "total_comments_handled": 0,
-            "by_keyword": {"FOSS": 0, "PROMPT": 0},
+            "by_keyword": {"FOSS": 0, "PROMPT": 0, "BLUEPRINT": 0},
             "recent_actions": []
         }
         # Try DB first
@@ -330,15 +401,47 @@ class InstagramDMAutomator:
         if not comment_id:
             return None
 
+        # Follow-claim fast path: a pending user saying FOLLOWED/DONE unlocks
+        # the gated blueprint even though the claim carries no trigger keyword.
+        if self.is_follow_claim(text) and self.is_gate_pending(username):
+            return self._deliver_gated_blueprint(
+                comment_id, media_id, username, text, "BLUEPRINT"
+            )
+
         matched_key = self.match_keyword(text)
         if not matched_key:
             return None  # No action needed for generic comments
 
         cfg = TRIGGERS[matched_key]
+        logger.info(f"Trigger matched! Comment '{text}' by @{username} matched keyword [{matched_key}].")
+
+        # Follow-gated premium assets (BLUEPRINT): withhold the link until the
+        # user claims the follow. First touch -> gate ask + PENDING. Claim
+        # ("followed"/"done") on any later comment -> deliver + clear.
+        if cfg.get("gated"):
+            if self.is_follow_claim(text) or self.is_gate_pending(username):
+                return self._deliver_gated_blueprint(
+                    comment_id, media_id, username, text, matched_key
+                )
+            gate_reply = random.choice(cfg["gate_replies"])
+            public_reply_id = "sim_reply"
+            try:
+                public_reply_id = self.send_public_reply(comment_id, gate_reply)
+            except Exception as e:
+                logger.warning(f"Could not send gate reply to comment {comment_id}: {e}")
+            self.mark_gate_pending(username)
+            self.record_processed_comment(
+                comment_id=comment_id, media_id=media_id, username=username,
+                comment_text=text, keyword=matched_key,
+                public_reply_id=public_reply_id, dm_status="GATE_PENDING"
+            )
+            return {
+                "comment_id": comment_id, "username": username, "keyword": matched_key,
+                "public_reply_id": public_reply_id, "dm_status": "GATE_PENDING"
+            }
+
         public_reply_text = random.choice(cfg["public_replies"])
         dm_text = cfg["dm_text"]
-
-        logger.info(f"Trigger matched! Comment '{text}' by @{username} matched keyword [{matched_key}].")
 
         # 1. Post randomized public reply
         public_reply_id = "sim_reply"
@@ -374,6 +477,36 @@ class InstagramDMAutomator:
             "keyword": matched_key,
             "public_reply_id": public_reply_id,
             "dm_status": status_str
+        }
+
+    def _deliver_gated_blueprint(
+        self, comment_id: str, media_id: str, username: str, text: str, keyword: str
+    ) -> Dict[str, Any]:
+        """DMs the blueprint links to a follow-claimed user and clears PENDING."""
+        cfg = TRIGGERS[keyword]
+        public_reply_id = "sim_reply"
+        try:
+            public_reply_id = self.send_public_reply(comment_id, random.choice(cfg["gate_replies"]))
+        except Exception as e:
+            logger.warning(f"Could not send claim acknowledgement to comment {comment_id}: {e}")
+
+        dm_sent = False
+        try:
+            dm_sent = self.send_private_dm(comment_id, cfg["dm_text"])
+        except Exception as e:
+            logger.warning(f"Could not send blueprint DM for comment {comment_id}: {e}")
+
+        if dm_sent:
+            self.mark_gate_delivered(username)
+        status_str = "DM_SENT" if dm_sent else "PUBLIC_ONLY"
+        self.record_processed_comment(
+            comment_id=comment_id, media_id=media_id, username=username,
+            comment_text=text, keyword=keyword,
+            public_reply_id=public_reply_id, dm_status=status_str
+        )
+        return {
+            "comment_id": comment_id, "username": username, "keyword": keyword,
+            "public_reply_id": public_reply_id, "dm_status": status_str
         }
 
     def scan_and_automate(self, limit_posts: int = 5) -> Dict[str, Any]:

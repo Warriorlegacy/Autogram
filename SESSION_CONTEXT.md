@@ -4,7 +4,9 @@
 > **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `63762e0`)  
 > **Target Profile:** `@signhify.studio`  
 > **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots scheduled; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing)  
-> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **LIVE-PROVEN ×3** (proof reel `18084132620498378`, agency reel `18038336954832825`, agency story `18137079703621760`; 10 daily local slots via schtasks; every reel watermarked + captioned for @signhify.studio)  
+> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **LIVE-PROVEN ×3** (proof reel `18084132620498378`, agency reel `18038336954832825`, agency story `18137079703621760`; 10 daily local slots via schtasks; every reel watermarked + captioned for @signhify.studio)
+> **Blueprint Follow-Gate:** **ARMED** (`BLUEPRINT` keyword → follow-gate ask → `FOLLOWED` claim → DM with `BLUEPRINT.md`/`.pdf` links; two-step claim because Meta exposes no followers endpoint)
+> **Studio Positioning:** **FULL AI ENGINEERING STUDIO** (all reel captions, story CTAs, brand.json, blueprint assets)  
 > **Render Production Dashboard:** **LIVE & HEALTHY** (`https://autogram-dashboard.onrender.com/dashboard`)  
 > **Vercel Production Landing:** **LIVE & READY** (`https://autogram-ai.vercel.app`)  
 > **Responsive Experience:** **OPTIMIZED FOR ALL SCREENS** (Mobile 320px–480px, Tablets 768px–960px, Desktop 1024px–4K, Hamburger Navigation, Full-Width Viewport)  
@@ -144,7 +146,8 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_reel_pipeline.py` — 9/9 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow)
 - `tests/test_workflows_and_copilot.py` — 5/5 (daily-story.yml & daily-video.yml validation, Settings GITHUB_COPILOT_TOKEN, GitHub Models preset, unauthorized handling)
 - `tests/test_youtube_shorts.py` — 5/5 (shorts publisher dry-run, title formatting, missing creds handling, `/api/publish/shorts`, `/api/publish/video`)
-- `tests/test_reel_pipeline.py` — 7/7 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution)
+- `tests/test_reel_pipeline.py` — 9/9 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow)
+- `tests/test_blueprint_and_gate.py` — 7/7 (BLUEPRINT taxonomy, gate withholds link, claim delivers, FOSS ungated, studio strings, Anton payload, committed assets)
 - `tests/test_responsive_ui.py` — 5/5 (mobile responsive elements, hamburger nav, double-api normalization, synthesize endpoint)
 - `tests/test_auth_and_providers.py` — 20/20
 - `tests/test_image_and_scripts.py` — 10/10 (IMGBB priority, theme picker, three-scene reactivity)
@@ -157,7 +160,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-**Total:** 99/101 passing. Pre-existing failures (verified failing on pristine `880eb62` tree, unrelated to reel/video work):
+**Total:** 108/110 passing. Pre-existing failures (verified failing on pristine `880eb62` tree, unrelated to reel/video work):
 - `test_orchestrator.py::test_full_pipeline_dry_run` (assertion on live-LLM output)
 - `test_story_pipeline.py::test_schedule_json_has_seven_story_slots_and_queue` (`story_slots` key absent from committed `schedule.json`; some test side-effect flips `scheduler_enabled` — restore the file after suite runs)
 
@@ -219,6 +222,12 @@ orchestrator.py --video (or pipeline_runner.py --now)
   - Story default CTA is now `Follow @signhify.studio · AI Marketing Agency — Link in Bio` (template already carried `@signhify.studio` handle + `SIGNHIFY.STUDIO` subtext).
 - **Minutes math (GH free tier 2000/mo):** stories ~315 + carousels ~630 + videos 0 (local) ≈ 945/mo — SAFE.
 - **YouTube pending:** no local `youtube_token.json`/`client_secrets.json` — Shorts legs fail gracefully per-destination until one-time OAuth setup is done; Reels unaffected.
+
+### Follow-Gated Blueprint + Studio Reposition (latest session)
+- **Gate flow** (`dm_automator.py`): `BLUEPRINT` keyword (blueprint/vault/studio/portfolio/services) → public *"follow + reply FOLLOWED"* ask, link withheld, user marked `GATE_PENDING` in `data/dm_follow_gate.json` → follow-up claim comment (`followed`/`done`/✅, keyword or not) → blueprint DM + `delivered`. FOSS/PROMPT flows untouched. Stated limit: Meta exposes no followers-list endpoint, so the two-step claim is the enforceable gate.
+- **Blueprint assets** (also studio marketing): `BLUEPRINT.md` (positioning, live portfolio table, websites, $0 stack, 5-prompt pack, hire CTA) + `BLUEPRINT.pdf` via `build_blueprint_pdf.py` (reportlab). DM'd as raw.githubusercontent links (live after push).
+- **Viral fonts:** Anton-Regular (OFL, validated 1373 glyphs) → `D:\MoneyPrinterTurbo\resource\fonts\` + per-task `font_name` in MPT payloads; story `.story-title`/`.metric-value` + carousel hook `.stage-title` switched to the Anton stamp stack.
+- **FULL AI ENGINEERING STUDIO:** reel caption footer, story CTA, `brand.json` positioning rewritten; `free_knowledge_engine` hook left as-is (topic hook, not identity).
 
 ## 6. Deployment Surfaces
 

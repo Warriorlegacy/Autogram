@@ -15,8 +15,10 @@ def test_keyword_matching(automator):
     # FOSS triggers
     assert automator.match_keyword("FOSS please!") == "FOSS"
     assert automator.match_keyword("Can you send the docker setup?") == "FOSS"
-    assert automator.match_keyword("Send blueprint") == "FOSS"
     assert automator.match_keyword("I want to self-host this") == "FOSS"
+
+    # BLUEPRINT owns the gated premium asset keyword
+    assert automator.match_keyword("Send blueprint") == "BLUEPRINT"
 
     # PROMPT triggers
     assert automator.match_keyword("Send the PROMPT code") == "PROMPT"
