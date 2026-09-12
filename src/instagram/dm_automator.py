@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 STATE_FILE = Path(__file__).parent.parent.parent / "data" / "dm_automation_state.json"
 FOLLOW_GATE_FILE = Path(__file__).parent.parent.parent / "data" / "dm_follow_gate.json"
 
-# Public raw links to the Signhify Studio blueprint (resolve after push to main)
-BLUEPRINT_MD_URL = "https://raw.githubusercontent.com/Warriorlegacy/Autogram/main/BLUEPRINT.md"
-BLUEPRINT_PDF_URL = "https://raw.githubusercontent.com/Warriorlegacy/Autogram/main/BLUEPRINT.pdf"
+# Public links to the Signhify Studio blueprint (accessible without GitHub auth)
+BLUEPRINT_MD_URL = "https://autogram-dashboard.onrender.com/BLUEPRINT.md"
+BLUEPRINT_PDF_URL = "https://autogram-dashboard.onrender.com/BLUEPRINT.pdf"
 
 # NOTE (platform limit, stated honestly): Meta's Instagram Graph API exposes no
 # followers-list endpoint, so silent follow-verification is impossible via the
