@@ -1,10 +1,10 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-12 15:30 IST  
-> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `63762e0`)  
+> **Last Updated:** 2026-09-12 16:37 IST  
+> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `c693ee8`)  
 > **Target Profile:** `@signhify.studio`  
-> **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots scheduled; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing)  
-> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **LIVE-PROVEN ×3** (proof reel `18084132620498378`, agency reel `18038336954832825`, agency story `18137079703621760`; 10 daily local slots via schtasks; every reel watermarked + captioned for @signhify.studio)
+> **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots via cron-job.org dispatches; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing)  
+> **Reels Video Pipeline ($0, PC-off proof):** **LIVE-PROVEN** (MPT reel `18084132620498378`, agency reel `18038336954832825`, agency story `18137079703621760`; 4 daily cloud renders via GitHub Actions; MPT-first smart fallback; every reel watermarked + captioned for @signhify.studio)
 > **Blueprint Follow-Gate:** **ARMED** (`BLUEPRINT` keyword → follow-gate ask → `FOLLOWED` claim → DM with `BLUEPRINT.md`/`.pdf` links; two-step claim because Meta exposes no followers endpoint)
 > **Studio Positioning:** **FULL AI ENGINEERING STUDIO** (all reel captions, story CTAs, brand.json, blueprint assets)  
 > **Render Production Dashboard:** **LIVE & HEALTHY** (`https://autogram-dashboard.onrender.com/dashboard`)  
@@ -136,7 +136,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 | `8430206` | **Every 15 min** | Render 24/7 Auto-DM & Comment Scanner (`/api/cron/auto-dm`) | **Active** |
 
 - **Double-post fix:** native `schedule:` blocks removed from `daily-post.yml` and `daily-story.yml` — cron-job.org dispatches are now the ONLY cloud triggers (both firing = 2× publishes toward the 25/day Meta cap).
-- **Reels (10/day) stay local:** `Autogram Reel 1-10` Windows Scheduled Tasks + MPT autostart (cron-job.org cannot reach localhost MPT; CI video runs fail closed by design).
+- **Reels run cloud-first (PC-off proof):** 4 daily slots in `daily-video.yml` render on runners via the CI-lite lane; `render_reel_auto()` uses local MPT only when reachable (manual/PC-on quality path). No local auto-publish anywhere: schtasks deleted, `start_autogram.bat` is dashboard-only, dashboard slot auto-fire gated by `slots_enabled=false`.
 
 ---
 
@@ -146,7 +146,9 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_run_guards.py` — 5/5 (quota skip manifest, headroom proceeds, dispatch alert+reraise, passthrough silence, SlotSkipped silence)
 - `tests/test_cloud_render.py` — 5/5 (PEXELS key guard, colon-free filter regression, MPT-preferred + cloud-fallback routing, assembly wiring)
 - `tests/test_guardian.py` — 5/5 (retry success/exhaustion, quota skip/allow, ALERTS.log fallback, janitor)
-- `tests/test_reel_pipeline.py` — 9/9 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow)
+- `tests/test_posting_and_scheduling.py` — 7/7
+- `tests/test_story_pipeline.py` — 5/6 (1 pre-existing failure, see below)
+- `tests/test_reel_pipeline.py` — 11/11 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow, agency footer, watermark burn)
 - `tests/test_workflows_and_copilot.py` — 5/5 (daily-story.yml & daily-video.yml validation, Settings GITHUB_COPILOT_TOKEN, GitHub Models preset, unauthorized handling)
 - `tests/test_youtube_shorts.py` — 5/5 (shorts publisher dry-run, title formatting, missing creds handling, `/api/publish/shorts`, `/api/publish/video`)
 - `tests/test_blueprint_and_gate.py` — 7/7 (BLUEPRINT taxonomy, gate withholds link, claim delivers, FOSS ungated, studio strings, Anton payload, committed assets)
@@ -213,16 +215,16 @@ orchestrator.py --video (or pipeline_runner.py --now)
 - **Story "not posting" root cause:** the pasted failing log was a manual `MODE=dry-run` dispatch that actually SUCCEEDED (mock media ID). The old argparse quoting bug is already fixed (commit `17998ad`, array-based `CMD_ARGS`). Scheduled runs default to `live`. No story code change needed.
 - **Meta token VALID:** read-only `check_publishing_limit()` returned `quota_usage: 13` (12 headroom at check time).
 - **PEXELS verdict:** configured where it matters — key present in `D:\MoneyPrinterTurbo\config.toml` (local renders use it); `PEXELS_API_KEY` also SET in Autogram `.env` and mapped as `secrets.PEXELS_API_KEY` → env in `daily-video.yml`. No code reads it on CI because no render happens there.
-- **Video lane fix (commit `63762e0`):** GitHub runners cannot reach localhost MPT, so all 10 CI video crons failed closed. Removed `schedule` from `daily-video.yml` (manual dispatch kept); the 10 daily slots now run on this PC via `run_video_slot.bat` + `ensure_mpt.bat`, armed as Windows Scheduled Tasks `Autogram Reel 1-10` (08:03–22:03 IST) + logon/Startup MPT autostart.
+- **Video lane history:** commit `63762e0` first moved videos local (10 schtasks) because runners couldn't reach MPT; superseded same-day by the cloud CI-lite lane (`cloud_render.py`) + 4 native video crons, and the schtasks were deleted — single-source, PC-off proof.
 - **MPT v1.3.0 wire fix:** task `state`/`progress` arrive as STRINGS (`COMPLETE=1`, `FAILED=-1`, `PROCESSING=4`); `wait_for_task` now coerces to int.
-- **24h API cap guard:** `publish_media()` raises legibly at `quota_usage >= 24` (Meta cap ~25/24h; 24 drops armed). With usage at 13, remaining headroom covers the rest of today; steady-state 24/day leaves 1 headroom — drop to 21/day if cap-skips appear.
+- **24h API cap guard:** `publish_media()` raises legibly at `quota_usage >= 24` (Meta cap ~25/24h; 18 drops/day armed: 7 carousels + 7 stories + 4 reels → 7 headroom). Pipeline entry-points precheck quota first and return a `skipped` manifest instead of burning a render.
 - **Live proof:** 1080×1920 25s h264 reel rendered via MPT, staged on catbox.moe ($0), published to `@signhify.studio` — Media ID `18084132620498378`.
 - **Agency promo drop (2026-09-12 ~15:20 IST):** story `18137079703621760` ("5 Free AI Tools That Replace a $5,000/mo Marketing Retainer") + reel `18038336954832825` ("Signhify Studio Builds AI Marketing Engines That Post While You Sleep") — different topics, both agency-promoting.
 - **Standing agency branding (all future reels/stories):**
-  - `watermark_reel()` burns `signhify.studio` top-center into every MP4 via FFmpeg drawtext (fail-closed; wired into `--reel`, `--shorts`, `--video` paths).
-  - `generate_reel_script()` appends `🚀 Built by @signhify.studio — AI Marketing Agency | 🔗 signhify.studio` to every caption.
-  - Story default CTA is now `Follow @signhify.studio · AI Marketing Agency — Link in Bio` (template already carried `@signhify.studio` handle + `SIGNHIFY.STUDIO` subtext).
-- **Minutes math (GH free tier 2000/mo):** stories ~315 + carousels ~630 + videos 0 (local) ≈ 945/mo — SAFE.
+  - `watermark_reel()` burns `signhify.studio` top-center into every MP4 via FFmpeg drawtext (fail-closed; wired into `--reel`, `--shorts`, `--video` paths; cloud lane burns it in-assembly).
+  - `generate_reel_script()` appends `🚀 Built by @signhify.studio — FULL AI ENGINEERING STUDIO | 🔗 signhify.studio` to every caption.
+  - Story default CTA is now `Follow @signhify.studio · FULL AI ENGINEERING STUDIO — Link in Bio` (template already carried `@signhify.studio` handle + `SIGNHIFY.STUDIO` subtext).
+- **Minutes math (GH free tier 2000/mo):** stories ~315 + carousels ~630 + 4 videos ~600 ≈ 1545 — SAFE with retry headroom (replaces the earlier 945/mo all-local estimate).
 
 ### PC-Off Autonomy: Cloud Owns Everything (latest session)
 User constraint: posting must continue **with the PC turned off**. Redesign:
@@ -230,7 +232,7 @@ User constraint: posting must continue **with the PC turned off**. Redesign:
 - **ffmpeg gotcha (documented):** this build misparses drive-colon absolute paths inside `subtitles`/`drawtext` options even quoted/escaped — assembly runs with `cwd=workdir` and bare relative names (regression-tested).
 - **4 cloud video slots** in `daily-video.yml` (07:30/12:30/17:30/21:30 IST; ~600 free-min/mo; PEXELS-empty guard fails with guidance). PEXELS_API_KEY confirmed present in repo secrets.
 - **Local auto-publish disarmed** (single-source doctrine): 10 schtasks deleted, `start_autogram.bat` no longer launches `--schedule`, dashboard slot auto-fire gated behind `slots_enabled` (default false; queue + auto-DM unaffected). `run_video_slot.bat`/MPT autostart stay for manual top-ups.
-- **Robustness core** (`src/ops/guardian.py`, built by agent, 5/5): `with_retries`, `ensure_quota`/`SlotSkipped`, `send_alert` (Telegram when configured, else `output/ALERTS.log`), `janitor` (old output dirs + MPT mp4s). No Telegram/webhook tokens configured — alerts currently file-local.
+- **Robustness core** (`src/ops/guardian.py`, built by agent, 5/5): `with_retries`, `ensure_quota`/`SlotSkipped`, `send_alert` (Telegram live since chat-ID registration + test push ✅, else `output/ALERTS.log`), `janitor` (old output dirs + MPT mp4s).
 - **Guard wiring (latest session):** every pipeline (carousel/story/reel/shorts/dual-video) runs janitor + IG quota precheck first (exhausted quota returns a `skipped` manifest, exit 0, no alert spam); renders/uploads retry 3×; any failure fires `send_alert` from CLI dispatch, `pipeline_runner` main, and all 4 dashboard publish endpoints. Telegram bot `signhifyauto_bot` validated; token in local `.env` (gitignored) + `TELEGRAM_BOT_TOKEN` repo secret; CI workflows map both Telegram vars. `DRY_RUN` repo secret forced `false`. `TELEGRAM_CHAT_ID` registered (`/start` received) — test alert delivered ✅.
 - **Minutes math revised:** stories ~315 + carousels ~630 + 4 videos ~600 ≈ 1545/2000 — SAFE with retry headroom.
 - **YouTube pending:** no local `youtube_token.json`/`client_secrets.json` — Shorts legs fail gracefully per-destination until one-time OAuth setup is done; Reels unaffected.
@@ -247,8 +249,8 @@ User constraint: posting must continue **with the PC turned off**. Redesign:
 |---|---|---|
 | Local dev | `python orchestrator.py --dry-run` | Requires Playwright |
 | Dashboard (local) | `python dashboard_api.py` | Port 5050; serves static files |
-| Windows quick-start | `start_autogram.bat` | Starts dashboard + ngrok + scheduler |
-| GitHub Actions | [.github/workflows/daily-post.yml](file:///.github/workflows/daily-post.yml) | 7 cron slots; Run `34676939949` verified SUCCESS in 2m13s |
+| Windows quick-start | `start_autogram.bat` | Dashboard + ngrok only (no auto-publish; cloud owns the cadence) |
+| GitHub Actions | [.github/workflows/daily-post.yml](file:///.github/workflows/daily-post.yml) | Carousel drops via cron-job.org dispatches (no native cron — single source) |
 | Render Production | `https://autogram-dashboard.onrender.com/dashboard` | Active & healthy (`v2.5-quantum`), runs `dashboard_api.py` |
 | Vercel Production | `https://autogram-ai.vercel.app` | Active, serves 3D theme-reactive `index.html` + spatial assets |
 
@@ -256,7 +258,7 @@ User constraint: posting must continue **with the PC turned off**. Redesign:
 
 ## 7. Critical Runtime Quirks
 
-- **`DRY_RUN=true` is the default.** Pipeline will not publish to Meta unless `DRY_RUN=false` in `.env` AND `IG_USER_ID`/`IG_ACCESS_TOKEN` are populated.
+- **LIVE is the default everywhere.** `DRY_RUN` repo secret is pinned `false`; local `.env` is `false`. Pipelines go live on schedule/dispatch; dry-run only via explicit `--dry-run` / `"mode": "dry-run"`. (Meta token + IG creds still required for live legs.)
 - **Timezone is `Asia/Kolkata`.** All scheduler slot calculations use IST.
 - **Renderer needs outbound network.** Loads Google Fonts from CDN.
 - **No async/await anywhere.** Everything is synchronous `requests` + `subprocess.Popen`.
