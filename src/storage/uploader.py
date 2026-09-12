@@ -80,6 +80,22 @@ class AssetUploader:
             return resp.text.strip()
         raise RuntimeError(f"0x0.st returned status {resp.status_code}: {resp.text[:200]}")
 
+    def _upload_to_uguu(self, p: Path, mime: str = "video/mp4") -> str:
+        """Uploads file to uguu.se returning a direct CDN URL (up to 100MB, 48h)."""
+        with open(p, "rb") as f:
+            resp = requests.post(
+                "https://uguu.se/upload",
+                files={"files[]": (p.name, f, mime)},
+                timeout=60
+            )
+        if resp.status_code == 200:
+            data = resp.json()
+            if data.get("success") and data.get("files"):
+                url = data["files"][0].get("url")
+                if url and url.startswith("http"):
+                    return url
+        raise RuntimeError(f"uguu.se returned status {resp.status_code}: {resp.text[:200]}")
+
     def _upload_to_imgbb(self, p: Path) -> str:
         """Uploads to imgbb.com free API (reliable from all IPs including CI)."""
         api_key = settings.imgbb_api_key or os.environ.get("IMGBB_API_KEY") or "f0ee2a304a71d5b2da983153c2284b73"
@@ -281,6 +297,7 @@ class AssetUploader:
 
         for name, fn in (
             ("catbox.moe", self._upload_to_catbox),
+            ("uguu.se", self._upload_to_uguu),
             ("litterbox", self._upload_to_litterbox),
             ("0x0.st", self._upload_to_0x0),
         ):

@@ -153,6 +153,8 @@ def execute_autonomous_run(
         except Exception as e:
             logger.error(f"Instagram Reels publishing failed: {e}")
             results["destinations"]["instagram_reels"] = {"status": "error", "error": str(e)}
+            if not dry_run:
+                raise RuntimeError(f"Instagram Reels live publishing failed: {e}") from e
 
     # 5. Save Manifest
     manifest_path = out_dir / f"video_manifest_{timestamp}.json"
