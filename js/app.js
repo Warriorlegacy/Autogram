@@ -1,17 +1,44 @@
-// 0. Day / Night Mode Toggle
+// 0. Spatial 5-Theme Preset Engine
+const THEME_MAP = {
+  'dark':        { icon: '🌙', label: 'QUANTUM' },
+  'cyberpunk':   { icon: '⚡', label: 'CYBER' },
+  'neumorphic':  { icon: '🫧', label: 'NEO' },
+  'swiss-light': { icon: '📰', label: 'SWISS' },
+  'bento-grid':  { icon: '🧱', label: 'BENTO' },
+  'light':       { icon: '☀️', label: 'DAY' }
+};
+
 window.applyTheme = function(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   try { localStorage.setItem('autogram_theme', theme); } catch (e) {}
+  const meta = THEME_MAP[theme] || THEME_MAP['dark'];
   const icon = document.getElementById('theme-toggle-icon');
   const label = document.getElementById('theme-toggle-label');
-  if (icon) icon.textContent = theme === 'light' ? '☀️' : '🌙';
-  if (label) label.textContent = theme === 'light' ? 'LIGHT' : 'DARK';
+  if (icon) icon.textContent = meta.icon;
+  if (label) label.textContent = meta.label;
+  document.querySelectorAll('.theme-pick').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === theme);
+  });
+  const dd = document.getElementById('theme-picker-dropdown');
+  if (dd) dd.classList.remove('open');
+};
+
+window.toggleThemePicker = function() {
+  const dd = document.getElementById('theme-picker-dropdown');
+  if (dd) dd.classList.toggle('open');
 };
 
 window.toggleTheme = function() {
   const cur = document.documentElement.getAttribute('data-theme') || 'dark';
   window.applyTheme(cur === 'light' ? 'dark' : 'light');
 };
+
+// Close theme picker on outside click
+document.addEventListener('click', (e) => {
+  const picker = document.getElementById('theme-picker');
+  const dd = document.getElementById('theme-picker-dropdown');
+  if (picker && dd && !picker.contains(e.target)) dd.classList.remove('open');
+});
 
 // Cross-tab sync between landing page and dashboard
 window.addEventListener('storage', (e) => {

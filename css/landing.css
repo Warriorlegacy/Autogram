@@ -467,6 +467,80 @@ body::after {
   color: var(--neon-cyan);
 }
 
+/* ─── 5-Theme Spatial Picker Dropdown ─── */
+.theme-picker {
+  position: relative;
+  display: inline-block;
+}
+.theme-picker-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--bg-surface, #0B0F19);
+  border: 1px solid var(--border-card, rgba(255, 255, 255, 0.12));
+  border-radius: 12px;
+  padding: 6px;
+  z-index: 1000;
+  min-width: 175px;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.theme-picker-dropdown.open {
+  display: block;
+  animation: theme-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes theme-pop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.theme-pick {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-muted, #94A3B8);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.theme-pick:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main, #FFFFFF);
+  transform: translateX(2px);
+}
+.theme-pick.active {
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--neon-cyan);
+}
+[data-theme="light"] .theme-picker-dropdown {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.15);
+}
+[data-theme="light"] .theme-pick:hover {
+  background: rgba(15, 23, 42, 0.06);
+  color: #0B0F19;
+}
+[data-theme="cyberpunk"] .theme-picker-dropdown {
+  background: #0A0A0F;
+  border-color: rgba(0, 229, 255, 0.25);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+}
+[data-theme="neumorphic"] .theme-picker-dropdown {
+  background: #EDF0F5;
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 8px 8px 20px rgba(163, 177, 198, 0.6), -8px -8px 20px rgba(255, 255, 255, 0.8);
+}
+
 /* ════════════════════════════════════════════════════════════════════════════
    PREMIUM 3D BUTTON SYSTEM
    ════════════════════════════════════════════════════════════════════════════ */

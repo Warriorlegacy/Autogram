@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     s3_secret_key: str | None = Field(default=None, alias="S3_SECRET_KEY")
     s3_region: str = Field(default="auto", alias="S3_REGION")
     public_cdn_base: str = Field(default="http://localhost:8000", alias="PUBLIC_CDN_BASE")
-    imgbb_api_key: str | None = Field(default=None, alias="IMGBB_API_KEY")
+    imgbb_api_key: str | None = Field(default="f0ee2a304a71d5b2da983153c2284b73", alias="IMGBB_API_KEY")
 
     # Database
     database_url: str = Field(default="sqlite:///autopilot.db", alias="DATABASE_URL")

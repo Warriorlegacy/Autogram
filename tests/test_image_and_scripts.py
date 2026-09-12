@@ -123,3 +123,33 @@ def test_uploader_public_cdn_fallback():
     assert len(urls) == 1
     assert urls[0].startswith("http://") or urls[0].startswith("https://")
 
+def test_uploader_imgbb_prioritization_and_key():
+    from src.config import settings
+    from src.storage.uploader import uploader
+    # Ensure default IMGBB API key is configured
+    assert settings.imgbb_api_key is not None
+    assert len(settings.imgbb_api_key) == 32
+
+    # Verify upload_slide_images prioritizes imgbb when mock succeeds
+    import unittest.mock as mock
+    with mock.patch.object(uploader, "_upload_to_imgbb", return_value="https://i.ibb.co/mock_test/slide_01.jpg") as mock_imgbb:
+        urls = uploader.upload_slide_images(["output/2026-09-12/slide_01.jpg"], "2026-09-12", dry_run=False)
+        assert len(urls) == 1
+        assert "i.ibb.co" in urls[0]
+        mock_imgbb.assert_called_once()
+
+def test_landing_theme_picker_markup():
+    import pathlib
+    html = pathlib.Path("index.html").read_text(encoding="utf-8")
+    assert "theme-picker-dropdown" in html
+    for theme in ["dark", "cyberpunk", "neumorphic", "swiss-light", "bento-grid", "light"]:
+        assert f'data-theme="{theme}"' in html
+
+def test_three_scene_theme_reactivity():
+    import pathlib
+    js = pathlib.Path("js/three-scene.js").read_text(encoding="utf-8")
+    assert "PALETTES" in js
+    assert "data-theme" in js
+    assert "cyberpunk" in js
+    assert "neumorphic" in js
+

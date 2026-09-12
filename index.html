@@ -144,10 +144,22 @@
         </ul>
 
         <div class="nav-actions">
-          <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleTheme()" title="Switch Day / Night Mode">
-            <span id="theme-toggle-icon">🌙</span>
-            <span id="theme-toggle-label">DARK</span>
-          </button>
+          <!-- 5-Theme Spatial Picker -->
+          <div class="theme-picker" id="theme-picker">
+            <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleThemePicker()" title="Switch 3D Themes">
+              <span id="theme-toggle-icon">🌙</span>
+              <span id="theme-toggle-label">QUANTUM</span>
+              <span style="font-size:8px;opacity:0.5;margin-left:2px;">▼</span>
+            </button>
+            <div class="theme-picker-dropdown" id="theme-picker-dropdown">
+              <button class="theme-pick" data-theme="dark" onclick="applyTheme('dark')">🌙 Quantum Tech</button>
+              <button class="theme-pick" data-theme="cyberpunk" onclick="applyTheme('cyberpunk')">⚡ Cyberpunk</button>
+              <button class="theme-pick" data-theme="neumorphic" onclick="applyTheme('neumorphic')">🫧 Neumorphic</button>
+              <button class="theme-pick" data-theme="swiss-light" onclick="applyTheme('swiss-light')">📰 Swiss Light</button>
+              <button class="theme-pick" data-theme="bento-grid" onclick="applyTheme('bento-grid')">🧱 Bento Grid</button>
+              <button class="theme-pick" data-theme="light" onclick="applyTheme('light')">☀️ Day Mode</button>
+            </div>
+          </div>
           <div id="landing-auth-pill"></div>
           <a href="dashboard.html" class="btn btn-primary btn-3d btn-3d-cyan" style="padding: 10px 20px; font-size: 13px; font-weight: 800;">
             <span>⚡ Mission Cockpit</span>

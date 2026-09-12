@@ -90,6 +90,7 @@ jobs:
           META_APP_ID: ${{ secrets.META_APP_ID }}
           META_APP_SECRET: ${{ secrets.META_APP_SECRET }}
           PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE || 'https://autogram-dashboard.onrender.com' }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY || 'f0ee2a304a71d5b2da983153c2284b73' }}
           DRY_RUN: ${{ secrets.DRY_RUN || 'false' }}
 
       - name: Commit Content Memory (Zero Repetition)

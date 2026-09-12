@@ -82,7 +82,7 @@ class AssetUploader:
 
     def _upload_to_imgbb(self, p: Path) -> str:
         """Uploads to imgbb.com free API (reliable from all IPs including CI)."""
-        api_key = settings.imgbb_api_key
+        api_key = settings.imgbb_api_key or os.environ.get("IMGBB_API_KEY") or "f0ee2a304a71d5b2da983153c2284b73"
         if not api_key:
             raise RuntimeError("imgbb skipped: IMGBB_API_KEY is not configured.")
         import base64
@@ -105,11 +105,11 @@ class AssetUploader:
         Cascade:
         0. If dry_run is True, formats public staging URLs instantly without upload.
         1. S3 / Cloudflare R2 if configured.
-        2. freeimage.host cloud CDN.
-        3. catbox.moe CDN fallback.
-        4. litterbox.catbox.moe (24h temp, works from GitHub Actions IPs).
-        5. 0x0.st (permanent CDN, GitHub Actions compatible).
-        6. imgbb.com API fallback.
+        2. imgbb.com authenticated API (prioritized for CI / GitHub Actions speed & reliability).
+        3. freeimage.host cloud CDN.
+        4. catbox.moe CDN fallback.
+        5. litterbox.catbox.moe (24h temp, works from GitHub Actions IPs).
+        6. 0x0.st (permanent CDN, GitHub Actions compatible).
         7. Render Dashboard / PUBLIC_CDN_BASE last resort.
         Always guarantees valid absolute public HTTP/HTTPS URLs.
         """
@@ -164,41 +164,52 @@ class AssetUploader:
             logger.info("Using 100% Free Public Cloud CDN for Meta Instagram ingestion...")
             all_uploaded = True
             temp_urls = []
+            has_imgbb = bool(settings.imgbb_api_key or os.environ.get("IMGBB_API_KEY") or "f0ee2a304a71d5b2da983153c2284b73")
 
             for path_str in image_paths:
                 p = Path(path_str)
                 uploaded_url = None
 
-                # Primary: freeimage.host
-                try:
-                    uploaded_url = self._upload_to_freeimage(p)
-                    logger.info(f"Uploaded {p.name} to freeimage.host: {uploaded_url}")
-                except Exception as e1:
-                    logger.warning(f"freeimage.host failed for {p.name}: {e1}. Trying catbox...")
-                    # Fallback 2: catbox.moe
+                # Primary (fast & reliable): imgbb if API key is configured
+                if has_imgbb:
                     try:
-                        uploaded_url = self._upload_to_catbox(p)
-                        logger.info(f"Uploaded {p.name} to catbox.moe: {uploaded_url}")
-                    except Exception as e2:
-                        logger.warning(f"catbox.moe failed for {p.name}: {e2}. Trying litterbox...")
-                        # Fallback 3: litterbox (GitHub Actions compatible)
+                        uploaded_url = self._upload_to_imgbb(p)
+                        logger.info(f"Uploaded {p.name} to imgbb.com: {uploaded_url}")
+                    except Exception as e_imgbb:
+                        logger.warning(f"imgbb.com failed for {p.name}: {e_imgbb}. Trying fallback hosts...")
+
+                # Secondary: freeimage.host
+                if not uploaded_url:
+                    try:
+                        uploaded_url = self._upload_to_freeimage(p)
+                        logger.info(f"Uploaded {p.name} to freeimage.host: {uploaded_url}")
+                    except Exception as e1:
+                        logger.warning(f"freeimage.host failed for {p.name}: {e1}. Trying catbox...")
+                        # Fallback 2: catbox.moe
                         try:
-                            uploaded_url = self._upload_to_litterbox(p)
-                            logger.info(f"Uploaded {p.name} to litterbox.catbox.moe: {uploaded_url}")
-                        except Exception as e3:
-                            logger.warning(f"litterbox failed for {p.name}: {e3}. Trying 0x0.st...")
-                            # Fallback 4: 0x0.st (always works from CI)
+                            uploaded_url = self._upload_to_catbox(p)
+                            logger.info(f"Uploaded {p.name} to catbox.moe: {uploaded_url}")
+                        except Exception as e2:
+                            logger.warning(f"catbox.moe failed for {p.name}: {e2}. Trying litterbox...")
+                            # Fallback 3: litterbox (GitHub Actions compatible)
                             try:
-                                uploaded_url = self._upload_to_0x0(p)
-                                logger.info(f"Uploaded {p.name} to 0x0.st: {uploaded_url}")
-                            except Exception as e4:
-                                logger.warning(f"0x0.st failed for {p.name}: {e4}. Trying imgbb...")
-                                # Fallback 5: imgbb.com API
+                                uploaded_url = self._upload_to_litterbox(p)
+                                logger.info(f"Uploaded {p.name} to litterbox.catbox.moe: {uploaded_url}")
+                            except Exception as e3:
+                                logger.warning(f"litterbox failed for {p.name}: {e3}. Trying 0x0.st...")
+                                # Fallback 4: 0x0.st
                                 try:
-                                    uploaded_url = self._upload_to_imgbb(p)
-                                    logger.info(f"Uploaded {p.name} to imgbb.com: {uploaded_url}")
-                                except Exception as e5:
-                                    logger.error(f"imgbb failed for {p.name}: {e5}. All cloud CDNs exhausted.")
+                                    uploaded_url = self._upload_to_0x0(p)
+                                    logger.info(f"Uploaded {p.name} to 0x0.st: {uploaded_url}")
+                                except Exception as e4:
+                                    logger.warning(f"0x0.st failed for {p.name}: {e4}.")
+                                    # Fallback 5: imgbb retry if not tried initially
+                                    if not has_imgbb:
+                                        try:
+                                            uploaded_url = self._upload_to_imgbb(p)
+                                            logger.info(f"Uploaded {p.name} to imgbb.com: {uploaded_url}")
+                                        except Exception as e5:
+                                            logger.error(f"imgbb failed for {p.name}: {e5}. All cloud CDNs exhausted.")
 
                 if uploaded_url:
                     temp_urls.append(uploaded_url)

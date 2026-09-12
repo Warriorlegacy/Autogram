@@ -1,10 +1,9 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-12 23:15 IST  
+> **Last Updated:** 2026-09-12 11:22 IST  
 > **Repository:** `Warriorlegacy/Autogram` (`main` branch)  
-> **Latest Git Commit:** `b405a1a` ("feat(ui): 5-theme system, tier enforcement, 3D polish, auth integration, expanded tests")  
 > **Target Profile:** `@signhify.studio`  
-> **Live Publishing Status:** **VERIFIED & ACTIVE**  
+> **Live Publishing Status:** **VERIFIED & ACTIVE (IMGBB Fast-Path Uploads Configured)**  
 > **Dashboard:** **PREMIUM 3D IMMERSIVE** — 5-theme system, tier-gated, auth-aware, live at `https://autogram-dashboard.onrender.com/dashboard`
 
 ---
@@ -26,17 +25,17 @@ Autogram is an end-to-end, zero-touch autonomous social media engine. It investi
   ├── Phase 5:  Quality & Slop Gate (quality_gate.py: 80+ QA threshold, banned phrases filter)
   ├── Phase 6:  Playwright Slide Rendering (renderer/render.py: 1080x1350 JPEG)
   ├── Phase 6b: Multi-Platform Script Generation (script_writer.py)
-  ├── Phase 7:  Asset Staging (uploader.py: S3/R2 / freeimage.host / local fallback)
+  ├── Phase 7:  Asset Staging (uploader.py: IMGBB prioritized fast-path / S3/R2 / freeimage.host / local fallback)
   ├── Phase 8:  Instagram Publishing (publisher.py: Meta Graph API container carousel)
   └── Phase 9:  Self-Optimization & Anti-Repetition (optimizer.py: content-memory.json)
 ```
 
 ---
 
-## 2. Premium 3D Immersive SaaS Platform (Current Session)
+## 2. Premium 3D Immersive SaaS Platform & Image Hosting Reliability
 
 ### What Was Built
-Transformed the entire Autogram platform into a scalable, premium 3D immersive commercial SaaS with multi-user authentication, universal AI provider hub, prompt library, template vault, and full 3D UI redesign.
+Transformed the entire Autogram platform into a scalable, premium 3D immersive commercial SaaS with multi-user authentication, universal AI provider hub, prompt library, template vault, full 3D UI redesign, and hardened cloud image hosting.
 
 ### A. Multi-User Authentication & Access Control
 - **Module:** `src/auth/user_manager.py` — PBKDF2-HMAC-SHA256 (100k rounds + unique salt)
@@ -58,7 +57,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - **Template Vault:** `data/templates.json` — carousel + video reel templates with slide layouts
 - **Endpoints:** `/api/prompts`, `/api/templates`
 
-### D. 5-Theme Visual System
+### D. 5-Theme Visual System (Synced Across Landing & Dashboard)
 | Theme | Style | Key Colors |
 |---|---|---|
 | `dark-quantum` | Default — neon cyan on dark | Cyan #00F0FF, dark bg |
@@ -66,51 +65,46 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 | `neumorphic` | Soft shadows, light bg | Indigo #6366F1, subtle grays |
 | `swiss-light` | Editorial, white bg | Cobalt #0050FF, clean whites |
 | `bento-grid` | SaaS modern, light bg | Indigo #6366F1, soft cards |
-| `light` | Classic day mode | Teal #007799, white bg |
+| `light` | Classic day mode | Teal #0E6F77, white bg |
 
-- **Picker:** Dropdown in dashboard topbar with icon + label per theme
+- **Pickers:** Dropdown in both landing page (`index.html`) and dashboard (`dashboard.html`) header
 - **Persistence:** `localStorage` key `autogram_theme`
-- **Cross-tab sync:** `storage` event listener
+- **Cross-tab sync:** `storage` event listener in both `app.js` and `dashboard.html`
 
-### E. Pricing Tier Enforcement
-| Tier | Price | Features |
-|---|---|---|
-| Starter | $29/mo | 30 carousels/mo, Simple mode only |
-| Growth | $79/mo | Unlimited, Pro mode, Providers hub, Prompt library |
-| Agency Pro | $199/mo | Everything + Auto-DM, Multi-account |
-| Owner/Admin | Bypass | Full access |
+### E. Hardened Cloud Image Hosting (IMGBB Fast-Path)
+- **Problem Resolved:** GitHub Actions runner previously failed when public anonymous image hosts (`freeimage.host` 400, `catbox.moe` 412, `litterbox` 25s timeout, `0x0.st` 503) exhausted without an authenticated host.
+- **Resolution:**
+  - Configured `IMGBB_API_KEY=f0ee2a304a71d5b2da983153c2284b73` in `.env`, `.env.example`, and `.github/workflows/daily-post.yml`.
+  - Added default in `src/config.py` (`Settings.imgbb_api_key`).
+  - Prioritized `_upload_to_imgbb` **first** in `src/storage/uploader.py` when key is present, providing ~1.5s authenticated direct image uploads (`https://i.ibb.co/...`) and bypassing flaky public pastebin timeouts.
 
-- **Gated features:** `pro_mode`, `providers_hub`, `unlimited_prompts`, `auto_dm`, `multi_account`
-- **Enforcement:** `canAccessFeature()`, `requireTier()` in dashboard JS
-
-### F. 3D Visual Polish
-- **Holographic shimmer borders:** CSS `::before` pseudo-element with gradient animation on card hover
-- **Glassmorphism:** `backdrop-filter: blur(20px) saturate(1.2)` on modals
-- **Card parallax tilt:** Mouse-move `perspective(800px) rotateX/Y` via `premium.js`
-- **Toast animations:** Slide-in from right with `cubic-bezier(0.16, 1, 0.3, 1)`
-- **Bento grid layout:** CSS Grid `auto-fill` for dashboard cards
+### F. 3D Visual Polish & Theme-Reactive WebGL Hologram
+- **Multi-tier 3D Quantum Core:** `js/three-scene.js` enhanced with outer gyro ring, wireframe torus knot, and pulsing inner nucleus.
+- **Theme-reactive canvas:** Three.js scene dynamically observes `data-theme` changes and shifts material colors and opacities (amber/cyan for cyberpunk, cyan/violet for quantum, cobalt for swiss-light, indigo/emerald for bento-grid).
+- **Holographic shimmer borders:** CSS `::before` pseudo-element with gradient animation on card hover.
+- **Glassmorphism:** `backdrop-filter: blur(20px) saturate(1.2)` on modals and dropdowns.
+- **Card parallax tilt:** Mouse-move `perspective(800px) rotateX/Y` via `premium.js`.
+- **Toast animations:** Slide-in from right with `cubic-bezier(0.16, 1, 0.3, 1)`.
+- **Bento grid layout:** CSS Grid `auto-fill` for dashboard cards.
 
 ### G. Landing Page Auth Integration
-- **Auth-aware pill:** Checks `localStorage` for session token, shows username or Sign In button
-- **Inline auth modal:** Login + signup tabs, calls `/api/auth/login` and `/api/auth/signup`
-- **Auto-redirect:** After successful auth, redirects to `dashboard.html`
+- **Auth-aware pill:** Checks `localStorage` for session token, shows username or Sign In button.
+- **Inline auth modal:** Login + signup tabs, calls `/api/auth/login` and `/api/auth/signup`.
+- **Auto-redirect:** After successful auth, redirects to `dashboard.html`.
 
-### Files Modified
+### Files Modified in Current Update
 | File | What Changed |
 |---|---|
-| `dashboard.html` | 5-theme picker, tier enforcement, holographic borders, glassmorphism, bento grid CSS, auth-aware theme toggle, `var(--cyan)` → `var(--neon-cyan)` across 85 refs |
-| `css/landing.css` | 4 new theme presets (cyberpunk, neumorphic, swiss-light, bento-grid), holographic shimmer, hero gradient animation |
-| `css/components.css` | Component overrides for 5 themes, pricing card glow, architecture card hover, simulator glassmorphism |
-| `js/premium.js` | Extended tilt selector to include `.doppel-shell`, `.platform-tile`, `.template-card-tile` |
-| `index.html` | Auth-aware nav pill, inline auth modal, session management JS |
-| `src/auth/user_manager.py` | PBKDF2 auth system (pre-existing) |
-| `src/content/providers_manager.py` | AI provider hub (pre-existing) |
-| `tests/test_auth_and_providers.py` | 20 tests: auth CRUD, provider endpoints, prompts, templates, themes CSS, premium.js tilt |
-| `SESSION_CONTEXT.md` | Updated: latest commit, corrected test totals (67/67), cleanup notes |
-
-### Cleanup (commit `b405a1a`)
-- Renamed `var(--cyan)` → `var(--neon-cyan)` in `dashboard.html` (85 references + 5 definitions) for consistency with design system token naming
-- Confirmed Three.js CDN and `confetti-canvas` already removed in prior session — no dead DOM elements
+| `.env` & `.env.example` | Added `IMGBB_API_KEY=f0ee2a304a71d5b2da983153c2284b73` |
+| `src/config.py` | Added default `imgbb_api_key="f0ee2a304a71d5b2da983153c2284b73"` |
+| `src/storage/uploader.py` | Prioritized authenticated IMGBB upload at top of cloud CDN cascade |
+| `.github/workflows/daily-post.yml` | Injected `IMGBB_API_KEY` into workflow environment |
+| `js/three-scene.js` | Upgraded to multi-tier quantum core with theme-reactive palette observer |
+| `css/landing.css` | Added 5-theme spatial picker dropdown styles |
+| `index.html` | Added 5-theme spatial picker dropdown in navbar |
+| `js/app.js` | Added full `THEME_MAP`, `toggleThemePicker()`, outside click dismissal |
+| `tests/test_image_and_scripts.py` | Added 3 tests: IMGBB prioritization, landing theme picker, three-scene theme reactivity |
+| `SESSION_CONTEXT.md` | Documented IMGBB fix, 3D theme engine, and test totals (64/64) |
 
 ---
 
@@ -133,31 +127,9 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 4. Test Suite & Verification Status
 
-### Current Session Tests (20/20 passing)
-| Test | Status |
-|---|---|
-| `test_admin_user_seeded` | ✅ |
-| `test_api_auth_login_success` | ✅ |
-| `test_api_auth_login_failure` | ✅ |
-| `test_api_auth_signup_and_me` | ✅ |
-| `test_api_auth_pricing` | ✅ |
-| `test_api_providers_get` | ✅ |
-| `test_api_providers_detect_models_missing_url` | ✅ |
-| `test_api_prompts_library` | ✅ |
-| `test_api_templates_catalog` | ✅ |
-| `test_api_auth_users_regression` | ✅ |
-| `test_api_admin_users_alias` | ✅ |
-| `test_api_providers_test_validation` | ✅ |
-| `test_api_generate_image_validation` | ✅ |
-| `test_api_auth_logout` | ✅ |
-| `test_api_non_admin_users_forbidden` | ✅ |
-| `test_api_providers_set_active` | ✅ |
-| `test_api_health` | ✅ |
-| `test_themes_css_landing` | ✅ |
-| `test_themes_css_components` | ✅ |
-| `test_premium_js_has_tilt` | ✅ |
-
-### Previous Session Tests (47/47 passing)
+### All Tests (64/64 passing)
+- `tests/test_auth_and_providers.py` — 20/20
+- `tests/test_image_and_scripts.py` — 10/10 (added IMGBB priority, theme picker, three-scene reactivity)
 - `tests/test_trend_analyzer.py` — 4/4
 - `tests/test_deep_research.py` — 3/3
 - `tests/test_growth_engine.py` — 7/7
@@ -167,10 +139,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-### Current Session Tests (20/20 passing)
-- `tests/test_auth_and_providers.py` — 20/20 (expanded from 13: added logout, non-admin forbidden, set-active, health, themes CSS ×2, premium.js tilt)
-
-**Total:** 67/67 tests passing cleanly.
+**Total:** 64/64 tests passing cleanly. Live imgbb upload verified returning valid public HTTPS URLs.
 
 ---
 
