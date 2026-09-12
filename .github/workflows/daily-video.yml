@@ -38,13 +38,12 @@ on:
           - "Contrarian"
           - "Local AI & Edge Compute"
       mode:
-        description: "Execution Mode"
+        description: "Execution Mode (Always Live)"
         required: true
         default: "live"
         type: choice
         options:
           - "live"
-          - "dry-run"
   repository_dispatch:
     types: [publish-video, publish-reel, publish-shorts]
 
@@ -82,7 +81,6 @@ jobs:
             exit 1
           fi
           DEST="${{ github.event.inputs.destination || 'all' }}"
-          MODE="${{ github.event.inputs.mode || 'live' }}"
           TOPIC="${{ github.event.inputs.topic || '' }}"
           PILLAR="${{ github.event.inputs.pillar || 'AI Tool Breakdown' }}"
 
@@ -93,12 +91,7 @@ jobs:
             FLAG="--shorts"
           fi
 
-          CMD_ARGS=("$FLAG")
-          if [ "$MODE" = "live" ] && [ -n "${IG_ACCESS_TOKEN}" ]; then
-            CMD_ARGS+=("--run-all")
-          else
-            CMD_ARGS+=("--dry-run")
-          fi
+          CMD_ARGS=("$FLAG" "--run-all")
 
           if [ -n "$TOPIC" ]; then
             CMD_ARGS+=("--topic" "$TOPIC")
@@ -107,8 +100,8 @@ jobs:
             CMD_ARGS+=("--pillar" "$PILLAR")
           fi
 
-          echo "Running command: python orchestrator.py ${CMD_ARGS[*]}"
-          if [ -n "${IG_ACCESS_TOKEN}" ] || [ "$MODE" = "dry-run" ]; then
+          echo "Running LIVE video production command: python orchestrator.py ${CMD_ARGS[*]}"
+          if [ -n "${IG_ACCESS_TOKEN}" ]; then
             python orchestrator.py "${CMD_ARGS[@]}"
           else
             echo "GitHub IG_ACCESS_TOKEN secret not detected. Falling back to Render cloud backend..."
@@ -123,12 +116,12 @@ jobs:
               -X POST "https://autogram-dashboard.onrender.com/api/publish/$ENDPOINT" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer ${AUTOGRAM_OWNER_KEY}" \
-              -d "{\"topic\": \"$TOPIC\", \"pillar\": \"$PILLAR\", \"mode\": \"$MODE\"}" || echo "000")
+              -d "{\"topic\": \"$TOPIC\", \"pillar\": \"$PILLAR\", \"mode\": \"live\"}" || echo "000")
             echo "Render video response (HTTP $HTTP_STATUS):"
             cat video_response.json 2>/dev/null || true
             if [ "$HTTP_STATUS" != "200" ] && [ "$HTTP_STATUS" != "201" ]; then
-              echo "Render fallback failed — executing local dry-run validation..."
-              python orchestrator.py $FLAG --dry-run
+              echo "Error: Render live video publish fallback failed with HTTP $HTTP_STATUS"
+              exit 1
             fi
           fi
         env:
@@ -148,7 +141,7 @@ jobs:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY || 'f0ee2a304a71d5b2da983153c2284b73' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          DRY_RUN: ${{ secrets.DRY_RUN || 'false' }}
+          DRY_RUN: 'false'
 
       - name: Commit Content Memory State
         run: |

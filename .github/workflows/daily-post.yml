@@ -24,13 +24,12 @@ on:
           - "Contrarian"
           - "Local AI & Edge Compute"
       mode:
-        description: "Execution Mode"
+        description: "Execution Mode (Always Live)"
         required: true
         default: "live"
         type: choice
         options:
           - "live"
-          - "dry-run"
   repository_dispatch:     # Allows external second-precise webhooks (cron-job.org / curl) to trigger runs
     types: [publish-slot, daily-post]
 
@@ -73,16 +72,10 @@ jobs:
       - name: Execute Autonomous Publishing Pipeline
         timeout-minutes: 15
         run: |
-          MODE="${{ github.event.inputs.mode || 'live' }}"
           TOPIC="${{ github.event.inputs.topic || '' }}"
           PILLAR="${{ github.event.inputs.pillar || '' }}"
 
-          CMD_ARGS=()
-          if [ "$MODE" = "live" ] && [ -n "${IG_ACCESS_TOKEN}" ]; then
-            CMD_ARGS+=("--run-all")
-          else
-            CMD_ARGS+=("--dry-run")
-          fi
+          CMD_ARGS=("--run-all")
           if [ -n "$TOPIC" ]; then
             CMD_ARGS+=("--topic" "$TOPIC")
           fi
@@ -90,8 +83,8 @@ jobs:
             CMD_ARGS+=("--pillar" "$PILLAR")
           fi
 
-          echo "Executing command: python orchestrator.py ${CMD_ARGS[*]}"
-          if [ -n "${IG_ACCESS_TOKEN}" ] || [ "$MODE" = "dry-run" ]; then
+          echo "Executing LIVE production command: python orchestrator.py ${CMD_ARGS[*]}"
+          if [ -n "${IG_ACCESS_TOKEN}" ]; then
             python orchestrator.py "${CMD_ARGS[@]}"
           else
             echo "GitHub IG_ACCESS_TOKEN secret not detected in runner."
@@ -105,8 +98,8 @@ jobs:
             if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "201" ]; then
               echo "Render autopilot triggered successfully."
             else
-              echo "Render webhook returned HTTP $HTTP_STATUS — falling back to local dry-run validation..."
-              python orchestrator.py --dry-run
+              echo "Render webhook returned HTTP $HTTP_STATUS — live publishing failed."
+              exit 1
             fi
           fi
         env:
@@ -131,7 +124,7 @@ jobs:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY || 'f0ee2a304a71d5b2da983153c2284b73' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          DRY_RUN: ${{ secrets.DRY_RUN || 'false' }}
+          DRY_RUN: 'false'
 
       - name: Commit Content Memory (Zero Repetition)
         run: |
