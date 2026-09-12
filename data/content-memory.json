@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-12",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
+      "hook": "Replace $240/year Proprietary cloud LLM inference APIs with this 1-line local setup.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-12",
       "pillar": "Developer Power Tools & CLI",
       "topic": "The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
       "hook": "Eliminate Code Bugs and Logic Flaws with 3 Autonomous Personas. No more $50-$200/month SaaS costs.",
@@ -390,13 +397,6 @@
       "pillar": "AI Tool Breakdown",
       "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
       "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "How 1 API parameter cut our production LLM bills by 78%.",
       "score": 100
     },
     {
