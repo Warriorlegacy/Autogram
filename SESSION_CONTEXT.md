@@ -1,9 +1,10 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-12 12:42 IST  
-> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `6766f90`)  
+> **Last Updated:** 2026-09-12 13:15 IST  
+> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `edf99ee`)  
 > **Target Profile:** `@signhify.studio`  
-> **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots scheduled; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing; 82/82 passing tests)  
+> **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots scheduled; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing)  
+> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **OPERATIONAL** (`--reel` CLI, `/api/publish/reel`, `/api/mpt/status`; edge-tts + Pexels free + local FFmpeg; 89/89 passing tests)  
 > **Render Production Dashboard:** **LIVE & HEALTHY** (`https://autogram-dashboard.onrender.com/dashboard`)  
 > **Vercel Production Landing:** **LIVE & READY** (`https://autogram-ai.vercel.app`)  
 > **Responsive Experience:** **OPTIMIZED FOR ALL SCREENS** (Mobile 320px–480px, Tablets 768px–960px, Desktop 1024px–4K, Hamburger Navigation, Full-Width Viewport)  
@@ -129,7 +130,8 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 4. Test Suite & Verification Status
 
-### All Tests (69/69 passing)
+### All Tests (89/89 passing)
+- `tests/test_reel_pipeline.py` — 7/7 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution)
 - `tests/test_responsive_ui.py` — 5/5 (mobile responsive elements, hamburger nav, double-api normalization, synthesize endpoint)
 - `tests/test_auth_and_providers.py` — 20/20
 - `tests/test_image_and_scripts.py` — 10/10 (IMGBB priority, theme picker, three-scene reactivity)
@@ -142,11 +144,47 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-**Total:** 69/69 tests passing cleanly. All platforms verified.
+**Total:** 89/89 tests passing cleanly. All platforms verified.
 
 ---
 
-## 5. Deployment Surfaces
+## 5. $0 Reels Video Pipeline (MoneyPrinterTurbo)
+
+**Commit:** `edf99ee` — end-to-end 9:16 Reel generation at zero marginal cost.
+
+### Cost Stack (all verified on-host, $0)
+| Layer | Choice | Status |
+|---|---|---|
+| Narration script | `generate_reel_script()` → Groq free → Gemini free → Ollama local → template | in `src/content/generator.py` |
+| Voiceover | edge-tts via MPT (`subtitle_provider=edge`) | installed + configured |
+| Stock footage | Pexels via key already in `D:\MoneyPrinterTurbo\config.toml` | key present |
+| Subtitles | edge timestamp parser (no Whisper download) | MPT default |
+| Assembly | Local FFmpeg via MPT | 2 binaries on PATH |
+| Render server | MPT `POST /api/v1/videos` on `:8080`, started via `start_mpt.bat` | installed, runs on demand |
+| Public staging URL | `upload_video_file()` → S3/R2 → catbox.moe → litterbox → 0x0.st (video/mp4) | implemented |
+| Publishing | `publish_reel()` → Meta `media_type=REELS`, 10-min transcode wait | implemented |
+
+### Flow
+```
+orchestrator.py --reel
+  → generator.generate_reel_script() (45-55s narration + caption + hashtags)
+  → mpt_client.render_reel() (submit → poll state 0/1/-1 → download MP4)
+  → uploader.upload_video_file() (public URL for Meta ingestion)
+  → publisher.publish_reel() (container → FINISHED → media_publish)
+  → reel_manifest_<ts>.json
+```
+
+### Endpoints & UI
+- `POST /api/publish/reel` (topic, pillar, mode) → reel manifest
+- `GET /api/mpt/status` → `{available, base_url}` (UI gates on this)
+- Queue `format: "reel"` (REEL-*) flows through `/api/schedule/<id>/execute` → `--reel`
+- Dashboard: 🎬 REEL badge, reel option in Schedule modal, "🎬 Publish Reel" quick action
+- Dry-run fabricates everything (no MPT needed); live render requires `start_mpt.bat` running
+- Verified: `python orchestrator.py --reel --dry-run` completes with mock media ID
+
+---
+
+## 6. Deployment Surfaces
 
 | Surface | Config / URL | Notes |
 |---|---|---|
@@ -159,7 +197,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ---
 
-## 6. Critical Runtime Quirks
+## 7. Critical Runtime Quirks
 
 - **`DRY_RUN=true` is the default.** Pipeline will not publish to Meta unless `DRY_RUN=false` in `.env` AND `IG_USER_ID`/`IG_ACCESS_TOKEN` are populated.
 - **Timezone is `Asia/Kolkata`.** All scheduler slot calculations use IST.
@@ -169,7 +207,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ---
 
-## 7. Design System Tokens
+## 8. Design System Tokens
 
 | Token | Value | Usage |
 |---|---|---|
