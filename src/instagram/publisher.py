@@ -199,25 +199,26 @@ class InstagramPublisher:
         media_id = self.publish_media(carousel_id)
         return media_id
 
-    def create_story_container(self, image_url: str) -> str:
-        """Creates an Instagram Story media container (9:16 aspect ratio, media_type=STORIES)."""
+    def create_story_container(self, media_url: str) -> str:
+        """Creates an Instagram Story media container (supports 9:16 JPG/PNG image or MP4 video with music)."""
         if self.dry_run:
             simulated_id = f"mock_story_cntr_{int(time.time()*1000) % 1000000}"
-            logger.info(f"[DRY-RUN] Created story container: {simulated_id} for URL: {image_url}")
+            logger.info(f"[DRY-RUN] Created story container: {simulated_id} for URL: {media_url}")
             return simulated_id
 
-        if not (image_url.startswith("http://") or image_url.startswith("https://")):
+        if not (media_url.startswith("http://") or media_url.startswith("https://")):
             raise ValueError(
-                f"Invalid image_url '{image_url}': Meta Graph API strictly requires an absolute public HTTP/HTTPS URL."
+                f"Invalid media_url '{media_url}': Meta Graph API strictly requires an absolute public HTTP/HTTPS URL."
             )
 
         url = f"{self.base_url}/{self.user_id}/media"
+        is_video = media_url.lower().endswith(".mp4") or "video" in media_url.lower()
         data = {
-            "image_url": image_url,
+            "video_url" if is_video else "image_url": media_url,
             "media_type": "STORIES",
             "access_token": self.token
         }
-        resp = requests.post(url, data=data, timeout=30)
+        resp = requests.post(url, data=data, timeout=60)
         if resp.status_code != 200:
             logger.error(f"Meta Graph API error in create_story_container: {resp.status_code} - {resp.text}")
         resp.raise_for_status()
