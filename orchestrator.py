@@ -324,7 +324,7 @@ def run_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_
 
     # 7. Asset Staging & Upload (Layer D)
     logger.info("Phase 7: Asset Staging / Upload...")
-    public_image_urls = with_retries(lambda: uploader.upload_slide_images(rendered_image_paths, today_str, dry_run=dry_run))
+    public_image_urls = with_retries(lambda: uploader.upload_slide_images(rendered_image_paths, today_str, dry_run=dry_run, prefer_crawler_cdn=True))
 
     # 8. Distribution / Instagram Publishing (Layer D)
     logger.info("Phase 8: Meta Instagram Publishing Sequence...")

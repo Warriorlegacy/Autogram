@@ -65,11 +65,30 @@ class InstagramPublisher:
         if alt_text:
             data["alt_text"] = alt_text
 
-        resp = requests.post(url, data=data, timeout=30)
-        if resp.status_code != 200:
+        last_resp = None
+        for attempt in range(3):
+            resp = requests.post(url, data=data, timeout=45)
+            last_resp = resp
+            if resp.status_code == 200:
+                return resp.json()["id"]
+
+            error_subcode = None
+            try:
+                error_subcode = resp.json().get("error", {}).get("error_subcode")
+            except Exception:
+                pass
+
+            if error_subcode in (2207003, 2207052) and attempt < 2:
+                logger.warning(f"Meta crawler download delay for {image_url} (attempt {attempt+1}/3, subcode {error_subcode}). Retrying in 4s...")
+                time.sleep(4)
+                continue
+
             logger.error(f"Meta Graph API error in create_item_container: {resp.status_code} - {resp.text}")
-        resp.raise_for_status()
-        return resp.json()["id"]
+            resp.raise_for_status()
+
+        if last_resp:
+            last_resp.raise_for_status()
+        return ""
 
     def wait_until_ready(self, container_id: str, timeout_s: int = 180) -> bool:
         """Polls container status until FINISHED or timeout."""
@@ -218,11 +237,30 @@ class InstagramPublisher:
             "media_type": "STORIES",
             "access_token": self.token
         }
-        resp = requests.post(url, data=data, timeout=60)
-        if resp.status_code != 200:
+        last_resp = None
+        for attempt in range(3):
+            resp = requests.post(url, data=data, timeout=60)
+            last_resp = resp
+            if resp.status_code == 200:
+                return resp.json()["id"]
+
+            error_subcode = None
+            try:
+                error_subcode = resp.json().get("error", {}).get("error_subcode")
+            except Exception:
+                pass
+
+            if error_subcode in (2207003, 2207052) and attempt < 2:
+                logger.warning(f"Meta story crawler download delay (attempt {attempt+1}/3, subcode {error_subcode}). Retrying in 4s...")
+                time.sleep(4)
+                continue
+
             logger.error(f"Meta Graph API error in create_story_container: {resp.status_code} - {resp.text}")
-        resp.raise_for_status()
-        return resp.json()["id"]
+            resp.raise_for_status()
+
+        if last_resp:
+            last_resp.raise_for_status()
+        return ""
 
     def publish_story(self, image_url: str) -> str:
         """End-to-end single Instagram Story publishing flow."""

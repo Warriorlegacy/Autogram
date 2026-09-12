@@ -761,7 +761,7 @@ def api_publish():
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [UPLOAD] Staging {len(slide_paths)} slides for Instagram CDN...")
 
         try:
-            public_image_urls = uploader.upload_slide_images(slide_paths, run_date, dry_run=dry_run)
+            public_image_urls = uploader.upload_slide_images(slide_paths, run_date, dry_run=dry_run, prefer_crawler_cdn=True)
         except TypeError:
             public_image_urls = uploader.upload_slide_images(slide_paths, run_date)
         alt_texts = [f"Slide {i+1} of {len(slide_paths)}" for i in range(len(slide_paths))]
