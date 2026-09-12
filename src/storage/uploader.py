@@ -220,11 +220,15 @@ class AssetUploader:
             if all_uploaded and len(temp_urls) == len(image_paths):
                 return temp_urls
 
-            # In cloud/CI environments, local/public CDN fallback URLs are not publicly
-            # fetchable by Meta, so fail closed instead of silently returning bad links.
+            # If third-party free hosts fail or rate-limit, check if we have a valid public HTTPS host (like Render)
+            if self.public_cdn_base and self.public_cdn_base.startswith("https://") and "localhost" not in self.public_cdn_base and "127.0.0.1" not in self.public_cdn_base:
+                logger.info(f"Third-party image hosts failed; falling back to verified public HTTPS server: {self.public_cdn_base}")
+                return [f"{self.public_cdn_base.rstrip('/')}/output/{Path(p).parent.name}/{Path(p).name}" for p in image_paths]
+
+            # In cloud/CI environments without public HTTPS host, fail closed
             raise RuntimeError(
                 "No usable public image host available for live publishing. "
-                "Configure S3/R2, or set IMGBB_API_KEY, or provide another public HTTPS image host."
+                "Configure S3/R2, or set IMGBB_API_KEY, or set PUBLIC_CDN_BASE to your live public HTTPS domain."
             )
 
         # Non-cloud/local fallback only: acceptable for dry-run or when a public tunnel/CDN is configured.

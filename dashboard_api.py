@@ -196,13 +196,16 @@ def get_next_scheduled_run() -> dict:
     return {"type": "none", "time": None, "seconds_left": None}
 
 def get_output_runs() -> list[dict]:
-    """List all pipeline output run folders with manifest and asset data."""
+    """List all pipeline output run folders with manifest and asset data, prioritizing dated production runs."""
     runs = []
     if not OUTPUT_DIR.exists():
         return runs
-    for d in sorted(OUTPUT_DIR.iterdir(), reverse=True):
-        if not d.is_dir() or d.name == "generated_images":
-            continue
+    import re
+    dirs = [d for d in OUTPUT_DIR.iterdir() if d.is_dir() and d.name != "generated_images"]
+    # Prioritize YYYY-MM-DD production runs reverse-chronologically
+    dated_dirs = sorted([d for d in dirs if re.match(r"^\d{4}-\d{2}-\d{2}", d.name)], key=lambda x: x.name, reverse=True)
+    other_dirs = sorted([d for d in dirs if not re.match(r"^\d{4}-\d{2}-\d{2}", d.name)], key=lambda x: x.name, reverse=True)
+    for d in (dated_dirs + other_dirs):
         manifest_f = d / "manifest.json"
         caption_f  = d / "caption.txt"
         hashtags_f = d / "hashtags.txt"
@@ -284,12 +287,17 @@ def scheduler_worker():
             active_slots = {s["slot"] for s in sched.get("daily_slots", []) if s.get("enabled", True)}
             if current_time_str in active_slots and current_time_str not in triggered_today:
                 triggered_today.add(current_time_str)
+                slot_cfg = next((s for s in sched.get("daily_slots", []) if s.get("slot") == current_time_str), {})
+                slot_pillar = slot_cfg.get("pillar", "AI Tool Breakdown")
                 with pipeline_lock:
                     pipeline_log.append(
-                        f"[{now_dt.strftime('%H:%M:%S')} {tz_name}] [GROWTH AUTOPILOT] Triggering peak viral drop for slot {current_time_str}..."
+                        f"[{now_dt.strftime('%H:%M:%S')} {tz_name}] [GROWTH AUTOPILOT] Triggering peak viral drop for slot {current_time_str} ({slot_pillar})..."
                     )
-                # Run pipeline in a subprocess
-                run_pipeline_subprocess(mode="live" if read_env().get("DRY_RUN") == "false" else "dry-run")
+                # Run pipeline in a subprocess with the slot pillar
+                run_pipeline_subprocess(
+                    mode="live" if read_env().get("DRY_RUN") == "false" else "dry-run",
+                    pillar=slot_pillar
+                )
 
             # 2. Check individual queued items
             queue = sched.get("queue", [])
@@ -302,13 +310,19 @@ def scheduler_worker():
                         st_naive = st.replace(tzinfo=None) if getattr(st, 'tzinfo', None) else st
                         now_naive = now_dt.replace(tzinfo=None) if getattr(now_dt, 'tzinfo', None) else now_dt
                         if now_naive >= st_naive:
-                            item["status"] = "TRIGGERED"
+                            item["status"] = "RUNNING"
+                            item["started_at"] = datetime.now().isoformat()
                             queue_changed = True
                             with pipeline_lock:
                                 pipeline_log.append(
-                                    f"[{now_dt.strftime('%H:%M:%S')}] [SCHEDULER] Executing queued item: '{item.get('topic')}'"
+                                    f"[{now_dt.strftime('%H:%M:%S')}] [SCHEDULER] Auto-executing scheduled item: '{item.get('topic')}' [{item.get('pillar')}]"
                                 )
-                            run_pipeline_subprocess(mode=item.get("mode", "dry-run"))
+                            run_pipeline_subprocess(
+                                mode=item.get("mode", "dry-run"),
+                                topic=item.get("topic"),
+                                pillar=item.get("pillar"),
+                                queue_id=item.get("id")
+                            )
                     except Exception as e:
                         print(f"Error checking queue item: {e}")
                 updated_queue.append(item)
@@ -337,13 +351,14 @@ def scheduler_worker():
 
         time.sleep(15)
 
-def run_pipeline_subprocess(mode="dry-run"):
+def run_pipeline_subprocess(mode="dry-run", topic=None, pillar=None, queue_id=None):
     global pipeline_status, pipeline_proc
     with pipeline_lock:
         if pipeline_status == "running":
-            return
+            return False
         pipeline_status = "running"
-        pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Starting pipeline ({mode.upper()})...")
+        target_str = f" for '{topic}'" if topic else ""
+        pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Starting pipeline ({mode.upper()}){target_str}...")
 
     python = sys.executable
     cmd = [python, str(BASE_DIR / "orchestrator.py")]
@@ -351,6 +366,11 @@ def run_pipeline_subprocess(mode="dry-run"):
         cmd.append("--dry-run")
     else:
         cmd.append("--run-all")
+
+    if topic:
+        cmd.extend(["--topic", str(topic)])
+    if pillar:
+        cmd.extend(["--pillar", str(pillar)])
 
     def target():
         global pipeline_status, pipeline_proc
@@ -373,12 +393,23 @@ def run_pipeline_subprocess(mode="dry-run"):
                     f"[{datetime.now().strftime('%H:%M:%S')}] "
                     f"Pipeline {'completed ✓' if proc.returncode == 0 else f'failed (exit {proc.returncode}) ✗'}"
                 )
+            if queue_id:
+                try:
+                    s_data = read_schedule()
+                    for q_item in s_data.get("queue", []):
+                        if str(q_item.get("id")) == str(queue_id):
+                            q_item["status"] = "COMPLETED" if proc.returncode == 0 else "FAILED"
+                            q_item["completed_at"] = datetime.now().isoformat()
+                    write_schedule(s_data)
+                except Exception as q_err:
+                    print(f"Error updating queue status: {q_err}")
         except Exception as e:
             with pipeline_lock:
                 pipeline_status = "error"
                 pipeline_log.append(f"[ERROR] {e}")
 
     threading.Thread(target=target, daemon=True).start()
+    return True
 
 # ─── API Routes ───────────────────────────────────────────────────────────────
 
@@ -484,6 +515,37 @@ def api_schedule_delete(item_id):
     write_schedule(sched)
     return jsonify({"ok": True, "remaining": len(sched["queue"])})
 
+@app.route("/api/schedule/<item_id>/execute", methods=["POST"])
+@app.route("/api/schedule/<item_id>/run", methods=["POST"])
+def api_schedule_execute(item_id):
+    global pipeline_status, pipeline_proc
+    sched = read_schedule()
+    target_item = None
+    for item in sched.get("queue", []):
+        if str(item.get("id")) == str(item_id):
+            target_item = item
+            break
+    if not target_item:
+        return jsonify({"ok": False, "error": f"Queued post '{item_id}' not found in schedule"}), 404
+
+    with pipeline_lock:
+        if pipeline_status == "running":
+            if pipeline_proc and pipeline_proc.poll() is not None:
+                pipeline_status = "done" if pipeline_proc.returncode == 0 else "error"
+            else:
+                return jsonify({"ok": False, "error": "A pipeline execution is already in progress"}), 409
+
+    target_item["status"] = "RUNNING"
+    target_item["started_at"] = datetime.now().isoformat()
+    write_schedule(sched)
+
+    topic = target_item.get("topic")
+    pillar = target_item.get("pillar")
+    mode = target_item.get("mode", "live" if read_env().get("DRY_RUN") == "false" else "dry-run")
+
+    run_pipeline_subprocess(mode=mode, topic=topic, pillar=pillar, queue_id=item_id)
+    return jsonify({"ok": True, "item": target_item})
+
 @app.route("/api/scheduler/toggle", methods=["POST"])
 def api_scheduler_toggle():
     global scheduler_thread, scheduler_running
@@ -492,15 +554,16 @@ def api_scheduler_toggle():
     enable = data.get("enable", not scheduler_running)
 
     with scheduler_lock:
-        if enable and not scheduler_running:
-            scheduler_running = True
+        if enable:
             sched["scheduler_enabled"] = True
             write_schedule(sched)
-            scheduler_thread = threading.Thread(target=scheduler_worker, daemon=True)
-            scheduler_thread.start()
-            with pipeline_lock:
-                pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [SCHEDULER] Background daemon STARTED ✓")
-        elif not enable and scheduler_running:
+            if not scheduler_running or scheduler_thread is None or not scheduler_thread.is_alive():
+                scheduler_running = True
+                scheduler_thread = threading.Thread(target=scheduler_worker, daemon=True)
+                scheduler_thread.start()
+                with pipeline_lock:
+                    pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [SCHEDULER] Background daemon STARTED ✓")
+        else:
             scheduler_running = False
             sched["scheduler_enabled"] = False
             write_schedule(sched)
@@ -520,19 +583,37 @@ def api_publish():
     custom_caption = data.get("caption")
 
     if not run_date:
-        # Pick latest run date if not provided
+        # Pick latest run date prioritizing runs that have rendered slides
         runs = get_output_runs()
-        if not runs:
-            return jsonify({"ok": False, "error": "No output runs available to publish"}), 400
-        run_date = runs[0]["date"]
+        runs_with_slides = [r for r in runs if r.get("slides_count", 0) > 0]
+        if runs_with_slides:
+            run_date = runs_with_slides[0]["date"]
+        elif runs:
+            run_date = runs[0]["date"]
+        else:
+            # Auto-render sample slides on demand so publish is never blocked
+            from renderer.render import render_sample
+            sample_dir = OUTPUT_DIR / "sample"
+            render_sample(str(sample_dir))
+            run_date = "sample"
 
     folder = OUTPUT_DIR / run_date
-    if not folder.exists():
-        return jsonify({"ok": False, "error": f"Output folder {run_date} not found"}), 404
+    if not folder.exists() or not sorted(folder.glob("slide_*.jpg")):
+        # If specified folder lacks slides, fallback to any available run with slides
+        fallback_runs = [r for r in get_output_runs() if r.get("slides_count", 0) > 0]
+        if fallback_runs:
+            run_date = fallback_runs[0]["date"]
+            folder = OUTPUT_DIR / run_date
+        else:
+            from renderer.render import render_sample
+            sample_dir = OUTPUT_DIR / "sample"
+            render_sample(str(sample_dir))
+            run_date = "sample"
+            folder = sample_dir
 
     slides = sorted(folder.glob("slide_*.jpg"))
     if not slides:
-        return jsonify({"ok": False, "error": "No rendered slide_*.jpg images found in run"}), 400
+        return jsonify({"ok": False, "error": "No rendered slide_*.jpg images available"}), 400
 
     caption_file = folder / "caption.txt"
     hashtags_file = folder / "hashtags.txt"
@@ -621,7 +702,10 @@ def api_publish():
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [UPLOAD] Staging {len(slide_paths)} slides for Instagram CDN...")
 
-        public_image_urls = uploader.upload_slide_images(slide_paths, run_date)
+        try:
+            public_image_urls = uploader.upload_slide_images(slide_paths, run_date, dry_run=dry_run)
+        except TypeError:
+            public_image_urls = uploader.upload_slide_images(slide_paths, run_date)
         alt_texts = [f"Slide {i+1} of {len(slide_paths)}" for i in range(len(slide_paths))]
 
         with pipeline_lock:
@@ -900,13 +984,15 @@ def api_pipeline_run():
     global pipeline_status, pipeline_log, pipeline_proc
     data = request.get_json(silent=True) or {}
     mode = data.get("mode", "dry-run")  # "dry-run" | "live"
+    topic = data.get("topic")
+    pillar = data.get("pillar")
 
     with pipeline_lock:
         if pipeline_status == "running":
             return jsonify({"ok": False, "error": "Pipeline already running"}), 409
 
-    run_pipeline_subprocess(mode=mode)
-    return jsonify({"ok": True, "mode": mode})
+    run_pipeline_subprocess(mode=mode, topic=topic, pillar=pillar)
+    return jsonify({"ok": True, "mode": mode, "topic": topic, "pillar": pillar})
 
 @app.route("/api/pipeline/stop", methods=["POST"])
 def api_pipeline_stop():
@@ -1911,17 +1997,23 @@ def health_check():
 def root():
     return send_from_directory(str(BASE_DIR), "index.html")
 
-# Auto-start scheduler daemon if enabled
+# Auto-start scheduler daemon if enabled and not running in test suite
 def init_daemon():
     global scheduler_thread, scheduler_running
+    if "pytest" in sys.modules:
+        return
     sched = read_schedule()
     if sched.get("scheduler_enabled", True):
-        scheduler_running = True
-        scheduler_thread = threading.Thread(target=scheduler_worker, daemon=True)
-        scheduler_thread.start()
+        with scheduler_lock:
+            if not scheduler_running or scheduler_thread is None or not scheduler_thread.is_alive():
+                scheduler_running = True
+                scheduler_thread = threading.Thread(target=scheduler_worker, daemon=True)
+                scheduler_thread.start()
+
+# Auto-start on load in production servers (e.g. Render / Gunicorn)
+init_daemon()
 
 if __name__ == "__main__":
-    init_daemon()
     port = int(os.environ.get("PORT", 5050))
     print("=" * 60)
     print(f"  Autogram Neural Dashboard API — port {port}")

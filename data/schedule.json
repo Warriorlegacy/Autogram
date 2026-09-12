@@ -1,5 +1,5 @@
 {
-  "scheduler_enabled": true,
+  "scheduler_enabled": false,
   "daily_slots": [
     {
       "slot": "08:00",
@@ -52,8 +52,9 @@
       "topic": "Why Multi-Agent Systems Beat Monolithic Prompts in Production",
       "pillar": "AI Tool Breakdown",
       "mode": "live",
-      "status": "QUEUED",
-      "created_at": "2026-09-10T16:00:00"
+      "status": "RUNNING",
+      "created_at": "2026-09-10T16:00:00",
+      "started_at": "2026-09-12T12:23:34.918610"
     },
     {
       "id": "SCH-1002",
@@ -61,8 +62,9 @@
       "topic": "Context Caching Architecture & 90% LLM Cost Reduction Blueprint",
       "pillar": "Tech Explainer",
       "mode": "live",
-      "status": "QUEUED",
-      "created_at": "2026-09-10T16:15:00"
+      "status": "RUNNING",
+      "created_at": "2026-09-10T16:15:00",
+      "started_at": "2026-09-12T12:23:34.955537"
     },
     {
       "id": "SCH-1003",
@@ -70,8 +72,9 @@
       "topic": "The 'Fine-Tuning is Dead' Fallacy: When RAG Fails at Scale",
       "pillar": "Contrarian",
       "mode": "dry-run",
-      "status": "QUEUED",
-      "created_at": "2026-09-10T16:30:00"
+      "status": "RUNNING",
+      "created_at": "2026-09-10T16:30:00",
+      "started_at": "2026-09-12T12:23:34.955652"
     }
   ],
   "history": []

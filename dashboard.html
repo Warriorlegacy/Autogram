@@ -2543,6 +2543,12 @@
             </button>
           </div>
 
+          <!-- Mode Indicator Toggle Chip -->
+          <div class="topbar-chip" id="top-mode-chip" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:var(--bg-surface-hover);border:1px solid var(--border-outer);font-size:11px;font-family:var(--font-mono);cursor:pointer;" onclick="selectExecutionMode(currentExecutionMode === 'live' ? 'dry-run' : 'live')" title="Click to toggle between Live Production and Safe Dry-Run mode">
+            <span class="chip-pulse" id="top-mode-dot"></span>
+            <span id="top-mode-label" style="font-weight:700;letter-spacing:0.5px;">LIVE PRODUCTION</span>
+          </div>
+
           <!-- Quick Autopilot Action Button -->
           <button class="topbar-action-btn" onclick="startLiveAutopilot()" title="Trigger autonomous publishing cycle">
             <span>⚡</span> Run Autopilot
@@ -2752,7 +2758,7 @@
                   <div class="spotlight-chip" style="color:var(--emerald);">1080×1350 HD</div>
                 </div>
                 <div class="btn-row" style="margin-top:14px;flex-wrap:wrap;gap:10px;">
-                  <button class="btn-makerzz-amber" onclick="directPublishSpotlight()">
+                  <button class="btn-makerzz-amber" id="btn-spotlight-publish" onclick="directPublishSpotlight()">
                     🚀 Publish to Instagram Live
                   </button>
                   <button class="btn-makerzz-teal" onclick="switchView('publishing')">
@@ -4448,7 +4454,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function loadCronStatus() {
       try {
-        const res = await fetch(API_BASE + '/cron/status');
+        const res = await fetch(apiEndpoint('/cron/status'));
         if (!res.ok) return;
         const data = await res.json();
         const origin = window.location.origin;
@@ -4536,7 +4542,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         showToast('Auditing physical gate files on server disk...', 'info');
       }
       try {
-        const res = await fetch(API_BASE + '/proof/gates');
+        const res = await fetch(apiEndpoint('/proof/gates'));
         if (!res.ok) throw new Error('Proof API error: ' + res.status);
         const data = await res.json();
         
@@ -4595,7 +4601,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       if (sValEl) sValEl.textContent = `${scans} / mo`;
 
       try {
-        const res = await fetch(API_BASE + '/calculator/evaluate', {
+        const res = await fetch(apiEndpoint('/calculator/evaluate'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -4628,7 +4634,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         showToast('Scanning live GitHub repositories & Hacker News trends...', 'info');
       }
       try {
-        const res = await fetch(API_BASE + '/trends/candidates');
+        const res = await fetch(apiEndpoint('/trends/candidates'));
         if (!res.ok) return;
         const data = await res.json();
         const grid = document.getElementById('trends-cards-grid');
@@ -4676,7 +4682,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       playSound('click');
       showToast(`Loading syndication format for ${platformId}...`, 'info');
       try {
-        const res = await fetch(API_BASE + `/platform/assets/${platformId}`);
+        const res = await fetch(apiEndpoint(`/platform/assets/${platformId}`));
         if (!res.ok) throw new Error('Failed to load asset');
         const data = await res.json();
         
@@ -4716,7 +4722,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ── Status Telemetry Sync ────────────────────────────────────────────
     async function refreshStatus(showFeedback = false) {
       try {
-        const res = await fetch(API_BASE + '/status');
+        const res = await fetch(apiEndpoint('/status'));
         if (!res.ok) throw new Error('API offline');
         const s = await res.json();
 
@@ -4785,7 +4791,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ── Scheduler Operations ─────────────────────────────────────────────
     async function loadSchedule() {
       try {
-        const s = await fetch(API_BASE + '/schedule').then(r => r.json());
+        const s = await fetch(apiEndpoint('/schedule')).then(r => r.json());
         
         // Render 7 Daily Slots
         const slotsCont = document.getElementById('slots-grid-container');
@@ -4855,7 +4861,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     async function toggleSchedulerDaemon() {
       playSound('click');
       try {
-        const res = await fetch(API_BASE + '/scheduler/toggle', {
+        const res = await fetch(apiEndpoint('/scheduler/toggle'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ enable: !schedulerRunningState })
@@ -4895,7 +4901,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
       playSound('click');
       try {
-        await fetch(API_BASE + '/schedule', {
+        await fetch(apiEndpoint('/schedule'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -4919,9 +4925,9 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     async function deleteQueuedItem(id) {
       playSound('click');
       try {
-        await fetch(`${API_BASE}/schedule/${id}`, { method: 'DELETE' });
+        await fetch(apiEndpoint(`/schedule/${id}`), { method: 'DELETE' });
         loadSchedule();
-        showToast('Scheduled post removed', 'info');
+        showToast('Scheduled post removed from queue', 'info');
       } catch(e) {
         showToast('Failed to delete item', 'error');
       }
@@ -4929,9 +4935,23 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function executeQueuedItem(id) {
       playSound('click');
-      showToast(`Executing queued item...`, 'info');
-      switchView('pipeline');
-      startPipeline();
+      showToast(`Triggering queued post ${id}...`, 'info');
+      try {
+        const res = await fetch(apiEndpoint(`/schedule/${id}/execute`), {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'}
+        }).then(r => r.json());
+        if (res.ok) {
+          showToast(`Executing '${res.item?.topic || id}'! 🚀`, 'success');
+          loadSchedule();
+          switchView('pipeline');
+          startPolling();
+        } else {
+          showToast(res.error || 'Failed to trigger queued post', 'error');
+        }
+      } catch(e) {
+        showToast('Failed to trigger post: ' + e.message, 'error');
+      }
     }
 
     // ── AI Content Studio & Direct Publishing ────────────────────────────
@@ -4945,7 +4965,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       playSound('click');
       showToast('Scouting viral topics & pillars via Neural Engine...', 'info');
       try {
-        const res = await fetch(API_BASE + '/topics/suggest');
+        const res = await fetch(apiEndpoint('/topics/suggest'));
         if (!res.ok) throw new Error('API error');
         const data = await res.json();
 
@@ -4994,7 +5014,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       btnText.textContent = 'Synthesizing Slides...';
 
       try {
-        const res = await fetch(API_BASE + '/generate', {
+        const res = await fetch(apiEndpoint('/generate'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ topic, pillar, angle, theme, render_slides: true })
@@ -5079,7 +5099,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       showToast('Generating dynamic caption & 3-tier viral hashtags...', 'info');
 
       try {
-        const res = await fetch(API_BASE + '/caption/generate', {
+        const res = await fetch(apiEndpoint('/caption/generate'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ topic, pillar, body: box.value })
@@ -5148,7 +5168,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     async function copyStudioReel() {
       playSound('click');
       try {
-        const res = await fetch(API_BASE + '/platform/assets/youtube');
+        const res = await fetch(apiEndpoint('/platform/assets/youtube'));
         const data = await res.json();
         const content = data.content || (data.asset && data.asset.content) || '';
         if (!content) {
@@ -5167,23 +5187,35 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         return;
       }
       playSound('click');
+      const pubBtn = document.getElementById('btn-spotlight-publish');
+      const origText = pubBtn ? pubBtn.innerHTML : '';
+      if (pubBtn) {
+        pubBtn.disabled = true;
+        pubBtn.innerHTML = '<span>Publishing to Meta...</span> <span class="spinner" style="display:inline-block;width:12px;height:12px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;"></span>';
+      }
       showToast('Initiating Meta Graph API publishing with verified caption & hashtags...', 'info');
 
       try {
-        const res = await fetch(API_BASE + '/publish', {
+        const res = await fetch(apiEndpoint('/publish'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ mode: currentExecutionMode })
+          body: JSON.stringify({ mode: currentExecutionMode || 'live' })
         });
         const d = await res.json();
         if (d.ok) {
           triggerCelebration();
           showToast(`Successfully Published with ${d.hashtags_count || 14} Hashtags! Media ID: ${d.media_id || 'SIMULATED'} ✓`, 'success');
+          loadRuns();
         } else {
           showToast(`Publish failed: ${d.error}`, 'error');
         }
       } catch(e) {
         showToast(`Publish error: ${e.message}`, 'error');
+      } finally {
+        if (pubBtn) {
+          pubBtn.disabled = false;
+          pubBtn.innerHTML = origText;
+        }
       }
     }
 
@@ -5191,6 +5223,13 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       if (!confirm("Publish this active Studio carousel live to Instagram?")) return;
       playSound('click');
       
+      const pubBtn = document.getElementById('btn-studio-publish');
+      const origText = pubBtn ? pubBtn.innerHTML : '';
+      if (pubBtn) {
+        pubBtn.disabled = true;
+        pubBtn.innerHTML = '<span>Publishing to Instagram...</span> <span class="spinner" style="display:inline-block;width:12px;height:12px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;"></span>';
+      }
+
       let capVal = document.getElementById('studio-caption-box').value.trim();
       if (!capVal || !capVal.includes('#')) {
         showToast('Auto-generating caption & viral hashtags before publish...', 'info');
@@ -5200,23 +5239,29 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       
       showToast('Publishing carousel with full caption & viral hashtags...', 'info');
       try {
-        const res = await fetch(API_BASE + '/publish', {
+        const res = await fetch(apiEndpoint('/publish'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            mode: 'live',
+            mode: currentExecutionMode || 'live',
             caption: capVal
           })
         });
         const d = await res.json();
         if (d.ok) {
           triggerCelebration();
-          showToast(`Live Post Published with ${d.hashtags_count || 'all'} Hashtags! 🚀`, 'success');
+          showToast(`Live Post Published with ${d.hashtags_count || 'all'} Hashtags! Media ID: ${d.media_id || 'SIMULATED'} 🚀`, 'success');
+          loadRuns();
         } else {
           showToast(d.error || 'Failed to publish', 'error');
         }
       } catch(e) {
-        showToast('Error during publish', 'error');
+        showToast('Error during publish: ' + e.message, 'error');
+      } finally {
+        if (pubBtn) {
+          pubBtn.disabled = false;
+          pubBtn.innerHTML = origText;
+        }
       }
     }
 
@@ -5224,22 +5269,29 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     function selectExecutionMode(mode) {
       playSound('click');
       currentExecutionMode = mode;
+      const isLive = mode === 'live';
+      const label = document.getElementById('top-mode-label');
+      if (label) label.textContent = isLive ? 'LIVE PRODUCTION' : 'DRY RUN';
+      const dot = document.getElementById('top-mode-dot');
+      if (dot) dot.className = isLive ? 'chip-pulse' : 'chip-pulse amber';
+      const sideTag = document.getElementById('sidebar-dry-tag');
+      if (sideTag) {
+        sideTag.textContent = isLive ? '● LIVE MODE' : '🟡 DRY RUN';
+        sideTag.style.color = isLive ? 'var(--emerald)' : 'var(--amber)';
+      }
+
       const dryBtn = document.getElementById('btn-mode-dry');
       const liveBtn = document.getElementById('btn-mode-live');
       const explainer = document.getElementById('pipeline-mode-explainer');
 
       if (mode === 'dry-run') {
-        dryBtn.style.borderColor = 'var(--neon-cyan)';
-        dryBtn.style.color = 'var(--neon-cyan)';
-        liveBtn.style.borderColor = '';
-        liveBtn.style.color = '';
-        explainer.textContent = '✓ Safe Mode: executes complete research, scoring, drafting, QA evaluation, and slide rendering without calling Instagram API.';
+        if (dryBtn) { dryBtn.style.borderColor = 'var(--neon-cyan)'; dryBtn.style.color = 'var(--neon-cyan)'; }
+        if (liveBtn) { liveBtn.style.borderColor = ''; liveBtn.style.color = ''; }
+        if (explainer) explainer.textContent = '✓ Safe Mode: executes complete research, scoring, drafting, QA evaluation, and slide rendering without calling Instagram API.';
       } else {
-        liveBtn.style.borderColor = 'var(--emerald)';
-        liveBtn.style.color = 'var(--emerald)';
-        dryBtn.style.borderColor = '';
-        dryBtn.style.color = '';
-        explainer.textContent = '⚠ LIVE PRODUCTION: will publish rendered slides directly to Instagram (@signhify.studio) via official Meta Graph API.';
+        if (liveBtn) { liveBtn.style.borderColor = 'var(--emerald)'; liveBtn.style.color = 'var(--emerald)'; }
+        if (dryBtn) { dryBtn.style.borderColor = ''; dryBtn.style.color = ''; }
+        if (explainer) explainer.textContent = '⚠ LIVE PRODUCTION: will publish rendered slides directly to Instagram (@signhify.studio) via official Meta Graph API.';
       }
     }
 
@@ -5253,7 +5305,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       startPolling();
 
       try {
-        await fetch(API_BASE + '/pipeline/run', {
+        await fetch(apiEndpoint('/pipeline/run'), {
           method: 'POST',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify({ mode: currentExecutionMode })
@@ -5266,7 +5318,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     async function stopPipeline() {
       playSound('alert');
       try {
-        await fetch(API_BASE + '/pipeline/stop', { method: 'POST' });
+        await fetch(apiEndpoint('/pipeline/stop'), { method: 'POST' });
         showToast('Pipeline abort command sent', 'info');
       } catch(e) {}
     }
@@ -5301,7 +5353,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function pollPipelineStatus() {
       try {
-        const res = await fetch(API_BASE + '/pipeline/status');
+        const res = await fetch(apiEndpoint('/pipeline/status'));
         const d = await res.json();
         
         const badge = document.getElementById('pipeline-status-badge');
@@ -5358,7 +5410,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ── In-House Auto-DM Engine Operations (Option A) ────────────────────
     async function loadAutoDMStats() {
       try {
-        const res = await fetch(API_BASE + '/instagram/auto-dm/stats');
+        const res = await fetch(apiEndpoint('/instagram/auto-dm/stats'));
         if (!res.ok) return;
         const data = await res.json();
         const s = data.stats || {};
@@ -5401,7 +5453,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       playSound('click');
       showToast(dryRun ? 'Starting safe Dry-Run comment scan...' : 'Starting live Instagram comment scan & DM dispatch...', 'info');
       try {
-        const res = await fetch(API_BASE + '/instagram/auto-dm', {
+        const res = await fetch(apiEndpoint('/instagram/auto-dm'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ dry_run: dryRun, limit_posts: 5 })
@@ -5423,7 +5475,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ── Slide Vault ──────────────────────────────────────────────────────
     async function loadRuns() {
       try {
-        const runs = await fetch(API_BASE + '/runs').then(r => r.json());
+        const runs = await fetch(apiEndpoint('/runs')).then(r => r.json());
         window._cachedRuns = runs;
         document.getElementById('vault-runs-count').textContent = runs.length;
         const grid = document.getElementById('vault-grid');
@@ -5485,30 +5537,31 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     }
 
     async function directPublishRun(runDate) {
-      if (!confirm(`Publish run ${runDate} live to Instagram? Caption and viral hashtags will be attached automatically.`)) return;
+      if (!confirm(`Publish run ${runDate} to Instagram (@signhify.studio)? Caption and viral hashtags will be attached automatically.`)) return;
       playSound('click');
       showToast(`Publishing run ${runDate} with verified caption & hashtags...`, 'info');
       try {
-        const res = await fetch(API_BASE + '/publish', {
+        const res = await fetch(apiEndpoint('/publish'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ date: runDate, mode: 'live' })
+          body: JSON.stringify({ date: runDate, mode: currentExecutionMode || 'live' })
         }).then(r => r.json());
         if (res.ok) {
           triggerCelebration();
-          showToast(`Published run to Instagram with ${res.hashtags_count || 'all'} hashtags! ✓`, 'success');
+          showToast(`Published run to Instagram! Media ID: ${res.media_id || 'SIMULATED'} (${res.hashtags_count || 'verified'} tags) ✓`, 'success');
+          loadRuns();
         } else {
           showToast(res.error || 'Failed to publish', 'error');
         }
       } catch(e) {
-        showToast('Error during publish', 'error');
+        showToast('Error during publish: ' + e.message, 'error');
       }
     }
 
     // ── Neural Memory ────────────────────────────────────────────────────
     async function loadMemory() {
       try {
-        const mem = await fetch(API_BASE + '/memory').then(r => r.json());
+        const mem = await fetch(apiEndpoint('/memory')).then(r => r.json());
         
         // Pillars distribution
         const pCont = document.getElementById('pillar-distribution-bars');
@@ -5550,7 +5603,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     let envMap = {};
     async function loadEnv() {
       try {
-        const res = await fetch(API_BASE + '/env').then(r => r.json());
+        const res = await fetch(apiEndpoint('/env')).then(r => r.json());
         envMap = res;
         const cont = document.getElementById('env-settings-container');
         cont.innerHTML = '';
@@ -5583,7 +5636,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         }
       }
       try {
-        await fetch(API_BASE + '/env', {
+        await fetch(apiEndpoint('/env'), {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload)
@@ -5599,7 +5652,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       playSound('click');
       showToast('Refreshing Meta Access Token...', 'info');
       try {
-        const res = await fetch(API_BASE + '/token/refresh', { method: 'POST' }).then(r => r.json());
+        const res = await fetch(apiEndpoint('/token/refresh'), { method: 'POST' }).then(r => r.json());
         if (res.status === 'ok') {
           showToast('Meta token refreshed! Expires in 60 days ✓', 'success');
           triggerCelebration();
@@ -6408,7 +6461,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function loadLatestRunForSimplePreview() {
       try {
-        const res = await fetch(API_BASE + '/runs').then(r => r.json());
+        const res = await fetch(apiEndpoint('/runs')).then(r => r.json());
         if (res.runs && res.runs.length > 0) {
           const latest = res.runs[0];
           simpleSlides = latest.slides || [];
@@ -6454,22 +6507,34 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function publishSimpleContent() {
       playSound('click');
-      showToast('Publishing carousel live to Instagram...', 'info');
+      const pubBtn = document.getElementById('btn-simple-publish');
+      const origText = pubBtn ? pubBtn.innerHTML : '';
+      if (pubBtn) {
+        pubBtn.disabled = true;
+        pubBtn.innerHTML = '<span>Publishing to Instagram...</span> <span class="spinner" style="display:inline-block;width:12px;height:12px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;"></span>';
+      }
+      showToast('Publishing carousel to Instagram (@signhify.studio)...', 'info');
       try {
-        const res = await fetch(API_BASE + '/publish', {
+        const res = await fetch(apiEndpoint('/publish'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
-          body: JSON.stringify({ mode: 'live' })
+          body: JSON.stringify({ mode: currentExecutionMode || 'live' })
         }).then(r => r.json());
 
         if (res.ok) {
-          showToast('Published live to Instagram successfully! 🚀', 'success');
+          showToast(`Published to Instagram successfully! Media ID: ${res.media_id || 'SIMULATED'} 🚀`, 'success');
           triggerCelebration();
+          loadRuns();
         } else {
           showToast(res.error || 'Publication error', 'error');
         }
       } catch (e) {
-        showToast('Publication connection error', 'error');
+        showToast('Publication connection error: ' + e.message, 'error');
+      } finally {
+        if (pubBtn) {
+          pubBtn.disabled = false;
+          pubBtn.innerHTML = origText;
+        }
       }
     }
 
