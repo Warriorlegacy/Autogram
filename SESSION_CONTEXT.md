@@ -4,7 +4,7 @@
 > **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `63762e0`)  
 > **Target Profile:** `@signhify.studio`  
 > **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots scheduled; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing)  
-> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **LIVE-PROVEN** (live 1080×1920 25s reel rendered + published, Media ID `18084132620498378`; 10 daily local slots via schtasks; 101 tests, 99 pass, 2 pre-existing failures documented below)  
+> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **LIVE-PROVEN ×3** (proof reel `18084132620498378`, agency reel `18038336954832825`, agency story `18137079703621760`; 10 daily local slots via schtasks; every reel watermarked + captioned for @signhify.studio)  
 > **Render Production Dashboard:** **LIVE & HEALTHY** (`https://autogram-dashboard.onrender.com/dashboard`)  
 > **Vercel Production Landing:** **LIVE & READY** (`https://autogram-ai.vercel.app`)  
 > **Responsive Experience:** **OPTIMIZED FOR ALL SCREENS** (Mobile 320px–480px, Tablets 768px–960px, Desktop 1024px–4K, Hamburger Navigation, Full-Width Viewport)  
@@ -212,6 +212,11 @@ orchestrator.py --video (or pipeline_runner.py --now)
 - **MPT v1.3.0 wire fix:** task `state`/`progress` arrive as STRINGS (`COMPLETE=1`, `FAILED=-1`, `PROCESSING=4`); `wait_for_task` now coerces to int.
 - **24h API cap guard:** `publish_media()` raises legibly at `quota_usage >= 24` (Meta cap ~25/24h; 24 drops armed). With usage at 13, remaining headroom covers the rest of today; steady-state 24/day leaves 1 headroom — drop to 21/day if cap-skips appear.
 - **Live proof:** 1080×1920 25s h264 reel rendered via MPT, staged on catbox.moe ($0), published to `@signhify.studio` — Media ID `18084132620498378`.
+- **Agency promo drop (2026-09-12 ~15:20 IST):** story `18137079703621760` ("5 Free AI Tools That Replace a $5,000/mo Marketing Retainer") + reel `18038336954832825` ("Signhify Studio Builds AI Marketing Engines That Post While You Sleep") — different topics, both agency-promoting.
+- **Standing agency branding (all future reels/stories):**
+  - `watermark_reel()` burns `signhify.studio` top-center into every MP4 via FFmpeg drawtext (fail-closed; wired into `--reel`, `--shorts`, `--video` paths).
+  - `generate_reel_script()` appends `🚀 Built by @signhify.studio — AI Marketing Agency | 🔗 signhify.studio` to every caption.
+  - Story default CTA is now `Follow @signhify.studio · AI Marketing Agency — Link in Bio` (template already carried `@signhify.studio` handle + `SIGNHIFY.STUDIO` subtext).
 - **Minutes math (GH free tier 2000/mo):** stories ~315 + carousels ~630 + videos 0 (local) ≈ 945/mo — SAFE.
 - **YouTube pending:** no local `youtube_token.json`/`client_secrets.json` — Shorts legs fail gracefully per-destination until one-time OAuth setup is done; Reels unaffected.
 

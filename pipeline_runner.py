@@ -27,7 +27,7 @@ logger = logging.getLogger("PipelineRunner")
 # Import core subsystems
 from src.config import settings
 from src.content.generator import generator
-from src.content.mpt_client import mpt_client
+from src.content.mpt_client import mpt_client, watermark_reel
 from src.storage.uploader import uploader
 from src.instagram.publisher import publisher
 from src.youtube.shorts_publisher import youtube_publisher
@@ -101,6 +101,8 @@ def execute_autonomous_run(
             subject=script_meta["subject"],
             dest=dest_video_path,
         )
+        logger.info("Burning signhify.studio watermark into video...")
+        watermark_reel(dest_video_path)
 
     # 4. Multi-Platform Distribution
     results = {

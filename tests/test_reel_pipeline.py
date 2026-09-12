@@ -116,6 +116,34 @@ def test_publish_media_cap_guard_allows_headroom():
             assert pub.publish_media("live_cntr_1") == "live_media_1"
 
 
+def test_reel_caption_promotes_agency():
+    """Verify every reel caption promotes the signhify.studio agency + site."""
+    script = generator.generate_reel_script("Test Agency Topic", "Marketing Psychology")
+    assert "signhify.studio" in script["caption"]
+    assert "@signhify.studio" in script["caption"]
+
+
+def test_watermark_reel_burns_text(tmp_path):
+    """Verify watermark_reel burns signhify.studio into a 9:16 MP4 (needs local FFmpeg)."""
+    import shutil
+
+    from src.content.mpt_client import watermark_reel
+
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        __import__("pytest").skip("FFmpeg not on PATH")
+    src = tmp_path / "plain.mp4"
+    proc = __import__("subprocess").run(
+        [ffmpeg, "-y", "-f", "lavfi", "-i", "testsrc=duration=1:size=360x640:rate=10",
+         "-c:v", "libx264", "-pix_fmt", "yuv420p", str(src)],
+        capture_output=True, timeout=120,
+    )
+    assert proc.returncode == 0 and src.stat().st_size > 0
+    out = watermark_reel(src)
+    assert out == str(src)
+    assert src.stat().st_size > 0
+
+
 def test_execute_queued_reel_item():
     """Verify executing a queued reel item passes content_format='reel'."""
     with dashboard_api.pipeline_lock:

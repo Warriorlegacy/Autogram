@@ -450,7 +450,7 @@ def run_story_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
 
 def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
     """Executes the autonomous Instagram Reel pipeline: script -> MPT 9:16 MP4 -> stage -> publish."""
-    from src.content.mpt_client import mpt_client
+    from src.content.mpt_client import mpt_client, watermark_reel
 
     today_str = datetime.now().strftime("%Y-%m-%d")
     out_dir = OUTPUT_BASE / today_str
@@ -513,6 +513,8 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
             subject=reel_script["subject"],
             dest=reel_filepath,
         )
+        logger.info("Burning signhify.studio watermark into Reel...")
+        watermark_reel(reel_filepath)
 
     # 4. Stage MP4 for Meta Graph API ingestion
     logger.info("Staging Reel asset for Meta Graph API...")
@@ -548,7 +550,7 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
 
 def run_shorts_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
     """Executes the autonomous YouTube Shorts pipeline: script -> MPT 9:16 MP4 -> upload to Shorts."""
-    from src.content.mpt_client import mpt_client
+    from src.content.mpt_client import mpt_client, watermark_reel
     from src.youtube.shorts_publisher import youtube_publisher
 
     today_str = datetime.now().strftime("%Y-%m-%d")
@@ -607,6 +609,8 @@ def run_shorts_pipeline(dry_run: bool = False, custom_topic: str | None = None, 
             subject=reel_script["subject"],
             dest=shorts_filepath,
         )
+        logger.info("Burning signhify.studio watermark into Short...")
+        watermark_reel(shorts_filepath)
 
     logger.info(f"Uploading Short to YouTube ({'DRY-RUN' if dry_run else 'LIVE PRODUCTION'})...")
     title = reel_script.get("title", f"{winner_topic['topic']} #Shorts")

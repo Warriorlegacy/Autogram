@@ -8,6 +8,7 @@ local FFmpeg assembly. No new API keys, no signups, no cloud bills.
 """
 
 import logging
+import os
 import time
 from pathlib import Path
 
@@ -146,10 +147,49 @@ class MoneyPrinterTurboClient:
         """One-call render: submit -> wait -> download. Returns local MP4 path."""
         task_id = self.create_video(script=script, subject=subject, voice_name=voice_name)
         task = self.wait_for_task(task_id, timeout_s=timeout_s)
-        videos = task.get("videos") or (task.get("data") or {}).get("videos") or []
+        videos = task.get("videos") or []
         if not videos:
             raise RuntimeError(f"MPT task {task_id} finished with no videos.")
         return self.download_video(videos[0], dest)
+
+
+def watermark_reel(video_path: str | Path, text: str = "signhify.studio") -> str:
+    """Burns a top-center text watermark into a 9:16 MP4 via local FFmpeg (in place).
+
+    Fail-closed: raises RuntimeError when FFmpeg or the font is unavailable.
+    """
+    import shutil
+    import subprocess
+
+    src = Path(video_path)
+    ffmpeg = shutil.which("ffmpeg") or (
+        "C:\\Users\\Piyush\\AppData\\Local\\Microsoft\\WinGet\\Packages\\"
+        "Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\"
+        "ffmpeg-8.0.1-full_build\\bin\\ffmpeg.exe"
+    )
+    if not ffmpeg or not Path(str(ffmpeg)).exists():
+        raise RuntimeError("FFmpeg binary not found; cannot watermark reel.")
+    font = Path("C:\\Windows\\Fonts\\arial.ttf")
+    if not font.exists():
+        raise RuntimeError("Watermark font not found at C:\\Windows\\Fonts\\arial.ttf.")
+    tmp = src.with_name(src.stem + "_wm.mp4")
+    vf = (
+        "drawtext=fontfile='C\\:/Windows/Fonts/arial.ttf':"
+        f"text='{text}':fontsize=44:fontcolor=white:"
+        "borderw=2:bordercolor=black:box=1:boxcolor=black@0.45:boxborderw=14:"
+        "x=(w-text_w)/2:y=170"
+    )
+    proc = subprocess.run(
+        [str(ffmpeg), "-y", "-i", str(src), "-vf", vf,
+         "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
+         "-c:a", "copy", str(tmp)],
+        capture_output=True, text=True, timeout=600,
+    )
+    if proc.returncode != 0 or not tmp.exists() or tmp.stat().st_size == 0:
+        raise RuntimeError(f"FFmpeg watermark failed: {proc.stderr[-500:]}")
+    os.replace(tmp, src)
+    logger.info(f"Watermarked reel: {src} ({src.stat().st_size // 1024} KB)")
+    return str(src)
 
     render_video = render_reel
 

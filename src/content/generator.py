@@ -791,6 +791,7 @@ Return ONLY valid JSON.
             )
         caption = str(data.get("caption") or f"{topic_str}: the $0 self-hosted blueprint. Comment REEL for the setup.").strip()
         hashtags = data.get("hashtags") or ["#BuildInPublic", "#OpenSource", "#SelfHosted", "#AIEngineering", "#DevTools", "#IndieHacker", "#TechReels", "#SignhifyStudio"]
+        caption = f"{caption}\n\n🚀 Built by @signhify.studio — AI Marketing Agency | 🔗 signhify.studio"
         return {
             "topic": topic_str,
             "pillar": pillar_str,
@@ -864,7 +865,7 @@ Return ONLY valid JSON.
             "metric_label": metric_lbl,
             "takeaways": takeaways,
             "code_command": code_cmd,
-            "cta_text": "Tap Link in Bio for Full Architecture Blueprint",
+            "cta_text": "Follow @signhify.studio · AI Marketing Agency — Link in Bio",
             "publication_date": datetime.now().strftime("%Y-%m-%d")
         }
 
