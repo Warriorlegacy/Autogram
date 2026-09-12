@@ -4,7 +4,33 @@ on:
   # Triggered exclusively by cron-job.org dispatch jobs
   # ("Autogram Slot 1-7", Asia/Kolkata) for second-precise scheduling.
   # No native `schedule:` here by design — it would double-post carousels.
-  workflow_dispatch: {}    # Manual trigger button in GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Custom Topic (leave empty for auto-trending)"
+        required: false
+        default: ""
+      pillar:
+        description: "Content Pillar"
+        required: false
+        default: "AI Tool Breakdown"
+        type: choice
+        options:
+          - "AI Tool Breakdown"
+          - "Prompting & Workflow"
+          - "Tech Explainer"
+          - "Marketing Psychology"
+          - "Trending GitHub Spotlight"
+          - "Contrarian"
+          - "Local AI & Edge Compute"
+      mode:
+        description: "Execution Mode"
+        required: true
+        default: "live"
+        type: choice
+        options:
+          - "live"
+          - "dry-run"
   repository_dispatch:     # Allows external second-precise webhooks (cron-job.org / curl) to trigger runs
     types: [publish-slot, daily-post]
 
@@ -47,9 +73,26 @@ jobs:
       - name: Execute Autonomous Publishing Pipeline
         timeout-minutes: 15
         run: |
-          if [ -n "${IG_ACCESS_TOKEN}" ]; then
-            echo "Running direct cloud autonomous pipeline with GitHub runner..."
-            python orchestrator.py --run-all
+          MODE="${{ github.event.inputs.mode || 'live' }}"
+          TOPIC="${{ github.event.inputs.topic || '' }}"
+          PILLAR="${{ github.event.inputs.pillar || '' }}"
+
+          CMD_ARGS=()
+          if [ "$MODE" = "live" ] && [ -n "${IG_ACCESS_TOKEN}" ]; then
+            CMD_ARGS+=("--run-all")
+          else
+            CMD_ARGS+=("--dry-run")
+          fi
+          if [ -n "$TOPIC" ]; then
+            CMD_ARGS+=("--topic" "$TOPIC")
+          fi
+          if [ -n "$PILLAR" ]; then
+            CMD_ARGS+=("--pillar" "$PILLAR")
+          fi
+
+          echo "Executing command: python orchestrator.py ${CMD_ARGS[*]}"
+          if [ -n "${IG_ACCESS_TOKEN}" ] || [ "$MODE" = "dry-run" ]; then
+            python orchestrator.py "${CMD_ARGS[@]}"
           else
             echo "GitHub IG_ACCESS_TOKEN secret not detected in runner."
             echo "Triggering live Render backend cloud autopilot failover..."
