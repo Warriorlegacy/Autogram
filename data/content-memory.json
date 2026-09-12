@@ -2,23 +2,16 @@
   "recent_posts": [
     {
       "date": "2026-09-11",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "The Reverse-Engineering System Prompt: Extracting Code, Architecture & API Contracts from Any URL",
-      "hook": "Stop paying for expensive proprietary cloud software. This 100% open source prompt runs on your own LLM.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-11",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "Reverse\u2011Engineering Megaprompt: Open Source Alternative to SaaS Reverse\u2011Engineering Tools",
-      "hook": "Stop paying $150/mo for SaaS. Reverse\u2011engineer any app yourself.",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "The Chain-of-Density Prompt: How to Condense 10,000-Word Docs into 5 Dense Insights",
+      "hook": "Stop throwing money at expensive proprietary cloud software. This open source tool condenses 10,000-word docs into 5 dense insights.",
       "score": 100
     },
     {
       "date": "2026-09-11",
       "pillar": "Local AI & Edge Compute",
       "topic": "The Chain-of-Density Prompt: How to Condense 10,000-Word Docs into 5 Dense Insights",
-      "hook": "Stop paying for bloated summarization SaaS. This 100% open source prompt runs on your own hardware.",
+      "hook": "Ditch $200/month cloud software. This FOSS tool condenses 10,000-word docs in 1 pass.",
       "score": 100
     },
     {

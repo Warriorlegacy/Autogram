@@ -1,6 +1,6 @@
 {
-  "active_text_provider": "gemini",
-  "active_text_model": "gemini-2.5-flash",
+  "active_text_provider": "openai",
+  "active_text_model": "gpt-4o",
   "active_image_provider": "flux_free",
   "active_image_model": "black-forest-labs/FLUX.1-schnell",
   "active_video_provider": "luma",

@@ -176,53 +176,37 @@
       "dm_status": "DM_SENT",
       "timestamp": 1789132868.0499685
     },
-    "18390440758164133": {
-      "media_id": "18113482390962365",
-      "username": "signhify.studio",
+    "sim_c_8893_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
       "keyword": "FOSS",
-      "public_reply_id": "18138740815610274",
-      "dm_status": "PUBLIC_ONLY",
-      "timestamp": 1789145131.5410595
+      "public_reply_id": "mock_reply_38893",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789146840.6769485
     },
-    "18072240551468933": {
-      "media_id": "18065165669782077",
-      "username": "signhify.studio",
+    "sim_c_8621_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
       "keyword": "FOSS",
-      "public_reply_id": "18215991439342779",
-      "dm_status": "PUBLIC_ONLY",
-      "timestamp": 1789145136.9522905
+      "public_reply_id": "mock_reply_38621",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789146841.0014105
     },
-    "17952254382027355": {
-      "media_id": "18142502188570933",
-      "username": "signhify.studio",
-      "keyword": "FOSS",
-      "public_reply_id": "18128867866750614",
-      "dm_status": "PUBLIC_ONLY",
-      "timestamp": 1789145140.344824
+    "sim_c_8893_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_40678",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789146842.0821557
     },
-    "18113681537064807": {
-      "media_id": "18100521512577015",
-      "username": "signhify.studio",
-      "keyword": "FOSS",
-      "public_reply_id": "18107128916593406",
-      "dm_status": "PUBLIC_ONLY",
-      "timestamp": 1789146252.9985015
-    },
-    "17898913110378222": {
-      "media_id": "18065161538769904",
-      "username": "signhify.studio",
-      "keyword": "FOSS",
-      "public_reply_id": "17955413811016312",
-      "dm_status": "PUBLIC_ONLY",
-      "timestamp": 1789146258.9916773
-    },
-    "18266792641306572": {
-      "media_id": "18131626108730496",
-      "username": "signhify.studio",
-      "keyword": "FOSS",
-      "public_reply_id": "18184287178412904",
-      "dm_status": "PUBLIC_ONLY",
-      "timestamp": 1789155364.7625055
+    "sim_c_8621_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_41003",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789146843.4522269
     }
   }
 }

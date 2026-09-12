@@ -1,7 +1,8 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-12 22:30 IST  
+> **Last Updated:** 2026-09-12 23:15 IST  
 > **Repository:** `Warriorlegacy/Autogram` (`main` branch)  
+> **Latest Git Commit:** `b405a1a` ("feat(ui): 5-theme system, tier enforcement, 3D polish, auth integration, expanded tests")  
 > **Target Profile:** `@signhify.studio`  
 > **Live Publishing Status:** **VERIFIED & ACTIVE**  
 > **Dashboard:** **PREMIUM 3D IMMERSIVE** — 5-theme system, tier-gated, auth-aware, live at `https://autogram-dashboard.onrender.com/dashboard`
@@ -97,7 +98,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 ### Files Modified
 | File | What Changed |
 |---|---|
-| `dashboard.html` | 5-theme picker, tier enforcement, holographic borders, glassmorphism, bento grid CSS, auth-aware theme toggle |
+| `dashboard.html` | 5-theme picker, tier enforcement, holographic borders, glassmorphism, bento grid CSS, auth-aware theme toggle, `var(--cyan)` → `var(--neon-cyan)` across 85 refs |
 | `css/landing.css` | 4 new theme presets (cyberpunk, neumorphic, swiss-light, bento-grid), holographic shimmer, hero gradient animation |
 | `css/components.css` | Component overrides for 5 themes, pricing card glow, architecture card hover, simulator glassmorphism |
 | `js/premium.js` | Extended tilt selector to include `.doppel-shell`, `.platform-tile`, `.template-card-tile` |
@@ -105,6 +106,11 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 | `src/auth/user_manager.py` | PBKDF2 auth system (pre-existing) |
 | `src/content/providers_manager.py` | AI provider hub (pre-existing) |
 | `tests/test_auth_and_providers.py` | 20 tests: auth CRUD, provider endpoints, prompts, templates, themes CSS, premium.js tilt |
+| `SESSION_CONTEXT.md` | Updated: latest commit, corrected test totals (67/67), cleanup notes |
+
+### Cleanup (commit `b405a1a`)
+- Renamed `var(--cyan)` → `var(--neon-cyan)` in `dashboard.html` (85 references + 5 definitions) for consistency with design system token naming
+- Confirmed Three.js CDN and `confetti-canvas` already removed in prior session — no dead DOM elements
 
 ---
 
@@ -151,7 +157,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 | `test_themes_css_components` | ✅ |
 | `test_premium_js_has_tilt` | ✅ |
 
-### Previous Session Tests (74/74 passing)
+### Previous Session Tests (47/47 passing)
 - `tests/test_trend_analyzer.py` — 4/4
 - `tests/test_deep_research.py` — 3/3
 - `tests/test_growth_engine.py` — 7/7
@@ -160,9 +166,11 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_renderer.py` — 3/3
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
-- `tests/test_auth_and_providers.py` — 13/13 (previous session)
 
-**Total:** 94/94 tests passing cleanly.
+### Current Session Tests (20/20 passing)
+- `tests/test_auth_and_providers.py` — 20/20 (expanded from 13: added logout, non-admin forbidden, set-active, health, themes CSS ×2, premium.js tilt)
+
+**Total:** 67/67 tests passing cleanly.
 
 ---
 
