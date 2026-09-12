@@ -102,6 +102,11 @@ def test_api_templates_catalog(client):
     assert "video_reel_templates" in data
     assert len(data["carousel_templates"]) >= 5
 
+    # Verify double /api/api/ normalization works transparently
+    res_double = client.get("/api/api/templates")
+    assert res_double.status_code == 200
+    assert res_double.get_json()["ok"] is True
+
 def _admin_token(client):
     res = client.post("/api/auth/login", json={
         "username": "signhify.studio",

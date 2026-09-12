@@ -49,6 +49,19 @@ def get_brand_config() -> dict:
 app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path="")
 CORS(app)
 
+class NormalizeApiPrefixMiddleware:
+    """WSGI middleware to transparently normalize double /api/api/ prefixes before routing."""
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        path = environ.get("PATH_INFO", "")
+        if path.startswith("/api/api/"):
+            environ["PATH_INFO"] = path.replace("/api/api/", "/api/", 1)
+        return self.wsgi_app(environ, start_response)
+
+app.wsgi_app = NormalizeApiPrefixMiddleware(app.wsgi_app)
+
 # ─── Live pipeline & scheduler state ─────────────────────────────────────────
 pipeline_log: list[str] = []
 pipeline_status: str = "idle"   # idle | running | done | error
@@ -139,11 +152,13 @@ def get_next_scheduled_run() -> dict:
         if item.get("status") == "QUEUED":
             try:
                 st = datetime.fromisoformat(item["scheduled_time"])
-                if st > now:
-                    delta_seconds = int((st - now).total_seconds())
+                st_naive = st.replace(tzinfo=None) if getattr(st, 'tzinfo', None) else st
+                now_naive = now.replace(tzinfo=None) if getattr(now, 'tzinfo', None) else now
+                if st_naive > now_naive:
+                    delta_seconds = int((st_naive - now_naive).total_seconds())
                     return {
                         "type": "queued",
-                        "time": st.strftime("%Y-%m-%d %H:%M"),
+                        "time": st_naive.strftime("%Y-%m-%d %H:%M"),
                         "topic": item.get("topic"),
                         "pillar": item.get("pillar"),
                         "seconds_left": max(0, delta_seconds)
@@ -284,7 +299,9 @@ def scheduler_worker():
                 if item.get("status") == "QUEUED":
                     try:
                         st = datetime.fromisoformat(item["scheduled_time"])
-                        if now_dt >= st:
+                        st_naive = st.replace(tzinfo=None) if getattr(st, 'tzinfo', None) else st
+                        now_naive = now_dt.replace(tzinfo=None) if getattr(now_dt, 'tzinfo', None) else now_dt
+                        if now_naive >= st_naive:
                             item["status"] = "TRIGGERED"
                             queue_changed = True
                             with pipeline_lock:
@@ -684,6 +701,7 @@ def api_caption_generate():
         return jsonify({"ok": False, "error": str(e)}), 500
 
 @app.route("/api/generate", methods=["POST"])
+@app.route("/api/content/synthesize", methods=["POST"])
 def api_generate():
     """
     On-demand AI Carousel & Script Studio Generator.
@@ -692,7 +710,7 @@ def api_generate():
     topic_text = data.get("topic", "").strip()
     pillar = data.get("pillar", "AI Tool Breakdown")
     angle = data.get("angle", "")
-    theme = data.get("theme", "auto").strip().lower()
+    theme = (data.get("theme") or data.get("template") or "auto").strip().lower()
     render_slides = data.get("render_slides", True)
 
     if not topic_text:

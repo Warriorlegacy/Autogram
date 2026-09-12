@@ -487,12 +487,14 @@
       margin-left: 255px;
       flex: 1;
       min-width: 0;
-      max-width: calc(100vw - 255px);
+      width: calc(100% - 255px);
+      max-width: calc(100% - 255px);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
+      box-sizing: border-box;
     }
 
     /* ── Topbar ── */
@@ -1685,20 +1687,198 @@
       to   { transform: translateX(0); opacity: 1; }
     }
 
-    /* Responsive adjustments */
+    /* ── Mobile Sidebar Backdrop Overlay ── */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 95;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .sidebar-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Mobile Hamburger Menu Button ── */
+    .mobile-menu-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--bg-surface-elev);
+      border: 1px solid var(--border-inner);
+      color: var(--text-main);
+      font-size: 19px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+    .mobile-menu-btn:hover, .mobile-menu-btn:active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: var(--neon-cyan-dim);
+    }
+
+    /* ── Universal Responsive Engine (Tablets & Mobile <= 960px) ── */
     @media (max-width: 960px) {
+      .mobile-menu-btn {
+        display: inline-flex !important;
+      }
+
       .sidebar {
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
+        width: 280px !important;
+        max-width: 85vw !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        z-index: 100 !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: none !important;
       }
+
       .sidebar.open {
-        transform: translateX(0);
+        transform: translateX(0) !important;
+        box-shadow: 20px 0 60px rgba(0, 0, 0, 0.9) !important;
       }
+
+      /* CRITICAL: Full-width orientation fix for mobile */
       .cockpit-main {
-        margin-left: 0;
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
       }
-      .spotlight-banner, .studio-grid {
-        grid-template-columns: 1fr;
+
+      .topbar {
+        height: auto !important;
+        min-height: 56px !important;
+        padding: 10px 16px !important;
+        gap: 10px !important;
+      }
+
+      .topbar-left {
+        gap: 10px !important;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .topbar-right {
+        gap: 8px !important;
+      }
+
+      .content-viewport {
+        padding: 20px 16px !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+      }
+
+      .spotlight-banner, .studio-grid, .metric-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ── Mobile Phones (<= 640px) ── */
+    @media (max-width: 640px) {
+      .topbar {
+        padding: 8px 12px !important;
+      }
+
+      .page-title span:first-child {
+        font-size: 14px !important;
+      }
+
+      .page-title-badge {
+        display: none !important;
+      }
+
+      .mode-switch-pill {
+        padding: 2px !important;
+      }
+
+      .mode-pill-btn {
+        padding: 5px 8px !important;
+        font-size: 10.5px !important;
+      }
+
+      /* Clean topbar on mobile: hide verbose chips */
+      .telemetry-chip {
+        display: none !important;
+      }
+
+      .content-viewport {
+        padding: 12px 10px !important;
+      }
+
+      .wizard-step-card {
+        padding: 16px 12px !important;
+        border-radius: 12px !important;
+      }
+
+      .wizard-step-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+      }
+
+      .wizard-step-header button {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+
+      .prompt-quick-chips {
+        gap: 6px !important;
+      }
+
+      .prompt-chip {
+        font-size: 11px !important;
+        padding: 5px 9px !important;
+      }
+
+      .templates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+        gap: 8px !important;
+      }
+
+      .template-card-tile {
+        padding: 10px !important;
+      }
+
+      /* Step 3 Full Width Buttons */
+      #btn-simple-generate, #btn-simple-publish, #btn-simple-download {
+        width: 100% !important;
+        min-height: 48px !important;
+        font-size: 13px !important;
+        justify-content: center !important;
+      }
+
+      /* Modal dialogs touch optimization */
+      .modal-card, .prompt-library-card, .provider-config-card {
+        width: 95vw !important;
+        max-height: 90vh !important;
+        padding: 18px 14px !important;
+        margin: 10px auto !important;
+      }
+
+      /* Responsive tables */
+      .schedule-table, .runs-table {
+        display: block !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
+      }
+
+      #simple-preview-deck img {
+        max-height: 300px !important;
       }
     }
     /* ═══════════════════════════════════════════════════════════════════════
@@ -2235,6 +2415,9 @@
   <!-- Ambient Particles (CSS-animated, zero-dependency) -->
   <div id="ambient-particles"></div>
 
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="toggleMobileSidebar(false)"></div>
+
   <div class="cockpit-layout">
 
     <!-- ─── SIDEBAR ──────────────────────────────────────────────────────── -->
@@ -2320,7 +2503,11 @@
 
       <!-- Topbar Telemetry Header -->
       <header class="topbar">
-        <div class="topbar-left" style="display:flex;align-items:center;gap:16px;">
+        <div class="topbar-left" style="display:flex;align-items:center;gap:12px;">
+          <!-- Mobile Sidebar Toggle -->
+          <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle Navigation Menu">
+            <span>☰</span>
+          </button>
           <div class="page-title">
             <span id="page-title-text">Overview</span>
             <span class="page-title-badge" id="page-badge">LIVE TELEMETRY</span>
@@ -4032,6 +4219,30 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       return localStorage.getItem('autogram_api_base') || 'https://autogram-dashboard.onrender.com/api';
     })();
 
+    // Robust endpoint builder: eliminates duplicate /api/api/ paths
+    function apiEndpoint(path) {
+      if (!path) return API_BASE;
+      let p = String(path).trim();
+      if (!p.startsWith('/')) p = '/' + p;
+      if (p.startsWith('/api/')) p = p.substring(4);
+      return API_BASE + p;
+    }
+
+    // Responsive Mobile Sidebar Toggle
+    function toggleMobileSidebar(forceState) {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      if (!sidebar) return;
+      const isOpen = typeof forceState === 'boolean' ? forceState : !sidebar.classList.contains('open');
+      if (isOpen) {
+        sidebar.classList.add('open');
+        if (backdrop) backdrop.classList.add('active');
+      } else {
+        sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('active');
+      }
+    }
+
     // ── Essential Utility Helpers & Aliases ──────────────────────────
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
@@ -4157,6 +4368,9 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     // ── Navigation & View Switching ──────────────────────────────────────
     function switchView(viewId, el) {
+      if (window.innerWidth <= 960) {
+        toggleMobileSidebar(false);
+      }
       if (viewId === 'studio') viewId = 'publishing';
       if (viewId === 'autodm' && !requireTier('auto_dm', 'Auto-DM Engine')) return;
       playSound('warp');
@@ -5496,7 +5710,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       }
 
       try {
-        const res = await fetch(API_BASE + '/api/auth/me', { headers: getAuthHeaders() }).then(r => r.json());
+        const res = await fetch(apiEndpoint('/auth/me'), { headers: getAuthHeaders() }).then(r => r.json());
         if (res.ok && res.user) {
           currentUser = res.user;
           const isAdmin = res.user.role === 'admin';
@@ -5596,7 +5810,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
       if (currentAuthTab === 'login') {
         try {
-          const res = await fetch(API_BASE + '/api/auth/login', {
+          const res = await fetch(apiEndpoint('/auth/login'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -5617,7 +5831,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         const email = (document.getElementById('auth-email').value || '').trim();
         const tier = document.getElementById('auth-tier').value || 'starter';
         try {
-          const res = await fetch(API_BASE + '/api/auth/signup', {
+          const res = await fetch(apiEndpoint('/auth/signup'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password, email, tier })
@@ -5662,7 +5876,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       if (!tbody) return;
       tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Loading users...</td></tr>';
       try {
-        const res = await fetch(API_BASE + '/api/auth/users', { headers: getAuthHeaders() }).then(r => r.json());
+        const res = await fetch(apiEndpoint('/auth/users'), { headers: getAuthHeaders() }).then(r => r.json());
         if (res.ok && res.users) {
           tbody.innerHTML = res.users.map(u => `
             <tr>
@@ -5689,7 +5903,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function updateUserTier(userId, newTier) {
       try {
-        const res = await fetch(API_BASE + `/api/auth/users/${userId}/tier`, {
+        const res = await fetch(apiEndpoint(`/auth/users/${userId}/tier`), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
           body: JSON.stringify({ tier: newTier })
@@ -5743,7 +5957,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function loadProviders() {
       try {
-        const res = await fetch(API_BASE + '/api/providers').then(r => r.json());
+        const res = await fetch(apiEndpoint('/providers')).then(r => r.json());
         if (res.ok) {
           allProvidersData = res;
           // Set preset selector
@@ -5814,7 +6028,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       btn.disabled = true;
 
       try {
-        const res = await fetch(API_BASE + '/api/providers/detect-models', {
+        const res = await fetch(apiEndpoint('/providers/detect-models'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ base_url: baseUrl, api_key: apiKey })
@@ -5854,7 +6068,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
       try {
         if (preset === 'custom') {
-          await fetch(API_BASE + '/api/providers/save', {
+          await fetch(apiEndpoint('/providers/save'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -5868,7 +6082,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           });
         }
 
-        const res = await fetch(API_BASE + '/api/providers/set-active', {
+        const res = await fetch(apiEndpoint('/providers/set-active'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ provider_id: preset, model_id: modelId })
@@ -5891,12 +6105,12 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       const vidVal = document.getElementById('prov-video-model-select').value.split(':');
 
       try {
-        await fetch(API_BASE + '/api/providers/set-media-model', {
+        await fetch(apiEndpoint('/providers/set-media-model'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ media_type: 'image', provider_id: imgVal[0], model_id: imgVal[1] })
         });
-        await fetch(API_BASE + '/api/providers/set-media-model', {
+        await fetch(apiEndpoint('/providers/set-media-model'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ media_type: 'video', provider_id: vidVal[0], model_id: vidVal[1] })
@@ -5913,7 +6127,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ═══════════════════════════════════════════════════════════════════════
     async function loadPrompts() {
       try {
-        const res = await fetch(API_BASE + '/api/prompts').then(r => r.json());
+        const res = await fetch(apiEndpoint('/prompts')).then(r => r.json());
         if (res.ok && res.categories) {
           allPromptsData = res;
           const filterCont = document.getElementById('prompts-cat-filters');
@@ -6030,7 +6244,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     async function loadTemplates() {
       try {
-        const res = await fetch(API_BASE + '/api/templates').then(r => r.json());
+        const res = await fetch(apiEndpoint('/templates')).then(r => r.json());
         if (res.ok) {
           allTemplatesData = res;
           renderSimpleTemplatesList();
@@ -6159,7 +6373,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       genBtn.disabled = true;
 
       try {
-        const res = await fetch(API_BASE + '/api/content/synthesize', {
+        const res = await fetch(apiEndpoint('/content/synthesize'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
           body: JSON.stringify({
