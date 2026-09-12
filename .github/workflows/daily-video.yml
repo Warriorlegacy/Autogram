@@ -94,20 +94,23 @@ jobs:
             FLAG="--shorts"
           fi
 
-          CMD_ARGS="$FLAG"
+          CMD_ARGS=("$FLAG")
           if [ "$MODE" = "live" ] && [ -n "${IG_ACCESS_TOKEN}" ]; then
-            CMD_ARGS="$CMD_ARGS --run-all"
+            CMD_ARGS+=("--run-all")
           else
-            CMD_ARGS="$CMD_ARGS --dry-run"
+            CMD_ARGS+=("--dry-run")
           fi
 
           if [ -n "$TOPIC" ]; then
-            CMD_ARGS="$CMD_ARGS --topic \"$TOPIC\" --pillar \"$PILLAR\""
+            CMD_ARGS+=("--topic" "$TOPIC")
+          fi
+          if [ -n "$PILLAR" ]; then
+            CMD_ARGS+=("--pillar" "$PILLAR")
           fi
 
-          echo "Running command: python orchestrator.py $CMD_ARGS"
+          echo "Running command: python orchestrator.py ${CMD_ARGS[*]}"
           if [ -n "${IG_ACCESS_TOKEN}" ] || [ "$MODE" = "dry-run" ]; then
-            python orchestrator.py $CMD_ARGS
+            python orchestrator.py "${CMD_ARGS[@]}"
           else
             echo "GitHub IG_ACCESS_TOKEN secret not detected. Falling back to Render cloud backend..."
             ENDPOINT="video"
