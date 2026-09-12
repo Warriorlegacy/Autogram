@@ -1,10 +1,10 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-12 13:15 IST  
-> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `edf99ee`)  
+> **Last Updated:** 2026-09-12 15:30 IST  
+> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `63762e0`)  
 > **Target Profile:** `@signhify.studio`  
 > **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots scheduled; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing)  
-> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **OPERATIONAL** (`--reel` CLI, `/api/publish/reel`, `/api/mpt/status`; edge-tts + Pexels free + local FFmpeg; 89/89 passing tests)  
+> **Reels Video Pipeline ($0 MoneyPrinterTurbo):** **LIVE-PROVEN** (live 1080×1920 25s reel rendered + published, Media ID `18084132620498378`; 10 daily local slots via schtasks; 101 tests, 99 pass, 2 pre-existing failures documented below)  
 > **Render Production Dashboard:** **LIVE & HEALTHY** (`https://autogram-dashboard.onrender.com/dashboard`)  
 > **Vercel Production Landing:** **LIVE & READY** (`https://autogram-ai.vercel.app`)  
 > **Responsive Experience:** **OPTIMIZED FOR ALL SCREENS** (Mobile 320px–480px, Tablets 768px–960px, Desktop 1024px–4K, Hamburger Navigation, Full-Width Viewport)  
@@ -130,7 +130,8 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 4. Test Suite & Verification Status
 
-### All Tests (99/99 passing)
+### All Tests (99/101 passing — 2 pre-existing failures, both fail on pristine tree)
+- `tests/test_reel_pipeline.py` — 9/9 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow)
 - `tests/test_workflows_and_copilot.py` — 5/5 (daily-story.yml & daily-video.yml validation, Settings GITHUB_COPILOT_TOKEN, GitHub Models preset, unauthorized handling)
 - `tests/test_youtube_shorts.py` — 5/5 (shorts publisher dry-run, title formatting, missing creds handling, `/api/publish/shorts`, `/api/publish/video`)
 - `tests/test_reel_pipeline.py` — 7/7 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution)
@@ -146,7 +147,9 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-**Total:** 99/99 tests passing cleanly. All platforms & cloud workflows verified.
+**Total:** 99/101 passing. Pre-existing failures (verified failing on pristine `880eb62` tree, unrelated to reel/video work):
+- `test_orchestrator.py::test_full_pipeline_dry_run` (assertion on live-LLM output)
+- `test_story_pipeline.py::test_schedule_json_has_seven_story_slots_and_queue` (`story_slots` key absent from committed `schedule.json`; some test side-effect flips `scheduler_enabled` — restore the file after suite runs)
 
 ---
 
@@ -190,6 +193,17 @@ orchestrator.py --video (or pipeline_runner.py --now)
   - `python orchestrator.py --video --dry-run` (Dual Reels + Shorts)
   - `python pipeline_runner.py --now --dry-run` (Standalone runner)
   - `python compile_pdf.py` (Compiles `Autonomous_Video_Pipeline.pdf`)
+
+### Live Operations Findings (2026-09-12 15:30 IST session)
+- **Story "not posting" root cause:** the pasted failing log was a manual `MODE=dry-run` dispatch that actually SUCCEEDED (mock media ID). The old argparse quoting bug is already fixed (commit `17998ad`, array-based `CMD_ARGS`). Scheduled runs default to `live`. No story code change needed.
+- **Meta token VALID:** read-only `check_publishing_limit()` returned `quota_usage: 13` (12 headroom at check time).
+- **PEXELS verdict:** configured where it matters — key present in `D:\MoneyPrinterTurbo\config.toml` (local renders use it); `PEXELS_API_KEY` also SET in Autogram `.env` and mapped as `secrets.PEXELS_API_KEY` → env in `daily-video.yml`. No code reads it on CI because no render happens there.
+- **Video lane fix (commit `63762e0`):** GitHub runners cannot reach localhost MPT, so all 10 CI video crons failed closed. Removed `schedule` from `daily-video.yml` (manual dispatch kept); the 10 daily slots now run on this PC via `run_video_slot.bat` + `ensure_mpt.bat`, armed as Windows Scheduled Tasks `Autogram Reel 1-10` (08:03–22:03 IST) + logon/Startup MPT autostart.
+- **MPT v1.3.0 wire fix:** task `state`/`progress` arrive as STRINGS (`COMPLETE=1`, `FAILED=-1`, `PROCESSING=4`); `wait_for_task` now coerces to int.
+- **24h API cap guard:** `publish_media()` raises legibly at `quota_usage >= 24` (Meta cap ~25/24h; 24 drops armed). With usage at 13, remaining headroom covers the rest of today; steady-state 24/day leaves 1 headroom — drop to 21/day if cap-skips appear.
+- **Live proof:** 1080×1920 25s h264 reel rendered via MPT, staged on catbox.moe ($0), published to `@signhify.studio` — Media ID `18084132620498378`.
+- **Minutes math (GH free tier 2000/mo):** stories ~315 + carousels ~630 + videos 0 (local) ≈ 945/mo — SAFE.
+- **YouTube pending:** no local `youtube_token.json`/`client_secrets.json` — Shorts legs fail gracefully per-destination until one-time OAuth setup is done; Reels unaffected.
 
 ## 6. Deployment Surfaces
 
