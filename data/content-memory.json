@@ -3,6 +3,13 @@
     {
       "date": "2026-09-12",
       "pillar": "Self-Hosted Architecture",
+      "topic": "PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
+      "hook": "Stop paying $25-$100+/month for Firebase/Supabase cloud tiers. Here is the open source alternative you own forever.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-12",
+      "pillar": "Self-Hosted Architecture",
       "topic": "Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
       "hook": "Stop paying for manual SSL. This 100% open source repo runs on your own hardware.",
       "score": 100
@@ -411,13 +418,6 @@
       "pillar": "AI Tool Breakdown",
       "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
       "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "How 1 API parameter cut our production LLM bills by 78%.",
       "score": 100
     }
   ],
