@@ -6,7 +6,7 @@ Loads settings from environment variables and .env file with safe defaults.
 import os
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field
+from pydantic import Field, AliasChoices
 
 BASE_DIR = Path(__file__).parent.parent
 
@@ -18,7 +18,10 @@ class Settings(BaseSettings):
     groq_api_key: str | None = Field(default=None, alias="GROQ_API_KEY")
     huggingface_api_key: str | None = Field(default=None, alias="HUGGINGFACE_API_KEY")
     openrouter_api_key: str | None = Field(default=None, alias="OPENROUTER_API_KEY")
-    github_copilot_token: str | None = Field(default=None, alias="GITHUB_COPILOT_TOKEN")
+    github_copilot_token: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("GITHUB_COPILOT_TOKEN", "GH_COPILOT_TOKEN", "COPILOT_TOKEN")
+    )
     nvidia_nim_api_key: str | None = Field(default=None, alias="NVIDIA_NIM_API_KEY")
     ollama_base_url: str = Field(default="http://localhost:11434", alias="OLLAMA_BASE_URL")
     ollama_model: str = Field(default="llama3.2", alias="OLLAMA_MODEL")
@@ -33,6 +36,7 @@ class Settings(BaseSettings):
 
     # Video Generation (local MoneyPrinterTurbo render server — $0: edge-tts + Pexels free + FFmpeg)
     mpt_base_url: str = Field(default="http://127.0.0.1:8080", alias="MPT_BASE_URL")
+    pexels_api_key: str | None = Field(default=None, alias="PEXELS_API_KEY")
 
     # Meta Instagram Graph API
     ig_user_id: str | None = Field(default=None, alias="IG_USER_ID")

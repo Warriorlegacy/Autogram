@@ -125,7 +125,9 @@ jobs:
           AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GITHUB_COPILOT_TOKEN: ${{ secrets.GITHUB_COPILOT_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_COPILOT_TOKEN: ${{ secrets.GH_COPILOT_TOKEN || secrets.COPILOT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_COPILOT_TOKEN: ${{ secrets.GH_COPILOT_TOKEN || secrets.COPILOT_TOKEN }}
+          COPILOT_TOKEN: ${{ secrets.COPILOT_TOKEN || secrets.GH_COPILOT_TOKEN }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}

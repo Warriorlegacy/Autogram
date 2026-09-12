@@ -4,7 +4,7 @@ import pytest
 
 from src.config import Settings
 from src.content.providers_manager import DEFAULT_PROVIDERS
-from src.content.generator import ContentGenerator
+from src.content.generator import ContentGenerator, settings as gen_settings
 
 
 def test_workflow_files_exist():
@@ -56,11 +56,17 @@ def test_github_models_preset_in_providers():
     assert "gpt-4o" in gm["models"]
 
 
-def test_github_models_missing_token_raises():
+def test_github_models_missing_token_raises(monkeypatch):
     """Verify generate_with_github_models raises ValueError when no token is present."""
+    monkeypatch.delenv("GITHUB_COPILOT_TOKEN", raising=False)
+    monkeypatch.delenv("GH_COPILOT_TOKEN", raising=False)
+    monkeypatch.delenv("COPILOT_TOKEN", raising=False)
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.setattr(gen_settings, "github_copilot_token", None)
     gen = ContentGenerator()
     with pytest.raises(ValueError, match="No GITHUB_COPILOT_TOKEN or GITHUB_TOKEN configured"):
         gen.generate_with_github_models(
             {"topic": "Test Topic", "pillar": "AI Tool Breakdown"},
             []
         )
+

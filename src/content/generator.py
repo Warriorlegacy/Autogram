@@ -252,7 +252,13 @@ Return ONLY valid JSON.
         100% Free GitHub Models / Copilot API Tier (GPT-4o, Llama 3.1 70B, Mistral Large).
         Uses GITHUB_COPILOT_TOKEN or GITHUB_TOKEN on https://models.inference.ai.azure.com.
         """
-        token = getattr(settings, "github_copilot_token", None) or os.environ.get("GITHUB_COPILOT_TOKEN") or os.environ.get("GITHUB_TOKEN", "")
+        token = (
+            getattr(settings, "github_copilot_token", None)
+            or os.environ.get("GITHUB_COPILOT_TOKEN")
+            or os.environ.get("GH_COPILOT_TOKEN")
+            or os.environ.get("COPILOT_TOKEN")
+            or os.environ.get("GITHUB_TOKEN", "")
+        )
         if not token:
             raise ValueError("No GITHUB_COPILOT_TOKEN or GITHUB_TOKEN configured")
 
@@ -584,7 +590,13 @@ Return ONLY valid JSON.
                 self._disabled_providers.add("gemini")
 
         # 2.5. GitHub Models / Copilot (100% Free Tier: GPT-4o, Llama 3.1 70B)
-        github_token = getattr(settings, "github_copilot_token", None) or os.environ.get("GITHUB_COPILOT_TOKEN") or os.environ.get("GITHUB_TOKEN", "").strip()
+        github_token = (
+            getattr(settings, "github_copilot_token", None)
+            or os.environ.get("GITHUB_COPILOT_TOKEN")
+            or os.environ.get("GH_COPILOT_TOKEN")
+            or os.environ.get("COPILOT_TOKEN")
+            or os.environ.get("GITHUB_TOKEN", "").strip()
+        )
         if "github_models" not in self._disabled_providers and (provider in ["auto", "github_models", "copilot"]) and github_token:
             try:
                 logger.info("Generating carousel with GitHub Models / Copilot (Free GPT-4o)...")
@@ -659,7 +671,13 @@ Return ONLY valid JSON.
     def _free_narration(self, prompt: str) -> dict | None:
         """Best-effort narration JSON via $0 providers (github_models -> groq -> gemini -> ollama)."""
         # 0. GitHub Models / Copilot ($0, high-quality GPT-4o / Llama 3.1)
-        copilot_token = getattr(settings, "github_copilot_token", None) or os.environ.get("GITHUB_COPILOT_TOKEN") or os.environ.get("GITHUB_TOKEN", "")
+        copilot_token = (
+            getattr(settings, "github_copilot_token", None)
+            or os.environ.get("GITHUB_COPILOT_TOKEN")
+            or os.environ.get("GH_COPILOT_TOKEN")
+            or os.environ.get("COPILOT_TOKEN")
+            or os.environ.get("GITHUB_TOKEN", "")
+        )
         if copilot_token and "github_models" not in self._disabled_providers:
             try:
                 resp = requests.post(
