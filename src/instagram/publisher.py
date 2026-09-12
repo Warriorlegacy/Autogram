@@ -188,6 +188,39 @@ class InstagramPublisher:
         media_id = self.publish_media(carousel_id)
         return media_id
 
+    def create_story_container(self, image_url: str) -> str:
+        """Creates an Instagram Story media container (9:16 aspect ratio, media_type=STORIES)."""
+        if self.dry_run:
+            simulated_id = f"mock_story_cntr_{int(time.time()*1000) % 1000000}"
+            logger.info(f"[DRY-RUN] Created story container: {simulated_id} for URL: {image_url}")
+            return simulated_id
+
+        if not (image_url.startswith("http://") or image_url.startswith("https://")):
+            raise ValueError(
+                f"Invalid image_url '{image_url}': Meta Graph API strictly requires an absolute public HTTP/HTTPS URL."
+            )
+
+        url = f"{self.base_url}/{self.user_id}/media"
+        data = {
+            "image_url": image_url,
+            "media_type": "STORIES",
+            "access_token": self.token
+        }
+        resp = requests.post(url, data=data, timeout=30)
+        if resp.status_code != 200:
+            logger.error(f"Meta Graph API error in create_story_container: {resp.status_code} - {resp.text}")
+        resp.raise_for_status()
+        return resp.json()["id"]
+
+    def publish_story(self, image_url: str) -> str:
+        """End-to-end single Instagram Story publishing flow."""
+        logger.info(f"Starting Instagram Story publish sequence for {image_url}...")
+        container_id = self.create_story_container(image_url)
+        self.wait_until_ready(container_id)
+        media_id = self.publish_media(container_id)
+        logger.info(f"Published Instagram Story successfully! Media ID: {media_id}")
+        return media_id
+
     def post_comment(self, media_id: str, message: str) -> str:
         """Posts a first discussion comment to the published media object."""
         if self.dry_run or str(media_id).startswith("mock"):

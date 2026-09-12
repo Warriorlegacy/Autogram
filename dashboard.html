@@ -2871,6 +2871,7 @@
                   <thead>
                     <tr>
                       <th>Time</th>
+                      <th>Format</th>
                       <th>Topic & Angle</th>
                       <th>Strategic Pillar</th>
                       <th>Mode</th>
@@ -3852,8 +3853,16 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     <div class="doppel-shell modal-box glow-cyan">
       <div class="doppel-core">
         <div class="card-header-bar">
-          <div class="card-header-title"><span class="accent-tag">◈</span> Schedule New Carousel Post</div>
+          <div class="card-header-title"><span class="accent-tag">◈</span> Schedule New Instagram Post / Story</div>
           <button class="btn btn-sm btn-ghost" onclick="closeScheduleModal()">✕</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Content Format</label>
+          <select class="form-select" id="sched-input-format">
+            <option value="story">📱 Instagram Story (1080×1920, 9:16)</option>
+            <option value="carousel">🖼️ Feed Carousel (1080×1350, 4:5)</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -4793,17 +4802,24 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       try {
         const s = await fetch(apiEndpoint('/schedule')).then(r => r.json());
         
-        // Render 7 Daily Slots
+        // Render 7 Daily Slots & 7 Story Slots
         const slotsCont = document.getElementById('slots-grid-container');
         slotsCont.innerHTML = '';
-        (s.daily_slots || []).forEach(slot => {
+        const allSlots = [
+          ...(s.daily_slots || []).map(x => ({ ...x, type: 'carousel' })),
+          ...(s.story_slots || []).map(x => ({ ...x, type: 'story' }))
+        ];
+        allSlots.sort((a, b) => a.slot.localeCompare(b.slot));
+
+        allSlots.forEach(slot => {
           const div = document.createElement('div');
           div.className = 'slot-node';
+          const isStory = slot.type === 'story' || slot.format === 'story';
           div.innerHTML = `
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <span class="slot-time">${slot.slot}</span>
-              <span style="font-size:10px;color:${slot.enabled ? 'var(--emerald)' : 'var(--text-dim)'}">
-                ${slot.enabled ? '● ACTIVE' : '○ DISABLED'}
+              <span style="font-size:9px;font-weight:800;font-family:var(--font-mono);padding:2px 6px;border-radius:4px;background:${isStory ? 'rgba(56,189,248,0.15)' : 'rgba(168,85,247,0.15)'};color:${isStory ? '#38bdf8' : 'var(--neon-purple)'};border:1px solid ${isStory ? 'rgba(56,189,248,0.3)' : 'rgba(168,85,247,0.3)'}">
+                ${isStory ? 'STORY' : 'POST'}
               </span>
             </div>
             <div class="slot-label">${slot.label}</div>
@@ -4817,12 +4833,18 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         tbody.innerHTML = '';
         const queue = s.queue || [];
         if (queue.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:24px;">No upcoming queued items. Click "+ Schedule New Post" to add one.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:24px;">No upcoming queued items. Click "+ Schedule New Post" to add one.</td></tr>';
         } else {
           queue.forEach(q => {
+            const isStory = q.format === 'story' || String(q.id || '').startsWith('STORY');
+            const formatBadge = isStory
+              ? '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#38bdf8;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:3px 7px;">📱 STORY</span>'
+              : '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--neon-purple);background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);border-radius:6px;padding:3px 7px;">🖼️ CAROUSEL</span>';
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td style="font-family:var(--font-mono);color:var(--neon-cyan);font-weight:600;">${q.scheduled_time.replace('T', ' ')}</td>
+              <td>${formatBadge}</td>
               <td style="font-weight:600;color:#fff;">${q.topic}</td>
               <td><span class="slot-pillar">${q.pillar}</span></td>
               <td><span style="font-family:var(--font-mono);font-size:11px;color:${q.mode === 'live' ? 'var(--emerald)' : 'var(--amber)'}">${(q.mode || 'dry-run').toUpperCase()}</span></td>
@@ -4889,6 +4911,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     }
 
     async function submitNewScheduledPost() {
+      const format = document.getElementById('sched-input-format')?.value || 'story';
       const time = document.getElementById('sched-input-time').value;
       const topic = document.getElementById('sched-input-topic').value.trim();
       const pillar = document.getElementById('sched-input-pillar').value;
@@ -4909,13 +4932,14 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               scheduled_time: time,
               topic: topic,
               pillar: pillar,
-              mode: mode
+              mode: mode,
+              format: format
             }
           })
         });
         closeScheduleModal();
         loadSchedule();
-        showToast('Post queued successfully! 📅', 'success');
+        showToast(`New ${format === 'story' ? 'Story' : 'Post'} queued successfully! 📅`, 'success');
         triggerCelebration();
       } catch(e) {
         showToast('Failed to queue post', 'error');

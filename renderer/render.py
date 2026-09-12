@@ -9,7 +9,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from playwright.sync_api import sync_playwright
 
-from renderer.validate import validate_slide_content, validate_image_file, TARGET_WIDTH, TARGET_HEIGHT
+from renderer.validate import validate_slide_content, validate_image_file, TARGET_WIDTH, TARGET_HEIGHT, STORY_TARGET_WIDTH, STORY_TARGET_HEIGHT
 
 logger = logging.getLogger(__name__)
 
@@ -161,6 +161,56 @@ class CarouselRenderer:
             browser.close()
 
         return rendered_paths
+
+    def render_story(self, story_data: dict, output_filepath: str | Path) -> str:
+        """
+        Renders an Instagram Story (1080x1920, 9:16 aspect ratio) to JPEG.
+        Returns the output image file path as a string.
+        """
+        out_path = Path(output_filepath)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+
+        theme_id = resolve_theme(story_data)
+        meta = {
+            "pillar": story_data.get("pillar", "AI & Technology"),
+            "topic": story_data.get("topic", ""),
+            "theme": theme_id,
+            "theme_class": f"theme-{theme_id}"
+        }
+
+        template = self.jinja_env.get_template("story.html")
+        html = template.render(
+            story=story_data,
+            meta=meta,
+            brand=self.brand
+        )
+        if self.css_content and '<link rel="stylesheet"' in html:
+            html = html.replace(
+                '<link rel="stylesheet" href="../css/design-system.css">',
+                f'<style>\n{self.css_content}\n</style>'
+            )
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(
+                viewport={"width": STORY_TARGET_WIDTH, "height": STORY_TARGET_HEIGHT},
+                device_scale_factor=1.0
+            )
+            page = context.new_page()
+            page.set_content(html, wait_until="domcontentloaded", timeout=15000)
+            page.wait_for_timeout(350)
+
+            page.screenshot(
+                path=str(out_path),
+                type="jpeg",
+                quality=95,
+                clip={"x": 0, "y": 0, "width": STORY_TARGET_WIDTH, "height": STORY_TARGET_HEIGHT}
+            )
+            browser.close()
+
+        validate_image_file(out_path, expected_width=STORY_TARGET_WIDTH, expected_height=STORY_TARGET_HEIGHT)
+        logger.info(f"Rendered Instagram Story (1080x1920) -> {out_path.name}")
+        return str(out_path)
 
 def render_sample(output_dir: str = "output/sample"):
     """Utility to render a sample carousel for visual verification."""

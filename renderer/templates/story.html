@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ story.headline or "Instagram Story" }}</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1080px;
+      height: 1920px;
+      background: #090D16;
+      font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .story-canvas {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      /* Instagram Story Safe Margins: Top 140px (Avatar/Progress), Bottom 160px (Reply Bar) */
+      padding: 140px 72px 160px 72px;
+      background-color: var(--bg-color, #090D16);
+      color: var(--text-primary, #FFFFFF);
+    }
+    .story-canvas::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        linear-gradient(to right, var(--bg-grid-color, rgba(255, 255, 255, 0.04)) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--bg-grid-color, rgba(255, 255, 255, 0.04)) 1px, transparent 1px);
+      background-size: 54px 54px;
+      pointer-events: none;
+      opacity: 0.85;
+      z-index: 1;
+    }
+    .story-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-orange, #FF5500) 0%, transparent 70%);
+      opacity: 0.12;
+      filter: blur(80px);
+      top: 250px;
+      left: 240px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .story-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .story-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1.5px solid rgba(148, 163, 184, 0.15);
+    }
+    .story-brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .story-avatar-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 40px;
+      padding: 8px 18px 8px 10px;
+    }
+    .avatar-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-orange, #FF5500), #E04B00);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 17px;
+    }
+    .brand-handle {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .story-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: var(--accent-orange-soft, rgba(255, 85, 0, 0.14));
+      border: 1.5px solid var(--accent-orange-border, rgba(255, 85, 0, 0.3));
+      border-radius: 30px;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--accent-orange, #FF5500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-orange, #FF5500);
+      box-shadow: 0 0 10px var(--accent-orange, #FF5500);
+    }
+    .story-headline-block {
+      margin-top: 36px;
+      margin-bottom: 28px;
+    }
+    .story-category-tag {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted, #94A3B8);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .story-title {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--text-primary, #FFFFFF);
+    }
+    .story-title span {
+      color: var(--accent-orange, #FF5500);
+    }
+    .story-card-shell {
+      background: var(--card-shell-bg, rgba(15, 23, 42, 0.5));
+      border: 1.5px solid var(--card-shell-border, rgba(148, 163, 184, 0.18));
+      border-radius: 36px;
+      padding: 12px;
+      box-shadow: 0 28px 60px -15px rgba(0, 0, 0, 0.4);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0 32px 0;
+    }
+    .story-card-core {
+      background: var(--card-core-bg, rgba(15, 23, 42, 0.8));
+      border: 1px solid var(--card-core-border, rgba(255, 255, 255, 0.06));
+      border-radius: 28px;
+      padding: 42px 38px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .story-metric-banner {
+      background: linear-gradient(135deg, rgba(255, 85, 0, 0.12), rgba(255, 85, 0, 0.04));
+      border: 1.5px solid var(--accent-orange-border, rgba(255, 85, 0, 0.3));
+      border-radius: 22px;
+      padding: 26px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .metric-value {
+      font-size: 44px;
+      font-weight: 900;
+      font-family: var(--font-display, sans-serif);
+      color: var(--accent-orange, #FF5500);
+      line-height: 1;
+    }
+    .metric-label {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary, #FFFFFF);
+      line-height: 1.35;
+      text-align: right;
+    }
+    .story-takeaways {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      flex: 1;
+    }
+    .takeaway-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      background: rgba(148, 163, 184, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 20px;
+      padding: 22px 24px;
+    }
+    .takeaway-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--accent-orange, #FF5500);
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .takeaway-text {
+      font-size: 22px;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--text-secondary, #E2E8F0);
+    }
+    .takeaway-text strong {
+      color: var(--text-primary, #FFFFFF);
+      font-weight: 800;
+    }
+    .story-code-box {
+      margin-top: 24px;
+      background: #06090F;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-mono, monospace);
+      font-size: 18px;
+      color: #38BDF8;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .code-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #38BDF8;
+      flex-shrink: 0;
+    }
+    .story-cta-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding-top: 10px;
+    }
+    .story-cta-button {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent-orange, #FF5500), #E04B00);
+      color: #FFFFFF;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      border-radius: 28px;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      box-shadow: 0 16px 36px -8px var(--accent-orange-glow, rgba(255, 85, 0, 0.35));
+    }
+    .story-cta-subtext {
+      font-size: 16px;
+      font-family: var(--font-mono, monospace);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted, #94A3B8);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="{{ meta.theme_class or 'theme-obsidian' }}">
+  <div class="story-canvas">
+    <div class="story-glow"></div>
+    <div class="story-content">
+      <!-- Top Bar -->
+      <div class="story-header">
+        <div class="story-brand-wrap">
+          <div class="story-avatar-pill">
+            <div class="avatar-icon">P</div>
+            <div class="brand-handle">{{ brand.handle or "@signhify.studio" }}</div>
+          </div>
+        </div>
+        <div class="story-badge">
+          <div class="live-dot"></div>
+          <span>{{ story.badge or "HIGH SIGNAL" }}</span>
+        </div>
+      </div>
+
+      <!-- Hero Headline -->
+      <div class="story-headline-block">
+        <span class="story-category-tag">// {{ meta.pillar or story.pillar or "AI & SYSTEMS ARCHITECTURE" }}</span>
+        <h1 class="story-title">{{ story.headline_html or story.headline }}</h1>
+      </div>
+
+      <!-- Main Visual Double-Bezel Card -->
+      <div class="story-card-shell">
+        <div class="story-card-core">
+          <!-- Key Callout Metric -->
+          {% if story.metric_value or story.metric_label %}
+          <div class="story-metric-banner">
+            <div class="metric-value">{{ story.metric_value or "10x" }}</div>
+            <div class="metric-label">{{ story.metric_label or "Architectural Efficiency vs Monolithic Prompts" }}</div>
+          </div>
+          {% endif %}
+
+          <!-- Key Takeaways -->
+          <div class="story-takeaways">
+            {% for item in story.takeaways %}
+            <div class="takeaway-item">
+              <div class="takeaway-num">{{ loop.index }}</div>
+              <div class="takeaway-text">
+                {% if item.bold %}<strong>{{ item.bold }}</strong> — {% endif %}{{ item.text }}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Quick Setup / Code Command if available -->
+          {% if story.code_command %}
+          <div class="story-code-box">
+            <div class="code-dot"></div>
+            <span>$ {{ story.code_command }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Bottom Interactive Sticker CTA -->
+      <div class="story-cta-footer">
+        <div class="story-cta-button">
+          <span>{{ story.cta_text or "Tap Link in Bio for Full Architecture" }}</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+        <div class="story-cta-subtext">{{ brand.footer_text or "SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS" }}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

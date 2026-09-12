@@ -595,4 +595,72 @@ Return ONLY valid JSON.
         logger.info("Generating carousel using Free Built-In Anti-Repetition Synthesis Engine.")
         return self._normalize_carousel(get_rich_synthesized_carousel(topic, sources), topic)
 
+    def generate_story_content(self, topic: str | dict, pillar: str | None = None, dossier: dict | None = None) -> dict:
+        """
+        Synthesizes high-impact Instagram Story content (headline, badge, metric, takeaways, CTA)
+        optimized for vertical 9:16 mobile consumption.
+        """
+        if isinstance(topic, dict):
+            topic_str = topic.get("topic", "")
+            pillar_str = pillar or topic.get("pillar", "AI & Systems Architecture")
+            dossier = dossier or topic.get("dossier", {})
+        else:
+            topic_str = str(topic)
+            pillar_str = pillar or "AI & Systems Architecture"
+            dossier = dossier or {}
+
+        pillar_badges = {
+            "AI Tool Breakdown": "AI STACK BREAKDOWN",
+            "Prompting & Workflow": "WORKFLOW HACK",
+            "Tech Explainer": "SYSTEMS BLUEPRINT",
+            "Marketing Psychology": "GROWTH ENGINE",
+            "Career & Skills": "ENGINEER PULSE",
+            "Contrarian": "CONTRARIAN SIGNAL",
+            "Local AI & Edge Compute": "LOCAL AI DROP",
+            "Trending GitHub Spotlight": "GITHUB RADAR"
+        }
+        badge = pillar_badges.get(pillar_str, "HIGH SIGNAL DROP")
+
+        metric_val = "10x"
+        metric_lbl = "Operational Efficiency vs Monolithic Prompts"
+        code_cmd = ""
+        takeaways = []
+
+        if dossier:
+            if dossier.get("stars"):
+                metric_val = f"{dossier.get('stars', 0):,}★"
+                metric_lbl = f"GitHub Stars · {dossier.get('license', 'FOSS')}"
+            elif dossier.get("saas_cost_estimate"):
+                metric_val = "$0/mo"
+                metric_lbl = f"Self-Hosted vs {dossier.get('replaces_saas', 'Cloud')} ({dossier.get('saas_cost_estimate')})"
+
+            if dossier.get("deployment_command"):
+                code_cmd = dossier.get("deployment_command")
+
+            evidence = dossier.get("research_evidence", [])
+            for ev in evidence[:3]:
+                takeaways.append({"bold": "Architecture", "text": ev})
+
+        if not takeaways:
+            takeaways = [
+                {"bold": "Modular Isolation", "text": "Separates deep context from reasoning boundaries to eliminate hallucinations."},
+                {"bold": "Zero-Touch Scaling", "text": "Deterministic state machines replace fragile, monolithic mega-prompts."},
+                {"bold": "Production Ready", "text": "Tested and verified across long-horizon autonomous workflows."}
+            ]
+
+        headline = topic_str.strip().rstrip(".")
+
+        return {
+            "topic": topic_str,
+            "pillar": pillar_str,
+            "headline": headline,
+            "badge": badge,
+            "metric_value": metric_val,
+            "metric_label": metric_lbl,
+            "takeaways": takeaways,
+            "code_command": code_cmd,
+            "cta_text": "Tap Link in Bio for Full Architecture Blueprint",
+            "publication_date": datetime.now().strftime("%Y-%m-%d")
+        }
+
 generator = ContentGenerator()

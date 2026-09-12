@@ -11,6 +11,10 @@ TARGET_WIDTH = 1080
 TARGET_HEIGHT = 1350
 TARGET_ASPECT_RATIO = TARGET_WIDTH / TARGET_HEIGHT  # 0.8 (4:5)
 
+STORY_TARGET_WIDTH = 1080
+STORY_TARGET_HEIGHT = 1920
+STORY_TARGET_ASPECT_RATIO = STORY_TARGET_WIDTH / STORY_TARGET_HEIGHT  # 0.5625 (9:16)
+
 MAX_HEADLINE_CHARS = 80
 MAX_BODY_CHARS = 240
 MAX_FILE_SIZE_BYTES = 8 * 1024 * 1024  # 8MB Meta limit
@@ -36,7 +40,7 @@ def validate_slide_content(slide: dict) -> list[str]:
 
 import time
 
-def validate_image_file(image_path: str | Path) -> dict:
+def validate_image_file(image_path: str | Path, expected_width: int = TARGET_WIDTH, expected_height: int = TARGET_HEIGHT) -> dict:
     """Validate rendered image dimensions, format, and aspect ratio."""
     path = Path(image_path)
     if not path.exists():
@@ -60,16 +64,17 @@ def validate_image_file(image_path: str | Path) -> dict:
                 raise ValidationError(f"Image {path.name} could not be identified: {e}")
             time.sleep(0.1)
 
+    expected_ratio = expected_width / expected_height if expected_height else 1.0
     aspect = width / height if height else 0
 
-    if width != TARGET_WIDTH or height != TARGET_HEIGHT:
+    if width != expected_width or height != expected_height:
         raise ValidationError(
-            f"Image {path.name} resolution is {width}x{height}, expected {TARGET_WIDTH}x{TARGET_HEIGHT}."
+            f"Image {path.name} resolution is {width}x{height}, expected {expected_width}x{expected_height}."
         )
 
-    if abs(aspect - TARGET_ASPECT_RATIO) > 0.01:
+    if abs(aspect - expected_ratio) > 0.01:
         raise ValidationError(
-            f"Image {path.name} aspect ratio {aspect:.3f} does not match 4:5 (0.800)."
+            f"Image {path.name} aspect ratio {aspect:.3f} does not match expected {expected_ratio:.3f}."
         )
 
     if format_name not in ["JPEG", "JPG", "PNG"]:

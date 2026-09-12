@@ -283,7 +283,7 @@ def scheduler_worker():
                 triggered_today = set()
                 last_day_str = current_date_str
 
-            # 1. Check daily recurring slots
+            # 1. Check daily recurring slots (Carousels)
             active_slots = {s["slot"] for s in sched.get("daily_slots", []) if s.get("enabled", True)}
             if current_time_str in active_slots and current_time_str not in triggered_today:
                 triggered_today.add(current_time_str)
@@ -291,12 +291,29 @@ def scheduler_worker():
                 slot_pillar = slot_cfg.get("pillar", "AI Tool Breakdown")
                 with pipeline_lock:
                     pipeline_log.append(
-                        f"[{now_dt.strftime('%H:%M:%S')} {tz_name}] [GROWTH AUTOPILOT] Triggering peak viral drop for slot {current_time_str} ({slot_pillar})..."
+                        f"[{now_dt.strftime('%H:%M:%S')} {tz_name}] [GROWTH AUTOPILOT] Triggering peak viral carousel drop for slot {current_time_str} ({slot_pillar})..."
                     )
-                # Run pipeline in a subprocess with the slot pillar
                 run_pipeline_subprocess(
                     mode="live" if read_env().get("DRY_RUN") == "false" else "dry-run",
-                    pillar=slot_pillar
+                    pillar=slot_pillar,
+                    content_format="carousel"
+                )
+
+            # 1b. Check daily recurring Story slots
+            active_story_slots = {s["slot"] for s in sched.get("story_slots", []) if s.get("enabled", True)}
+            story_key = f"story_{current_time_str}"
+            if current_time_str in active_story_slots and story_key not in triggered_today:
+                triggered_today.add(story_key)
+                slot_cfg = next((s for s in sched.get("story_slots", []) if s.get("slot") == current_time_str), {})
+                slot_pillar = slot_cfg.get("pillar", "AI Tool Breakdown")
+                with pipeline_lock:
+                    pipeline_log.append(
+                        f"[{now_dt.strftime('%H:%M:%S')} {tz_name}] [GROWTH AUTOPILOT] Triggering peak viral Story drop for slot {current_time_str} ({slot_pillar})..."
+                    )
+                run_pipeline_subprocess(
+                    mode="live" if read_env().get("DRY_RUN") == "false" else "dry-run",
+                    pillar=slot_pillar,
+                    content_format="story"
                 )
 
             # 2. Check individual queued items
@@ -313,15 +330,17 @@ def scheduler_worker():
                             item["status"] = "RUNNING"
                             item["started_at"] = datetime.now().isoformat()
                             queue_changed = True
+                            c_fmt = item.get("format", "story" if str(item.get("id", "")).startswith("STORY") else "carousel")
                             with pipeline_lock:
                                 pipeline_log.append(
-                                    f"[{now_dt.strftime('%H:%M:%S')}] [SCHEDULER] Auto-executing scheduled item: '{item.get('topic')}' [{item.get('pillar')}]"
+                                    f"[{now_dt.strftime('%H:%M:%S')}] [SCHEDULER] Auto-executing scheduled {c_fmt.upper()}: '{item.get('topic')}' [{item.get('pillar')}]"
                                 )
                             run_pipeline_subprocess(
                                 mode=item.get("mode", "dry-run"),
                                 topic=item.get("topic"),
                                 pillar=item.get("pillar"),
-                                queue_id=item.get("id")
+                                queue_id=item.get("id"),
+                                content_format=c_fmt
                             )
                     except Exception as e:
                         print(f"Error checking queue item: {e}")
@@ -351,13 +370,14 @@ def scheduler_worker():
 
         time.sleep(15)
 
-def run_pipeline_subprocess(mode="dry-run", topic=None, pillar=None, queue_id=None):
+def run_pipeline_subprocess(mode="dry-run", topic=None, pillar=None, queue_id=None, content_format="carousel"):
     global pipeline_status, pipeline_proc
     with pipeline_lock:
         if pipeline_status == "running":
             return False
         pipeline_status = "running"
-        target_str = f" for '{topic}'" if topic else ""
+        fmt_label = " [STORY 9:16]" if content_format == "story" else ""
+        target_str = f"{fmt_label} for '{topic}'" if topic else fmt_label
         pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Starting pipeline ({mode.upper()}){target_str}...")
 
     python = sys.executable
@@ -366,6 +386,9 @@ def run_pipeline_subprocess(mode="dry-run", topic=None, pillar=None, queue_id=No
         cmd.append("--dry-run")
     else:
         cmd.append("--run-all")
+
+    if content_format == "story":
+        cmd.append("--story")
 
     if topic:
         cmd.extend(["--topic", str(topic)])
@@ -542,8 +565,9 @@ def api_schedule_execute(item_id):
     topic = target_item.get("topic")
     pillar = target_item.get("pillar")
     mode = target_item.get("mode", "live" if read_env().get("DRY_RUN") == "false" else "dry-run")
+    content_format = target_item.get("format", "story" if str(item_id).startswith("STORY") else "carousel")
 
-    run_pipeline_subprocess(mode=mode, topic=topic, pillar=pillar, queue_id=item_id)
+    run_pipeline_subprocess(mode=mode, topic=topic, pillar=pillar, queue_id=item_id, content_format=content_format)
     return jsonify({"ok": True, "item": target_item})
 
 @app.route("/api/scheduler/toggle", methods=["POST"])
@@ -757,6 +781,34 @@ def api_publish():
     except Exception as e:
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [PUBLISH ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+@app.route("/api/publish/story", methods=["POST"])
+def api_publish_story():
+    """
+    Directly generates, renders, and publishes an Instagram Story (1080x1920, 9:16) on demand.
+    """
+    data = request.get_json(silent=True) or {}
+    topic = data.get("topic") or "Zero-Touch Production Agent Architecture"
+    pillar = data.get("pillar", "AI Tool Breakdown")
+    dry_run = data.get("mode", "dry-run") == "dry-run"
+
+    try:
+        from orchestrator import run_story_pipeline
+        manifest = run_story_pipeline(dry_run=dry_run, custom_topic=topic, custom_pillar=pillar)
+        return jsonify({
+            "ok": True,
+            "format": "story",
+            "media_id": manifest.get("media_id"),
+            "mode": "dry-run" if dry_run else "live",
+            "topic": manifest.get("story_data", {}).get("topic"),
+            "headline": manifest.get("story_data", {}).get("headline"),
+            "image_file": manifest.get("image_file"),
+            "public_url": manifest.get("public_url")
+        })
+    except Exception as e:
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [STORY PUBLISH ERROR] {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
 
 @app.route("/api/caption/generate", methods=["POST"])
