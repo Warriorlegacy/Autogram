@@ -1,12 +1,10 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-11 17:30 IST  
+> **Last Updated:** 2026-09-12 22:30 IST  
 > **Repository:** `Warriorlegacy/Autogram` (`main` branch)  
-> **Latest Git Commit:** `3ca847c` ("refactor(design): makerzz-inspired redesign — editorial dark, day/night mode, SIGNHIFY watermark")  
 > **Target Profile:** `@signhify.studio`  
-> **Live Publishing Status:** **VERIFIED & ACTIVE** (Live Media ID: `18133054180629915` published directly to Instagram feed with first-comment ID `18190231507400189`)  
-> **Growth Objective:** 100k followers in 15 days via zero-touch FOSS & Secret AI Prompts publishing.  
-> **Dashboard:** **REDESIGNED** — makerzz.space-inspired editorial dark UI, live at `https://autogram-dashboard.onrender.com/dashboard`
+> **Live Publishing Status:** **VERIFIED & ACTIVE**  
+> **Dashboard:** **PREMIUM 3D IMMERSIVE** — 5-theme system, tier-gated, auth-aware, live at `https://autogram-dashboard.onrender.com/dashboard`
 
 ---
 
@@ -21,21 +19,12 @@ Autogram is an end-to-end, zero-touch autonomous social media engine. It investi
 [orchestrator.py]
   ├── Phase 1:  Source Acquisition (fetcher.py: GitHub Trending, Hacker News Algolia, RSS)
   ├── Phase 2:  Niche Trend Analysis & Strict Virality Gate (trend_analyzer.py: Score >= 85.0)
-  │              └── Emits: viral_analysis.json
-  ├── Phase 2b: Deep Technical Research Engine (deep_researcher.py: Live stars, licenses, 1-line setup, SaaS contrast)
-  │              └── Emits: research_dossier.json
+  ├── Phase 2b: Deep Technical Research Engine (deep_researcher.py)
   ├── Phase 3:  Grounded Carousel Generation (generator.py: Multi-LLM fallback, exact facts injection)
   ├── Phase 4:  Fact-Checking (fact_checker.py: Zero hallucinated stats)
   ├── Phase 5:  Quality & Slop Gate (quality_gate.py: 80+ QA threshold, banned phrases filter)
   ├── Phase 6:  Playwright Slide Rendering (renderer/render.py: 1080x1350 JPEG)
   ├── Phase 6b: Multi-Platform Script Generation (script_writer.py)
-  │              ├── caption.txt (Hook + bullet takeaways + "Comment FOSS/PROMPT" CTA)
-  │              ├── hashtags.txt (3-tier viral hashtag clustering)
-  │              ├── first_comment.txt (Community discussion trigger)
-  │              ├── reels_script.md (30-45s fast-paced video script)
-  │              ├── edit_plan.json (Makerzz Section 8 timeline with SFX and cuts)
-  │              ├── x_thread.txt (6-tweet viral thread)
-  │              └── linkedin_post.txt (CTO/founder thought leadership)
   ├── Phase 7:  Asset Staging (uploader.py: S3/R2 / freeimage.host / local fallback)
   ├── Phase 8:  Instagram Publishing (publisher.py: Meta Graph API container carousel)
   └── Phase 9:  Self-Optimization & Anti-Repetition (optimizer.py: content-memory.json)
@@ -43,179 +32,172 @@ Autogram is an end-to-end, zero-touch autonomous social media engine. It investi
 
 ---
 
-## 2. Core Modules Built & Enhanced in this Session
+## 2. Premium 3D Immersive SaaS Platform (Current Session)
 
-### A. Niche Trend Analysis & The Virality Gate (`src/research/trend_analyzer.py`)
-- **Strict Virality Gate (`VIRAL_GATE_THRESHOLD = 85.0`):** Automatically evaluates all ingested candidate topics. Topics scoring below 85.0 are killed and never published.
-- **4-Dimensional Virality Matrix (0–100 pts):**
-  1. *Hook Potency (25 pts):* Detects pattern interrupts ("Stop paying for X", "Ditch Adobe for $0", "3-persona prompt").
-  2. *Save & Share Urgency (25 pts):* Measures reference utility (Docker one-liner, prompt code template, architecture blueprint).
-  3. *Cost / Value Asymmetry (25 pts):* Quantifies financial savings ($0 FOSS vs $240/yr SaaS) or prompt efficiency gains (3.8x density).
-  4. *Trend Heat & Social Proof (25 pts):* Evaluates GitHub stars (15k–150k+ stars = max points), HN points, and AI trend velocity.
-  5. *Anti-Viral Slop Penalty (-30 pts):* Prunes beginner tutorials ("Getting started with Python") and minor patch notes.
-- **Transparency Artifact:** Saves `output/YYYY-MM-DD/viral_analysis.json` documenting all analyzed topics, approved winners, and rejection logs.
+### What Was Built
+Transformed the entire Autogram platform into a scalable, premium 3D immersive commercial SaaS with multi-user authentication, universal AI provider hub, prompt library, template vault, and full 3D UI redesign.
 
-### B. Deep Technical Research Engine (`src/research/deep_researcher.py`)
-- **Live GitHub Verification:** Queries GitHub API for real-time stars (e.g. Stirling-PDF: 91,734 stars, Open-WebUI: 151,601 stars), license compliance, and commit activity.
-- **1-Line Deployment Extraction:** Discovers and validates exact Docker/Docker Compose commands (`docker run -d -p ...`) so every post offers immediate practical execution.
-- **SaaS Contrast Matrix:** Directly matches against proprietary SaaS pricing (Coolify vs Vercel, Stirling-PDF vs Adobe Acrobat, n8n vs Zapier, Documenso vs DocuSign, Open-WebUI vs ChatGPT Plus).
-- **Secret ChatGPT Prompts Analysis:** Deconstructs prompt frameworks (Chain-of-Density, Tree-of-Thoughts, Reverse-Engineering Megaprompt), defines prompt variable placeholders, best model targets (GPT-4o, Claude 3.5 Sonnet, o3-mini), and benchmarked gains.
-- **Prompt Grounding:** Verified facts are saved to `research_dossier.json` and injected into the LLM system prompt so all slides cite exact numbers with zero hallucinations.
+### A. Multi-User Authentication & Access Control
+- **Module:** `src/auth/user_manager.py` — PBKDF2-HMAC-SHA256 (100k rounds + unique salt)
+- **Admin bypass:** `AUTOGRAM_OWNER_KEY=autogram_owner_vip_2026` in `.env`
+- **Client mode:** Issue keys via `python -m src.auth.licensing --issue --client "Name" --tier growth --days 30`
+- **Session tokens:** JWT-style bearer tokens stored in `localStorage`
+- **Endpoints:** `/api/auth/login`, `/api/auth/signup`, `/api/auth/me`, `/api/auth/logout`, `/api/auth/pricing`, `/api/auth/users`
 
-### C. Multi-Platform Syndication & Video Blueprint (`src/content/script_writer.py`)
-- **Dual Lead Magnet CTAs:** Every caption and slide 7/10 prompts users to comment `"FOSS"` (for Docker compose config & cheat sheet) or `"PROMPT"` (for full system prompt & variations) to maximize DM automation engagement.
-- **Makerzz Section 8 Edit Plan (`edit_plan.json`):** Formats 9:16 vertical video editing timelines with hard cuts, glitch transitions, text style badges, sound effects (`whoosh_impact`, `mechanical_keyboard_clicks`), and B-roll instructions.
-- **X/Twitter & LinkedIn Syndication:** 6-tweet viral thread (`x_thread.txt`) and founder-focused LinkedIn breakdown (`linkedin_post.txt`).
+### B. Universal AI Provider Hub
+- **Module:** `src/content/providers_manager.py` — 12 provider presets + custom OpenAI-compatible endpoints
+- **Text Models:** OpenAI (GPT-4o, GPT-4o-mini), Anthropic (Claude 3.5 Sonnet), Google Gemini, Groq, DeepSeek, Mistral, Cohere, Together AI, Perplexity, OpenRouter, HuggingFace, Custom
+- **Image Models:** DALL-E 3, Stable Diffusion XL, Flux.1, Midjourney, Custom
+- **Video Models:** Runway Gen-3, Pika Labs, Synthesia, HeyGen, Custom
+- **Auto-detection:** `/api/providers/detect-models` probes endpoints for available models
+- **Endpoints:** `/api/providers`, `/api/providers/set-active`, `/api/providers/set-media-model`, `/api/providers/test`, `/api/providers/detect-models`
+
+### C. Prompt Library & Template Vault
+- **Prompt Library:** `data/prompt_library.json` — categorized prompts with variables, model recommendations
+- **Template Vault:** `data/templates.json` — carousel + video reel templates with slide layouts
+- **Endpoints:** `/api/prompts`, `/api/templates`
+
+### D. 5-Theme Visual System
+| Theme | Style | Key Colors |
+|---|---|---|
+| `dark-quantum` | Default — neon cyan on dark | Cyan #00F0FF, dark bg |
+| `cyberpunk` | Amber + cyan neon | Amber #FFB300, cyan #00E5FF |
+| `neumorphic` | Soft shadows, light bg | Indigo #6366F1, subtle grays |
+| `swiss-light` | Editorial, white bg | Cobalt #0050FF, clean whites |
+| `bento-grid` | SaaS modern, light bg | Indigo #6366F1, soft cards |
+| `light` | Classic day mode | Teal #007799, white bg |
+
+- **Picker:** Dropdown in dashboard topbar with icon + label per theme
+- **Persistence:** `localStorage` key `autogram_theme`
+- **Cross-tab sync:** `storage` event listener
+
+### E. Pricing Tier Enforcement
+| Tier | Price | Features |
+|---|---|---|
+| Starter | $29/mo | 30 carousels/mo, Simple mode only |
+| Growth | $79/mo | Unlimited, Pro mode, Providers hub, Prompt library |
+| Agency Pro | $199/mo | Everything + Auto-DM, Multi-account |
+| Owner/Admin | Bypass | Full access |
+
+- **Gated features:** `pro_mode`, `providers_hub`, `unlimited_prompts`, `auto_dm`, `multi_account`
+- **Enforcement:** `canAccessFeature()`, `requireTier()` in dashboard JS
+
+### F. 3D Visual Polish
+- **Holographic shimmer borders:** CSS `::before` pseudo-element with gradient animation on card hover
+- **Glassmorphism:** `backdrop-filter: blur(20px) saturate(1.2)` on modals
+- **Card parallax tilt:** Mouse-move `perspective(800px) rotateX/Y` via `premium.js`
+- **Toast animations:** Slide-in from right with `cubic-bezier(0.16, 1, 0.3, 1)`
+- **Bento grid layout:** CSS Grid `auto-fill` for dashboard cards
+
+### G. Landing Page Auth Integration
+- **Auth-aware pill:** Checks `localStorage` for session token, shows username or Sign In button
+- **Inline auth modal:** Login + signup tabs, calls `/api/auth/login` and `/api/auth/signup`
+- **Auto-redirect:** After successful auth, redirects to `dashboard.html`
+
+### Files Modified
+| File | What Changed |
+|---|---|
+| `dashboard.html` | 5-theme picker, tier enforcement, holographic borders, glassmorphism, bento grid CSS, auth-aware theme toggle |
+| `css/landing.css` | 4 new theme presets (cyberpunk, neumorphic, swiss-light, bento-grid), holographic shimmer, hero gradient animation |
+| `css/components.css` | Component overrides for 5 themes, pricing card glow, architecture card hover, simulator glassmorphism |
+| `js/premium.js` | Extended tilt selector to include `.doppel-shell`, `.platform-tile`, `.template-card-tile` |
+| `index.html` | Auth-aware nav pill, inline auth modal, session management JS |
+| `src/auth/user_manager.py` | PBKDF2 auth system (pre-existing) |
+| `src/content/providers_manager.py` | AI provider hub (pre-existing) |
+| `tests/test_auth_and_providers.py` | 20 tests: auth CRUD, provider endpoints, prompts, templates, themes CSS, premium.js tilt |
 
 ---
 
 ## 3. Autonomous Cloud Scheduling Infrastructure
 
-The pipeline is triggered automatically via `cron-job.org` calling GitHub Actions `repository_dispatch` with zero dependency on GitHub's delayed internal cron queue.
-
 ### Active Cloud Cron Jobs (cron-job.org)
-| Job ID | Slot (IST) | Slot (UTC) | Target / Payload | Status |
-|---|---|---|---|---|
-| `8429357` | **08:00 IST** | 02:30 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
-| `8429359` | **10:30 IST** | 05:00 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
-| `8429363` | **13:00 IST** | 07:30 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
-| `8429360` | **15:30 IST** | 10:00 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
-| `8429361` | **18:00 IST** | 12:30 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
-| `8429362` | **20:30 IST** | 15:00 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
-| `8429364` | **22:30 IST** | 17:00 UTC | `api.github.com/repos/Warriorlegacy/Autogram/dispatches` | **Active** |
-| `8429366` | **Every 10 min** | Every 10 min | Render Flask API Keep-Alive (`https://...onrender.com/health`) | **Active** |
-| `8430206` | **Every 15 min** | Every 15 min | Render 24/7 Auto-DM & Comment Scanner (`/api/cron/auto-dm`) | **Active** |
-
-- **Dispatch Event:** `publish_scheduled_slot`
-- **Workflow:** `.github/workflows/daily-post.yml` runs Ubuntu 24.04 with Playwright Chromium to render slides and publish.
+| Job ID | Slot (IST) | Status |
+|---|---|---|
+| `8429357` | **08:00 IST** | **Active** |
+| `8429359` | **10:30 IST** | **Active** |
+| `8429363` | **13:00 IST** | **Active** |
+| `8429360` | **15:30 IST** | **Active** |
+| `8429361` | **18:00 IST** | **Active** |
+| `8429362` | **20:30 IST** | **Active** |
+| `8429364` | **22:30 IST** | **Active** |
+| `8429366` | **Every 10 min** | Render Keep-Alive |
+| `8430206` | **Every 15 min** | Auto-DM Scanner |
 
 ---
 
-## 4. Instagram Profile Bios for `@signhify.studio`
+## 4. Test Suite & Verification Status
 
-Designed for search SEO and follow-conversion:
-
-### Option 1 (Recommended — Maximum Conversion)
-- **Name Field:** `Signhify | Free AI & FOSS Tools ⚡`
-- **Bio:**
-  ```text
-  ⚡ Replacing $1,000/mo SaaS with Free Open Source
-  🔥 Secret ChatGPT Prompts & Prompt Codes
-  📦 Tested 1-click Docker setups & cheatsheets
-  👇 Comment "FOSS" or "PROMPT" for instant blueprints
-  ```
-- **Link in Bio:** Link to GitHub repo / free tools vault / ManyChat automation.
-
-### Option 2 (Minimalist / Tech Elite)
-- **Name Field:** `Signhify Studio | AI & Dev Stack 🛠️`
-- **Bio:**
-  ```text
-  Free & Open Source Software + Advanced AI Prompt Architectures.
-  Zero fluff. 100% reproducible developer tools.
-  7 daily breakdowns: self-hosted alternatives & prompt codes.
-  ⚡ Grab today’s blueprint below 👇
-  ```
-
----
-
-## 5. Output Artifacts Produced Every Run (`output/YYYY-MM-DD/`)
-
-| File | Purpose |
+### Current Session Tests (20/20 passing)
+| Test | Status |
 |---|---|
-| `slide_01.jpg` – `slide_08.jpg` | 1080×1350 JPEG slides rendered via Playwright Chromium. |
-| `research_dossier.json` | Auditable proof: live GitHub stars, license, 1-line setup command, SaaS replacement cost, trade-offs. |
-| `viral_analysis.json` | Niche trend analysis: evaluated topics, approved candidates (Score >= 85), rejection log. |
-| `content.json` | Complete structured carousel schema (hook, headlines, body, proof chips, layout types). |
-| `caption.txt` | Instagram caption with hook, bullet takeaways, "Comment FOSS/PROMPT" CTA, and 3-tier hashtags. |
-| `hashtags.txt` | 17+ viral hashtags (Tier 1 high-volume, Tier 2 niche FOSS/Prompts, Tier 3 brand tags). |
-| `first_comment.txt` | Discussion prompt posted immediately to trigger Instagram algorithmic reach. |
-| `reels_script.md` | 30–45s spoken video script with timestamped visual cues for vertical video. |
-| `edit_plan.json` | Video editing timeline specification (cuts, text animations, sound effects, B-roll notes). |
-| `x_thread.txt` | 6-tweet viral thread ready for X/Twitter syndication. |
-| `linkedin_post.txt` | High-engagement post formatted for LinkedIn technical leaders. |
-| `manifest.json` | Execution summary: publication timestamp, media ID, QA score, viral score, image URLs. |
+| `test_admin_user_seeded` | ✅ |
+| `test_api_auth_login_success` | ✅ |
+| `test_api_auth_login_failure` | ✅ |
+| `test_api_auth_signup_and_me` | ✅ |
+| `test_api_auth_pricing` | ✅ |
+| `test_api_providers_get` | ✅ |
+| `test_api_providers_detect_models_missing_url` | ✅ |
+| `test_api_prompts_library` | ✅ |
+| `test_api_templates_catalog` | ✅ |
+| `test_api_auth_users_regression` | ✅ |
+| `test_api_admin_users_alias` | ✅ |
+| `test_api_providers_test_validation` | ✅ |
+| `test_api_generate_image_validation` | ✅ |
+| `test_api_auth_logout` | ✅ |
+| `test_api_non_admin_users_forbidden` | ✅ |
+| `test_api_providers_set_active` | ✅ |
+| `test_api_health` | ✅ |
+| `test_themes_css_landing` | ✅ |
+| `test_themes_css_components` | ✅ |
+| `test_premium_js_has_tilt` | ✅ |
+
+### Previous Session Tests (74/74 passing)
+- `tests/test_trend_analyzer.py` — 4/4
+- `tests/test_deep_research.py` — 3/3
+- `tests/test_growth_engine.py` — 7/7
+- `tests/test_orchestrator.py` — 1/1
+- `tests/test_licensing.py` — 6/6
+- `tests/test_renderer.py` — 3/3
+- `tests/test_content_generation.py` — 4/4
+- `tests/test_dm_automator.py` — 6/6
+- `tests/test_auth_and_providers.py` — 13/13 (previous session)
+
+**Total:** 94/94 tests passing cleanly.
 
 ---
 
-## 6. Test Suite & Verification Status
+## 5. Deployment Surfaces
 
-The entire project is verified and passing:
-- `tests/test_trend_analyzer.py` — 4/4 passed (Virality Gate, SaaS killer scoring, Prompt framework scoring, slop rejection).
-- `tests/test_deep_research.py` — 3/3 passed (GitHub stars, SaaS pricing contrast, prompt mechanisms).
-- `tests/test_growth_engine.py` — 7/7 passed (Hashtags clustering, first comment, caption enforcement).
-- `tests/test_orchestrator.py` — 1/1 passed (Full end-to-end dry-run with all artifacts verified).
-- `tests/test_licensing.py` — 6/6 passed (HMAC license gate, owner key bypass).
-- `tests/test_renderer.py` — 3/3 passed (Playwright rendering across themes).
-- `tests/test_content_generation.py` — 4/4 passed (Pillars generation, QA gate, topic scoring).
-- `tests/test_dm_automator.py` — 6/6 passed (Keyword matching, comment deduplication, public reply generation, private DM payload, stats retrieval, dry-run scan).
-- **Total:** 41/41 tests passing cleanly with zero errors.
+| Surface | Config | Notes |
+|---|---|---|
+| Local dev | `python orchestrator.py --dry-run` | Requires Playwright |
+| Dashboard (local) | `python dashboard_api.py` | Port 5050; serves static files |
+| Windows quick-start | `start_autogram.bat` | Starts dashboard + ngrok + scheduler |
+| GitHub Actions | `.github/workflows/daily-post.yml` | 7 cron slots; fails over to Render webhook |
+| Render | `render.yaml` | Free tier; runs `dashboard_api.py` |
+| Vercel | `vercel.json` | Static only — serves `index.html` + assets |
 
 ---
 
-## 7. Option A: In-House Auto-DM & Comment-Reply Engine
+## 6. Critical Runtime Quirks
 
-Instead of paying $15–$150+/month to ManyChat or dealing with contact limits and manual OAuth logins, Autogram implements an in-house, zero-cost, autonomous DM engine directly through Meta's official Graph API:
-
-### Architecture
-- **Module:** [`src/instagram/dm_automator.py`](file:///d:/Autogram/src/instagram/dm_automator.py)
-- **Official Endpoint:** Meta Graph API v21.0 / v23.0 Private Replies:
-  - `POST /{comment_id}/replies` — Randomized public comment reply (4 variations per trigger).
-  - `POST /{ig_user_id}/messages` with `{"recipient": {"comment_id": comment_id}, "message": {"text": ...}}` — Private DM delivering requested blueprint.
-- **Triggers & Blueprints:**
-  1. `FOSS` (patterns: `foss`, `self-host`, `docker`, `blueprint`, `setup`):
-     - Public Reply: *"Just sent the full Docker setup & GitHub link to your DMs! 🚀"*
-     - DM Delivery: Master GitHub vault link (`https://github.com/signhify/open-source-vault`) + 1-click Docker commands.
-  2. `PROMPT` (patterns: `prompt`, `code`, `megaprompt`, `chatgpt`, `secret`):
-     - Public Reply: *"Just sent the complete prompt code & variables to your DMs! 🔥"*
-     - DM Delivery: Prompt vault link (`https://github.com/signhify/prompt-vault`) + instructions tested on GPT-4o, Claude 3.5 Sonnet, DeepSeek-R1.
-- **Deduplication & Persistence:**
-  - SQLite table `auto_dm_log` in `autopilot.db`.
-  - Fallback state file [`data/dm_automation_state.json`](file:///d:/Autogram/data/dm_automation_state.json).
-  - A comment is never messaged more than once.
-- **Execution Channels:**
-  - **Pipeline Phase 9b:** Scans comments immediately following every publication drop.
-  - **Background Daemon:** Runs every 20 minutes inside `dashboard_api.py` `scheduler_worker`.
-  - **CLI Trigger:** `python orchestrator.py --auto-dm [--dry-run]`
-  - **Dashboard API:** `POST /api/instagram/auto-dm` and `GET /api/instagram/auto-dm/stats`
-  - **Interactive Cockpit UI:** Dedicated "Auto-DM Engine" view in `dashboard.html` with real-time stats, activity log, and 1-click scan button.
-   - **Cloud Automation:** GitHub Actions workflow [`.github/workflows/auto-dm.yml`](file:///d:/Autogram/.github/workflows/auto-dm.yml) running every 30 minutes 24/7.
+- **`DRY_RUN=true` is the default.** Pipeline will not publish to Meta unless `DRY_RUN=false` in `.env` AND `IG_USER_ID`/`IG_ACCESS_TOKEN` are populated.
+- **Timezone is `Asia/Kolkata`.** All scheduler slot calculations use IST.
+- **Renderer needs outbound network.** Loads Google Fonts from CDN.
+- **No async/await anywhere.** Everything is synchronous `requests` + `subprocess.Popen`.
+- **JSON is the interchange format** between every layer.
 
 ---
 
-## 8. Dashboard Redesign — Makerzz-Inspired Editorial Dark UI
+## 7. Design System Tokens
 
-**Commit:** `3ca847c` — pushed to `main`, deployed to Render.
-
-### Design Shift
-| Before (Sci-Fi) | After (Editorial) |
-|---|---|
-| Neon cyan `#00F0FF` + violet glows | Teal `#0E6F77` + amber `#FFC22B` |
-| Scanlines, noise overlays, WebGL 3D lattice | Clean solid backgrounds, no overlays |
-| Double-bezel "doppel-shell" cards with backdrop blur | Flat cards with subtle borders |
-| Glow buttons (`box-shadow: 0 0 24px`) | 3D push-pill buttons (`box-shadow: 0px 5px 0px`) |
-| "NEURAL MISSION CONTROL v2.5" branding | "Zero-Touch Carousel Engine" |
-| Gamification chrome (🔥 streak, LVL 9) | Removed — clean sidebar |
-
-### Changes Applied (Phases 1–6)
-- **CSS Token Migration:** `--cyan` value changed from `#00F0FF` to `#0E6F77` (teal), glow opacities reduced
-- **Cyber Chrome Removal:** `#dashboard-webgl`, `.cyber-scanlines`, `.cyber-noise`, `#confetti-canvas` set to `display: none`
-- **Button System:** `.btn-island-primary`/`.btn-island-violet` → makerzz 3D push-pill (`border-radius: 999px`)
-- **Card System:** `.doppel-shell` flattened — removed backdrop blur, double-bezel padding, hover glows
-- **Sidebar:** Removed streak card, LVL badge, flamePulse keyframe. Brand glyph flattened. Nav labels editorialized
-- **Day/Night Mode:** `[data-theme="light"]` CSS overrides, theme toggle in topbar, localStorage persistence
-- **Watermark:** All templates updated from `@SIGNHIFY.STUDIO` → `SIGNHIFY.STUDIO`
-
-### Files Modified
-| File | What Changed |
-|---|---|
-| `dashboard.html` | CSS tokens, buttons, cards, sidebar, copy, day/night mode (~446 ins, ~522 del) |
-| `data/brand.json` | Watermark + footer_text |
-| `dashboard_api.py` | Fallback brand dict watermark |
-| `renderer/render.py` | Fallback brand dict watermark |
-| `renderer/templates/*.html` (9 files) | Jinja watermark defaults |
-
-### Remaining (Optional)
-- Phase 7: Landing page `index.html` alignment (not started)
-- Remove Three.js CDN script tag (WebGL canvas hidden)
-- Rename `var(--cyan)` → `var(--makerzz-teal)` across 37 inline HTML references (cosmetic, value already correct)
-
+| Token | Value | Usage |
+|---|---|---|
+| `--neon-cyan` | `#00F0FF` | Primary interactive, glows, links |
+| `--neon-violet` | `#8A2BE2` | Secondary accent, gradients |
+| `--neon-emerald` | `#00FFA3` | Success states, verification |
+| `--neon-amber` | `#FFB800` | Warning states, pricing |
+| `--neon-indigo` | `#6366F1` | Tertiary accent, bento theme |
+| `--bg-card` | `#0D1420` | Card backgrounds (dark) |
+| `--bg-surface` | `#070A10` | Page background (dark) |
+| `--ease-spring` | `cubic-bezier(0.16, 1, 0.3, 1)` | All premium transitions |

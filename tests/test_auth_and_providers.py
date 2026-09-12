@@ -101,3 +101,100 @@ def test_api_templates_catalog(client):
     assert "carousel_templates" in data
     assert "video_reel_templates" in data
     assert len(data["carousel_templates"]) >= 5
+
+def _admin_token(client):
+    res = client.post("/api/auth/login", json={
+        "username": "signhify.studio",
+        "password": "Piyushrajput#1"
+    })
+    assert res.status_code == 200
+    return res.get_json()["token"]
+
+def test_api_auth_users_regression(client):
+    """Regression: /api/auth/users must not crash (list_all_users bug)."""
+    token = _admin_token(client)
+    res = client.get("/api/auth/users", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["ok"] is True
+    assert any(u["username"] == "signhify.studio" for u in data["users"])
+
+def test_api_admin_users_alias(client):
+    """/api/admin/users alias: 403 anon, 200 for admin."""
+    anon = client.get("/api/admin/users")
+    assert anon.status_code == 403
+    token = _admin_token(client)
+    res = client.get("/api/admin/users", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 200
+    assert res.get_json()["ok"] is True
+
+def test_api_providers_test_validation(client):
+    res = client.post("/api/providers/test", json={})
+    assert res.status_code == 400
+    res2 = client.post("/api/providers/test", json={"base_url": "https://api.openai.com/v1"})
+    assert res2.status_code == 400  # model still required
+
+def test_api_generate_image_validation(client):
+    res = client.post("/api/generate/image", json={})
+    assert res.status_code == 400
+    assert res.get_json()["ok"] is False
+
+def test_api_auth_logout(client):
+    """Logout clears session token."""
+    token = _admin_token(client)
+    res = client.post("/api/auth/logout", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["ok"] is True
+
+def test_api_non_admin_users_forbidden(client):
+    """Non-admin users cannot list all users."""
+    # Create a non-admin user
+    unique_user = f"nonadmin_{hash(client) % 100000}"
+    signup = client.post("/api/auth/signup", json={
+        "username": unique_user,
+        "password": "testpass123!",
+        "tier": "starter"
+    })
+    token = signup.get_json()["token"]
+    res = client.get("/api/auth/users", headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 403
+
+def test_api_providers_set_active(client):
+    """Setting active provider works (requires auth)."""
+    token = _admin_token(client)
+    res = client.post("/api/providers/set-active", json={
+        "provider_id": "openai",
+        "model_id": "gpt-4o"
+    }, headers={"Authorization": f"Bearer {token}"})
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["ok"] is True
+
+def test_api_health(client):
+    """Health endpoint returns status."""
+    res = client.get("/api/health")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["status"] in ("ok", "healthy")
+
+def test_themes_css_landing():
+    """Verify all 5 theme presets are defined in landing.css."""
+    import pathlib
+    css = pathlib.Path("css/landing.css").read_text(encoding="utf-8")
+    for theme in ["cyberpunk", "neumorphic", "swiss-light", "bento-grid"]:
+        assert f'data-theme="{theme}"' in css, f"Missing theme: {theme}"
+
+def test_themes_css_components():
+    """Verify component overrides exist for all themes."""
+    import pathlib
+    css = pathlib.Path("css/components.css").read_text(encoding="utf-8")
+    for theme in ["cyberpunk", "neumorphic", "swiss-light", "bento-grid"]:
+        assert f'[data-theme="{theme}"]' in css, f"Missing component overrides for: {theme}"
+
+def test_premium_js_has_tilt():
+    """Verify premium.js includes dashboard cards in tilt selector."""
+    import pathlib
+    js = pathlib.Path("js/premium.js").read_text(encoding="utf-8")
+    assert "doppel-shell" in js
+    assert "platform-tile" in js

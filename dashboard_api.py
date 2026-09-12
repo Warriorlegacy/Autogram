@@ -8,6 +8,7 @@ scheduling, direct publishing, AI content generation, and token management.
 import json
 import os
 import re
+import requests
 import subprocess
 import sys
 import threading
@@ -1681,11 +1682,12 @@ def api_auth_pricing():
     return jsonify({"ok": True, "tiers": TIERS})
 
 @app.route("/api/auth/users", methods=["GET"])
+@app.route("/api/admin/users", methods=["GET"])
 def api_auth_users():
     cur = get_current_user_from_request()
     if not cur or cur.get("role") != "admin":
         return jsonify({"ok": False, "error": "Admin access required."}), 403
-    users = user_manager.list_all_users()
+    users = user_manager.list_users()
     return jsonify({"ok": True, "users": users})
 
 @app.route("/api/auth/users/<int:user_id>/tier", methods=["POST"])
@@ -1771,6 +1773,66 @@ def api_set_media_model():
     else:
         providers_manager.set_active_image_model(provider_id, model_id)
     return jsonify({"ok": True, "media_type": media_type, "provider_id": provider_id, "model_id": model_id})
+
+@app.route("/api/providers/test", methods=["POST"])
+def api_test_provider():
+    """Send a tiny generation probe to any OpenAI-compatible endpoint."""
+    data = request.get_json(silent=True) or {}
+    base_url = (data.get("base_url") or "").strip().rstrip("/")
+    api_key = (data.get("api_key") or "").strip()
+    model = (data.get("model") or "").strip()
+    prompt = (data.get("prompt") or "Reply with the word OK.").strip()[:500]
+    if not base_url or not model:
+        return jsonify({"ok": False, "error": "base_url and model are required."}), 400
+    if not base_url.startswith("http"):
+        base_url = "https://" + base_url
+    headers = {"Content-Type": "application/json", "User-Agent": "Autogram/2.5 AI Engine"}
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+    if isinstance(data.get("headers"), dict):
+        headers.update(data["headers"])
+    try:
+        resp = requests.post(f"{base_url}/chat/completions", headers=headers, json={
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 16,
+            "temperature": 0
+        }, timeout=25)
+        if resp.status_code != 200:
+            return jsonify({"ok": False, "error": f"Provider returned HTTP {resp.status_code}: {resp.text[:300]}"})
+        try:
+            text = resp.json()["choices"][0]["message"]["content"]
+        except Exception:
+            text = resp.text[:300]
+        return jsonify({"ok": True, "model": model, "reply": (text or "")[:500]})
+    except Exception as e:
+        return jsonify({"ok": False, "error": f"Generation test failed: {e}"})
+
+@app.route("/api/generate/image", methods=["POST"])
+def api_generate_image():
+    """Generate a visual asset via the configured image engine (free-first cascade)."""
+    data = request.get_json(silent=True) or {}
+    prompt = (data.get("prompt") or "").strip()
+    if not prompt:
+        return jsonify({"ok": False, "error": "prompt is required."}), 400
+    try:
+        width = max(256, min(2048, int(data.get("width", 1080))))
+        height = max(256, min(2048, int(data.get("height", 1080))))
+    except (TypeError, ValueError):
+        width, height = 1080, 1080
+    try:
+        from src.content.image_generator import image_generator
+        path = image_generator.generate_image(
+            prompt,
+            width=width,
+            height=height,
+            provider=data.get("provider"),
+            style_preset=data.get("style_preset"),
+        )
+        rel = path.relative_to(OUTPUT_DIR).as_posix()
+        return jsonify({"ok": True, "filename": path.name, "url": f"/output/{rel}"})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)[:300]}), 502
 
 # ─── Prompt Library & Templates ───────────────────────────────────────────────
 

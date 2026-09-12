@@ -47,10 +47,10 @@
       --bg-surface-hover:#161D2F;
       
       /* Primary Accent — Teal (makerzz primary interactive) */
-      --cyan:           #0E6F77;
-      --cyan-glow:      rgba(14, 111, 119, 0.35);
-      --cyan-dim:       rgba(14, 111, 119, 0.12);
-      --cyan-hairline:  rgba(14, 111, 119, 0.30);
+      --neon-cyan:           #0E6F77;
+      --neon-cyan-glow:      rgba(14, 111, 119, 0.35);
+      --neon-cyan-dim:       rgba(14, 111, 119, 0.12);
+      --neon-cyan-hairline:  rgba(14, 111, 119, 0.30);
 
       /* Secondary Accents */
       --violet:         #8B5CF6;
@@ -119,7 +119,7 @@
     }
     [data-theme="light"] .theme-toggle-btn:hover {
       background: rgba(16, 34, 42, 0.09);
-      border-color: var(--cyan);
+      border-color: var(--neon-cyan);
     }
     [data-theme="light"] .page-title,
     [data-theme="light"] .brand-title {
@@ -140,7 +140,7 @@
     [data-theme="light"] .nav-item:hover,
     [data-theme="light"] .nav-item.active {
       background: rgba(14, 111, 119, 0.08);
-      color: var(--cyan);
+      color: var(--neon-cyan);
     }
     [data-theme="light"] .doppel-shell {
       background: #FFFFFF;
@@ -181,6 +181,57 @@
     [data-theme="light"] ::-webkit-scrollbar-thumb {
       background: rgba(16, 34, 42, 0.15);
     }
+
+    /* ── Cyberpunk Theme ────────────────────────────────────────────── */
+    [data-theme="cyberpunk"] { --bg-void: #0A0A0F; --bg-base: #0D0D14; --bg-surface: #0D0D14; --bg-surface-elev: #141420; --neon-cyan: #00E5FF; --violet: #FFB300; --emerald: #00E676; --amber: #FFB300; --text-main: #E0F7FA; --text-secondary: #78909C; --text-muted: #546E7A; --border-outer: rgba(0, 229, 255, 0.15); --border-inner: rgba(0, 229, 255, 0.08); }
+    [data-theme="cyberpunk"] .topbar { background: rgba(10, 10, 15, 0.95); border-bottom-color: rgba(0, 229, 255, 0.12); }
+    [data-theme="cyberpunk"] .sidebar { background: rgba(10, 10, 15, 0.95); border-right-color: rgba(0, 229, 255, 0.1); }
+    [data-theme="cyberpunk"] .sidebar-footer { background: rgba(10, 10, 15, 0.5); border-top-color: rgba(0, 229, 255, 0.08); }
+    [data-theme="cyberpunk"] .nav-item:hover, [data-theme="cyberpunk"] .nav-item.active { background: rgba(0, 229, 255, 0.08); color: var(--neon-cyan); }
+    [data-theme="cyberpunk"] .doppel-shell { background: rgba(10, 10, 15, 0.85); border-color: rgba(0, 229, 255, 0.12); }
+    [data-theme="cyberpunk"] .doppel-shell:hover { border-color: rgba(255, 179, 0, 0.35); box-shadow: 0 0 20px rgba(0, 229, 255, 0.08); }
+    [data-theme="cyberpunk"] .control-input, [data-theme="cyberpunk"] input[type="text"], [data-theme="cyberpunk"] input[type="number"], [data-theme="cyberpunk"] select, [data-theme="cyberpunk"] textarea { background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 229, 255, 0.2); color: var(--text-main); }
+    [data-theme="cyberpunk"] .platform-tile, [data-theme="cyberpunk"] .slot-card, [data-theme="cyberpunk"] .modal-box { background: rgba(10, 10, 15, 0.95); border-color: rgba(0, 229, 255, 0.2); }
+    [data-theme="cyberpunk"] .telemetry-chip, [data-theme="cyberpunk"] .theme-toggle-btn { background: rgba(0, 229, 255, 0.06); border-color: rgba(0, 229, 255, 0.15); color: var(--neon-cyan); }
+
+    /* ── Neumorphic Theme ───────────────────────────────────────────── */
+    [data-theme="neumorphic"] { --bg-void: #E8ECF1; --bg-base: #EDF0F5; --bg-surface: #EDF0F5; --bg-surface-elev: #F2F5FA; --neon-cyan: #6366F1; --violet: #8B5CF6; --emerald: #10B981; --amber: #F59E0B; --text-main: #1A1D29; --text-secondary: #6B7280; --text-muted: #9CA3AF; --border-outer: rgba(0, 0, 0, 0.06); --border-inner: rgba(0, 0, 0, 0.03); }
+    [data-theme="neumorphic"] .topbar { background: rgba(232, 236, 241, 0.95); border-bottom-color: rgba(0, 0, 0, 0.06); }
+    [data-theme="neumorphic"] .sidebar { background: rgba(232, 236, 241, 0.95); border-right-color: rgba(0, 0, 0, 0.06); box-shadow: 8px 0 24px rgba(163, 177, 198, 0.4); }
+    [data-theme="neumorphic"] .sidebar-footer { background: rgba(232, 236, 241, 0.5); border-top-color: rgba(0, 0, 0, 0.04); }
+    [data-theme="neumorphic"] .nav-item:hover, [data-theme="neumorphic"] .nav-item.active { background: rgba(99, 102, 241, 0.08); color: var(--neon-cyan); }
+    [data-theme="neumorphic"] .doppel-shell { background: #EDF0F5; border-color: rgba(0, 0, 0, 0.05); box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.5), -6px -6px 12px rgba(255, 255, 255, 0.8); }
+    [data-theme="neumorphic"] .doppel-shell:hover { box-shadow: 8px 8px 16px rgba(163, 177, 198, 0.6), -8px -8px 16px rgba(255, 255, 255, 0.9); }
+    [data-theme="neumorphic"] .control-input, [data-theme="neumorphic"] input[type="text"], [data-theme="neumorphic"] input[type="number"], [data-theme="neumorphic"] select, [data-theme="neumorphic"] textarea { background: #E8ECF1; border-color: rgba(0, 0, 0, 0.06); color: var(--text-main); box-shadow: inset 2px 2px 4px rgba(163, 177, 198, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.8); }
+    [data-theme="neumorphic"] .platform-tile, [data-theme="neumorphic"] .slot-card, [data-theme="neumorphic"] .modal-box { background: #EDF0F5; border-color: rgba(0, 0, 0, 0.05); box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.5), -6px -6px 12px rgba(255, 255, 255, 0.8); }
+    [data-theme="neumorphic"] .telemetry-chip, [data-theme="neumorphic"] .theme-toggle-btn { background: #EDF0F5; border-color: rgba(0, 0, 0, 0.06); color: var(--text-main); box-shadow: 3px 3px 6px rgba(163, 177, 198, 0.5), -3px -3px 6px rgba(255, 255, 255, 0.8); }
+    [data-theme="neumorphic"] ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.12); }
+
+    /* ── Swiss Light Theme ──────────────────────────────────────────── */
+    [data-theme="swiss-light"] { --bg-void: #FAFAFA; --bg-base: #F1F5F9; --bg-surface: #FFFFFF; --bg-surface-elev: #F8FAFC; --neon-cyan: #0050FF; --violet: #1E293B; --emerald: #059669; --amber: #D97706; --text-main: #0F172A; --text-secondary: #475569; --text-muted: #94A3B8; --border-outer: rgba(0, 0, 0, 0.08); --border-inner: rgba(0, 0, 0, 0.04); }
+    [data-theme="swiss-light"] .topbar { background: rgba(255, 255, 255, 0.95); border-bottom-color: rgba(0, 0, 0, 0.06); }
+    [data-theme="swiss-light"] .sidebar { background: rgba(255, 255, 255, 0.98); border-right-color: rgba(0, 0, 0, 0.06); }
+    [data-theme="swiss-light"] .sidebar-footer { background: rgba(250, 250, 250, 0.5); border-top-color: rgba(0, 0, 0, 0.06); }
+    [data-theme="swiss-light"] .nav-item:hover, [data-theme="swiss-light"] .nav-item.active { background: rgba(0, 80, 255, 0.06); color: var(--neon-cyan); }
+    [data-theme="swiss-light"] .doppel-shell { background: #FFF; border-color: rgba(0, 0, 0, 0.08); }
+    [data-theme="swiss-light"] .doppel-shell:hover { border-color: rgba(0, 80, 255, 0.25); }
+    [data-theme="swiss-light"] .control-input, [data-theme="swiss-light"] input[type="text"], [data-theme="swiss-light"] input[type="number"], [data-theme="swiss-light"] select, [data-theme="swiss-light"] textarea { background: #FAFAFA; border-color: rgba(0, 0, 0, 0.1); color: var(--text-main); }
+    [data-theme="swiss-light"] .platform-tile, [data-theme="swiss-light"] .slot-card, [data-theme="swiss-light"] .modal-box { background: #FFF; border-color: rgba(0, 0, 0, 0.08); }
+    [data-theme="swiss-light"] .telemetry-chip, [data-theme="swiss-light"] .theme-toggle-btn { background: rgba(0, 0, 0, 0.03); border-color: rgba(0, 0, 0, 0.1); color: var(--text-main); }
+    [data-theme="swiss-light"] ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.12); }
+
+    /* ── Bento Grid Theme ───────────────────────────────────────────── */
+    [data-theme="bento-grid"] { --bg-void: #F5F3FF; --bg-base: #EDE9FE; --bg-surface: #FFFFFF; --bg-surface-elev: #F5F3FF; --neon-cyan: #6366F1; --violet: #8B5CF6; --emerald: #10B981; --amber: #F59E0B; --text-main: #1E1B4B; --text-secondary: #6366F1; --text-muted: #A5B4FC; --border-outer: rgba(99, 102, 241, 0.12); --border-inner: rgba(99, 102, 241, 0.06); }
+    [data-theme="bento-grid"] .topbar { background: rgba(255, 255, 255, 0.92); border-bottom-color: rgba(99, 102, 241, 0.1); }
+    [data-theme="bento-grid"] .sidebar { background: rgba(255, 255, 255, 0.95); border-right-color: rgba(99, 102, 241, 0.1); }
+    [data-theme="bento-grid"] .sidebar-footer { background: rgba(245, 243, 255, 0.5); border-top-color: rgba(99, 102, 241, 0.08); }
+    [data-theme="bento-grid"] .nav-item:hover, [data-theme="bento-grid"] .nav-item.active { background: rgba(99, 102, 241, 0.08); color: var(--neon-cyan); }
+    [data-theme="bento-grid"] .doppel-shell { background: #FFF; border-color: rgba(99, 102, 241, 0.1); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06); }
+    [data-theme="bento-grid"] .doppel-shell:hover { border-color: rgba(99, 102, 241, 0.3); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.1); }
+    [data-theme="bento-grid"] .control-input, [data-theme="bento-grid"] input[type="text"], [data-theme="bento-grid"] input[type="number"], [data-theme="bento-grid"] select, [data-theme="bento-grid"] textarea { background: #F5F3FF; border-color: rgba(99, 102, 241, 0.15); color: var(--text-main); }
+    [data-theme="bento-grid"] .platform-tile, [data-theme="bento-grid"] .slot-card, [data-theme="bento-grid"] .modal-box { background: #FFF; border-color: rgba(99, 102, 241, 0.1); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06); }
+    [data-theme="bento-grid"] .telemetry-chip, [data-theme="bento-grid"] .theme-toggle-btn { background: rgba(99, 102, 241, 0.05); border-color: rgba(99, 102, 241, 0.12); color: var(--neon-cyan); }
+    [data-theme="bento-grid"] ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.15); }
 
     *, *::before, *::after {
       box-sizing: border-box;
@@ -417,9 +468,9 @@
     }
 
     .portal-back-btn:hover {
-      color: var(--cyan);
-      border-color: var(--cyan-hairline);
-      background: var(--cyan-dim);
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan-hairline);
+      background: var(--neon-cyan-dim);
     }
 
     .sidebar-meta-row {
@@ -484,8 +535,8 @@
       font-size: 9.5px;
       padding: 2px 7px;
       border-radius: 5px;
-      background: var(--cyan-dim);
-      border: 1px solid var(--cyan-hairline);
+      background: var(--neon-cyan-dim);
+      border: 1px solid var(--neon-cyan-hairline);
       color: var(--makerzz-teal);
     }
 
@@ -553,6 +604,39 @@
       background: var(--bg-surface-elev);
     }
 
+    .theme-picker { position: relative; }
+    .theme-picker-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-outer);
+      border-radius: 8px;
+      padding: 4px;
+      z-index: 1000;
+      min-width: 170px;
+      box-shadow: 0 16px 48px -8px rgba(0,0,0,0.6);
+    }
+    .theme-picker-dropdown.open { display: block; }
+    .theme-pick {
+      display: block;
+      width: 100%;
+      padding: 7px 10px;
+      background: transparent;
+      border: none;
+      border-radius: 5px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .theme-pick:hover { background: var(--bg-surface-elev); color: var(--text-main); }
+    .theme-pick.active { background: rgba(0, 240, 255, 0.08); color: var(--neon-cyan); }
+
     .topbar-action-btn {
       background: var(--makerzz-amber);
       color: var(--makerzz-ink);
@@ -613,7 +697,7 @@
     }
 
     .doppel-shell.glow-cyan:hover {
-      border-color: var(--cyan-hairline);
+      border-color: var(--neon-cyan-hairline);
     }
 
     .doppel-shell.glow-violet:hover {
@@ -647,7 +731,7 @@
     }
 
     .card-header-title .accent-tag {
-      color: var(--cyan);
+      color: var(--neon-cyan);
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
@@ -834,9 +918,9 @@
     }
 
     .platform-status-badge.ready {
-      background: var(--cyan-dim);
+      background: var(--neon-cyan-dim);
       color: var(--makerzz-teal);
-      border: 1px solid var(--cyan-hairline);
+      border: 1px solid var(--neon-cyan-hairline);
     }
 
     .btn-ghost {
@@ -952,7 +1036,7 @@
       right: 0;
       width: 48px;
       height: 48px;
-      background: radial-gradient(circle at top right, var(--cyan-dim), transparent 70%);
+      background: radial-gradient(circle at top right, var(--neon-cyan-dim), transparent 70%);
       pointer-events: none;
     }
 
@@ -1037,9 +1121,9 @@
       gap: 6px;
       font-family: var(--font-mono);
       font-size: 10.5px;
-      color: var(--cyan);
-      background: var(--cyan-dim);
-      border: 1px solid var(--cyan-hairline);
+      color: var(--neon-cyan);
+      background: var(--neon-cyan-dim);
+      border: 1px solid var(--neon-cyan-hairline);
       padding: 3px 9px;
       border-radius: 20px;
       width: fit-content;
@@ -1107,7 +1191,7 @@
     .holo-slide-role {
       font-family: var(--font-mono);
       font-size: 9px;
-      color: var(--cyan);
+      color: var(--neon-cyan);
       letter-spacing: 0.15em;
       text-transform: uppercase;
     }
@@ -1200,7 +1284,7 @@
     }
 
     .slot-node:hover {
-      border-color: var(--cyan-hairline);
+      border-color: var(--neon-cyan-hairline);
       transform: translateY(-2px);
     }
 
@@ -1208,7 +1292,7 @@
       font-family: var(--font-mono);
       font-size: 18px;
       font-weight: 700;
-      color: var(--cyan);
+      color: var(--neon-cyan);
     }
 
     .slot-label {
@@ -1321,10 +1405,10 @@
     }
 
     .pillar-pill.selected {
-      background: var(--cyan-dim);
-      border-color: var(--cyan);
-      color: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan-dim);
+      background: var(--neon-cyan-dim);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 12px var(--neon-cyan-dim);
     }
 
     /* Interactive 3D Slide Carousel Viewer */
@@ -1426,13 +1510,13 @@
     }
 
     .phase-node.active {
-      background: var(--cyan-dim);
+      background: var(--neon-cyan-dim);
       border-color: var(--makerzz-teal);
       color: var(--makerzz-teal);
     }
 
     .phase-node.active .phase-node-num {
-      background: var(--cyan);
+      background: var(--neon-cyan);
       color: #04060A;
       animation: pulse 1.2s infinite;
     }
@@ -1467,7 +1551,7 @@
       word-break: break-all;
     }
 
-    .log-line.sys { color: var(--cyan); font-weight: 600; }
+    .log-line.sys { color: var(--neon-cyan); font-weight: 600; }
     .log-line.ok { color: var(--emerald); }
     .log-line.warn { color: var(--amber); }
     .log-line.error { color: var(--crimson); font-weight: 700; }
@@ -1510,7 +1594,7 @@
 
     .vault-thumb:hover {
       transform: scale(1.08);
-      border-color: var(--cyan);
+      border-color: var(--neon-cyan);
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
@@ -1594,7 +1678,7 @@
 
     .toast.success { border-color: var(--emerald); }
     .toast.error   { border-color: var(--crimson); }
-    .toast.info    { border-color: var(--cyan); }
+    .toast.info    { border-color: var(--neon-cyan); }
 
     @keyframes toastIn {
       from { transform: translateX(30px); opacity: 0; }
@@ -1616,6 +1700,7 @@
       .spotlight-banner, .studio-grid {
         grid-template-columns: 1fr;
       }
+    }
     /* ═══════════════════════════════════════════════════════════════════════
        MODERN TACTILE 3D BUTTONS & MICRO-INTERACTIONS
        ═══════════════════════════════════════════════════════════════════════ */
@@ -1746,9 +1831,9 @@
       white-space: nowrap;
     }
     .mode-pill-btn.active {
-      background: var(--cyan);
+      background: var(--neon-cyan);
       color: #03131e;
-      box-shadow: 0 2px 8px var(--cyan-glow);
+      box-shadow: 0 2px 8px var(--neon-cyan-glow);
     }
 
     /* User Auth Pill */
@@ -1780,7 +1865,7 @@
     }
     .user-role-admin { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
     .user-role-pro { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.4); }
-    .user-role-starter { background: rgba(14, 111, 119, 0.2); color: var(--cyan); border: 1px solid var(--cyan-hairline); }
+    .user-role-starter { background: rgba(14, 111, 119, 0.2); color: var(--neon-cyan); border: 1px solid var(--neon-cyan-hairline); }
 
     /* Simple Mode Creator Wizard Styles */
     .simple-wizard-container {
@@ -1804,7 +1889,7 @@
       left: 0;
       width: 4px;
       height: 100%;
-      background: var(--cyan);
+      background: var(--neon-cyan);
     }
     .wizard-step-header {
       display: flex;
@@ -1825,7 +1910,7 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: var(--cyan);
+      background: var(--neon-cyan);
       color: #03131e;
       display: flex;
       align-items: center;
@@ -1850,8 +1935,8 @@
       transition: all 0.15s ease;
     }
     .prompt-chip:hover {
-      background: var(--cyan-dim);
-      border-color: var(--cyan);
+      background: var(--neon-cyan-dim);
+      border-color: var(--neon-cyan);
       color: #fff;
     }
     .templates-grid {
@@ -1871,8 +1956,8 @@
       gap: 8px;
     }
     .template-card-tile:hover, .template-card-tile.selected {
-      border-color: var(--cyan);
-      box-shadow: 0 4px 16px var(--cyan-dim);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 4px 16px var(--neon-cyan-dim);
       transform: translateY(-2px);
     }
     .template-preview-bar {
@@ -1886,9 +1971,269 @@
       color: #fff;
       text-shadow: 0 1px 2px rgba(0,0,0,0.8);
     }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       PREMIUM 3D ENHANCEMENTS — Ambient, Holographic, Animated
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    /* Ambient Particles — floating dots behind everything */
+    #ambient-particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    #ambient-particles .particle {
+      position: absolute;
+      bottom: -10px;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle-rise linear infinite;
+    }
+    @keyframes particle-rise {
+      0%   { opacity: 0; transform: translateY(0) translateX(0); }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-100vh) translateX(40px); }
+    }
+
+    /* Scroll Reveal Base */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* Stagger children — each child animates in sequence */
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stagger-children.visible > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(2) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(3) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(5) { transition-delay: 0.32s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(7) { transition-delay: 0.48s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(8) { transition-delay: 0.56s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(9) { transition-delay: 0.64s; opacity: 1; transform: translateY(0); }
+
+    /* Holographic slide card — ambient shimmer + glow */
+    .holo-slide-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .holo-slide-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%; width: 200%; height: 100%;
+      background: linear-gradient(105deg, transparent 40%, rgba(14,111,119,0.08) 45%, rgba(139,92,246,0.08) 50%, rgba(14,111,119,0.08) 55%, transparent 60%);
+      animation: holo-shimmer 5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @keyframes holo-shimmer {
+      0% { transform: translateX(-20%); }
+      100% { transform: translateX(20%); }
+    }
+    .holo-slide-card::after {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px; bottom: -1px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--violet));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .holo-slide-card:hover::after {
+      opacity: 0.25;
+      filter: blur(16px);
+    }
+    .holo-slide-card:hover {
+      box-shadow: 0 20px 50px -10px rgba(14,111,119,0.3), 0 0 24px rgba(14,111,119,0.15);
+    }
+
+    /* Phase pipeline — animated glow on active */
+    .phase-pipeline-track {
+      position: relative;
+    }
+    .phase-pipeline-track::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--violet), var(--neon-cyan), transparent);
+      background-size: 200% 100%;
+      opacity: 0;
+      transform: translateY(-50%);
+      animation: pipeline-pulse 4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .phase-pipeline-track.running::before {
+      opacity: 0.3;
+    }
+    @keyframes pipeline-pulse {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Metric cards — subtle depth hover */
+    .doppel-shell {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .doppel-shell:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Spotlight banner — cinematic entrance */
+    .spotlight-banner {
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--violet), var(--emerald));
+      background-size: 200% 100%;
+      animation: border-glow 3s ease infinite;
+    }
+
+    /* Floating action button — ambient glow */
+    .btn-island-primary {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-island-primary::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 120%; height: 120%;
+      background: radial-gradient(circle, rgba(14,111,119,0.2), transparent 70%);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.4s ease;
+      pointer-events: none;
+    }
+    .btn-island-primary:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Light mode overrides for premium additions */
+    [data-theme="light"] .holo-slide-card {
+      background: linear-gradient(145deg, #FFFFFF, #F1F4F6);
+      border-color: rgba(15,23,42,0.1);
+    }
+    [data-theme="light"] .holo-slide-card:hover {
+      border-color: var(--neon-cyan);
+    }
+    [data-theme="light"] .holo-slide-hook { color: #0F172A; }
+    [data-theme="light"] .spotlight-topic { color: #0F172A; }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       3D PREMIUM POLISH — Holographic borders, glassmorphism, parallax
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    /* Holographic shimmer border on cards */
+    .doppel-shell::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, transparent 30%, var(--neon-cyan) 50%, var(--violet) 70%, transparent 90%);
+      background-size: 200% 200%;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .doppel-shell:hover::before {
+      opacity: 0.5;
+      animation: holo-shimmer 3s ease infinite;
+    }
+    @keyframes holo-shimmer {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+    }
+
+    /* Glassmorphism enhancement for modals */
+    .modal-backdrop {
+      background: rgba(4, 6, 10, 0.75);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    }
+    .modal-box {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 24px 80px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    /* Platform tile hover parallax */
+    .platform-tile {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+    }
+    .platform-tile:hover {
+      transform: translateY(-6px) perspective(800px) rotateX(2deg);
+    }
+
+    /* Toast slide-in animation */
+    .toast {
+      animation: toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateX(30px) scale(0.95); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    /* Bento grid layout for overview cards */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Ambient Particles (CSS-animated, zero-dependency) -->
+  <div id="ambient-particles"></div>
 
   <div class="cockpit-layout">
 
@@ -1932,7 +2277,7 @@
         </div>
         <div class="nav-item" data-view="cronjob" onclick="switchView('cronjob', this)">
           <span class="nav-icon">⏰</span> Cloud Webhooks
-          <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;">CRON</span>
+          <span class="nav-badge" style="background:var(--neon-cyan);color:#000;font-weight:700;">CRON</span>
         </div>
 
         <div class="nav-section-label">Intelligence</div>
@@ -2016,11 +2361,22 @@
             <span>⚡</span> Run Autopilot
           </button>
 
-          <!-- Day / Night Mode Toggle -->
-          <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch day / night mode">
-            <span id="theme-toggle-icon">🌙</span>
-            <span id="theme-toggle-label">DARK</span>
-          </button>
+          <!-- Theme Picker -->
+          <div class="theme-picker" id="theme-picker">
+            <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleThemePicker()" title="Change theme">
+              <span id="theme-toggle-icon">🌙</span>
+              <span id="theme-toggle-label">QUANTUM</span>
+              <span style="font-size:8px;opacity:0.5;">▼</span>
+            </button>
+            <div class="theme-picker-dropdown" id="theme-picker-dropdown">
+              <button class="theme-pick" data-theme="dark" onclick="applyTheme('dark')">🌙 Quantum Tech</button>
+              <button class="theme-pick" data-theme="cyberpunk" onclick="applyTheme('cyberpunk')">⚡ Cyberpunk</button>
+              <button class="theme-pick" data-theme="neumorphic" onclick="applyTheme('neumorphic')">🫧 Neumorphic</button>
+              <button class="theme-pick" data-theme="swiss-light" onclick="applyTheme('swiss-light')">📰 Swiss Light</button>
+              <button class="theme-pick" data-theme="bento-grid" onclick="applyTheme('bento-grid')">🧱 Bento Grid</button>
+              <button class="theme-pick" data-theme="light" onclick="applyTheme('light')">☀️ Day Mode</button>
+            </div>
+          </div>
 
           <!-- Telemetry Chips -->
           <div class="telemetry-chip" id="engine-telemetry-chip" title="Core Python Engine (Render Cloud / Local)">
@@ -2049,7 +2405,7 @@
         <div id="simple-creator-panel" class="simple-wizard-container" style="display:block;">
           
           <!-- Step 1: Idea / Topic Selection -->
-          <div class="wizard-step-card">
+          <div class="wizard-step-card reveal">
             <div class="wizard-step-header">
               <div class="wizard-step-title">
                 <span class="wizard-step-num">1</span>
@@ -2076,7 +2432,7 @@
           </div>
 
           <!-- Step 2: Format & Design Style Selection -->
-          <div class="wizard-step-card">
+          <div class="wizard-step-card reveal">
             <div class="wizard-step-header">
               <div class="wizard-step-title">
                 <span class="wizard-step-num">2</span>
@@ -2100,7 +2456,7 @@
           </div>
 
           <!-- Step 3: Synthesize, Preview & Publish -->
-          <div class="wizard-step-card">
+          <div class="wizard-step-card reveal">
             <div class="wizard-step-header">
               <div class="wizard-step-title">
                 <span class="wizard-step-num">3</span>
@@ -2126,7 +2482,7 @@
             <div id="simple-preview-deck" style="display:none;background:var(--bg-surface-elev);border:1px solid var(--border-inner);border-radius:14px;padding:18px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                 <div style="font-weight:700;font-size:14px;color:var(--text-main);" id="simple-preview-title">Generated Preview</div>
-                <div style="font-size:12px;font-family:var(--font-mono);color:var(--cyan);" id="simple-slide-indicator">Slide 1 of 8</div>
+                <div style="font-size:12px;font-family:var(--font-mono);color:var(--neon-cyan);" id="simple-slide-indicator">Slide 1 of 8</div>
               </div>
               <div style="display:flex;justify-content:center;margin-bottom:14px;">
                 <img id="simple-slide-img" src="" alt="Slide Preview" style="max-height:440px;aspect-ratio:4/5;border-radius:10px;border:1px solid var(--border-outer);box-shadow:0 8px 30px rgba(0,0,0,0.5);" />
@@ -2179,7 +2535,7 @@
                   <span class="metric-label">Memory Corpus</span>
                   <div class="metric-icon-bubble">🧠</div>
                 </div>
-                <div class="metric-value" style="color:var(--cyan);" id="stat-memory-count">—</div>
+                <div class="metric-value" style="color:var(--neon-cyan);" id="stat-memory-count">—</div>
                 <div class="metric-subtext">Anti-repetition index</div>
               </div>
             </div>
@@ -2198,7 +2554,7 @@
 
           <!-- Active Post Spotlight (Latest Production Run) -->
           <div class="doppel-shell glow-cyan">
-            <div class="doppel-core spotlight-banner">
+            <div class="doppel-core spotlight-banner reveal">
               <div class="spotlight-info">
                 <div class="spotlight-pill">◈ LATEST GENERATED CAROUSEL</div>
                 <h2 class="spotlight-topic" id="spotlight-topic">Loading latest production run...</h2>
@@ -2427,7 +2783,7 @@
               <div class="doppel-core deck-inspector">
                 <div class="card-header-bar" style="width:100%">
                   <div class="card-header-title"><span class="accent-tag">◈</span> 3D Slide Deck Inspector</div>
-                  <span id="deck-slide-counter" style="font-family:var(--font-mono);font-size:11px;color:var(--cyan)">Slide 1 of 8</span>
+                  <span id="deck-slide-counter" style="font-family:var(--font-mono);font-size:11px;color:var(--neon-cyan)">Slide 1 of 8</span>
                 </div>
 
                 <!-- Live Slide Preview Canvas Card -->
@@ -2446,7 +2802,7 @@
                   </div>
                   <div class="holo-slide-footer">
                     <span>SIGNHIFY.STUDIO</span>
-                    <span style="color:var(--cyan)">AUTOGRAM AI</span>
+                    <span style="color:var(--neon-cyan)">AUTOGRAM AI</span>
                   </div>
                 </div>
 
@@ -2486,7 +2842,7 @@
                 </div>
               </div>
               <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
-                Direct Meta Graph API Private Replies integration (v21.0). Zero monthly SaaS fees, no 1,000-contact limits, and no third-party OAuth barriers. Automatically detects <strong style="color:var(--cyan)">FOSS</strong> and <strong style="color:var(--violet)">PROMPT</strong> comments, sends randomized public replies to fuel the Instagram recommendation algorithm, and dispatches the exact GitHub/Docker or prompt blueprints straight into the user's inbox.
+                Direct Meta Graph API Private Replies integration (v21.0). Zero monthly SaaS fees, no 1,000-contact limits, and no third-party OAuth barriers. Automatically detects <strong style="color:var(--neon-cyan)">FOSS</strong> and <strong style="color:var(--violet)">PROMPT</strong> comments, sends randomized public replies to fuel the Instagram recommendation algorithm, and dispatches the exact GitHub/Docker or prompt blueprints straight into the user's inbox.
               </p>
 
               <!-- Telemetry Metrics Grid -->
@@ -2502,7 +2858,7 @@
                   <div class="slot-pillar">DEDUPLICATED</div>
                 </div>
                 <div class="slot-node">
-                  <div class="slot-time" style="color:var(--cyan);" id="autodm-stat-foss-count">0</div>
+                  <div class="slot-time" style="color:var(--neon-cyan);" id="autodm-stat-foss-count">0</div>
                   <div class="slot-label">FOSS Blueprints Sent</div>
                   <div class="slot-pillar">GITHUB + DOCKER</div>
                 </div>
@@ -2522,12 +2878,12 @@
               <div class="doppel-core">
                 <div class="card-header-bar">
                   <div class="card-header-title">
-                    <span style="color:var(--cyan);">📦</span> TRIGGER: "FOSS"
+                    <span style="color:var(--neon-cyan);">📦</span> TRIGGER: "FOSS"
                   </div>
                   <span class="slot-pillar">ACTIVE</span>
                 </div>
                 <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">
-                  Keywords: <code style="color:var(--cyan);">foss, self-host, docker, blueprint, setup</code>
+                  Keywords: <code style="color:var(--neon-cyan);">foss, self-host, docker, blueprint, setup</code>
                 </div>
                 <div style="font-size:11px;font-family:var(--font-mono);background:var(--bg-surface-elev);padding:12px;border-radius:8px;border:1px solid var(--border-inner);color:var(--text-secondary);white-space:pre-wrap;line-height:1.5;">Hey builder! 👋
 
@@ -2604,7 +2960,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <div class="card-header-bar">
                 <div class="card-header-title">
                   <span class="accent-tag">◈</span> CONNECT YOUR 13 DISTRIBUTION RAILS
-                  <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;margin-left:8px;">13 PLATFORMS</span>
+                  <span class="nav-badge" style="background:var(--neon-cyan);color:#000;font-weight:700;margin-left:8px;">13 PLATFORMS</span>
                 </div>
                 <div class="btn-row">
                   <button class="btn-makerzz-amber" onclick="switchView('publishing')">
@@ -2628,7 +2984,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Instagram</div>
                   <div class="platform-desc">Official Meta Graph API (v23.0). 1080×1350 JPEG Carousels + Private Reply Auto-DMs.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">Inspect Live Assets ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">Inspect Live Assets ↗</div>
                 </div>
 
                 <!-- 2. YouTube -->
@@ -2641,7 +2997,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">YouTube Shorts</div>
                   <div class="platform-desc">Spoken 30–45s video scripts with timestamped B-roll cues and pinned comments.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Spoken Script ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Spoken Script ↗</div>
                 </div>
 
                 <!-- 3. LinkedIn -->
@@ -2654,7 +3010,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">LinkedIn</div>
                   <div class="platform-desc">Thought leadership formatting, technical problem-solving copy, and PDF slide decks.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Article Copy ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Article Copy ↗</div>
                 </div>
 
                 <!-- 4. TikTok -->
@@ -2667,7 +3023,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">TikTok</div>
                   <div class="platform-desc">Hook-first narrative scripts, fast pacing timeline edit plans, and SFX maps.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Edit Timeline ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Edit Timeline ↗</div>
                 </div>
 
                 <!-- 5. X / Twitter -->
@@ -2680,7 +3036,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">X (Twitter)</div>
                   <div class="platform-desc">6-tweet viral technical thread generated automatically on every run.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View 6-Tweet Thread ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View 6-Tweet Thread ↗</div>
                 </div>
 
                 <!-- 6. Facebook -->
@@ -2693,7 +3049,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Facebook</div>
                   <div class="platform-desc">Meta Graph API Pages and Reels syndication with multi-image container flows.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Meta Feed Post ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Meta Feed Post ↗</div>
                 </div>
 
                 <!-- 7. Threads -->
@@ -2706,7 +3062,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Threads</div>
                   <div class="platform-desc">Cross-posted discussion hooks and carousel image previews via Meta Graph API.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Thread Hooks ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Thread Hooks ↗</div>
                 </div>
 
                 <!-- 8. Pinterest -->
@@ -2719,7 +3075,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Pinterest</div>
                   <div class="platform-desc">1080×1350 Idea Pins with deterministic terminal layouts and long-tail SEO reach.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Idea Pin Copy ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Idea Pin Copy ↗</div>
                 </div>
 
                 <!-- 9. Bluesky -->
@@ -2732,7 +3088,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Bluesky</div>
                   <div class="platform-desc">AT Protocol text feeds and open source developer community broadcasts.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Skeet Broadcast ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Skeet Broadcast ↗</div>
                 </div>
 
                 <!-- 10. Reddit -->
@@ -2745,7 +3101,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Reddit</div>
                   <div class="platform-desc">High-signal self-hosting markdown posts for r/selfhosted, r/opensource, r/ChatGPT.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Markdown Post ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Markdown Post ↗</div>
                 </div>
 
                 <!-- 11. Telegram -->
@@ -2758,7 +3114,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Telegram</div>
                   <div class="platform-desc">Instant broadcast channel notifications with Docker commands & raw prompt codes.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Channel Alert ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Channel Alert ↗</div>
                 </div>
 
                 <!-- 12. Discord -->
@@ -2771,7 +3127,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Discord</div>
                   <div class="platform-desc">Community announcements channel webhook with rich embed formatting.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Embed Webhook ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Embed Webhook ↗</div>
                 </div>
 
                 <!-- 13. Google Business -->
@@ -2784,7 +3140,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div class="platform-name">Google Business</div>
                   <div class="platform-desc">What's New business updates, developer tools breakdowns, and local authority.</div>
-                  <div style="font-size:11px;color:var(--cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Update Post ↗</div>
+                  <div style="font-size:11px;color:var(--neon-cyan);font-family:var(--font-mono);margin-top:auto;display:flex;align-items:center;gap:4px;">View Update Post ↗</div>
                 </div>
               </div>
 
@@ -2798,7 +3154,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   </div>
                   <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;font-size:12px;color:var(--text-secondary);">
                     <div>
-                      <strong style="color:var(--cyan);">Content Generation:</strong><br>
+                      <strong style="color:var(--neon-cyan);">Content Generation:</strong><br>
                       0 Autogram credits. Runs on your free/BYOK LLM API keys (Gemini, Groq, OpenRouter).
                     </div>
                     <div>
@@ -2850,7 +3206,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <!-- 4D Virality Gate Metrics Grid -->
               <div class="metric-grid" style="margin-bottom:20px;">
                 <div class="slot-node">
-                  <div class="slot-time" style="color:var(--cyan);">25 PTS</div>
+                  <div class="slot-time" style="color:var(--neon-cyan);">25 PTS</div>
                   <div class="slot-label">Hook Potency</div>
                   <div class="slot-pillar">PATTERN INTERRUPT</div>
                 </div>
@@ -2970,9 +3326,9 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                     <div>
                       <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
                         <label class="form-label" style="margin-bottom:0;">Carousels / Month (7 Slides)</label>
-                        <span id="calc-carousels-val" style="font-family:var(--font-mono);color:var(--cyan);font-weight:700;">60 / mo</span>
+                        <span id="calc-carousels-val" style="font-family:var(--font-mono);color:var(--neon-cyan);font-weight:700;">60 / mo</span>
                       </div>
-                      <input type="range" id="calc-carousels" min="10" max="210" step="5" value="60" style="width:100%;accent-color:var(--cyan);" oninput="updateCalculator()" />
+                      <input type="range" id="calc-carousels" min="10" max="210" step="5" value="60" style="width:100%;accent-color:var(--neon-cyan);" oninput="updateCalculator()" />
                       <div style="display:flex;justify-content:space-between;font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-top:4px;">
                         <span>10 (Light)</span>
                         <span>60 (2/day)</span>
@@ -3048,7 +3404,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <div class="card-header-bar">
                 <div class="card-header-title">
                   <span class="accent-tag">◈</span> CRON-JOB.ORG CLOUD AUTOMATION HUB
-                  <span class="nav-badge" style="background:var(--cyan);color:#000;font-weight:700;margin-left:8px;">EXTERNAL SCHEDULER</span>
+                  <span class="nav-badge" style="background:var(--neon-cyan);color:#000;font-weight:700;margin-left:8px;">EXTERNAL SCHEDULER</span>
                 </div>
                 <div class="btn-row">
                   <a href="https://cron-job.org" target="_blank" class="btn-makerzz-amber" style="text-decoration:none;">
@@ -3057,7 +3413,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                 </div>
               </div>
               <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
-                Use free external triggers from <a href="https://cron-job.org" target="_blank" style="color:var(--cyan);text-decoration:underline;">cron-job.org</a> to run your 7x daily publishing drops and 24/7 Auto-DM scans automatically in the cloud—even when your personal laptop or computer is turned off.
+                Use free external triggers from <a href="https://cron-job.org" target="_blank" style="color:var(--neon-cyan);text-decoration:underline;">cron-job.org</a> to run your 7x daily publishing drops and 24/7 Auto-DM scans automatically in the cloud—even when your personal laptop or computer is turned off.
               </p>
 
               <!-- Webhooks Cards -->
@@ -3067,7 +3423,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                   <div class="doppel-core">
                     <div class="card-header-bar">
                       <div class="card-header-title">
-                        <span style="color:var(--cyan);">🚀</span> 1. AUTOPILOT PUBLISHING WEBHOOK
+                        <span style="color:var(--neon-cyan);">🚀</span> 1. AUTOPILOT PUBLISHING WEBHOOK
                       </div>
                       <span class="slot-pillar">GET / POST</span>
                     </div>
@@ -3123,7 +3479,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                     </div>
                     <span id="cron-test-status" style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">AWAITING TEST TRIGGER...</span>
                   </div>
-                  <pre id="cron-test-output" style="font-family:var(--font-mono);font-size:11px;color:var(--cyan);line-height:1.5;max-height:220px;overflow-y:auto;white-space:pre-wrap;">// Click "Test Webhook" above to ping the endpoint live from this browser.
+                  <pre id="cron-test-output" style="font-family:var(--font-mono);font-size:11px;color:var(--neon-cyan);line-height:1.5;max-height:220px;overflow-y:auto;white-space:pre-wrap;">// Click "Test Webhook" above to ping the endpoint live from this browser.
 // Response payload and HTTP status code will appear here in real time.</pre>
                 </div>
               </div>
@@ -3135,7 +3491,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
                     📝 60-SECOND CRON-JOB.ORG SETUP INSTRUCTIONS
                   </div>
                   <ol style="margin-left:20px;font-size:13px;color:var(--text-secondary);line-height:1.7;">
-                    <li>Create a free account at <a href="https://cron-job.org" target="_blank" style="color:var(--cyan);">cron-job.org</a> (100% free forever).</li>
+                    <li>Create a free account at <a href="https://cron-job.org" target="_blank" style="color:var(--neon-cyan);">cron-job.org</a> (100% free forever).</li>
                     <li>Click <strong>"Create Cronjob"</strong> &rarr; Set title (e.g. <code>Autogram 7x Daily Drop</code>) &rarr; Paste the Webhook URL copied above.</li>
                     <li>Choose your schedule (select <em>"User-defined"</em> and set minutes or pick your preferred slots) &rarr; Click <strong>"Create"</strong>. Done!</li>
                   </ol>
@@ -3157,7 +3513,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <div class="card-header-bar">
                 <div class="card-header-title"><span class="accent-tag">◈</span> Autonomous Execution Mode</div>
                 <div class="btn-row">
-                  <button id="btn-mode-dry" class="btn btn-ghost" onclick="selectExecutionMode('dry-run')" style="border-color:var(--cyan);color:var(--cyan)">
+                  <button id="btn-mode-dry" class="btn btn-ghost" onclick="selectExecutionMode('dry-run')" style="border-color:var(--neon-cyan);color:var(--neon-cyan)">
                     🧪 Safe Dry Run (Test Simulation)
                   </button>
                   <button id="btn-mode-live" class="btn btn-ghost" onclick="selectExecutionMode('live')">
@@ -3172,7 +3528,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           </div>
 
           <!-- 9-Phase Animated Pipeline Tracker -->
-          <div class="phase-pipeline-track" id="phase-pipeline-track">
+          <div class="phase-pipeline-track reveal" id="phase-pipeline-track">
             <div class="phase-node" id="ph-1"><div class="phase-node-num">1</div>Research</div>
             <div class="phase-node" id="ph-2"><div class="phase-node-num">2</div>Scoring</div>
             <div class="phase-node" id="ph-3"><div class="phase-node-num">3</div>Generate</div>
@@ -3356,7 +3712,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           <div class="card-header-title">
             <span class="accent-tag" id="pm-icon">🔗</span>
             <span id="pm-title">Platform Syndication Asset</span>
-            <span class="nav-badge" id="pm-badge" style="background:var(--cyan);color:#000;font-weight:700;margin-left:8px;">READY</span>
+            <span class="nav-badge" id="pm-badge" style="background:var(--neon-cyan);color:#000;font-weight:700;margin-left:8px;">READY</span>
           </div>
           <button class="btn btn-sm btn-ghost" onclick="closePlatformModal()">✕</button>
         </div>
@@ -3389,7 +3745,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         </div>
 
         <div style="display:flex;gap:4px;background:var(--bg-surface-elev);padding:4px;border-radius:10px;margin-bottom:16px;">
-          <button class="btn btn-sm" id="auth-tab-login" onclick="setAuthTab('login')" style="flex:1;background:var(--cyan);color:#03131e;font-weight:700;">Sign In</button>
+          <button class="btn btn-sm" id="auth-tab-login" onclick="setAuthTab('login')" style="flex:1;background:var(--neon-cyan);color:#03131e;font-weight:700;">Sign In</button>
           <button class="btn btn-sm" id="auth-tab-signup" onclick="setAuthTab('signup')" style="flex:1;background:transparent;color:var(--text-secondary);">Create Account</button>
         </div>
 
@@ -3418,7 +3774,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         </div>
 
         <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;" id="auth-note">
-          👑 Admin Account: <code style="color:var(--cyan);">signhify.studio</code> (pre-configured)
+          👑 Admin Account: <code style="color:var(--neon-cyan);">signhify.studio</code> (pre-configured)
         </div>
 
         <div class="btn-row" style="justify-content:flex-end;gap:10px;">
@@ -3601,7 +3957,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           High-conversion typography styles and color palettes crafted for modern tech and business audiences.
         </p>
 
-        <h4 style="font-size:13px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">
+        <h4 style="font-size:13px;font-weight:700;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">
           1080×1350 Instagram Carousels
         </h4>
         <div class="templates-grid" id="templates-carousel-grid" style="margin-bottom:24px;">
@@ -3749,20 +4105,48 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       // Silent no-op preserves celebration triggers without canvas bloat
     }
 
-    // ── Day / Night Mode (persisted) ───────────────────────────────────
+    // ── Theme System (persisted, 6 presets) ─────────────────────────────
+    const THEME_MAP = {
+      'dark':        { icon: '🌙', label: 'QUANTUM' },
+      'cyberpunk':   { icon: '⚡', label: 'CYBER' },
+      'neumorphic':  { icon: '🫧', label: 'NEO' },
+      'swiss-light': { icon: '📰', label: 'SWISS' },
+      'bento-grid':  { icon: '🧱', label: 'BENTO' },
+      'light':       { icon: '☀️', label: 'DAY' }
+    };
+
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       try { localStorage.setItem('autogram_theme', theme); } catch (e) {}
+      const meta = THEME_MAP[theme] || THEME_MAP['dark'];
       const icon = document.getElementById('theme-toggle-icon');
       const label = document.getElementById('theme-toggle-label');
-      if (icon) icon.textContent = theme === 'light' ? '☀️' : '🌙';
-      if (label) label.textContent = theme === 'light' ? 'LIGHT' : 'DARK';
+      if (icon) icon.textContent = meta.icon;
+      if (label) label.textContent = meta.label;
+      document.querySelectorAll('.theme-pick').forEach(b => {
+        b.classList.toggle('active', b.dataset.theme === theme);
+      });
+      // Close picker if open
+      const dd = document.getElementById('theme-picker-dropdown');
+      if (dd) dd.classList.remove('open');
     }
 
     function toggleTheme() {
       const cur = document.documentElement.getAttribute('data-theme') || 'dark';
       applyTheme(cur === 'light' ? 'dark' : 'light');
     }
+
+    function toggleThemePicker() {
+      const dd = document.getElementById('theme-picker-dropdown');
+      if (dd) dd.classList.toggle('open');
+    }
+
+    // Close picker on outside click
+    document.addEventListener('click', (e) => {
+      const picker = document.getElementById('theme-picker');
+      const dd = document.getElementById('theme-picker-dropdown');
+      if (picker && dd && !picker.contains(e.target)) dd.classList.remove('open');
+    });
 
     // Cross-tab theme sync with landing page
     window.addEventListener('storage', (e) => {
@@ -3774,6 +4158,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ── Navigation & View Switching ──────────────────────────────────────
     function switchView(viewId, el) {
       if (viewId === 'studio') viewId = 'publishing';
+      if (viewId === 'autodm' && !requireTier('auto_dm', 'Auto-DM Engine')) return;
       playSound('warp');
       document.querySelectorAll('.cockpit-view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -4046,7 +4431,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <div class="doppel-core" style="padding:16px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                   <span class="slot-pillar">${c.pillar}</span>
-                  <span style="color:var(--cyan);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL ${c.score}/100</span>
+                  <span style="color:var(--neon-cyan);font-family:var(--font-mono);font-weight:700;font-size:13px;">VIRAL ${c.score}/100</span>
                 </div>
                 <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:4px;">${c.title}</div>
                 <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
@@ -4149,8 +4534,10 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         // Topbar chips
         document.getElementById('top-llm-label').textContent = (s.llm_provider || 'auto').toUpperCase() + ' ' + (s.llm_model || '');
         const isLive = s.dry_run === 'false' || s.dry_run === false;
-        document.getElementById('top-mode-label').textContent = isLive ? 'LIVE PRODUCTION' : 'DRY RUN';
-        document.getElementById('top-mode-dot').className = isLive ? 'chip-pulse' : 'chip-pulse amber';
+        const _modeLabel = document.getElementById('top-mode-label');
+        if (_modeLabel) _modeLabel.textContent = isLive ? 'LIVE PRODUCTION' : 'DRY RUN';
+        const _modeDot = document.getElementById('top-mode-dot');
+        if (_modeDot) _modeDot.className = isLive ? 'chip-pulse' : 'chip-pulse amber';
         document.getElementById('sidebar-dry-tag').textContent = isLive ? '● LIVE MODE' : '🟡 DRY RUN';
         document.getElementById('sidebar-dry-tag').style.color = isLive ? 'var(--emerald)' : 'var(--amber)';
 
@@ -4215,7 +4602,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           queue.forEach(q => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-              <td style="font-family:var(--font-mono);color:var(--cyan);font-weight:600;">${q.scheduled_time.replace('T', ' ')}</td>
+              <td style="font-family:var(--font-mono);color:var(--neon-cyan);font-weight:600;">${q.scheduled_time.replace('T', ' ')}</td>
               <td style="font-weight:600;color:#fff;">${q.topic}</td>
               <td><span class="slot-pillar">${q.pillar}</span></td>
               <td><span style="font-family:var(--font-mono);font-size:11px;color:${q.mode === 'live' ? 'var(--emerald)' : 'var(--amber)'}">${(q.mode || 'dry-run').toUpperCase()}</span></td>
@@ -4463,7 +4850,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       preview.innerHTML = '';
       uniqueTags.forEach(tag => {
         const chip = document.createElement('span');
-        chip.style.cssText = 'font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:6px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25);color:var(--cyan);letter-spacing:0.3px;';
+        chip.style.cssText = 'font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:6px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25);color:var(--neon-cyan);letter-spacing:0.3px;';
         chip.textContent = tag;
         preview.appendChild(chip);
       });
@@ -4472,7 +4859,8 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     async function generateStudioCaptionOnly() {
       playSound('click');
       const topic = (document.getElementById('studio-topic-input') ? document.getElementById('studio-topic-input').value.trim() : '') || 'AI Automation Systems Architecture';
-      const pillar = (document.getElementById('studio-pillar-select') ? document.getElementById('studio-pillar-select').value : '') || 'AI Tool Breakdown';
+      const _selPill = document.querySelector('#studio-pillar-selector .pillar-pill.selected');
+      const pillar = (_selPill ? _selPill.dataset.pillar : '') || 'AI Tool Breakdown';
       const box = document.getElementById('studio-caption-box');
       showToast('Generating dynamic caption & 3-tier viral hashtags...', 'info');
 
@@ -4502,10 +4890,9 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       const r = runs.find(x => x.date === runDate);
       if (r) {
         const topInput = document.getElementById('studio-topic-input');
-        const pilSelect = document.getElementById('studio-pillar-select');
         const capBox = document.getElementById('studio-caption-box');
         if (topInput && r.topic) topInput.value = r.topic;
-        if (pilSelect && r.pillar) pilSelect.value = r.pillar;
+        if (r.pillar) { const _pp = document.querySelector(`.pillar-pill[data-pillar="${r.pillar}"]`); if (_pp) selectStudioPillar(_pp); }
         if (capBox) {
           capBox.value = r.caption || '';
           if (!capBox.value) {
@@ -4628,8 +5015,8 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       const explainer = document.getElementById('pipeline-mode-explainer');
 
       if (mode === 'dry-run') {
-        dryBtn.style.borderColor = 'var(--cyan)';
-        dryBtn.style.color = 'var(--cyan)';
+        dryBtn.style.borderColor = 'var(--neon-cyan)';
+        dryBtn.style.color = 'var(--neon-cyan)';
         liveBtn.style.borderColor = '';
         liveBtn.style.color = '';
         explainer.textContent = '✓ Safe Mode: executes complete research, scoring, drafting, QA evaluation, and slide rendering without calling Instagram API.';
@@ -4647,7 +5034,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       document.getElementById('btn-exec-pipeline').disabled = true;
       document.getElementById('btn-stop-pipeline').disabled = false;
       document.getElementById('pipeline-status-badge').textContent = 'RUNNING';
-      document.getElementById('pipeline-status-badge').style.color = 'var(--cyan)';
+      document.getElementById('pipeline-status-badge').style.color = 'var(--neon-cyan)';
       clearPipelineLog();
       startPolling();
 
@@ -4707,7 +5094,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         badge.textContent = d.status.toUpperCase();
 
         if (d.status === 'running') {
-          badge.style.color = 'var(--cyan)';
+          badge.style.color = 'var(--neon-cyan)';
           document.getElementById('btn-exec-pipeline').disabled = true;
           document.getElementById('btn-stop-pipeline').disabled = false;
         } else {
@@ -4848,7 +5235,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           card.innerHTML = `
             <div class="doppel-core vault-card">
               <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span style="font-family:var(--font-mono);font-size:11px;color:var(--cyan);font-weight:700;">${run.date}</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--neon-cyan);font-weight:700;">${run.date}</span>
                 <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--bg-surface-elev);color:var(--emerald);">QA: ${run.qa_score || 94}/100</span>
               </div>
               <h4 style="font-family:var(--font-display);font-size:15px;color:#fff;line-height:1.3;">${run.topic || 'Autonomous Run'}</h4>
@@ -4921,10 +5308,10 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           div.innerHTML = `
             <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
               <span>${p}</span>
-              <span style="font-family:var(--font-mono);color:var(--cyan)">16.6% Target</span>
+              <span style="font-family:var(--font-mono);color:var(--neon-cyan)">16.6% Target</span>
             </div>
             <div style="height:6px;background:var(--bg-surface-elev);border-radius:3px;overflow:hidden;">
-              <div style="width:16.6%;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:3px;"></div>
+              <div style="width:16.6%;height:100%;background:linear-gradient(90deg,var(--neon-cyan),var(--violet));border-radius:3px;"></div>
             </div>
           `;
           pCont.appendChild(div);
@@ -4937,7 +5324,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           const item = document.createElement('div');
           item.style.cssText = 'padding:10px 14px;background:var(--bg-surface-elev);border-radius:10px;border:1px solid var(--border-inner);';
           item.innerHTML = `
-            <div style="font-size:11px;font-family:var(--font-mono);color:var(--cyan)">${post.date} · ${post.pillar}</div>
+            <div style="font-size:11px;font-family:var(--font-mono);color:var(--neon-cyan)">${post.date} · ${post.pillar}</div>
             <div style="font-weight:600;color:#fff;font-size:13px;margin-top:2px;">${post.topic}</div>
           `;
           mCont.appendChild(item);
@@ -4957,7 +5344,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           const row = document.createElement('div');
           row.style.cssText = 'display:grid;grid-template-columns:220px 1fr 40px;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);';
           row.innerHTML = `
-            <span style="font-family:var(--font-mono);font-size:12px;color:var(--cyan)">${key}</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--neon-cyan)">${key}</span>
             <input type="${obj.redacted ? 'password' : 'text'}" class="form-input" id="env-input-${key}" value="${obj.value}" />
             <button class="btn btn-sm btn-ghost" onclick="toggleMask('env-input-${key}')" title="Show/Hide">👁</button>
           `;
@@ -5027,6 +5414,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     function setStudioMode(mode) {
       playSound('click');
+      if (mode === 'pro' && !requireTier('pro_mode', 'Pro Mission Control')) return;
       currentStudioMode = mode;
       localStorage.setItem('autogram_studio_mode', mode);
 
@@ -5055,6 +5443,38 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // MULTI-USER AUTHENTICATION & ACCESS CONTROL
     // ═══════════════════════════════════════════════════════════════════════
     let currentAuthTab = 'login';
+
+    // ── Tier Enforcement ─────────────────────────────────────────────
+    const TIER_LEVELS = { starter: 0, growth: 1, agency_pro: 2, owner: 3, admin: 3 };
+    const FEATURE_GATES = {
+      pro_mode:       1,  // growth+
+      providers_hub:  1,  // growth+
+      unlimited_prompts: 1, // growth+
+      auto_dm:        2,  // agency_pro+
+      multi_account:  2,  // agency_pro+
+    };
+
+    function getUserTierLevel() {
+      if (!currentUser) return -1;
+      return TIER_LEVELS[currentUser.tier] ?? 0;
+    }
+
+    function canAccessFeature(feature) {
+      const required = FEATURE_GATES[feature];
+      if (required === undefined) return true;
+      const level = getUserTierLevel();
+      if (level < 0) return false; // not logged in
+      if (level >= 3) return true;  // owner/admin bypass
+      return level >= required;
+    }
+
+    function requireTier(feature, label) {
+      if (canAccessFeature(feature)) return true;
+      const tierNames = { 1: 'Growth ($79/mo)', 2: 'Agency Pro ($199/mo)' };
+      const needed = tierNames[FEATURE_GATES[feature]] || 'Higher tier';
+      showToast(`${label || 'This feature'} requires ${needed} plan. Upgrade in Settings.`, 'error');
+      return false;
+    }
 
     function getAuthHeaders() {
       const token = localStorage.getItem('autogram_session_token');
@@ -5142,7 +5562,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       const title = document.getElementById('auth-modal-title');
 
       if (tab === 'login') {
-        tabLogin.style.background = 'var(--cyan)';
+        tabLogin.style.background = 'var(--neon-cyan)';
         tabLogin.style.color = '#03131e';
         tabLogin.style.fontWeight = '700';
         tabSignup.style.background = 'transparent';
@@ -5152,7 +5572,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         submitBtn.innerHTML = '<span>Sign In</span>';
         title.textContent = 'Sign In to Autogram';
       } else {
-        tabSignup.style.background = 'var(--cyan)';
+        tabSignup.style.background = 'var(--neon-cyan)';
         tabSignup.style.color = '#03131e';
         tabSignup.style.fontWeight = '700';
         tabLogin.style.background = 'transparent';
@@ -5250,7 +5670,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <td style="font-weight:700;color:#fff;">${escapeHtml(u.username)}</td>
               <td style="color:var(--text-secondary);font-size:12px;">${escapeHtml(u.email || '—')}</td>
               <td><span class="user-role-tag ${u.role === 'admin' ? 'user-role-admin' : 'user-role-starter'}">${u.role.toUpperCase()}</span></td>
-              <td><span style="font-weight:700;color:var(--cyan);">${(u.tier || 'starter').toUpperCase()}</span></td>
+              <td><span style="font-weight:700;color:var(--neon-cyan);">${(u.tier || 'starter').toUpperCase()}</span></td>
               <td>
                 <select class="form-select" style="padding:4px 8px;font-size:11px;" onchange="updateUserTier(${u.id}, this.value)">
                   <option value="starter" ${u.tier === 'starter' ? 'selected' : ''}>Starter ($29)</option>
@@ -5289,6 +5709,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
     // ═══════════════════════════════════════════════════════════════════════
     function openProvidersHub() {
       playSound('click');
+      if (!requireTier('providers_hub', 'AI Providers Hub')) return;
       const modal = document.getElementById('providers-modal');
       if (modal) modal.classList.add('open');
       loadProviders();
@@ -5513,6 +5934,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
 
     function openPromptsModal() {
       playSound('click');
+      if (!requireTier('unlimited_prompts', 'Prompt Library')) return;
       const modal = document.getElementById('prompts-modal');
       if (modal) modal.classList.add('open');
       if (!allPromptsData.categories || allPromptsData.categories.length === 0) {
@@ -5554,7 +5976,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               <span style="font-weight:700;font-size:14px;color:#fff;">${escapeHtml(p.title)}</span>
               <span class="slot-pillar" style="font-size:10px;">${escapeHtml(p.categoryName)}</span>
             </div>
-            <div style="font-size:12px;color:var(--cyan);margin-bottom:6px;font-style:italic;">"${escapeHtml(p.hook)}"</div>
+            <div style="font-size:12px;color:var(--neon-cyan);margin-bottom:6px;font-style:italic;">"${escapeHtml(p.hook)}"</div>
             <div style="font-size:11px;color:var(--text-muted);">${(p.slides_outline || []).slice(0, 3).join(' · ')}...</div>
           </div>
           <button class="btn-3d btn-3d-cyan" style="padding:8px 14px;font-size:11px;" onclick="applyPrompt('${p.id}')">
@@ -5649,7 +6071,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
               ${t.name}
             </div>
             <div style="font-weight:700;font-size:13px;color:#fff;">${t.name}</div>
-            <div style="font-size:11px;color:var(--cyan);">${t.category} · ${t.default_slides} Slides</div>
+            <div style="font-size:11px;color:var(--neon-cyan);">${t.category} · ${t.default_slides} Slides</div>
             <p style="font-size:11px;color:var(--text-secondary);line-height:1.4;margin:6px 0;">${t.description}</p>
             <button class="btn-3d btn-3d-cyan" style="width:100%;padding:6px;font-size:11px;margin-top:8px;" onclick="applyTemplate('${t.id}')">
               <span>Use Template</span>
@@ -5733,7 +6155,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       const previewDeck = document.getElementById('simple-preview-deck');
 
       statusEl.textContent = 'Synthesizing 7-10 slide viral carousel...';
-      statusEl.style.color = 'var(--cyan)';
+      statusEl.style.color = 'var(--neon-cyan)';
       genBtn.disabled = true;
 
       try {
@@ -5905,5 +6327,6 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
       }
     });
   </script>
+  <script src="js/premium.js" defer></script>
 </body>
 </html>
