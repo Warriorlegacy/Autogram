@@ -450,7 +450,8 @@ def run_story_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
 
 def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
     """Executes the autonomous Instagram Reel pipeline: script -> MPT 9:16 MP4 -> stage -> publish."""
-    from src.content.mpt_client import mpt_client, watermark_reel
+    from src.content.cloud_render import render_reel_auto
+    from src.content.mpt_client import watermark_reel
 
     today_str = datetime.now().strftime("%Y-%m-%d")
     out_dir = OUTPUT_BASE / today_str
@@ -502,13 +503,8 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
         logger.info("[DRY-RUN] Skipping MPT render; simulating local MP4 artifact.")
         reel_filepath.write_bytes(b"")  # placeholder so manifest paths resolve
     else:
-        if not mpt_client.is_available():
-            raise RuntimeError(
-                "MoneyPrinterTurbo server is not reachable at "
-                f"{mpt_client.base_url}. Start it with start_mpt.bat (D:\\MoneyPrinterTurbo) and retry."
-            )
-        logger.info(f"Rendering 9:16 Reel MP4 via MoneyPrinterTurbo -> {reel_filepath.name}...")
-        mpt_client.render_reel(
+        logger.info(f"Rendering 9:16 Reel MP4 (MPT when local, cloud lane otherwise) -> {reel_filepath.name}...")
+        render_reel_auto(
             script=reel_script["narration"],
             subject=reel_script["subject"],
             dest=reel_filepath,
@@ -550,7 +546,8 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
 
 def run_shorts_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
     """Executes the autonomous YouTube Shorts pipeline: script -> MPT 9:16 MP4 -> upload to Shorts."""
-    from src.content.mpt_client import mpt_client, watermark_reel
+    from src.content.cloud_render import render_reel_auto
+    from src.content.mpt_client import watermark_reel
     from src.youtube.shorts_publisher import youtube_publisher
 
     today_str = datetime.now().strftime("%Y-%m-%d")
@@ -598,13 +595,8 @@ def run_shorts_pipeline(dry_run: bool = False, custom_topic: str | None = None, 
         logger.info("[DRY-RUN] Skipping MPT render; simulating local MP4 artifact.")
         shorts_filepath.write_bytes(b"")
     else:
-        if not mpt_client.is_available():
-            raise RuntimeError(
-                "MoneyPrinterTurbo server is not reachable at "
-                f"{mpt_client.base_url}. Start it with start_mpt.bat (D:\\MoneyPrinterTurbo) and retry."
-            )
-        logger.info(f"Rendering 9:16 Short MP4 via MoneyPrinterTurbo -> {shorts_filepath.name}...")
-        mpt_client.render_reel(
+        logger.info(f"Rendering 9:16 Short MP4 (MPT when local, cloud lane otherwise) -> {shorts_filepath.name}...")
+        render_reel_auto(
             script=reel_script["narration"],
             subject=reel_script["subject"],
             dest=shorts_filepath,

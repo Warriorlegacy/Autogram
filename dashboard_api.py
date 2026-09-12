@@ -283,8 +283,11 @@ def scheduler_worker():
                 triggered_today = set()
                 last_day_str = current_date_str
 
-            # 1. Check daily recurring slots (Carousels)
-            active_slots = {s["slot"] for s in sched.get("daily_slots", []) if s.get("enabled", True)}
+            # 1. Check daily recurring slots (Carousels). Gated by slots_enabled
+            # (default False): cloud cron-job.org owns scheduled publishing so a
+            # local dashboard can never double-post. Queue items below still run.
+            slots_on = bool(sched.get("slots_enabled", False))
+            active_slots = {s["slot"] for s in sched.get("daily_slots", []) if s.get("enabled", True)} if slots_on else set()
             if current_time_str in active_slots and current_time_str not in triggered_today:
                 triggered_today.add(current_time_str)
                 slot_cfg = next((s for s in sched.get("daily_slots", []) if s.get("slot") == current_time_str), {})
@@ -299,8 +302,8 @@ def scheduler_worker():
                     content_format="carousel"
                 )
 
-            # 1b. Check daily recurring Story slots
-            active_story_slots = {s["slot"] for s in sched.get("story_slots", []) if s.get("enabled", True)}
+            # 1b. Check daily recurring Story slots (also gated by slots_enabled)
+            active_story_slots = {s["slot"] for s in sched.get("story_slots", []) if s.get("enabled", True)} if slots_on else set()
             story_key = f"story_{current_time_str}"
             if current_time_str in active_story_slots and story_key not in triggered_today:
                 triggered_today.add(story_key)
@@ -316,8 +319,8 @@ def scheduler_worker():
                     content_format="story"
                 )
 
-            # 1c. Check daily recurring Video slots (10x Daily Shorts & Reels)
-            active_video_slots = {s["slot"] for s in sched.get("video_slots", []) if s.get("enabled", True)}
+            # 1c. Check daily recurring Video slots (also gated by slots_enabled)
+            active_video_slots = {s["slot"] for s in sched.get("video_slots", []) if s.get("enabled", True)} if slots_on else set()
             video_key = f"video_{current_time_str}"
             if current_time_str in active_video_slots and video_key not in triggered_today:
                 triggered_today.add(video_key)

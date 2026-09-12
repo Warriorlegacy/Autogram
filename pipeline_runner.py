@@ -27,7 +27,8 @@ logger = logging.getLogger("PipelineRunner")
 # Import core subsystems
 from src.config import settings
 from src.content.generator import generator
-from src.content.mpt_client import mpt_client, watermark_reel
+from src.content.cloud_render import render_reel_auto
+from src.content.mpt_client import watermark_reel
 from src.storage.uploader import uploader
 from src.instagram.publisher import publisher
 from src.youtube.shorts_publisher import youtube_publisher
@@ -84,19 +85,14 @@ def execute_autonomous_run(
     timestamp = int(time.time())
     dest_video_path = out_dir / f"video_{timestamp}.mp4"
 
-    # 3. Video Rendering via MoneyPrinterTurbo
-    logger.info("Phase 2: MoneyPrinterTurbo 9:16 Video Rendering...")
+    # 3. Video Rendering (MPT when local, cloud lane otherwise)
+    logger.info("Phase 2: 9:16 Video Rendering...")
     if dry_run:
-        logger.info("[DRY-RUN] Skipping actual MPT render; generating placeholder MP4.")
+        logger.info("[DRY-RUN] Skipping actual render; generating placeholder MP4.")
         dest_video_path.write_bytes(b"")
     else:
-        if not mpt_client.is_available():
-            raise RuntimeError(
-                f"MoneyPrinterTurbo server is not reachable at {mpt_client.base_url}. "
-                "Start it with 'start_mpt.bat' or 'python -m uvicorn app.main:app --port 8080' and retry."
-            )
-        logger.info(f"Rendering 9:16 video via MPT server: voice='en-US-ChristopherNeural'...")
-        mpt_client.render_reel(
+        logger.info(f"Rendering 9:16 video (MPT when local, cloud lane otherwise)...")
+        render_reel_auto(
             script=script_meta["narration"],
             subject=script_meta["subject"],
             dest=dest_video_path,

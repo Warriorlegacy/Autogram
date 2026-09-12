@@ -1,11 +1,14 @@
 name: Daily Autonomous Video Autopilot (Shorts & Reels)
 
 on:
-  # NOTE: The 10 daily video slots run on the owner's local PC via Windows
-  # Scheduled Tasks (run_video_slot.bat) because MoneyPrinterTurbo is a
-  # localhost-only render server unreachable from GitHub runners.
-  # CI keeps manual dispatch for dry-run validation only (no `schedule` here
-  # by design — scheduled CI runs would fail closed on MPT health check).
+  schedule:
+    # 4 Daily Cloud Video Slots (Asia/Kolkata) — PC-off proof, $0 CI-lite lane
+    # (Pexels + edge-TTS + FFmpeg on the runner; MPT stays the local quality path).
+    # Free-minutes math: ~5 min/run x 4 x 30 ~= 600/mo; stories+carousels ~= 945/mo.
+    - cron: "0 2 * * *"    # 07:30 IST — Morning reel
+    - cron: "0 7 * * *"    # 12:30 IST — Midday reel
+    - cron: "0 12 * * *"   # 17:30 IST — Evening reel
+    - cron: "0 16 * * *"   # 21:30 IST — Night reel
   workflow_dispatch:
     inputs:
       destination:
@@ -74,6 +77,10 @@ jobs:
       - name: Execute Autonomous Video Publishing Pipeline
         timeout-minutes: 20
         run: |
+          if [ -z "${PEXELS_API_KEY}" ]; then
+            echo "PEXELS_API_KEY repo secret is empty — cloud render needs a free key from pexels.com/api. Failing with guidance."
+            exit 1
+          fi
           DEST="${{ github.event.inputs.destination || 'all' }}"
           MODE="${{ github.event.inputs.mode || 'live' }}"
           TOPIC="${{ github.event.inputs.topic || '' }}"

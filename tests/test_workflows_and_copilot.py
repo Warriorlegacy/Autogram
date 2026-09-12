@@ -33,9 +33,8 @@ def test_workflow_contents():
     assert "daily-story-artifacts" in story_content
     assert "GITHUB_COPILOT_TOKEN" in story_content
 
-    # Video workflow checks (manual-dispatch only by design: MPT is localhost-only,
-    # the 10 daily video slots run via local Windows Scheduled Tasks)
-    assert "workflow_dispatch" in video_content
+    # Video workflow checks (4 cloud render slots; MPT stays the local quality path)
+    assert "cron:" in video_content
     assert "--video" in video_content or "--reel" in video_content
     assert "publish-video" in video_content
     assert "daily-video-artifacts" in video_content

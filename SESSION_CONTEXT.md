@@ -142,11 +142,12 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 4. Test Suite & Verification Status
 
-### All Tests (99/101 passing — 2 pre-existing failures, both fail on pristine tree)
+### All Tests (118/120 passing — 2 pre-existing failures, both fail on pristine tree)
+- `tests/test_cloud_render.py` — 5/5 (PEXELS key guard, colon-free filter regression, MPT-preferred + cloud-fallback routing, assembly wiring)
+- `tests/test_guardian.py` — 5/5 (retry success/exhaustion, quota skip/allow, ALERTS.log fallback, janitor)
 - `tests/test_reel_pipeline.py` — 9/9 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow)
 - `tests/test_workflows_and_copilot.py` — 5/5 (daily-story.yml & daily-video.yml validation, Settings GITHUB_COPILOT_TOKEN, GitHub Models preset, unauthorized handling)
 - `tests/test_youtube_shorts.py` — 5/5 (shorts publisher dry-run, title formatting, missing creds handling, `/api/publish/shorts`, `/api/publish/video`)
-- `tests/test_reel_pipeline.py` — 9/9 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow)
 - `tests/test_blueprint_and_gate.py` — 7/7 (BLUEPRINT taxonomy, gate withholds link, claim delivers, FOSS ungated, studio strings, Anton payload, committed assets)
 - `tests/test_responsive_ui.py` — 5/5 (mobile responsive elements, hamburger nav, double-api normalization, synthesize endpoint)
 - `tests/test_auth_and_providers.py` — 20/20
@@ -160,7 +161,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-**Total:** 108/110 passing. Pre-existing failures (verified failing on pristine `880eb62` tree, unrelated to reel/video work):
+**Total:** 118/120 passing. Pre-existing failures (verified failing on pristine `880eb62` tree, unrelated to reel/video work):
 - `test_orchestrator.py::test_full_pipeline_dry_run` (assertion on live-LLM output)
 - `test_story_pipeline.py::test_schedule_json_has_seven_story_slots_and_queue` (`story_slots` key absent from committed `schedule.json`; some test side-effect flips `scheduler_enabled` — restore the file after suite runs)
 
@@ -221,6 +222,15 @@ orchestrator.py --video (or pipeline_runner.py --now)
   - `generate_reel_script()` appends `🚀 Built by @signhify.studio — AI Marketing Agency | 🔗 signhify.studio` to every caption.
   - Story default CTA is now `Follow @signhify.studio · AI Marketing Agency — Link in Bio` (template already carried `@signhify.studio` handle + `SIGNHIFY.STUDIO` subtext).
 - **Minutes math (GH free tier 2000/mo):** stories ~315 + carousels ~630 + videos 0 (local) ≈ 945/mo — SAFE.
+
+### PC-Off Autonomy: Cloud Owns Everything (latest session)
+User constraint: posting must continue **with the PC turned off**. Redesign:
+- **Cloud video lane** (`src/content/cloud_render.py`): Pexels portrait stock + edge-TTS voiceover/SRT + FFmpeg 9:16 assembly (Anton captions, watermark) — proven with a real 1080×1920 15.7s render, zero MPT involvement. `render_reel_auto()` picks MPT when local, cloud otherwise (wired into `--reel`/`--shorts`/`--video`).
+- **ffmpeg gotcha (documented):** this build misparses drive-colon absolute paths inside `subtitles`/`drawtext` options even quoted/escaped — assembly runs with `cwd=workdir` and bare relative names (regression-tested).
+- **4 cloud video slots** in `daily-video.yml` (07:30/12:30/17:30/21:30 IST; ~600 free-min/mo; PEXELS-empty guard fails with guidance). PEXELS_API_KEY confirmed present in repo secrets.
+- **Local auto-publish disarmed** (single-source doctrine): 10 schtasks deleted, `start_autogram.bat` no longer launches `--schedule`, dashboard slot auto-fire gated behind `slots_enabled` (default false; queue + auto-DM unaffected). `run_video_slot.bat`/MPT autostart stay for manual top-ups.
+- **Robustness core** (`src/ops/guardian.py`, built by agent, 5/5): `with_retries`, `ensure_quota`/`SlotSkipped`, `send_alert` (Telegram when configured, else `output/ALERTS.log`), `janitor` (old output dirs + MPT mp4s). No Telegram/webhook tokens configured — alerts currently file-local.
+- **Minutes math revised:** stories ~315 + carousels ~630 + 4 videos ~600 ≈ 1545/2000 — SAFE with retry headroom.
 - **YouTube pending:** no local `youtube_token.json`/`client_secrets.json` — Shorts legs fail gracefully per-destination until one-time OAuth setup is done; Reels unaffected.
 
 ### Follow-Gated Blueprint + Studio Reposition (latest session)
