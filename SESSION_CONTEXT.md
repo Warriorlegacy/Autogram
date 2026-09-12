@@ -1,11 +1,12 @@
 # Autogram — Session Context & Master State
 
-> **Last Updated:** 2026-09-12 16:37 IST  
-> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `c693ee8`)  
+> **Last Updated:** 2026-09-12 23:15 IST  
+> **Repository:** `Warriorlegacy/Autogram` (`main` branch - commit `74f816f`)  
 > **Target Profile:** `@signhify.studio`  
-> **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED** (7 Daily Story Drops + 7 Carousel Slots via cron-job.org dispatches; 1080x1920 9:16 Story rendering + Meta Graph API Story publishing)  
-> **Reels Video Pipeline ($0, PC-off proof):** **LIVE-PROVEN** (MPT reel `18084132620498378`, agency reel `18038336954832825`, agency story `18137079703621760`; 4 daily cloud renders via GitHub Actions; MPT-first smart fallback; every reel watermarked + captioned for @signhify.studio)
-> **Blueprint Follow-Gate:** **ARMED** (`BLUEPRINT` keyword → follow-gate ask → `FOLLOWED` claim → DM with `BLUEPRINT.md`/`.pdf` links; two-step claim because Meta exposes no followers endpoint)
+> **Stories & Carousels Publishing & Auto-Scheduling:** **100% OPERATIONAL & VERIFIED LIVE** (Live Feed Carousel `18123931462658313`, First Comment `18120073639927802`, Public Reply `18206766595363892`; 7 Daily Story Drops + 7 Carousel Slots via cron-job.org dispatches)  
+> **Workflows Execution Policy:** **ALWAYS-LIVE ENFORCED** (`daily-post.yml`, `daily-story.yml`, `daily-video.yml` hardcoded to `--run-all` and `DRY_RUN=false`)  
+> **Reels Video Pipeline ($0, PC-off proof):** **LIVE-PROVEN** (MPT reel `18084132620498378`, agency reel `18038336954832825`, agency story `18137079703621760`; 4 daily cloud renders via GitHub Actions; MPT-first smart fallback; every reel watermarked + captioned for @signhify.studio)  
+> **Blueprint Follow-Gate:** **ARMED** (`BLUEPRINT` keyword → follow-gate ask → `FOLLOWED` claim → DM with `BLUEPRINT.md`/`.pdf` links; two-step claim because Meta exposes no followers endpoint)  
 > **Studio Positioning:** **FULL AI ENGINEERING STUDIO** (all reel captions, story CTAs, brand.json, blueprint assets)  
 > **Render Production Dashboard:** **LIVE & HEALTHY** (`https://autogram-dashboard.onrender.com/dashboard`)  
 > **Vercel Production Landing:** **LIVE & READY** (`https://autogram-ai.vercel.app`)  
@@ -97,19 +98,31 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - **Inline auth modal:** Login + signup tabs, calls `/api/auth/login` and `/api/auth/signup`.
 - **Auto-redirect:** After successful auth, redirects to `dashboard.html`.
 
-### Files Modified in Current Update
+### H. Crawler-Friendly CDN Architecture (Meta Error 9004 / 2207052 Resolution)
+- **Problem:** Meta Graph API container creation failed intermittently with error code 9004 / subcode 2207052 (`Only photo or video can be accepted as media type` / `Media download failed`). This occurred when using image hosts with Cloudflare Turnstile bot challenges (such as `i.ibb.co`), blocking Meta's crawler (`facebookexternalhit`).
+- **Resolution:**
+  - Added `prefer_crawler_cdn=True` option in `src/storage/uploader.py` to route Instagram images directly to raw crawler-friendly CDNs (`freeimage.host` / `https://iili.io/...` and `catbox.moe`).
+  - Implemented automatic retry loop in `src/instagram/publisher.py` with exponential backoff (up to 3 retries) on download-wait subcodes (`2207003`) and download failures (`2207052`).
+  - Wired `prefer_crawler_cdn=True` across `orchestrator.py` (carousel and story publishing) and `dashboard_api.py`.
+
+### I. Enforced Live-Only Production Workflows
+- **Policy:** To prevent accidental dry-run executions, all GitHub Actions publishing workflows (`daily-post.yml`, `daily-story.yml`, `daily-video.yml`) are hard-locked to live execution:
+  - Command arguments hardcoded to `--run-all` (`python orchestrator.py --run-all`).
+  - UI `mode` choices restricted to `live` only (removing `dry-run` to eliminate unintended test runs in production).
+  - Runner environment explicitly hardcoded with `DRY_RUN: 'false'`.
+  - Fail-safe fallback to Render live webhook backend if runner lacks `IG_ACCESS_TOKEN`.
+
+### Files Modified in Latest Update
 | File | What Changed |
 |---|---|
-| `.env` & `.env.example` | Added `IMGBB_API_KEY=f0ee2a304a71d5b2da983153c2284b73` |
-| `src/config.py` | Added default `imgbb_api_key="f0ee2a304a71d5b2da983153c2284b73"` |
-| `src/storage/uploader.py` | Prioritized authenticated IMGBB upload at top of cloud CDN cascade |
-| `.github/workflows/daily-post.yml` | Injected `IMGBB_API_KEY` into workflow environment |
-| `js/three-scene.js` | Upgraded to multi-tier quantum core with theme-reactive palette observer |
-| `css/landing.css` | Added 5-theme spatial picker dropdown styles |
-| `index.html` | Added 5-theme spatial picker dropdown in navbar |
-| `js/app.js` | Added full `THEME_MAP`, `toggleThemePicker()`, outside click dismissal |
-| `tests/test_image_and_scripts.py` | Added 3 tests: IMGBB prioritization, landing theme picker, three-scene theme reactivity |
-| `SESSION_CONTEXT.md` | Documented IMGBB fix, 3D theme engine, and test totals (64/64) |
+| `.github/workflows/daily-post.yml` | Locked to `--run-all`, restricted mode to `live`, set `DRY_RUN: 'false'` |
+| `.github/workflows/daily-story.yml` | Locked to `--story --run-all`, restricted mode to `live`, set `DRY_RUN: 'false'` |
+| `.github/workflows/daily-video.yml` | Locked to `$FLAG --run-all`, restricted mode to `live`, set `DRY_RUN: 'false'` |
+| `src/storage/uploader.py` | Added `prefer_crawler_cdn` flag prioritizing direct raw CDNs (`freeimage.host`, `catbox.moe`) for Meta |
+| `src/instagram/publisher.py` | Added 3-attempt exponential backoff retry loop for container creation |
+| `orchestrator.py` | Passed `prefer_crawler_cdn=True` for carousel and story slide uploads |
+| `dashboard_api.py` | Passed `prefer_crawler_cdn=True` for API story and carousel uploads |
+| `SESSION_CONTEXT.md` | Documented crawler CDN architecture, live publication proof, and live workflow enforcement |
 
 ---
 
@@ -256,9 +269,8 @@ User constraint: posting must continue **with the PC turned off**. Redesign:
 
 ---
 
-## 7. Critical Runtime Quirks
-
-- **LIVE is the default everywhere.** `DRY_RUN` repo secret is pinned `false`; local `.env` is `false`. Pipelines go live on schedule/dispatch; dry-run only via explicit `--dry-run` / `"mode": "dry-run"`. (Meta token + IG creds still required for live legs.)
+- **LIVE is enforced across CI workflows.** GitHub Actions workflows (`daily-post.yml`, `daily-story.yml`, `daily-video.yml`) are locked to `--run-all` with `DRY_RUN='false'` hardcoded in the runner environment. The `dry-run` option is removed from the GitHub Actions UI. Dry-run mode is only available when intentionally invoked locally via CLI (`python orchestrator.py --dry-run`).
+- **Crawler-Friendly CDN Routing:** Feed carousels and story drops upload via `prefer_crawler_cdn=True` (`freeimage.host` / `catbox.moe`) to bypass Cloudflare Turnstile blocks on Meta crawler `facebookexternalhit`, preventing Meta 9004 / 2207052 errors.
 - **Timezone is `Asia/Kolkata`.** All scheduler slot calculations use IST.
 - **Renderer needs outbound network.** Loads Google Fonts from CDN.
 - **No async/await anywhere.** Everything is synchronous `requests` + `subprocess.Popen`.
