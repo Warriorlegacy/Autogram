@@ -18,6 +18,11 @@ from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from src.ops.guardian import send_alert
 
 from src.auth.user_manager import user_manager, verify_session_token, TIERS
 from src.content.providers_manager import (
@@ -838,6 +843,7 @@ def api_publish_story():
     except Exception as e:
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [STORY PUBLISH ERROR] {e}")
+        send_alert(f"🚨 Autogram story publish FAILED: {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
 
 @app.route("/api/publish/reel", methods=["POST"])
@@ -867,6 +873,7 @@ def api_publish_reel():
     except Exception as e:
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [REEL PUBLISH ERROR] {e}")
+        send_alert(f"🚨 Autogram reel publish FAILED: {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
 
 
@@ -895,6 +902,7 @@ def api_publish_shorts():
     except Exception as e:
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [SHORTS PUBLISH ERROR] {e}")
+        send_alert(f"🚨 Autogram shorts publish FAILED: {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
 
 
@@ -927,6 +935,7 @@ def api_publish_video():
     except Exception as e:
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [DUAL VIDEO PUBLISH ERROR] {e}")
+        send_alert(f"🚨 Autogram dual-video publish FAILED: {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
 
 

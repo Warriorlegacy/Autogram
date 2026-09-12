@@ -142,7 +142,8 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 4. Test Suite & Verification Status
 
-### All Tests (118/120 passing — 2 pre-existing failures, both fail on pristine tree)
+### All Tests (123/125 passing — 2 pre-existing failures, both fail on pristine tree)
+- `tests/test_run_guards.py` — 5/5 (quota skip manifest, headroom proceeds, dispatch alert+reraise, passthrough silence, SlotSkipped silence)
 - `tests/test_cloud_render.py` — 5/5 (PEXELS key guard, colon-free filter regression, MPT-preferred + cloud-fallback routing, assembly wiring)
 - `tests/test_guardian.py` — 5/5 (retry success/exhaustion, quota skip/allow, ALERTS.log fallback, janitor)
 - `tests/test_reel_pipeline.py` — 9/9 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution, cap-guard block + allow)
@@ -161,7 +162,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-**Total:** 118/120 passing. Pre-existing failures (verified failing on pristine `880eb62` tree, unrelated to reel/video work):
+**Total:** 123/125 passing. Pre-existing failures (verified failing on pristine `880eb62` tree, unrelated to reel/video work):
 - `test_orchestrator.py::test_full_pipeline_dry_run` (assertion on live-LLM output)
 - `test_story_pipeline.py::test_schedule_json_has_seven_story_slots_and_queue` (`story_slots` key absent from committed `schedule.json`; some test side-effect flips `scheduler_enabled` — restore the file after suite runs)
 
@@ -230,6 +231,7 @@ User constraint: posting must continue **with the PC turned off**. Redesign:
 - **4 cloud video slots** in `daily-video.yml` (07:30/12:30/17:30/21:30 IST; ~600 free-min/mo; PEXELS-empty guard fails with guidance). PEXELS_API_KEY confirmed present in repo secrets.
 - **Local auto-publish disarmed** (single-source doctrine): 10 schtasks deleted, `start_autogram.bat` no longer launches `--schedule`, dashboard slot auto-fire gated behind `slots_enabled` (default false; queue + auto-DM unaffected). `run_video_slot.bat`/MPT autostart stay for manual top-ups.
 - **Robustness core** (`src/ops/guardian.py`, built by agent, 5/5): `with_retries`, `ensure_quota`/`SlotSkipped`, `send_alert` (Telegram when configured, else `output/ALERTS.log`), `janitor` (old output dirs + MPT mp4s). No Telegram/webhook tokens configured — alerts currently file-local.
+- **Guard wiring (latest session):** every pipeline (carousel/story/reel/shorts/dual-video) runs janitor + IG quota precheck first (exhausted quota returns a `skipped` manifest, exit 0, no alert spam); renders/uploads retry 3×; any failure fires `send_alert` from CLI dispatch, `pipeline_runner` main, and all 4 dashboard publish endpoints. Telegram bot `signhifyauto_bot` validated; token in local `.env` (gitignored) + `TELEGRAM_BOT_TOKEN` repo secret; CI workflows map both Telegram vars. `DRY_RUN` repo secret forced `false`. **One step left for the user:** send `/start` to `@signhifyauto_bot` so the chat ID can be registered as `TELEGRAM_CHAT_ID`.
 - **Minutes math revised:** stories ~315 + carousels ~630 + 4 videos ~600 ≈ 1545/2000 — SAFE with retry headroom.
 - **YouTube pending:** no local `youtube_token.json`/`client_secrets.json` — Shorts legs fail gracefully per-destination until one-time OAuth setup is done; Reels unaffected.
 

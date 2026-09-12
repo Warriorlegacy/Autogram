@@ -25,7 +25,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger("Autogram")
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from src.config import settings
+from src.ops.guardian import SlotSkipped, ensure_quota, janitor, send_alert, with_retries
 from src.db.database import db
 from src.research.fetcher import fetcher
 from src.research.scorer import scorer, CONTENT_PILLARS
@@ -45,11 +50,49 @@ BASE_DIR = Path(__file__).parent
 OUTPUT_BASE = BASE_DIR / "output"
 BRAND_FILE = BASE_DIR / "data" / "brand.json"
 
+def _mpt_storage():
+    """Local MPT download cache for the janitor; None anywhere else (e.g. CI)."""
+    p = Path("D:/MoneyPrinterTurbo/storage")
+    return p if p.exists() else None
+
+
+def _slot_precheck(dry_run: bool, fmt: str, needs_ig_quota: bool = True) -> dict | None:
+    """Janitor + IG quota precheck shared by every publishing pipeline.
+
+    Returns a skipped-manifest dict when the slot must stand down (caller must
+    `return` it), else None to proceed.
+    """
+    janitor(OUTPUT_BASE, _mpt_storage())
+    if not needs_ig_quota:
+        return None
+    try:
+        ensure_quota(lambda: publisher.check_publishing_limit(), need=1)
+    except SlotSkipped as skipped:
+        logger.warning(f"Slot skipped (IG quota): {skipped}")
+        return {"status": "skipped", "format": fmt,
+                "mode": "dry-run" if dry_run else "live", "reason": str(skipped)}
+    return None
+
+
+def _run_guarded(label: str, dry_run: bool, fn):
+    """Runs a pipeline entry-point: Telegram/file alert on failure, then re-raise."""
+    try:
+        return fn()
+    except SlotSkipped:
+        raise
+    except Exception as e:
+        logger.error(f"Autogram {label} run FAILED: {e}")
+        send_alert(f"🚨 Autogram {label} run FAILED ({'dry-run' if dry_run else 'LIVE'}): {e}")
+        raise
+
 def run_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
     """Executes the automated publishing pipeline for daily or targeted topics."""
     today_str = datetime.now().strftime("%Y-%m-%d")
     out_dir = OUTPUT_BASE / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
+    skipped = _slot_precheck(dry_run, "carousel")
+    if skipped:
+        return skipped
 
     logger.info("==================================================")
     logger.info(f"Starting Instagram AI Autopilot Run: {today_str}")
@@ -221,7 +264,7 @@ def run_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_
         brand_data = json.loads(BRAND_FILE.read_text(encoding="utf-8"))
 
     renderer = CarouselRenderer(brand_profile=brand_data)
-    rendered_image_paths = renderer.render_carousel(carousel, out_dir)
+    rendered_image_paths = with_retries(lambda: renderer.render_carousel(carousel, out_dir))
     logger.info(f"Successfully rendered {len(rendered_image_paths)} slides to {out_dir}")
 
     # Save content.json, caption.txt, and reels_script.md in output folder
@@ -281,7 +324,7 @@ def run_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_
 
     # 7. Asset Staging & Upload (Layer D)
     logger.info("Phase 7: Asset Staging / Upload...")
-    public_image_urls = uploader.upload_slide_images(rendered_image_paths, today_str, dry_run=dry_run)
+    public_image_urls = with_retries(lambda: uploader.upload_slide_images(rendered_image_paths, today_str, dry_run=dry_run))
 
     # 8. Distribution / Instagram Publishing (Layer D)
     logger.info("Phase 8: Meta Instagram Publishing Sequence...")
@@ -348,6 +391,9 @@ def run_story_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
     today_str = datetime.now().strftime("%Y-%m-%d")
     out_dir = OUTPUT_BASE / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
+    skipped = _slot_precheck(dry_run, "story")
+    if skipped:
+        return skipped
 
     logger.info("==================================================")
     logger.info(f"Starting Instagram Story AI Autopilot Run: {today_str}")
@@ -415,12 +461,12 @@ def run_story_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
 
     logger.info(f"Rendering 1080x1920 Instagram Story JPEG -> {story_filepath.name}...")
     renderer = CarouselRenderer()
-    renderer.render_story(story_data, story_filepath)
+    with_retries(lambda: renderer.render_story(story_data, story_filepath))
 
     # 4. Upload to CDN / Staging
     logger.info("Staging Story asset for Meta Graph API...")
     try:
-        image_urls = uploader.upload_slide_images([str(story_filepath)], today_str, dry_run=dry_run)
+        image_urls = with_retries(lambda: uploader.upload_slide_images([str(story_filepath)], today_str, dry_run=dry_run))
     except TypeError:
         image_urls = uploader.upload_slide_images([str(story_filepath)], today_str)
     public_story_url = image_urls[0]
@@ -456,6 +502,9 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
     today_str = datetime.now().strftime("%Y-%m-%d")
     out_dir = OUTPUT_BASE / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
+    skipped = _slot_precheck(dry_run, "reel")
+    if skipped:
+        return skipped
 
     logger.info("==================================================")
     logger.info(f"Starting Instagram Reel AI Autopilot Run: {today_str}")
@@ -504,18 +553,18 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
         reel_filepath.write_bytes(b"")  # placeholder so manifest paths resolve
     else:
         logger.info(f"Rendering 9:16 Reel MP4 (MPT when local, cloud lane otherwise) -> {reel_filepath.name}...")
-        render_reel_auto(
+        with_retries(lambda: render_reel_auto(
             script=reel_script["narration"],
             subject=reel_script["subject"],
             dest=reel_filepath,
-        )
+        ))
         logger.info("Burning signhify.studio watermark into Reel...")
         watermark_reel(reel_filepath)
 
     # 4. Stage MP4 for Meta Graph API ingestion
     logger.info("Staging Reel asset for Meta Graph API...")
     try:
-        public_reel_url = uploader.upload_video_file(str(reel_filepath), today_str, dry_run=dry_run)
+        public_reel_url = with_retries(lambda: uploader.upload_video_file(str(reel_filepath), today_str, dry_run=dry_run))
     except TypeError:
         public_reel_url = uploader.upload_video_file(str(reel_filepath), today_str)
 
@@ -553,6 +602,9 @@ def run_shorts_pipeline(dry_run: bool = False, custom_topic: str | None = None, 
     today_str = datetime.now().strftime("%Y-%m-%d")
     out_dir = OUTPUT_BASE / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
+    skipped = _slot_precheck(dry_run, "shorts", needs_ig_quota=False)
+    if skipped:
+        return skipped
 
     logger.info("==================================================")
     logger.info(f"Starting YouTube Shorts AI Autopilot Run: {today_str}")
@@ -596,11 +648,11 @@ def run_shorts_pipeline(dry_run: bool = False, custom_topic: str | None = None, 
         shorts_filepath.write_bytes(b"")
     else:
         logger.info(f"Rendering 9:16 Short MP4 (MPT when local, cloud lane otherwise) -> {shorts_filepath.name}...")
-        render_reel_auto(
+        with_retries(lambda: render_reel_auto(
             script=reel_script["narration"],
             subject=reel_script["subject"],
             dest=shorts_filepath,
-        )
+        ))
         logger.info("Burning signhify.studio watermark into Short...")
         watermark_reel(shorts_filepath)
 
@@ -828,27 +880,27 @@ def main():
 
     if args.story:
         dry = args.dry_run or (not args.run_all)
-        run_story_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+        _run_guarded("story", dry, lambda: run_story_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar))
         return
 
     if args.reel:
         dry = args.dry_run or (not args.run_all)
-        run_reel_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+        _run_guarded("reel", dry, lambda: run_reel_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar))
         return
 
     if args.shorts:
         dry = args.dry_run or (not args.run_all)
-        run_shorts_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+        _run_guarded("shorts", dry, lambda: run_shorts_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar))
         return
 
     if args.video:
         dry = args.dry_run or (not args.run_all)
-        run_video_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+        _run_guarded("video", dry, lambda: run_video_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar))
         return
 
     # Default action or --run-all / --dry-run
     dry = args.dry_run or (not args.run_all)
-    run_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+    _run_guarded("carousel", dry, lambda: run_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar))
 
 if __name__ == "__main__":
     main()

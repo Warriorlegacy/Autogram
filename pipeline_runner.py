@@ -29,6 +29,7 @@ from src.config import settings
 from src.content.generator import generator
 from src.content.cloud_render import render_reel_auto
 from src.content.mpt_client import watermark_reel
+from src.ops.guardian import SlotSkipped, ensure_quota, janitor, send_alert, with_retries
 from src.storage.uploader import uploader
 from src.instagram.publisher import publisher
 from src.youtube.shorts_publisher import youtube_publisher
@@ -78,10 +79,17 @@ def execute_autonomous_run(
     script_meta = generator.generate_reel_script(selected_topic, pillar)
     logger.info(f"Narration generated ({len(script_meta['narration'].split())} words): '{script_meta['subject']}'")
 
-    # 2. Setup Output Directory
+    # 2. Setup Output Directory (+ janitor + IG quota precheck for reels leg)
     today_str = datetime.now().strftime("%Y-%m-%d")
     out_dir = Path("output") / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
+    janitor(Path("output"), Path("D:/MoneyPrinterTurbo/storage") if Path("D:/MoneyPrinterTurbo/storage").exists() else None)
+    if "reels" in destinations:
+        try:
+            ensure_quota(lambda: publisher.check_publishing_limit(), need=1)
+        except SlotSkipped as skipped:
+            logger.warning(f"Slot skipped (IG quota): {skipped}")
+            return {"status": "skipped", "format": "video", "mode": "dry-run" if dry_run else "live", "reason": str(skipped)}
     timestamp = int(time.time())
     dest_video_path = out_dir / f"video_{timestamp}.mp4"
 
@@ -92,11 +100,11 @@ def execute_autonomous_run(
         dest_video_path.write_bytes(b"")
     else:
         logger.info(f"Rendering 9:16 video (MPT when local, cloud lane otherwise)...")
-        render_reel_auto(
+        with_retries(lambda: render_reel_auto(
             script=script_meta["narration"],
             subject=script_meta["subject"],
             dest=dest_video_path,
-        )
+        ))
         logger.info("Burning signhify.studio watermark into video...")
         watermark_reel(dest_video_path)
 
@@ -134,7 +142,7 @@ def execute_autonomous_run(
     if "reels" in destinations:
         logger.info("Phase 3b: Staging & Publishing Instagram Reel...")
         try:
-            public_video_url = uploader.upload_video_file(str(dest_video_path), today_str, dry_run=dry_run)
+            public_video_url = with_retries(lambda: uploader.upload_video_file(str(dest_video_path), today_str, dry_run=dry_run))
             caption = f"{script_meta['caption']}\n\n.\n.\n{' '.join(script_meta['hashtags'])}"
             media_id = publisher.publish_reel(public_video_url, caption)
             results["destinations"]["instagram_reels"] = {
@@ -173,12 +181,19 @@ def main():
     is_dry = args.dry_run or settings.dry_run
 
     if args.now or is_dry or args.topic:
-        execute_autonomous_run(
-            topic=args.topic,
-            pillar=args.pillar,
-            dry_run=is_dry,
-            destinations=destinations,
-        )
+        try:
+            execute_autonomous_run(
+                topic=args.topic,
+                pillar=args.pillar,
+                dry_run=is_dry,
+                destinations=destinations,
+            )
+        except SlotSkipped:
+            raise SystemExit(0)
+        except Exception as e:
+            logger.error(f"Pipeline runner FAILED: {e}")
+            send_alert(f"🚨 Autogram video runner FAILED ({'dry-run' if is_dry else 'LIVE'}): {e}")
+            raise
     else:
         parser.print_help()
 
