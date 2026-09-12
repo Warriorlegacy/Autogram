@@ -376,7 +376,7 @@ def run_pipeline_subprocess(mode="dry-run", topic=None, pillar=None, queue_id=No
         if pipeline_status == "running":
             return False
         pipeline_status = "running"
-        fmt_label = " [STORY 9:16]" if content_format == "story" else ""
+        fmt_label = " [STORY 9:16]" if content_format == "story" else (" [REEL 9:16]" if content_format == "reel" else "")
         target_str = f"{fmt_label} for '{topic}'" if topic else fmt_label
         pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] Starting pipeline ({mode.upper()}){target_str}...")
 
@@ -389,6 +389,9 @@ def run_pipeline_subprocess(mode="dry-run", topic=None, pillar=None, queue_id=No
 
     if content_format == "story":
         cmd.append("--story")
+
+    if content_format == "reel":
+        cmd.append("--reel")
 
     if topic:
         cmd.extend(["--topic", str(topic)])
@@ -810,6 +813,45 @@ def api_publish_story():
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [STORY PUBLISH ERROR] {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
+
+@app.route("/api/publish/reel", methods=["POST"])
+def api_publish_reel():
+    """
+    Directly generates a Reel narration, renders 9:16 MP4 via local
+    MoneyPrinterTurbo, and publishes as an Instagram Reel on demand.
+    """
+    data = request.get_json(silent=True) or {}
+    topic = data.get("topic") or "Zero-Touch Production Agent Architecture"
+    pillar = data.get("pillar", "AI Tool Breakdown")
+    dry_run = data.get("mode", "dry-run") == "dry-run"
+
+    try:
+        from orchestrator import run_reel_pipeline
+        manifest = run_reel_pipeline(dry_run=dry_run, custom_topic=topic, custom_pillar=pillar)
+        return jsonify({
+            "ok": True,
+            "format": "reel",
+            "media_id": manifest.get("media_id"),
+            "mode": "dry-run" if dry_run else "live",
+            "topic": manifest.get("reel_script", {}).get("topic"),
+            "narration": (manifest.get("reel_script", {}).get("narration") or "")[:280],
+            "video_file": manifest.get("video_file"),
+            "public_url": manifest.get("public_url")
+        })
+    except Exception as e:
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [REEL PUBLISH ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+@app.route("/api/mpt/status", methods=["GET"])
+def api_mpt_status():
+    """Health check for the local MoneyPrinterTurbo render server ($0 pipeline)."""
+    try:
+        from src.content.mpt_client import mpt_client
+        available = mpt_client.is_available()
+        return jsonify({"ok": True, "available": available, "base_url": mpt_client.base_url})
+    except Exception as e:
+        return jsonify({"ok": False, "available": False, "error": str(e)})
 
 @app.route("/api/caption/generate", methods=["POST"])
 def api_caption_generate():

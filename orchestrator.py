@@ -448,6 +448,103 @@ def run_story_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
 
     return manifest
 
+def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
+    """Executes the autonomous Instagram Reel pipeline: script -> MPT 9:16 MP4 -> stage -> publish."""
+    from src.content.mpt_client import mpt_client
+
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    out_dir = OUTPUT_BASE / today_str
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("==================================================")
+    logger.info(f"Starting Instagram Reel AI Autopilot Run: {today_str}")
+    if custom_topic:
+        logger.info(f"Target Reel Topic: '{custom_topic}' [{custom_pillar or 'AI Tool Breakdown'}]")
+    logger.info(f"Mode: {'DRY RUN / SAFE TEST' if dry_run or settings.dry_run else 'LIVE PRODUCTION'}")
+    logger.info("==================================================")
+
+    publisher.dry_run = dry_run
+
+    # 1. Topic & Research Acquisition (same sources as story pipeline)
+    sources = fetcher.acquire_sources(live_fetch=not dry_run)
+    if not sources:
+        sources = fetcher.load_seed_records()
+
+    if custom_topic:
+        winner_topic = {"topic": custom_topic, "pillar": custom_pillar or "AI Tool Breakdown", "dossier": {}}
+    else:
+        candidates = [
+            {
+                "topic": s.get("source_title"),
+                "angle": f"Why {s.get('source_title')} fundamentally impacts operational efficiency",
+                "pillar": s.get("pillar") or CONTENT_PILLARS[idx % len(CONTENT_PILLARS)],
+                "evidence_strength": s.get("trust_score", 0.9),
+                "novelty_score": 0.88,
+                "practicality_score": 0.92,
+                "save_share_score": 0.90,
+                "saturation_risk": 0.15,
+                "sources": [s.get("url")] if s.get("url") else [],
+            }
+            for idx, s in enumerate(sources)
+        ]
+        winner_topic = scorer.select_best_topic(candidates)["winner"]
+
+    # 2. Synthesize 45-55s Reel narration ($0 LLM chain)
+    logger.info(f"Generating Reel narration for: '{winner_topic['topic']}'...")
+    reel_script = generator.generate_reel_script(winner_topic, winner_topic.get("pillar"), winner_topic.get("dossier"))
+
+    # 3. Render 9:16 MP4 via local MoneyPrinterTurbo (dry-run skips render)
+    timestamp_slug = int(datetime.now().timestamp())
+    reel_filename = f"reel_{timestamp_slug}.mp4"
+    reel_filepath = out_dir / reel_filename
+
+    if dry_run:
+        logger.info("[DRY-RUN] Skipping MPT render; simulating local MP4 artifact.")
+        reel_filepath.write_bytes(b"")  # placeholder so manifest paths resolve
+    else:
+        if not mpt_client.is_available():
+            raise RuntimeError(
+                "MoneyPrinterTurbo server is not reachable at "
+                f"{mpt_client.base_url}. Start it with start_mpt.bat (D:\\MoneyPrinterTurbo) and retry."
+            )
+        logger.info(f"Rendering 9:16 Reel MP4 via MoneyPrinterTurbo -> {reel_filepath.name}...")
+        mpt_client.render_reel(
+            script=reel_script["narration"],
+            subject=reel_script["subject"],
+            dest=reel_filepath,
+        )
+
+    # 4. Stage MP4 for Meta Graph API ingestion
+    logger.info("Staging Reel asset for Meta Graph API...")
+    try:
+        public_reel_url = uploader.upload_video_file(str(reel_filepath), today_str, dry_run=dry_run)
+    except TypeError:
+        public_reel_url = uploader.upload_video_file(str(reel_filepath), today_str)
+
+    # 5. Publish as Instagram Reel
+    caption = f"{reel_script['caption']}\n\n.\n.\n{' '.join(reel_script['hashtags'])}"
+    logger.info(f"Publishing Reel to Instagram ({'DRY-RUN' if dry_run else 'LIVE PRODUCTION'})...")
+    media_id = publisher.publish_reel(public_reel_url, caption)
+
+    # 6. Save Manifest & Log
+    manifest = {
+        "format": "reel",
+        "reel_script": reel_script,
+        "video_file": str(reel_filepath),
+        "public_url": public_reel_url,
+        "media_id": media_id,
+        "mode": "dry-run" if dry_run else "live",
+        "published_at": datetime.now().isoformat(),
+    }
+    manifest_path = out_dir / f"reel_manifest_{timestamp_slug}.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+    logger.info("==================================================")
+    logger.info(f"Instagram Reel Run Completed Successfully! Media ID: {media_id}")
+    logger.info("==================================================")
+
+    return manifest
+
 def run_scheduler(dry_run: bool = False):
     """Runs a local continuous scheduler daemon for the 7 daily posting slots."""
     import time
@@ -496,6 +593,7 @@ def main():
     parser.add_argument("--generate-reel", action="store_true", help="Generate 30-45s Reels / Shorts video script")
     parser.add_argument("--schedule", action="store_true", help="Run local autonomous daily scheduler daemon")
     parser.add_argument("--story", action="store_true", help="Generate and publish an Instagram Story (1080x1920, 9:16)")
+    parser.add_argument("--reel", action="store_true", help="Generate and publish an Instagram Reel (9:16 MP4 via local MoneyPrinterTurbo)")
     parser.add_argument("--auto-dm", action="store_true", help="Scan recent posts, auto-reply to comments, and dispatch private DMs")
     parser.add_argument("--topic", type=str, default=None, help="Target topic to generate and publish")
     parser.add_argument("--pillar", type=str, default=None, help="Strategic content pillar for the target topic")
@@ -605,6 +703,11 @@ def main():
     if args.story:
         dry = args.dry_run or (not args.run_all)
         run_story_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+        return
+
+    if args.reel:
+        dry = args.dry_run or (not args.run_all)
+        run_reel_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
         return
 
     # Default action or --run-all / --dry-run

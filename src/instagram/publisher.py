@@ -221,6 +221,41 @@ class InstagramPublisher:
         logger.info(f"Published Instagram Story successfully! Media ID: {media_id}")
         return media_id
 
+    def create_reel_container(self, video_url: str, caption: str = "") -> str:
+        """Creates an Instagram Reel media container (9:16 MP4, media_type=REELS)."""
+        if self.dry_run:
+            simulated_id = f"mock_reel_cntr_{int(time.time()*1000) % 1000000}"
+            logger.info(f"[DRY-RUN] Created reel container: {simulated_id} for URL: {video_url}")
+            return simulated_id
+
+        if not (video_url.startswith("http://") or video_url.startswith("https://")):
+            raise ValueError(
+                f"Invalid video_url '{video_url}': Meta Graph API strictly requires an absolute public HTTP/HTTPS URL."
+            )
+
+        url = f"{self.base_url}/{self.user_id}/media"
+        data = {
+            "video_url": video_url,
+            "media_type": "REELS",
+            "caption": caption,
+            "share_to_feed": True,
+            "access_token": self.token
+        }
+        resp = requests.post(url, data=data, timeout=60)
+        if resp.status_code != 200:
+            logger.error(f"Meta Graph API error in create_reel_container: {resp.status_code} - {resp.text}")
+        resp.raise_for_status()
+        return resp.json()["id"]
+
+    def publish_reel(self, video_url: str, caption: str = "") -> str:
+        """End-to-end Instagram Reel publishing flow (container -> wait -> publish)."""
+        logger.info(f"Starting Instagram Reel publish sequence for {video_url}...")
+        container_id = self.create_reel_container(video_url, caption)
+        self.wait_until_ready(container_id, timeout_s=600)
+        media_id = self.publish_media(container_id)
+        logger.info(f"Published Instagram Reel successfully! Media ID: {media_id}")
+        return media_id
+
     def post_comment(self, media_id: str, message: str) -> str:
         """Posts a first discussion comment to the published media object."""
         if self.dry_run or str(media_id).startswith("mock"):

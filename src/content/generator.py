@@ -595,6 +595,109 @@ Return ONLY valid JSON.
         logger.info("Generating carousel using Free Built-In Anti-Repetition Synthesis Engine.")
         return self._normalize_carousel(get_rich_synthesized_carousel(topic, sources), topic)
 
+    def _free_narration(self, prompt: str) -> dict | None:
+        """Best-effort narration JSON via $0 providers (groq -> gemini -> ollama)."""
+        # 1. Groq free tier (OpenAI-compatible chat completions)
+        groq_key = getattr(settings, "groq_api_key", None) or os.environ.get("GROQ_API_KEY", "")
+        if groq_key and "groq" not in self._disabled_providers:
+            try:
+                resp = requests.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
+                    json={
+                        "model": "llama-3.1-8b-instant",
+                        "messages": [
+                            {"role": "system", "content": "Return ONLY valid JSON."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "response_format": {"type": "json_object"},
+                        "temperature": 0.7,
+                    },
+                    timeout=30,
+                )
+                if resp.status_code == 200:
+                    return self._parse_json_response(resp.json()["choices"][0]["message"]["content"])
+            except Exception as e:
+                logger.warning(f"Reel narration via Groq failed ({e}). Trying fallback...")
+        # 2. Gemini free tier
+        gemini_key = getattr(settings, "gemini_api_key", None) or ""
+        if gemini_key and "gemini" not in self._disabled_providers:
+            try:
+                resp = requests.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={gemini_key}",
+                    json={
+                        "contents": [{"parts": [{"text": prompt}]}],
+                        "generationConfig": {"response_mime_type": "application/json", "temperature": 0.7},
+                    },
+                    timeout=40,
+                )
+                if resp.status_code == 200:
+                    raw = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
+                    return self._parse_json_response(raw)
+            except Exception as e:
+                logger.warning(f"Reel narration via Gemini failed ({e}). Trying fallback...")
+        # 3. Local Ollama ($0, offline-capable)
+        if "ollama" not in self._disabled_providers:
+            try:
+                resp = requests.post(
+                    f"{settings.ollama_base_url.rstrip('/')}/api/chat",
+                    json={
+                        "model": settings.ollama_model,
+                        "messages": [
+                            {"role": "system", "content": "Return ONLY valid JSON."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "format": "json",
+                        "stream": False,
+                    },
+                    timeout=120,
+                )
+                if resp.status_code == 200:
+                    return self._parse_json_response(resp.json()["message"]["content"])
+            except Exception as e:
+                logger.warning(f"Reel narration via Ollama failed ({e}). Using template fallback...")
+        return None
+
+    def generate_reel_script(self, topic: str | dict, pillar: str | None = None, dossier: dict | None = None) -> dict:
+        """
+        Synthesizes a 45-55s spoken Reel narration + caption + hashtags.
+        $0 chain: groq -> gemini -> ollama -> deterministic template (never fails).
+        """
+        if isinstance(topic, dict):
+            topic_str = topic.get("topic", "")
+            pillar_str = pillar or topic.get("pillar", "AI Tool Breakdown")
+            dossier = dossier or topic.get("dossier", {})
+        else:
+            topic_str = str(topic)
+            pillar_str = pillar or "AI Tool Breakdown"
+            dossier = dossier or {}
+
+        stat = f"{dossier.get('stars', 42000):,} GitHub stars" if dossier.get("stars") else f"replaces {dossier.get('saas_cost_estimate', '$200/mo')} SaaS at $0"
+        prompt = (
+            "Write a 45-55 second Instagram Reels voiceover script (110-130 spoken words, punchy, "
+            "no stage directions, no emojis) plus an IG caption and 8 hashtags. "
+            f"Topic: {topic_str}. Pillar: {pillar_str}. Proof point: {stat}. "
+            'Return ONLY JSON: {"narration": "...", "caption": "...", "hashtags": ["#..", ...]}'
+        )
+        data = self._free_narration(prompt) or {}
+        narration = str(data.get("narration") or "").strip()
+        if not narration:
+            narration = (
+                f"Stop paying for bloated SaaS. {topic_str} gives you the same power for zero dollars. "
+                f"Proof: {stat}. Self-host in one command, own your data, scale without a bill. "
+                f"Comment REEL and I will send the full setup blueprint to your DMs. Follow for daily free AI stacks."
+            )
+        caption = str(data.get("caption") or f"{topic_str}: the $0 self-hosted blueprint. Comment REEL for the setup.").strip()
+        hashtags = data.get("hashtags") or ["#BuildInPublic", "#OpenSource", "#SelfHosted", "#AIEngineering", "#DevTools", "#IndieHacker", "#TechReels", "#SignhifyStudio"]
+        return {
+            "topic": topic_str,
+            "pillar": pillar_str,
+            "narration": narration,
+            "caption": caption,
+            "hashtags": hashtags if isinstance(hashtags, list) else [str(hashtags)],
+            "subject": " ".join(topic_str.split()[:4]),
+        }
+
     def generate_story_content(self, topic: str | dict, pillar: str | None = None, dossier: dict | None = None) -> dict:
         """
         Synthesizes high-impact Instagram Story content (headline, badge, metric, takeaways, CTA)

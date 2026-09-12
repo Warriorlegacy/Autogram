@@ -30,6 +30,9 @@ class Settings(BaseSettings):
     cloudflare_account_id: str | None = Field(default=None, alias="CLOUDFLARE_ACCOUNT_ID")
     cloudflare_api_token: str | None = Field(default=None, alias="CLOUDFLARE_API_TOKEN")
 
+    # Video Generation (local MoneyPrinterTurbo render server — $0: edge-tts + Pexels free + FFmpeg)
+    mpt_base_url: str = Field(default="http://127.0.0.1:8080", alias="MPT_BASE_URL")
+
     # Meta Instagram Graph API
     ig_user_id: str | None = Field(default=None, alias="IG_USER_ID")
     ig_access_token: str | None = Field(default=None, alias="IG_ACCESS_TOKEN")

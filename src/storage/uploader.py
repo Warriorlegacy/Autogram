@@ -42,39 +42,39 @@ class AssetUploader:
                 return url
         raise RuntimeError(f"freeimage.host returned status {resp.status_code}: {resp.text[:200]}")
 
-    def _upload_to_catbox(self, p: Path) -> str:
+    def _upload_to_catbox(self, p: Path, mime: str = "image/jpeg") -> str:
         """Uploads image to catbox.moe returning a direct CDN URL."""
         with open(p, "rb") as f:
             resp = requests.post(
                 "https://catbox.moe/user/api.php",
                 data={"reqtype": "fileupload"},
-                files={"fileToUpload": (p.name, f, "image/jpeg")},
-                timeout=25
+                files={"fileToUpload": (p.name, f, mime)},
+                timeout=60
             )
         if resp.status_code == 200 and resp.text.strip().startswith("http"):
             return resp.text.strip()
         raise RuntimeError(f"catbox returned status {resp.status_code}: {resp.text[:200]}")
 
-    def _upload_to_litterbox(self, p: Path) -> str:
+    def _upload_to_litterbox(self, p: Path, mime: str = "image/jpeg") -> str:
         """Uploads to litterbox.catbox.moe (1h temp CDN — works from GitHub Actions IPs)."""
         with open(p, "rb") as f:
             resp = requests.post(
                 "https://litterbox.catbox.moe/resources/internals/api.php",
                 data={"reqtype": "fileupload", "time": "24h"},
-                files={"fileToUpload": (p.name, f, "image/jpeg")},
-                timeout=25
+                files={"fileToUpload": (p.name, f, mime)},
+                timeout=60
             )
         if resp.status_code == 200 and resp.text.strip().startswith("http"):
             return resp.text.strip()
         raise RuntimeError(f"litterbox returned status {resp.status_code}: {resp.text[:200]}")
 
-    def _upload_to_0x0(self, p: Path) -> str:
+    def _upload_to_0x0(self, p: Path, mime: str = "image/jpeg") -> str:
         """Uploads image to 0x0.st (works from GitHub Actions IPs, permanent CDN)."""
         with open(p, "rb") as f:
             resp = requests.post(
                 "https://0x0.st",
-                files={"file": (p.name, f, "image/jpeg")},
-                timeout=30
+                files={"file": (p.name, f, mime)},
+                timeout=60
             )
         if resp.status_code == 200 and resp.text.strip().startswith("http"):
             return resp.text.strip()
@@ -247,5 +247,52 @@ class AssetUploader:
             public_urls.append(public_url)
 
         return public_urls
+
+    def upload_video_file(self, video_path: str, publication_date: str, dry_run: bool | None = None) -> str:
+        """
+        Stages a rendered Reel MP4 and returns a public URL for Meta ingestion.
+        Cascade: dry-run fabricate -> S3/R2 -> catbox.moe -> litterbox -> 0x0.st.
+        (Image-only hosts imgbb/freeimage are skipped for video.)
+        """
+        p = Path(video_path)
+        is_dry = dry_run if dry_run is not None else (settings.dry_run or os.environ.get("DRY_RUN") == "true")
+        fallback_base = self.public_cdn_base if (self.public_cdn_base.startswith("http://") or self.public_cdn_base.startswith("https://")) else "https://autogram-dashboard.onrender.com"
+
+        if is_dry:
+            logger.info("[DRY-RUN] Staging video URL with public base without external upload.")
+            return f"{fallback_base.rstrip('/')}/output/{p.parent.name}/{p.name}"
+
+        if self.s3_bucket and self.s3_access_key and self.s3_secret_key:
+            try:
+                import boto3
+                s3 = boto3.session.Session().client(
+                    service_name="s3",
+                    aws_access_key_id=self.s3_access_key,
+                    aws_secret_access_key=self.s3_secret_key,
+                    endpoint_url=self.s3_endpoint,
+                )
+                key = f"instagram/{publication_date}/{p.name}"
+                s3.upload_file(str(p), self.s3_bucket, key, ExtraArgs={"ContentType": "video/mp4"})
+                url = f"{self.public_cdn_base}/{key}"
+                logger.info(f"Uploaded {p.name} to Cloudflare R2: {url}")
+                return url
+            except Exception as e:
+                logger.warning(f"S3/R2 video upload failed ({e}). Trying free file hosts...")
+
+        for name, fn in (
+            ("catbox.moe", self._upload_to_catbox),
+            ("litterbox", self._upload_to_litterbox),
+            ("0x0.st", self._upload_to_0x0),
+        ):
+            try:
+                url = fn(p, mime="video/mp4")
+                logger.info(f"Uploaded {p.name} to {name}: {url}")
+                return url
+            except Exception as e:
+                logger.warning(f"{name} video upload failed for {p.name}: {e}.")
+        raise RuntimeError(
+            "No usable public video host available for live Reel publishing. "
+            "Configure S3/R2 or set PUBLIC_CDN_BASE to your live public HTTPS domain."
+        )
 
 uploader = AssetUploader()

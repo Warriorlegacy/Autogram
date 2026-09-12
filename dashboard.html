@@ -2843,6 +2843,9 @@
               <button class="btn btn-ghost" onclick="openScheduleModal()">
                 <span>+ Schedule New Post</span>
               </button>
+              <button class="btn btn-ghost" onclick="publishReelNow()" title="Render 9:16 MP4 via local MoneyPrinterTurbo and publish as Reel">
+                <span>🎬 Publish Reel</span>
+              </button>
             </div>
           </div>
 
@@ -3862,6 +3865,7 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
           <select class="form-select" id="sched-input-format">
             <option value="story">📱 Instagram Story (1080×1920, 9:16)</option>
             <option value="carousel">🖼️ Feed Carousel (1080×1350, 4:5)</option>
+            <option value="reel">🎬 Instagram Reel (9:16 MP4 via MoneyPrinterTurbo)</option>
           </select>
         </div>
 
@@ -4837,9 +4841,12 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         } else {
           queue.forEach(q => {
             const isStory = q.format === 'story' || String(q.id || '').startsWith('STORY');
-            const formatBadge = isStory
+            const isReel = q.format === 'reel' || String(q.id || '').startsWith('REEL');
+            const formatBadge = isReel
+              ? '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#34d399;background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.3);border-radius:6px;padding:3px 7px;">🎬 REEL</span>'
+              : (isStory
               ? '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#38bdf8;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:3px 7px;">📱 STORY</span>'
-              : '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--neon-purple);background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);border-radius:6px;padding:3px 7px;">🖼️ CAROUSEL</span>';
+              : '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--neon-purple);background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);border-radius:6px;padding:3px 7px;">🖼️ CAROUSEL</span>');
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -4975,6 +4982,35 @@ Follow @signhify.studio for daily tested AI prompt architectures! ⚡</div>
         }
       } catch(e) {
         showToast('Failed to trigger post: ' + e.message, 'error');
+      }
+    }
+
+    async function publishReelNow() {
+      playSound('click');
+      const topic = (document.getElementById('studio-topic-input') || {}).value || '';
+      const pillarEl = document.querySelector('#studio-pillar-selector .pillar-pill.selected');
+      const pillar = pillarEl ? pillarEl.dataset.pillar : 'AI Tool Breakdown';
+      showToast('Rendering Reel via MoneyPrinterTurbo (this takes a few minutes)...', 'info');
+      try {
+        const health = await fetch(apiEndpoint('/mpt/status')).then(r => r.json());
+        if (!health.available) {
+          showToast('MoneyPrinterTurbo is offline. Start it with start_mpt.bat, then retry.', 'error');
+          return;
+        }
+        const res = await fetch(apiEndpoint('/publish/reel'), {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({topic: topic || undefined, pillar, mode: 'live'})
+        }).then(r => r.json());
+        if (res.ok) {
+          showToast(`Reel published! Media ID ${res.media_id} 🎬`, 'success');
+          switchView('pipeline');
+          startPolling();
+        } else {
+          showToast(res.error || 'Reel publish failed', 'error');
+        }
+      } catch(e) {
+        showToast('Reel publish failed: ' + e.message, 'error');
       }
     }
 
