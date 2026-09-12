@@ -1,16 +1,9 @@
 name: Daily Instagram Autopilot (7x Daily)
 
 on:
-  schedule:
-    # 7 Strategic Daily Posting Slots (Asia/Kolkata timezone)
-    # Note: Minutes offset to :03 and :33 to bypass GitHub Actions global queue congestion at :00 and :30
-    - cron: "33 2 * * *"   # Slot 1: 08:03 AM IST (02:33 UTC) - Morning Commute & Mindset
-    - cron: "03 5 * * *"   # Slot 2: 10:33 AM IST (05:03 UTC) - Deep Work Tools & Architecture
-    - cron: "33 7 * * *"   # Slot 3: 01:03 PM IST (07:33 UTC) - Lunch Break Frameworks
-    - cron: "03 10 * * *"  # Slot 4: 03:33 PM IST (10:03 UTC) - Mid-Day Growth Hacks & Prompts
-    - cron: "33 12 * * *"  # Slot 5: 06:03 PM IST (12:33 UTC) - Outbound & Client Acquisition
-    - cron: "03 15 * * *"  # Slot 6: 08:33 PM IST (15:03 UTC) - Prime Evening Deep-Dive
-    - cron: "03 17 * * *"  # Slot 7: 10:33 PM IST (17:03 UTC) - Late-Night Founder Operating Systems
+  # Triggered exclusively by cron-job.org dispatch jobs
+  # ("Autogram Slot 1-7", Asia/Kolkata) for second-precise scheduling.
+  # No native `schedule:` here by design — it would double-post carousels.
   workflow_dispatch: {}    # Manual trigger button in GitHub Actions UI
   repository_dispatch:     # Allows external second-precise webhooks (cron-job.org / curl) to trigger runs
     types: [publish-slot, daily-post]

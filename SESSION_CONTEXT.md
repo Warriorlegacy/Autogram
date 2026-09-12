@@ -113,18 +113,28 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 3. Autonomous Cloud Scheduling Infrastructure
 
-### Active Cloud Cron Jobs (cron-job.org)
-| Job ID | Slot (IST) | Status |
-|---|---|---|
-| `8429357` | **08:00 IST** | **Active** |
-| `8429359` | **10:30 IST** | **Active** |
-| `8429363` | **13:00 IST** | **Active** |
-| `8429360` | **15:30 IST** | **Active** |
-| `8429361` | **18:00 IST** | **Active** |
-| `8429362` | **20:30 IST** | **Active** |
-| `8429364` | **22:30 IST** | **Active** |
-| `8429366` | **Every 10 min** | Render Keep-Alive |
-| `8430206` | **Every 15 min** | Auto-DM Scanner |
+### Active Cloud Cron Jobs (cron-job.org) — single source of truth for cloud drops
+| Job ID | Slot (IST) | Target / Payload | Status |
+|---|---|---|---|
+| `8429357` | **08:00 IST** | Carousel dispatch `publish-slot` | **Active** |
+| `8429359` | **10:30 IST** | Carousel dispatch `publish-slot` | **Active** |
+| `8429363` | **13:00 IST** | Carousel dispatch `publish-slot` | **Active** |
+| `8429360` | **15:30 IST** | Carousel dispatch `publish-slot` | **Active** |
+| `8429361` | **18:00 IST** | Carousel dispatch `publish-slot` | **Active** |
+| `8429362` | **20:30 IST** | Carousel dispatch `publish-slot` | **Active** |
+| `8429364` | **22:30 IST** | Carousel dispatch `publish-slot` | **Active** |
+| `8435698` | **09:00 IST** | Story dispatch `publish-story` (Morning Tech Radar) | **Active** |
+| `8435700` | **11:30 IST** | Story dispatch `publish-story` (Workflow Signal) | **Active** |
+| `8435701` | **14:00 IST** | Story dispatch `publish-story` (Code Deep Dive) | **Active** |
+| `8435704` | **16:30 IST** | Story dispatch `publish-story` (Architecture Insight) | **Active** |
+| `8435706` | **19:00 IST** | Story dispatch `publish-story` (Evening Digest) | **Active** |
+| `8435709` | **21:30 IST** | Story dispatch `publish-story` (Contrarian) | **Active** |
+| `8435712` | **23:30 IST** | Story dispatch `publish-story` (Late-Night Blueprint) | **Active** |
+| `8429366` | **Every 10 min** | Render Flask API Keep-Alive (`https://...onrender.com/health`) | **Active** |
+| `8430206` | **Every 15 min** | Render 24/7 Auto-DM & Comment Scanner (`/api/cron/auto-dm`) | **Active** |
+
+- **Double-post fix:** native `schedule:` blocks removed from `daily-post.yml` and `daily-story.yml` — cron-job.org dispatches are now the ONLY cloud triggers (both firing = 2× publishes toward the 25/day Meta cap).
+- **Reels (10/day) stay local:** `Autogram Reel 1-10` Windows Scheduled Tasks + MPT autostart (cron-job.org cannot reach localhost MPT; CI video runs fail closed by design).
 
 ---
 

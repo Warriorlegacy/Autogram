@@ -1,16 +1,9 @@
 name: Daily Instagram Stories Autopilot (7x Daily)
 
 on:
-  schedule:
-    # 7 Strategic Daily Story Slots (Asia/Kolkata timezone)
-    # Staggered by 3 minutes to avoid GitHub Actions global queue congestion
-    - cron: "33 03 * * *"   # Slot 1: 09:03 AM IST (03:33 UTC) - Morning Tech Radar
-    - cron: "03 06 * * *"   # Slot 2: 11:33 AM IST (06:03 UTC) - Workflow Optimization Signal
-    - cron: "33 08 * * *"   # Slot 3: 02:03 PM IST (08:33 UTC) - Lunchtime Code Deep Dive
-    - cron: "03 11 * * *"   # Slot 4: 04:33 PM IST (11:03 UTC) - Architecture & Growth Insight
-    - cron: "33 13 * * *"   # Slot 5: 07:03 PM IST (13:33 UTC) - Evening Developer Digest
-    - cron: "03 16 * * *"   # Slot 6: 09:33 PM IST (16:03 UTC) - Contrarian Breakdown
-    - cron: "03 18 * * *"   # Slot 7: 11:33 PM IST (18:03 UTC) - Late-Night Production Blueprint
+  # Triggered exclusively by cron-job.org dispatch jobs
+  # ("Autogram Story 1-7", Asia/Kolkata) for second-precise scheduling.
+  # No native `schedule:` here by design — it would double-post stories.
   workflow_dispatch:
     inputs:
       topic:

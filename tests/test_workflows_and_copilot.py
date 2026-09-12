@@ -25,8 +25,9 @@ def test_workflow_contents():
     story_content = (base_dir / ".github" / "workflows" / "daily-story.yml").read_text(encoding="utf-8")
     video_content = (base_dir / ".github" / "workflows" / "daily-video.yml").read_text(encoding="utf-8")
 
-    # Story workflow checks
-    assert "cron:" in story_content
+    # Story workflow checks (single-sourced to cron-job.org dispatch by design;
+    # native schedule: would double-post — see "Autogram Story 1-7" cron jobs)
+    assert "repository_dispatch" in story_content
     assert "--story" in story_content
     assert "publish-story" in story_content
     assert "daily-story-artifacts" in story_content
