@@ -316,6 +316,23 @@ def scheduler_worker():
                     content_format="story"
                 )
 
+            # 1c. Check daily recurring Video slots (10x Daily Shorts & Reels)
+            active_video_slots = {s["slot"] for s in sched.get("video_slots", []) if s.get("enabled", True)}
+            video_key = f"video_{current_time_str}"
+            if current_time_str in active_video_slots and video_key not in triggered_today:
+                triggered_today.add(video_key)
+                slot_cfg = next((s for s in sched.get("video_slots", []) if s.get("slot") == current_time_str), {})
+                slot_pillar = slot_cfg.get("pillar", "AI Tool Breakdown")
+                with pipeline_lock:
+                    pipeline_log.append(
+                        f"[{now_dt.strftime('%H:%M:%S')} {tz_name}] [GROWTH AUTOPILOT] Triggering autonomous Video drop (Reel/Short) for slot {current_time_str} ({slot_pillar})..."
+                    )
+                run_pipeline_subprocess(
+                    mode="live" if read_env().get("DRY_RUN") == "false" else "dry-run",
+                    pillar=slot_pillar,
+                    content_format="video"
+                )
+
             # 2. Check individual queued items
             queue = sched.get("queue", [])
             updated_queue = []

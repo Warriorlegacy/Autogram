@@ -649,13 +649,17 @@ def run_video_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
 
 
 def run_scheduler(dry_run: bool = False):
-    """Runs a local continuous scheduler daemon for the 7 daily posting slots."""
+    """Runs a local continuous scheduler daemon for 7 carousels, 7 stories, and 10 video drops."""
     import time
-    DAILY_SLOTS = ["08:00", "10:30", "13:00", "15:30", "18:00", "20:30", "22:30"]
+    DAILY_SLOTS = ["08:00", "10:30", "13:00", "15:30", "18:00", "20:30", "22:30"] # 7 Carousels
+    STORY_SLOTS = ["09:00", "11:30", "14:00", "16:30", "19:00", "21:30", "23:30"] # 7 Stories
+    VIDEO_SLOTS = ["08:00", "09:45", "11:00", "12:00", "13:45", "15:00", "16:30", "18:30", "20:00", "22:00"] # 10 Videos
 
     logger.info("==================================================")
-    logger.info(" Autogram Autonomous 7x Daily Scheduler Active")
-    logger.info(f" Daily Target Slots: {', '.join(DAILY_SLOTS)} ({settings.timezone})")
+    logger.info(" Autogram Autonomous Scheduler Active (24 Drops/Day)")
+    logger.info(f" 7 Carousels: {', '.join(DAILY_SLOTS)} ({settings.timezone})")
+    logger.info(f" 7 Stories:   {', '.join(STORY_SLOTS)} ({settings.timezone})")
+    logger.info(f" 10 Videos:   {', '.join(VIDEO_SLOTS)} ({settings.timezone})")
     logger.info(f" Operating Mode: {'DRY RUN / SIMULATION' if dry_run or settings.dry_run else 'LIVE PRODUCTION'}")
     logger.info("==================================================")
     logger.info("Scheduler daemon running. Press Ctrl+C to terminate.")
@@ -673,14 +677,35 @@ def run_scheduler(dry_run: bool = False):
             triggered_today_slots = set()
             last_day_str = current_date_str
 
-        # Check if current minute matches any of our 7 slots and hasn't run yet
-        if current_time_str in DAILY_SLOTS and current_time_str not in triggered_today_slots:
-            logger.info(f"Triggering scheduled autonomous publishing run for slot {current_time_str}...")
-            triggered_today_slots.add(current_time_str)
+        # 1. Check Carousel slots
+        c_key = f"carousel_{current_time_str}"
+        if current_time_str in DAILY_SLOTS and c_key not in triggered_today_slots:
+            logger.info(f"Triggering scheduled Carousel publishing run for slot {current_time_str}...")
+            triggered_today_slots.add(c_key)
             try:
                 run_pipeline(dry_run=dry_run)
             except Exception as e:
-                logger.error(f"Scheduled pipeline run error on slot {current_time_str}: {e}")
+                logger.error(f"Scheduled carousel run error on slot {current_time_str}: {e}")
+
+        # 2. Check Story slots
+        s_key = f"story_{current_time_str}"
+        if current_time_str in STORY_SLOTS and s_key not in triggered_today_slots:
+            logger.info(f"Triggering scheduled Story publishing run for slot {current_time_str}...")
+            triggered_today_slots.add(s_key)
+            try:
+                run_story_pipeline(dry_run=dry_run)
+            except Exception as e:
+                logger.error(f"Scheduled story run error on slot {current_time_str}: {e}")
+
+        # 3. Check Video slots (Reels / Shorts)
+        v_key = f"video_{current_time_str}"
+        if current_time_str in VIDEO_SLOTS and v_key not in triggered_today_slots:
+            logger.info(f"Triggering scheduled Video publishing run for slot {current_time_str}...")
+            triggered_today_slots.add(v_key)
+            try:
+                run_video_pipeline(dry_run=dry_run)
+            except Exception as e:
+                logger.error(f"Scheduled video run error on slot {current_time_str}: {e}")
 
         time.sleep(20)
 

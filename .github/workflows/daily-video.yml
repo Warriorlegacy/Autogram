@@ -2,10 +2,18 @@ name: Daily Autonomous Video Autopilot (Shorts & Reels)
 
 on:
   schedule:
-    # 2 Peak Short-Form Video Slots (Asia/Kolkata timezone)
-    # Staggered by 3 minutes to avoid GitHub Actions queue congestion
-    - cron: "33 07 * * *"   # Slot 1: 01:03 PM IST (07:33 UTC) - Lunchtime Video Drop
-    - cron: "33 14 * * *"   # Slot 2: 08:03 PM IST (14:33 UTC) - Prime Evening Video Drop
+    # 10 Daily Autonomous Short-Form Video Slots (Asia/Kolkata timezone)
+    # Staggered to avoid GitHub Actions runner queue congestion
+    - cron: "33 02 * * *"   # Slot 1:  08:03 AM IST (02:33 UTC) - Morning Kickoff Video
+    - cron: "13 04 * * *"   # Slot 2:  09:43 AM IST (04:13 UTC) - Mid-Morning Tool Breakdown
+    - cron: "33 05 * * *"   # Slot 3:  11:03 AM IST (05:33 UTC) - Late Morning Tech Reel
+    - cron: "33 06 * * *"   # Slot 4:  12:03 PM IST (06:33 UTC) - Midday Viral Short
+    - cron: "13 08 * * *"   # Slot 5:  01:43 PM IST (08:13 UTC) - Post-Lunch Workflow Drop
+    - cron: "33 09 * * *"   # Slot 6:  03:03 PM IST (09:33 UTC) - Afternoon AI Spotlight
+    - cron: "03 11 * * *"   # Slot 7:  04:33 PM IST (11:03 UTC) - Teatime Code Reel
+    - cron: "03 13 * * *"   # Slot 8:  06:33 PM IST (13:03 UTC) - Commute Prime Video
+    - cron: "33 14 * * *"   # Slot 9:  08:03 PM IST (14:33 UTC) - Prime Evening Drop
+    - cron: "33 16 * * *"   # Slot 10: 10:03 PM IST (16:33 UTC) - Late Night Blueprint Drop
   workflow_dispatch:
     inputs:
       destination:
