@@ -120,7 +120,7 @@ def edge_tts_synthesize(text: str, mp3_path: str | Path, srt_path: str | Path,
             async for chunk in communicate.stream():
                 if chunk.get("type") == "audio":
                     f.write(chunk.get("data", b""))
-                elif chunk.get("type") == "WordBoundary" and submaker is not None:
+                elif chunk.get("type") in ("WordBoundary", "SentenceBoundary") and submaker is not None:
                     if hasattr(submaker, "feed"):
                         submaker.feed(chunk)
                     else:  # legacy edge-tts API
@@ -131,8 +131,29 @@ def edge_tts_synthesize(text: str, mp3_path: str | Path, srt_path: str | Path,
         subs = submaker.get_srt() if hasattr(submaker, "get_srt") else submaker.generate_subs()
         if inspect.isawaitable(subs):
             subs = await subs
+        
+        # Format subtitles for 9:16 vertical reels (wrap long lines to stay centered and legible)
+        raw_subs = subs or ""
+        if raw_subs.strip():
+            import textwrap
+            blocks = raw_subs.strip().split("\n\n")
+            formatted = []
+            for block in blocks:
+                lines = block.splitlines()
+                if len(lines) >= 3:
+                    idx_str = lines[0]
+                    timing_str = lines[1]
+                    cue_text = " ".join(lines[2:]).strip()
+                    wrapped = textwrap.fill(cue_text, width=28)
+                    formatted.append(f"{idx_str}\n{timing_str}\n{wrapped}")
+                elif block.strip():
+                    formatted.append(block)
+            final_subs = "\n\n".join(formatted) + "\n"
+        else:
+            final_subs = "1\n00:00:00,000 --> 00:00:05,000\n \n"
+
         with open(srt_path, "w", encoding="utf-8") as f:
-            f.write(subs or "1\n00:00:00,000 --> 00:00:05,000\n \n")
+            f.write(final_subs)
 
     asyncio.run(_run())
     probe = subprocess.run(
@@ -195,15 +216,15 @@ def assemble_reel(clips: list[dict], audio_path: str | Path, srt_path: str | Pat
     if font_file:
         sub_filter = (
             f"subtitles={srt_name}:fontsdir=fonts:"
-            "force_style='FontName=Anton,FontSize=24,PrimaryColour=&H00FFFFFF,"
-            "OutlineColour=&H80000000,BorderStyle=1,Outline=3,Shadow=0,MarginV=150,Alignment=2'"
+            "force_style='FontName=Anton,FontSize=44,PrimaryColour=&H00FFFFFF,"
+            "OutlineColour=&H00000000,BorderStyle=1,Outline=3.5,Shadow=1.5,MarginV=420,Alignment=2'"
         )
         draw_font = "fonts/Anton-Regular.ttf"
     else:
         sub_filter = (
             f"subtitles={srt_name}:"
-            "force_style='FontSize=24,PrimaryColour=&H00FFFFFF,"
-            "OutlineColour=&H80000000,BorderStyle=1,Outline=3,Shadow=0,MarginV=150,Alignment=2'"
+            "force_style='FontSize=44,PrimaryColour=&H00FFFFFF,"
+            "OutlineColour=&H00000000,BorderStyle=1,Outline=3.5,Shadow=1.5,MarginV=420,Alignment=2'"
         )
         draw_font = None
     vf = ";".join(parts) + f",[vcat]{sub_filter}"
