@@ -1,5 +1,7 @@
 from unittest.mock import patch
 
+import pytest
+
 import dashboard_api
 from src.content.generator import generator
 from src.content.mpt_client import MoneyPrinterTurboClient
@@ -80,6 +82,38 @@ def test_api_publish_reel_endpoint_dry_run():
         assert data["mode"] == "dry-run"
         assert "media_id" in data
         assert data["topic"] == "Unit Test Reel Publishing Topic"
+
+
+def test_publish_media_cap_guard_blocks_at_quota():
+    """Verify live publish_media fails closed when the 24h Meta quota is exhausted."""
+    pub = InstagramPublisher(dry_run=False)
+    pub._forced_dry_run = False
+    pub.user_id = "12345"
+    pub.token = "fake_token"
+    with patch.object(pub, "check_publishing_limit", return_value={"quota_usage": 25}):
+        with pytest.raises(RuntimeError, match="quota nearly exhausted"):
+            pub.publish_media("mock_cntr_1")
+
+
+def test_publish_media_cap_guard_allows_headroom():
+    """Verify live publish_media proceeds when quota headroom remains."""
+    pub = InstagramPublisher(dry_run=False)
+    pub._forced_dry_run = False
+    pub.user_id = "12345"
+    pub.token = "fake_token"
+
+    class _Resp:
+        status_code = 200
+
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return {"id": "live_media_1"}
+
+    with patch.object(pub, "check_publishing_limit", return_value={"quota_usage": 5}):
+        with patch("src.instagram.publisher.requests.post", return_value=_Resp()):
+            assert pub.publish_media("live_cntr_1") == "live_media_1"
 
 
 def test_execute_queued_reel_item():

@@ -126,6 +126,17 @@ class InstagramPublisher:
             logger.info(f"[DRY-RUN] Successfully published carousel! Media ID: {simulated_media_id}")
             return simulated_media_id
 
+        # Fail-closed 24h API cap guard (Meta allows ~25 publishes/24h; 24 armed drops/day).
+        try:
+            usage = self.check_publishing_limit().get("quota_usage", 0)
+        except Exception:
+            usage = 0
+        if usage >= 24:
+            raise RuntimeError(
+                f"Instagram 24h publishing quota nearly exhausted ({usage}/25). "
+                "Skipping publish to avoid Meta rejection; next rolling-window slot will resume."
+            )
+
         url = f"{self.base_url}/{self.user_id}/media_publish"
         data = {
             "creation_id": creation_id,

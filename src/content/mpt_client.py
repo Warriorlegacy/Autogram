@@ -108,10 +108,13 @@ class MoneyPrinterTurboClient:
         start = time.time()
         while time.time() - start < timeout_s:
             task = self.get_task(task_id)
-            state = task.get("state", 0)
-            if state == 1:
+            try:
+                state = int(task.get("state", 0))
+            except (TypeError, ValueError):
+                state = 0
+            if state == 1:  # TASK_STATE_COMPLETE
                 return task
-            if state == -1:
+            if state == -1:  # TASK_STATE_FAILED
                 raise RuntimeError(
                     f"MPT render failed for {task_id}: {str(task.get('error', task.get('message', '')))[:300]}"
                 )
