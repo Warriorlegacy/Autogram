@@ -393,6 +393,12 @@ def run_pipeline_subprocess(mode="dry-run", topic=None, pillar=None, queue_id=No
     if content_format == "reel":
         cmd.append("--reel")
 
+    if content_format == "shorts":
+        cmd.append("--shorts")
+
+    if content_format == "video":
+        cmd.append("--video")
+
     if topic:
         cmd.extend(["--topic", str(topic)])
     if pillar:
@@ -842,6 +848,67 @@ def api_publish_reel():
         with pipeline_lock:
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [REEL PUBLISH ERROR] {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/publish/shorts", methods=["POST"])
+def api_publish_shorts():
+    """
+    Generates a 9:16 vertical video via MoneyPrinterTurbo and uploads to YouTube Shorts.
+    """
+    data = request.get_json(silent=True) or {}
+    topic = data.get("topic") or "Zero-Touch Production Agent Architecture"
+    pillar = data.get("pillar", "AI Tool Breakdown")
+    dry_run = data.get("mode", "dry-run") == "dry-run"
+
+    try:
+        from orchestrator import run_shorts_pipeline
+        manifest = run_shorts_pipeline(dry_run=dry_run, custom_topic=topic, custom_pillar=pillar)
+        return jsonify({
+            "ok": True,
+            "format": "shorts",
+            "video_id": manifest.get("video_id"),
+            "url": manifest.get("url"),
+            "mode": "dry-run" if dry_run else "live",
+            "topic": manifest.get("script", {}).get("topic"),
+            "video_file": manifest.get("video_file"),
+        })
+    except Exception as e:
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [SHORTS PUBLISH ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.route("/api/publish/video", methods=["POST"])
+def api_publish_video():
+    """
+    Dual publishing: Generates once via MoneyPrinterTurbo, publishes to BOTH Instagram Reels and YouTube Shorts.
+    """
+    data = request.get_json(silent=True) or {}
+    topic = data.get("topic") or "Zero-Touch Production Agent Architecture"
+    pillar = data.get("pillar", "AI Tool Breakdown")
+    dry_run = data.get("mode", "dry-run") == "dry-run"
+
+    try:
+        from pipeline_runner import execute_autonomous_run
+        manifest = execute_autonomous_run(
+            topic=topic,
+            pillar=pillar,
+            dry_run=dry_run,
+            destinations=["reels", "shorts"],
+        )
+        return jsonify({
+            "ok": True,
+            "format": "video",
+            "mode": "dry-run" if dry_run else "live",
+            "topic": manifest.get("topic"),
+            "destinations": manifest.get("destinations"),
+            "video_file": manifest.get("video_file"),
+        })
+    except Exception as e:
+        with pipeline_lock:
+            pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [DUAL VIDEO PUBLISH ERROR] {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
 
 @app.route("/api/mpt/status", methods=["GET"])
 def api_mpt_status():

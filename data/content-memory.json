@@ -3,15 +3,29 @@
     {
       "date": "2026-09-12",
       "pillar": "Local AI & Edge Compute",
-      "topic": "vLLM: High-Throughput and Memory-Efficient LLM Serving: Open Source Alternative to Cloud LLM APIs",
-      "hook": "Stop paying for cloud LLM APIs. This 100% open source repo runs on your own hardware.",
+      "topic": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "hook": "Stop paying $50-$200/mo for proprietary LLM cloud services. Self-host vLLM in 60 seconds and save forever.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-12",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "hook": "Stop paying $50-$200/month for proprietary LLM SaaS. This FOSS vLLM setup runs on your own hardware in 60 seconds.",
       "score": 100
     },
     {
       "date": "2026-09-12",
       "pillar": "FOSS SaaS Alternatives",
-      "topic": "Documenso: Open Source DocuSign Alternative",
-      "hook": "Stop paying for DocuSign. This 100% open source repo runs on your own hardware.",
+      "topic": "Documenso: The Open Source DocuSign Alternative",
+      "hook": "Stop paying $40/user/month for DocuSign. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-12",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Documenso: The Open Source DocuSign Alternative",
+      "hook": "Stop paying $40/user/month for DocuSign. This open-source alternative runs on your own server.",
       "score": 100
     },
     {
@@ -405,20 +419,6 @@
       "topic": "Database-Backed Memory Architectures for Production Agents",
       "hook": "Why Multi-Agent Systems Are Replacing Giant Prompts in 2026",
       "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Why Multi-Agent Systems Are Replacing Giant Prompts in 2026",
-      "score": 100
-    },
-    {
-      "date": "2026-09-02",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Why Context Caching is changing LLM economics",
-      "hook": "We cut LLM prompt costs by 74% with one API parameter.",
-      "score": 92
     }
   ],
   "winning_patterns": [

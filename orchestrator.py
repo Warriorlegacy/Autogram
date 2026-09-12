@@ -545,6 +545,109 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
 
     return manifest
 
+
+def run_shorts_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
+    """Executes the autonomous YouTube Shorts pipeline: script -> MPT 9:16 MP4 -> upload to Shorts."""
+    from src.content.mpt_client import mpt_client
+    from src.youtube.shorts_publisher import youtube_publisher
+
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    out_dir = OUTPUT_BASE / today_str
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("==================================================")
+    logger.info(f"Starting YouTube Shorts AI Autopilot Run: {today_str}")
+    if custom_topic:
+        logger.info(f"Target Topic: '{custom_topic}' [{custom_pillar or 'AI Tool Breakdown'}]")
+    logger.info(f"Mode: {'DRY RUN / SAFE TEST' if dry_run or settings.dry_run else 'LIVE PRODUCTION'}")
+    logger.info("==================================================")
+
+    sources = fetcher.acquire_sources(live_fetch=not dry_run)
+    if not sources:
+        sources = fetcher.load_seed_records()
+
+    if custom_topic:
+        winner_topic = {"topic": custom_topic, "pillar": custom_pillar or "AI Tool Breakdown", "dossier": {}}
+    else:
+        candidates = [
+            {
+                "topic": s.get("source_title"),
+                "angle": f"Why {s.get('source_title')} fundamentally impacts operational efficiency",
+                "pillar": s.get("pillar") or CONTENT_PILLARS[idx % len(CONTENT_PILLARS)],
+                "evidence_strength": s.get("trust_score", 0.9),
+                "novelty_score": 0.88,
+                "practicality_score": 0.92,
+                "save_share_score": 0.90,
+                "saturation_risk": 0.15,
+                "sources": [s.get("url")] if s.get("url") else [],
+            }
+            for idx, s in enumerate(sources)
+        ]
+        winner_topic = scorer.select_best_topic(candidates)["winner"]
+
+    logger.info(f"Generating Shorts narration for: '{winner_topic['topic']}'...")
+    reel_script = generator.generate_reel_script(winner_topic, winner_topic.get("pillar"), winner_topic.get("dossier"))
+
+    timestamp_slug = int(datetime.now().timestamp())
+    shorts_filename = f"shorts_{timestamp_slug}.mp4"
+    shorts_filepath = out_dir / shorts_filename
+
+    if dry_run:
+        logger.info("[DRY-RUN] Skipping MPT render; simulating local MP4 artifact.")
+        shorts_filepath.write_bytes(b"")
+    else:
+        if not mpt_client.is_available():
+            raise RuntimeError(
+                "MoneyPrinterTurbo server is not reachable at "
+                f"{mpt_client.base_url}. Start it with start_mpt.bat (D:\\MoneyPrinterTurbo) and retry."
+            )
+        logger.info(f"Rendering 9:16 Short MP4 via MoneyPrinterTurbo -> {shorts_filepath.name}...")
+        mpt_client.render_reel(
+            script=reel_script["narration"],
+            subject=reel_script["subject"],
+            dest=shorts_filepath,
+        )
+
+    logger.info(f"Uploading Short to YouTube ({'DRY-RUN' if dry_run else 'LIVE PRODUCTION'})...")
+    title = reel_script.get("title", f"{winner_topic['topic']} #Shorts")
+    description = f"{reel_script.get('caption', '')}\n\n#Shorts #AI #Tech"
+    video_id = youtube_publisher.upload_short(
+        video_path=shorts_filepath,
+        title=title,
+        description=description,
+        tags=reel_script.get("hashtags", []),
+        dry_run=dry_run,
+    )
+
+    manifest = {
+        "format": "shorts",
+        "script": reel_script,
+        "video_file": str(shorts_filepath),
+        "video_id": video_id,
+        "url": f"https://youtube.com/shorts/{video_id}",
+        "mode": "dry-run" if dry_run else "live",
+        "published_at": datetime.now().isoformat(),
+    }
+    manifest_path = out_dir / f"shorts_manifest_{timestamp_slug}.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+    logger.info("==================================================")
+    logger.info(f"YouTube Shorts Run Completed Successfully! Video ID: {video_id}")
+    logger.info("==================================================")
+    return manifest
+
+
+def run_video_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
+    """Dual video generation and publishing: Renders once via MPT, publishes to both Instagram Reels and YouTube Shorts."""
+    from pipeline_runner import execute_autonomous_run
+    return execute_autonomous_run(
+        topic=custom_topic,
+        pillar=custom_pillar or "AI Tool Breakdown",
+        dry_run=dry_run,
+        destinations=["reels", "shorts"],
+    )
+
+
 def run_scheduler(dry_run: bool = False):
     """Runs a local continuous scheduler daemon for the 7 daily posting slots."""
     import time
@@ -594,6 +697,8 @@ def main():
     parser.add_argument("--schedule", action="store_true", help="Run local autonomous daily scheduler daemon")
     parser.add_argument("--story", action="store_true", help="Generate and publish an Instagram Story (1080x1920, 9:16)")
     parser.add_argument("--reel", action="store_true", help="Generate and publish an Instagram Reel (9:16 MP4 via local MoneyPrinterTurbo)")
+    parser.add_argument("--shorts", action="store_true", help="Generate and upload a YouTube Short (9:16 MP4 via local MoneyPrinterTurbo)")
+    parser.add_argument("--video", action="store_true", help="Generate once via MoneyPrinterTurbo, dual-publish to both Instagram Reels and YouTube Shorts")
     parser.add_argument("--auto-dm", action="store_true", help="Scan recent posts, auto-reply to comments, and dispatch private DMs")
     parser.add_argument("--topic", type=str, default=None, help="Target topic to generate and publish")
     parser.add_argument("--pillar", type=str, default=None, help="Strategic content pillar for the target topic")
@@ -708,6 +813,16 @@ def main():
     if args.reel:
         dry = args.dry_run or (not args.run_all)
         run_reel_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+        return
+
+    if args.shorts:
+        dry = args.dry_run or (not args.run_all)
+        run_shorts_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
+        return
+
+    if args.video:
+        dry = args.dry_run or (not args.run_all)
+        run_video_pipeline(dry_run=dry, custom_topic=args.topic, custom_pillar=args.pillar)
         return
 
     # Default action or --run-all / --dry-run

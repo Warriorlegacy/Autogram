@@ -130,7 +130,8 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 4. Test Suite & Verification Status
 
-### All Tests (89/89 passing)
+### All Tests (94/94 passing)
+- `tests/test_youtube_shorts.py` — 5/5 (shorts publisher dry-run, title formatting, missing creds handling, `/api/publish/shorts`, `/api/publish/video`)
 - `tests/test_reel_pipeline.py` — 7/7 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution)
 - `tests/test_responsive_ui.py` — 5/5 (mobile responsive elements, hamburger nav, double-api normalization, synthesize endpoint)
 - `tests/test_auth_and_providers.py` — 20/20
@@ -144,45 +145,50 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-**Total:** 89/89 tests passing cleanly. All platforms verified.
+**Total:** 94/94 tests passing cleanly. All platforms verified.
 
 ---
 
-## 5. $0 Reels Video Pipeline (MoneyPrinterTurbo)
+## 5. $0 Short-Form Video Engine (MoneyPrinterTurbo & Dual Distribution)
 
-**Commit:** `edf99ee` — end-to-end 9:16 Reel generation at zero marginal cost.
+**Architecture:** End-to-end 9:16 vertical video generation and publishing for **Instagram Reels** and **YouTube Shorts** at zero marginal cost.
 
 ### Cost Stack (all verified on-host, $0)
 | Layer | Choice | Status |
 |---|---|---|
 | Narration script | `generate_reel_script()` → Groq free → Gemini free → Ollama local → template | in `src/content/generator.py` |
-| Voiceover | edge-tts via MPT (`subtitle_provider=edge`) | installed + configured |
-| Stock footage | Pexels via key already in `D:\MoneyPrinterTurbo\config.toml` | key present |
-| Subtitles | edge timestamp parser (no Whisper download) | MPT default |
-| Assembly | Local FFmpeg via MPT | 2 binaries on PATH |
-| Render server | MPT `POST /api/v1/videos` on `:8080`, started via `start_mpt.bat` | installed, runs on demand |
-| Public staging URL | `upload_video_file()` → S3/R2 → catbox.moe → litterbox → 0x0.st (video/mp4) | implemented |
-| Publishing | `publish_reel()` → Meta `media_type=REELS`, 10-min transcode wait | implemented |
+| Voiceover | Microsoft Edge-TTS via MPT (`subtitle_provider=edge`) | installed + configured ($0) |
+| Stock footage | Pexels Developer API (free key, 20k req/mo) | in `config.toml` ($0) |
+| Subtitles | Edge timestamp parser / faster-whisper | MPT default ($0) |
+| Assembly | Local FFmpeg via MPT (`:8080`) | 2 binaries on PATH ($0) |
+| Render server | MPT headless API via `start_mpt.bat` | installed, runs on demand ($0) |
+| Public staging URL | `upload_video_file()` → S3/R2 presigned / Catbox / 0x0.st (video/mp4) | implemented ($0) |
+| Instagram Reels | `publish_reel()` → Meta Graph API `media_type=REELS` | implemented ($0) |
+| YouTube Shorts | `upload_short()` → YouTube Data API v3 resumable chunked upload | implemented in `src/youtube/shorts_publisher.py` ($0) |
+| Documentation PDF | `compile_pdf.py` → `Autonomous_Video_Pipeline.pdf` | ReportLab styled manual generated ($0) |
 
 ### Flow
 ```
-orchestrator.py --reel
-  → generator.generate_reel_script() (45-55s narration + caption + hashtags)
-  → mpt_client.render_reel() (submit → poll state 0/1/-1 → download MP4)
-  → uploader.upload_video_file() (public URL for Meta ingestion)
-  → publisher.publish_reel() (container → FINISHED → media_publish)
-  → reel_manifest_<ts>.json
+orchestrator.py --video (or pipeline_runner.py --now)
+  → generator.generate_reel_script() (45-55s narration + title + caption + hashtags)
+  → mpt_client.render_reel() (submit -> poll state -> download MP4)
+  → uploader.upload_video_file() (public staging URL for Meta ingestion)
+  → publisher.publish_reel() (Meta container -> FINISHED -> publish)
+  → youtube_publisher.upload_short() (Google YouTube Data API v3 9:16 resumable upload)
+  → video_manifest_<ts>.json
 ```
 
 ### Endpoints & UI
 - `POST /api/publish/reel` (topic, pillar, mode) → reel manifest
-- `GET /api/mpt/status` → `{available, base_url}` (UI gates on this)
-- Queue `format: "reel"` (REEL-*) flows through `/api/schedule/<id>/execute` → `--reel`
-- Dashboard: 🎬 REEL badge, reel option in Schedule modal, "🎬 Publish Reel" quick action
-- Dry-run fabricates everything (no MPT needed); live render requires `start_mpt.bat` running
-- Verified: `python orchestrator.py --reel --dry-run` completes with mock media ID
-
----
+- `POST /api/publish/shorts` (topic, pillar, mode) → shorts manifest
+- `POST /api/publish/video` (topic, pillar, mode) → dual reels + shorts manifest
+- `GET /api/mpt/status` → `{available, base_url}` (UI health check)
+- CLI commands:
+  - `python orchestrator.py --reel --dry-run` (Instagram Reel)
+  - `python orchestrator.py --shorts --dry-run` (YouTube Shorts)
+  - `python orchestrator.py --video --dry-run` (Dual Reels + Shorts)
+  - `python pipeline_runner.py --now --dry-run` (Standalone runner)
+  - `python compile_pdf.py` (Compiles `Autonomous_Video_Pipeline.pdf`)
 
 ## 6. Deployment Surfaces
 

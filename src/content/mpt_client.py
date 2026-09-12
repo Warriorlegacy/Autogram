@@ -35,15 +35,15 @@ class MoneyPrinterTurboClient:
 
     def is_available(self, timeout: int = 5) -> bool:
         """Side-effect-free health check. False when the MPT server is down."""
-        try:
-            resp = requests.get(
-                f"{self.base_url}/api/v1/tasks",
-                params={"page": 1, "page_size": 1},
-                timeout=timeout,
-            )
-            return resp.status_code == 200
-        except Exception:
-            return False
+        for path in ["/api/v1/tasks", "/api/v1/videos", "/"]:
+            try:
+                resp = requests.get(f"{self.base_url}{path}", timeout=timeout)
+                if resp.status_code in (200, 404, 405):
+                    # If it responds with HTTP, server is reachable
+                    return True
+            except Exception:
+                continue
+        return False
 
     def create_video(
         self,
@@ -70,8 +70,26 @@ class MoneyPrinterTurboClient:
             "subtitle_enabled": True,
             "subtitle_position": "bottom",
         }
-        resp = requests.post(f"{self.base_url}/api/v1/videos", json=payload, timeout=30)
-        resp.raise_for_status()
+        # Try /api/v1/videos first, then fallback to /api/v1/tasks
+        endpoints = [f"{self.base_url}/api/v1/videos", f"{self.base_url}/api/v1/tasks"]
+        resp = None
+        last_error = None
+        for ep in endpoints:
+            try:
+                r = requests.post(ep, json=payload, timeout=30)
+                if r.status_code == 404:
+                    continue
+                r.raise_for_status()
+                resp = r
+                break
+            except Exception as e:
+                last_error = e
+
+        if resp is None:
+            if last_error:
+                raise last_error
+            raise RuntimeError(f"MPT failed to accept render job on endpoints {endpoints}")
+
         body = resp.json()
         task_id = (body.get("data") or {}).get("task_id")
         if not task_id:
@@ -125,10 +143,12 @@ class MoneyPrinterTurboClient:
         """One-call render: submit -> wait -> download. Returns local MP4 path."""
         task_id = self.create_video(script=script, subject=subject, voice_name=voice_name)
         task = self.wait_for_task(task_id, timeout_s=timeout_s)
-        videos = task.get("videos") or []
+        videos = task.get("videos") or (task.get("data") or {}).get("videos") or []
         if not videos:
             raise RuntimeError(f"MPT task {task_id} finished with no videos.")
         return self.download_video(videos[0], dest)
+
+    render_video = render_reel
 
 
 mpt_client = MoneyPrinterTurboClient()
