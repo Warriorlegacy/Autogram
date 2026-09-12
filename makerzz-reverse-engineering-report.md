@@ -15,28 +15,28 @@ makerzz.space is a **Next.js App Router (React Server Components) app deployed v
 
 The current product is **“Social Autopilot”**: paste 1 social link → 90-second niche scan (you + up to 50 competitors) → 30-day plan → hooks/scripts/captions/carousels/reels → publish to **13 platforms** → PDF report every run. Pricing is **judgement-metered, render-unbundled**: BASIC $24/mo (400 cr), VISIONARY $79/mo (1,500 cr), AGENTIC $199/mo (5,000 cr). Rendering (HeyGen avatar video, image gen, ffmpeg) is **BYOK / 0 makerzz credits** — billed by your own provider accounts.
 
-Big finding: **the site recently pivoted and left stale metadata everywhere**. `llms.txt`, `manifest.webmanifest`, JSON-LD, and `<meta name="keywords">` still describe the *old* product (AI product photography / studio-grade e-commerce creatives, $5–$200 tiers, `/editor`, `/agent`, `/showcase`, `/pricing`, `/horizon` routes). The live homepage/plans/guide/proof describe the *new* product (Social Autopilot, `/studio`, `/calendar`, `/integrations`, `/how-it-works`, `/trends`, `/plans`). Anyone cloning or auditing must treat llms.txt/manifest/JSON-LD as **outdated, not source of truth**.
+Big finding: **the site recently pivoted and left stale metadata everywhere**. `llms.txt`, `manifest.webmanifest`, JSON-LD, and `<meta name="keywords">` still describe the _old_ product (AI product photography / studio-grade e-commerce creatives, $5–$200 tiers, `/editor`, `/agent`, `/showcase`, `/pricing`, `/horizon` routes). The live homepage/plans/guide/proof describe the _new_ product (Social Autopilot, `/studio`, `/calendar`, `/integrations`, `/how-it-works`, `/trends`, `/plans`). Anyone cloning or auditing must treat llms.txt/manifest/JSON-LD as **outdated, not source of truth**.
 
 ---
 
 ## 2. Hosting / network / DNS — observed
 
-| Layer | Observed value |
-|---|---|
-| Apex A records | `104.21.39.71`, `172.67.143.165` (Cloudflare anycast pair) |
-| `www` | NXDOMAIN — **no `www` host**; apex-only canonical (`https://makerzz.space`) |
-| Nameservers | `candy.ns.cloudflare.com`, `augustus.ns.cloudflare.com` |
-| TXT | `google-site-verification=totJtcefi1cddPJYCRBHVCZ3gxJlBOCgsVGjkSwlPh8` (Search Console verified) |
-| MX | none (SOA only) — no inbound mail infra on apex; contact is likely a form/`hello@makerzz.com` alias (llms.txt states `hello@makerzz.com`; contact page is a form — verify before mailing) |
-| TLS | `CN=makerzz.space`, issuer `CN=WE1, O=Google Trust Services` — Cloudflare Universal SSL (Google Trust Services path) |
-| HTTP server header | `server: cloudflare` |
-| `Server-Timing` | `cfEdge;dur=743, cfOrigin;dur=0, cfWorker;dur=455` — **Cloudflare Workers origin** (not Vercel) |
-| Next-on-Workers signals | `x-opennext: 1`, `x-nextjs-cache: MISS`, `x-nextjs-prerender: 1`, `x-nextjs-stale-time: 300`, `X-Powered-By: Next.js`, `Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch` |
-| Cache | `Cache-Control: s-maxage=31536000` on prerendered pages; Firecrawl reported `cacheState: hit, cachedAt: 2026-09-11T06:20:04Z` |
-| Security headers (observed) | `X-Content-Type-Options: nosniff` (×2), `X-Frame-Options: DENY` (×2), `Referrer-Policy: strict-origin-when-cross-origin` (×2), `Permissions-Policy: camera=(), microphone=(self), geolocation=(), interest-cohort=()` (doubled value = header set twice — minor hygiene bug), NEL `Report-To` → `a.nel.cloudflare.com`, `Alt-Svc: h3=":443"` (HTTP/3) |
-| `security.txt` | 404 — absent at `/.well-known/security.txt` |
-| RUM | Cloudflare Beacon `static.cloudflareinsights.com/beacon.min.js/v31edd6df…` with `data-cf-beacon {"version":"2024.11.0","token":"01f39bcacabf440baada1c3145aa2400","r":1,"spa":2}` (SPA mode) |
-| Analytics (observed in rawHtml) | Google `gtag.js?id=AW-18315341625` (Google Ads) + `gtag('config','AW-18315341625')` + `gtag('config','G-2MHKK0XK9B',{anonymize_ip:true})` (GA4). No PostHog/Mixpanel/Amplitude/Hotjar/Intercom fingerprints in homepage HTML. |
+| Layer                           | Observed value                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Apex A records                  | `104.21.39.71`, `172.67.143.165` (Cloudflare anycast pair)                                                                                                                                                                                                                                                                                            |
+| `www`                           | NXDOMAIN — **no `www` host**; apex-only canonical (`https://makerzz.space`)                                                                                                                                                                                                                                                                           |
+| Nameservers                     | `candy.ns.cloudflare.com`, `augustus.ns.cloudflare.com`                                                                                                                                                                                                                                                                                               |
+| TXT                             | `google-site-verification=totJtcefi1cddPJYCRBHVCZ3gxJlBOCgsVGjkSwlPh8` (Search Console verified)                                                                                                                                                                                                                                                      |
+| MX                              | none (SOA only) — no inbound mail infra on apex; contact is likely a form/`hello@makerzz.com` alias (llms.txt states `hello@makerzz.com`; contact page is a form — verify before mailing)                                                                                                                                                             |
+| TLS                             | `CN=makerzz.space`, issuer `CN=WE1, O=Google Trust Services` — Cloudflare Universal SSL (Google Trust Services path)                                                                                                                                                                                                                                  |
+| HTTP server header              | `server: cloudflare`                                                                                                                                                                                                                                                                                                                                  |
+| `Server-Timing`                 | `cfEdge;dur=743, cfOrigin;dur=0, cfWorker;dur=455` — **Cloudflare Workers origin** (not Vercel)                                                                                                                                                                                                                                                       |
+| Next-on-Workers signals         | `x-opennext: 1`, `x-nextjs-cache: MISS`, `x-nextjs-prerender: 1`, `x-nextjs-stale-time: 300`, `X-Powered-By: Next.js`, `Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch`                                                                                                                                        |
+| Cache                           | `Cache-Control: s-maxage=31536000` on prerendered pages; Firecrawl reported `cacheState: hit, cachedAt: 2026-09-11T06:20:04Z`                                                                                                                                                                                                                         |
+| Security headers (observed)     | `X-Content-Type-Options: nosniff` (×2), `X-Frame-Options: DENY` (×2), `Referrer-Policy: strict-origin-when-cross-origin` (×2), `Permissions-Policy: camera=(), microphone=(self), geolocation=(), interest-cohort=()` (doubled value = header set twice — minor hygiene bug), NEL `Report-To` → `a.nel.cloudflare.com`, `Alt-Svc: h3=":443"` (HTTP/3) |
+| `security.txt`                  | 404 — absent at `/.well-known/security.txt`                                                                                                                                                                                                                                                                                                           |
+| RUM                             | Cloudflare Beacon `static.cloudflareinsights.com/beacon.min.js/v31edd6df…` with `data-cf-beacon {"version":"2024.11.0","token":"01f39bcacabf440baada1c3145aa2400","r":1,"spa":2}` (SPA mode)                                                                                                                                                          |
+| Analytics (observed in rawHtml) | Google `gtag.js?id=AW-18315341625` (Google Ads) + `gtag('config','AW-18315341625')` + `gtag('config','G-2MHKK0XK9B',{anonymize_ip:true})` (GA4). No PostHog/Mixpanel/Amplitude/Hotjar/Intercom fingerprints in homepage HTML.                                                                                                                         |
 
 **Inference:** OpenNext + Cloudflare Workers is the exact deployment story — `x-opennext` + `cfWorker` timing + Cloudflare DNS/A records together are conclusive. No Vercel hosting. No custom origin IP exposed (expected behind Cloudflare proxy).
 
@@ -63,17 +63,17 @@ The site documents its own server contracts unusually explicitly (homepage FAQ, 
 
 > “Every phase writes a real file, and the next phase refuses to start until it can read that file back.” / “The gate is the file, not a memory of having produced it.”
 
-| Phase | Name | Gate file | Cost |
-|---|---|---|---|
-| P0 | Setup & onboarding (8–9 fields: brand, handles, niche, audience, voice, platforms, avatar, approval mode; refuses vague niches like “business”/“AI”) | `brief saved` | Free |
-| P1 | Profile & niche scan (you + up to 20 competitors Visionary / 50 Agentic; ranked angle table) | `scan scored` (`scan.json`) | **40 cr** |
-| P2 | Strategy & calendar (8 ranked angles + slot plan; post times randomised to the minute, e.g. 7:14 not 7:00; never 7 same-format in a row) | `week laid out` (`plan.json`) | **15 cr / platform** |
-| P3 | Script (clean prose `.txt`; verifier rejects `[HOOK]`/timecodes/`**markdown**`/emoji/stage directions; failed scripts regenerate server-side, never hand-scrubbed) | `script verified` (`script.txt`) | **12 cr** |
-| P4 | Avatar video (HeyGen render on your key; submit→poll→download; dropped sessions resume the poll, never double-submit) | `video.mp4` (`avatar rendered`) | **0 makerzz cr** (your HeyGen bill) |
-| P5 | Edit plan & cut (shot list, caption timings, B-roll spec, SFX map — everything the script is forbidden to contain) | `edit plan written` (`edit.json`) | **20 cr** |
-| P6 | Carousel (8 compiled slide prompts + caption/hashtags; you approve prompts before any render; each slide keeps its `.prompt.txt`) | `slides approved` (`slides/`) | **30 cr** (+ per-slide render: Standard 3 / High 6 / 4K 12) |
-| P7 | Schedule & publish (queue-writing free; per-platform aspect/caption/API pre-checks; approve-each shows final asset+caption+time and waits) | `queue confirmed` | **3 cr / platform** (one page states this; another page states publishing = 0 cr — see §4.2 discrepancy) |
-| P8 | Report (what shipped/cost/platform-reported-back/what’s stuck; missing engagement data written as “not available”, never invented; ends with credits used/remaining) | `report filed` (PDF in inbox + on disk) | Free |
+| Phase | Name                                                                                                                                                                 | Gate file                               | Cost                                                                                                     |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| P0    | Setup & onboarding (8–9 fields: brand, handles, niche, audience, voice, platforms, avatar, approval mode; refuses vague niches like “business”/“AI”)                 | `brief saved`                           | Free                                                                                                     |
+| P1    | Profile & niche scan (you + up to 20 competitors Visionary / 50 Agentic; ranked angle table)                                                                         | `scan scored` (`scan.json`)             | **40 cr**                                                                                                |
+| P2    | Strategy & calendar (8 ranked angles + slot plan; post times randomised to the minute, e.g. 7:14 not 7:00; never 7 same-format in a row)                             | `week laid out` (`plan.json`)           | **15 cr / platform**                                                                                     |
+| P3    | Script (clean prose `.txt`; verifier rejects `[HOOK]`/timecodes/`**markdown**`/emoji/stage directions; failed scripts regenerate server-side, never hand-scrubbed)   | `script verified` (`script.txt`)        | **12 cr**                                                                                                |
+| P4    | Avatar video (HeyGen render on your key; submit→poll→download; dropped sessions resume the poll, never double-submit)                                                | `video.mp4` (`avatar rendered`)         | **0 makerzz cr** (your HeyGen bill)                                                                      |
+| P5    | Edit plan & cut (shot list, caption timings, B-roll spec, SFX map — everything the script is forbidden to contain)                                                   | `edit plan written` (`edit.json`)       | **20 cr**                                                                                                |
+| P6    | Carousel (8 compiled slide prompts + caption/hashtags; you approve prompts before any render; each slide keeps its `.prompt.txt`)                                    | `slides approved` (`slides/`)           | **30 cr** (+ per-slide render: Standard 3 / High 6 / 4K 12)                                              |
+| P7    | Schedule & publish (queue-writing free; per-platform aspect/caption/API pre-checks; approve-each shows final asset+caption+time and waits)                           | `queue confirmed`                       | **3 cr / platform** (one page states this; another page states publishing = 0 cr — see §4.2 discrepancy) |
+| P8    | Report (what shipped/cost/platform-reported-back/what’s stuck; missing engagement data written as “not available”, never invented; ends with credits used/remaining) | `report filed` (PDF in inbox + on disk) | Free                                                                                                     |
 
 Notes: P4/P5/P6 are a fork (carousel drop skips avatar; talking-head skips carousel). “One phase per message. It finishes, shows you the result, asks, and stops.” Studio has a collapsed daily-autopilot call P1→P3 at 25 cr. Full strategy run (scan+week+script+edit+prompts+captions) is quoted as **122 cr charged as one call**.
 
@@ -81,19 +81,19 @@ Notes: P4/P5/P6 are a fork (carousel drop skips avatar; talking-head skips carou
 
 Full metered table (from `/plans` + `/how-it-works`, identical on both):
 
-| Action | Call | Credits |
-|---|---|---|
-| Profile/niche scan | `scan` | 40 |
-| Trend refresh + calendar | `trends` | 15 |
-| Script generation | `script` | 12 |
-| Reel edit plan | `edit_plan` | 20 |
-| Carousel prompt set (8 slides) | `carousel_prompts` | 30 |
-| Caption + hashtag pack | `caption_pack` | 5 |
-| Carousel slide Standard | `slide_low` | 3 |
-| Carousel slide High (2×) | `slide_high` | 6 |
-| Carousel slide 4K (4×) | `slide_4k` | 12 |
-| Avatar video 60s 1080p | `video_1080p` | 202 |
-| Avatar video 60s 4K | `video_4k` | 215 |
+| Action                         | Call               | Credits |
+| ------------------------------ | ------------------ | ------- |
+| Profile/niche scan             | `scan`             | 40      |
+| Trend refresh + calendar       | `trends`           | 15      |
+| Script generation              | `script`           | 12      |
+| Reel edit plan                 | `edit_plan`        | 20      |
+| Carousel prompt set (8 slides) | `carousel_prompts` | 30      |
+| Caption + hashtag pack         | `caption_pack`     | 5       |
+| Carousel slide Standard        | `slide_low`        | 3       |
+| Carousel slide High (2×)       | `slide_high`       | 6       |
+| Carousel slide 4K (4×)         | `slide_4k`         | 12      |
+| Avatar video 60s 1080p         | `video_1080p`      | 202     |
+| Avatar video 60s 4K            | `video_4k`         | 215     |
 
 Rules (enforced server-side, per copy): cost quoted before every billable call (“Script — 12 credits. You’ll have 4,168 left. Go?”); append-only ledger (balance = fold over entries); 402 at zero with halt, no retry/degrade/substitute; monthly reset, no rollover; re-reads/reports/calendar/brief/prompt-recompile = 0 cr. **Discrepancy to flag:** `/how-it-works` P7 says “Publishing is metered: 3 credits / platform”; `/plans` + homepage FAQ say “Publishing costs no credits… 0 credits… forever.” Likely the 3-cr `publish_receipt` is legacy or plan-dependent — needs a live checkout test to resolve; quote both in any rebuild.
 
@@ -123,17 +123,17 @@ Worked examples on-page: VISIONARY month = 4×122 + 6×24 + 2×96 + 4×202 + 60�
 
 ### 5.1 Design tokens (Firecrawl branding + observed CSS)
 
-| Token | Value |
-|---|---|
-| Mode | Dark (`colorScheme: dark`, page bg near-black `#060606`) with light content cards (text ink `#10222A`) |
-| Primary / Secondary | `#0E6F77` (deep teal) / `#0A545C` (darker teal) |
-| Accent / CTA | `#FFC22B` (amber) — primary pill buttons: amber bg, ink text/border, hard offset shadow `rgb(16,34,42) 0px 6px 0px` |
-| Secondary button | White bg, ink text/border, pill `999px` |
-| Radius | Cards `20px`, buttons/pills `999px`, platform tiles `10px` |
-| Type | Archivo (headings/body, 68px H1 / 49.6px H2 / ~17px body), Space Grotesk (body fallback), JetBrains Mono (code/receipts/skill snippets) |
-| Spacing | 4px base unit; dense marketing rhythm: hero → 4-step strip → evidence gallery → compounding chart → feature grid → 13-platform wall → FAQ → CTA |
-| Brand mark | Inline SVG wordmark: 32px rounded-square outline + teal arc + dot; “Social Autopilot / makerzz” lockup; favicon `favicon.ico` + PNG set; OG `og-calendar.png` |
-| Voice | Blunt-operator: “Buy judgement. Never GPU time.” / “When in doubt, it waits.” / “No offline mode and no degraded best-effort mode.” Numbers-as-proof, anti-hype disclaimers (“Illustrative… not a typical result”, orange “illustrative” chips on `/proof`) |
+| Token               | Value                                                                                                                                                                                                                                                       |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mode                | Dark (`colorScheme: dark`, page bg near-black `#060606`) with light content cards (text ink `#10222A`)                                                                                                                                                      |
+| Primary / Secondary | `#0E6F77` (deep teal) / `#0A545C` (darker teal)                                                                                                                                                                                                             |
+| Accent / CTA        | `#FFC22B` (amber) — primary pill buttons: amber bg, ink text/border, hard offset shadow `rgb(16,34,42) 0px 6px 0px`                                                                                                                                         |
+| Secondary button    | White bg, ink text/border, pill `999px`                                                                                                                                                                                                                     |
+| Radius              | Cards `20px`, buttons/pills `999px`, platform tiles `10px`                                                                                                                                                                                                  |
+| Type                | Archivo (headings/body, 68px H1 / 49.6px H2 / ~17px body), Space Grotesk (body fallback), JetBrains Mono (code/receipts/skill snippets)                                                                                                                     |
+| Spacing             | 4px base unit; dense marketing rhythm: hero → 4-step strip → evidence gallery → compounding chart → feature grid → 13-platform wall → FAQ → CTA                                                                                                             |
+| Brand mark          | Inline SVG wordmark: 32px rounded-square outline + teal arc + dot; “Social Autopilot / makerzz” lockup; favicon `favicon.ico` + PNG set; OG `og-calendar.png`                                                                                               |
+| Voice               | Blunt-operator: “Buy judgement. Never GPU time.” / “When in doubt, it waits.” / “No offline mode and no degraded best-effort mode.” Numbers-as-proof, anti-hype disclaimers (“Illustrative… not a typical result”, orange “illustrative” chips on `/proof`) |
 
 ### 5.2 Layout & navigation
 
@@ -204,4 +204,4 @@ Skip-link, semantic landmarks, aria-hidden decorative SVGs, labelled nav — bas
 - Stack proof: response headers (`x-opennext`, `cfWorker`, `X-Powered-By: Next.js`, doubled sec-headers), rawHtml (`__next_f`, `/_next/static/chunks|media|css`, `next/font` variables, `next/image` URLs, `next-route-announcer`), DNS/TLS (Cloudflare A/NS, Google-Trust WE1), analytics IDs (`G-2MHKK0XK9B`, `AW-18315341625`, CF Beacon `01f39bcacabf440baada1c3145aa2400`), `manifest.webmanifest`, `makerzz-jsonld`, `robots.txt` (Cloudflare content-signals + route disallows), `llms.txt` (stale product snapshot — useful as pivot evidence).
 - Design tokens: Firecrawl `branding` (Archivo/JetBrains Mono/Space Grotesk stacks, `#0E6F77/#0A545C/#FFC22B/#060606/#10222A`, 999px pills + `0px 6px` shadow, 20px radius, dark mode, custom framework).
 
-*Report saved from live evidence on 2026-09-11. Re-scrape before building — pricing/credit copy has at least one internal contradiction (§4.2) and several stale-metadata fields (§3).*
+_Report saved from live evidence on 2026-09-11. Re-scrape before building — pricing/credit copy has at least one internal contradiction (§4.2) and several stale-metadata fields (§3)._

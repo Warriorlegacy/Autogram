@@ -129,6 +129,15 @@ class Database:
             )
             """)
 
+            # 7. verified_followers (Follow-gate unlocked users)
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS verified_followers (
+                username TEXT PRIMARY KEY,
+                source TEXT,
+                verified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """)
+
             conn.commit()
 
     def record_source(self, record: dict):

@@ -11,7 +11,7 @@
 
 1. **Our Production Works & Live PORTFOLIO** — Real systems actively running in production.
 2. **Our Verified WEBSITES & Ecosystem Hubs** — Interactive platforms and live mission control.
-3. **The Complete  Autonomy Stack** — Every free API, tool, key, and command to run zero-marginal-cost pipelines.
+3. **The Complete $0 Autonomy Stack** — Every free API, tool, key, and command to run zero-marginal-cost pipelines.
 4. **The Master Production PROMPT PACK** — Battle-tested prompt architectures you can copy-paste today.
 5. **HIRE THE STUDIO / Partner with Us** — How to hire our engineering team to deploy custom AI systems.
 
@@ -40,20 +40,20 @@ Inspect our verified, battle-tested software systems operating in production tod
 
 ---
 
-## 4. The Zero-Marginal-Cost Autonomous Stack (/Month)
+## 4. The Zero-Marginal-Cost Autonomous Stack ($0/Month)
 
-How Signhify Studio runs high-throughput autonomous media pipelines with  recurring cloud infrastructure fees:
+How Signhify Studio runs high-throughput autonomous media pipelines with $0 recurring cloud infrastructure fees:
 
 | Layer | Tool / Provider | Operating Cost | Capability & Quota |
 |---|---|---|---|
-| **LLM Reasoning** | Gemini 2.5 Flash / Groq / Ollama | **.00** | 14.4k req/day free tier + unlimited local compute |
-| **AI Voiceover** | Microsoft Edge-TTS Neural | **.00** | Studio-grade multilingual neural voices, zero API keys |
-| **Stock Footage** | Pexels Video Search API | **.00** | 4K/HD portrait video clips with 200 req/hr allowance |
-| **Assembly Engine** | FFmpeg + MoneyPrinterTurbo | **.00** | Hardware-accelerated 1080x1920 MP4 rendering |
-| **Public Staging** | Uguu.se / Catbox / Cloudflare R2 | **.00** | High-speed direct CDN endpoints for Meta ingestion |
-| **Publishing API** | Meta Graph API (v23.0) | **.00** | Direct container publishing (carousels, stories, reels) |
-| **Cloud Scheduler** | GitHub Actions Cloud Runners | **.00** | 2,000 free runner minutes/month (PC-off proof) |
-| **Video Captions** | Anton OFL Bold Typography | **.00** | High-contrast burned-in subtitles for mobile viewports |
+| **LLM Reasoning** | Gemini 2.5 Flash / Groq / Ollama | **$0.00** | 14.4k req/day free tier + unlimited local compute |
+| **AI Voiceover** | Microsoft Edge-TTS Neural | **$0.00** | Studio-grade multilingual neural voices, zero API keys |
+| **Stock Footage** | Pexels Video Search API | **$0.00** | 4K/HD portrait video clips with 200 req/hr allowance |
+| **Assembly Engine** | FFmpeg + MoneyPrinterTurbo | **$0.00** | Hardware-accelerated 1080x1920 MP4 rendering |
+| **Public Staging** | Uguu.se / Catbox / Cloudflare R2 | **$0.00** | High-speed direct CDN endpoints for Meta ingestion |
+| **Publishing API** | Meta Graph API (v23.0) | **$0.00** | Direct container publishing (carousels, stories, reels) |
+| **Cloud Scheduler** | GitHub Actions Cloud Runners | **$0.00** | 2,000 free runner minutes/month (PC-off proof) |
+| **Video Captions** | Anton OFL Bold Typography | **$0.00** | High-contrast burned-in subtitles for mobile viewports |
 
 ---
 

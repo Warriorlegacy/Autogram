@@ -68,30 +68,37 @@ TRIGGERS = {
         )
     },
     "BLUEPRINT": {
-        "patterns": [r"\bblueprint\b", r"\bvault\b", r"\bstudio\b", r"\bportfolio\b", r"\bservices\b"],
+        "patterns": [r"\bblueprint\b", r"\bvault\b", r"\bstudio\b", r"\bportfolio\b", r"\bservices\b", r"\bsystem\b", r"\bworks\b"],
         "gated": True,
         "gate_replies": [
-            "This blueprint is for followers only 🔒 Follow @signhify.studio, then reply FOLLOWED and I'll DM the full vault!",
-            "Almost yours! Hit Follow on @signhify.studio and comment FOLLOWED — the blueprint lands in your DMs 📩",
-            "Followers get the goods 🔐 Follow @signhify.studio + reply FOLLOWED and check your inbox!"
+            "🔒 Sent you a DM! Follow @signhify.studio & reply 'DONE' in your DMs to instantly unlock the Blueprint & Prompt Pack ⚡",
+            "Almost yours! Hit Follow on @signhify.studio and reply 'DONE' — the full blueprint & PDF lands in your DMs 📩",
+            "This blueprint is for our community 🔐 Follow @signhify.studio + reply 'DONE' and check your inbox!"
         ],
         "delivery_replies": [
-            "Verified! 🚀 Sent the full AI Engineering Studio Blueprint & Master Prompt Vault to your DMs! Check your inbox 📥",
+            "Verified! 🚀 Sent the full Signhify Studio AI Engineering Blueprint & Master Vault to your DMs! Check your inbox 📥",
             "You're in! 🔓 Check your DMs for the full Signhify Studio Blueprint + PDF guide ⚡",
             "Sent to your DMs! Enjoy the free AI engineering architecture & master prompts 🧠"
         ],
         "claim_patterns": [r"\bfollowed\b", r"\bfollowing\b", r"\bdone\b", r"\bfollow\s*back\b", r"✅"],
+        "gate_dm_text": (
+            "Hey {username}! 👋\n\n"
+            "Here is how to unlock the SIGNHIFY STUDIO AI Engineering Blueprint & Master Prompt Vault:\n\n"
+            "🔒 Step 1: Follow @signhify.studio (this blueprint is reserved for our community)\n"
+            "👉 Step 2: Reply with the word 'DONE' or 'FOLLOWED' right here (or comment on the post)\n\n"
+            "The moment you reply, your private blueprint link & PDF will instantly unlock! ⚡"
+        ),
         "dm_text": (
             "Welcome to the inner circle! 🔓\n\n"
             "Here is the complete SIGNHIFY STUDIO Blueprint — our works, portfolio, "
-            "websites, free AI stack and copy-paste prompt pack:\n\n"
+            "verified websites, $0 autonomous stack and copy-paste master prompt pack:\n\n"
             "📕 Full Blueprint (read online): " + BLUEPRINT_MD_URL + "\n"
             "📄 Blueprint PDF: " + BLUEPRINT_PDF_URL + "\n\n"
             "Built by Signhify Studio — FULL AI ENGINEERING STUDIO.\n"
-            "We build autonomous agent systems, production RAG & fine-tuned LLM architectures, and zero-marginal-cost content engines.\n"
-            "🔗 Website: https://signhify.studio\n"
+            "We engineer autonomous multi-agent pipelines, production RAG & fine-tuned LLMs, and zero-marginal-cost content systems.\n"
+            "🌐 Website: https://signhify.studio\n"
             "⚡ App: https://autogram-ai.vercel.app\n"
-            "💼 Hire Us / Partner: partner@signhify.studio"
+            "💼 Hire Us / Inquiries: partner@signhify.studio"
         )
     }
 }
@@ -112,6 +119,7 @@ class InstagramDMAutomator:
         self.user_id = settings.ig_user_id
         self.token = settings.ig_access_token
         self.dry_run = settings.dry_run
+        self.send_initial_gate_dm = True
         self.state_file = STATE_FILE
         self._init_state()
 
@@ -136,23 +144,53 @@ class InstagramDMAutomator:
         except Exception as e:
             logger.warning(f"Failed to persist follow-gate state: {e}")
 
+    def is_follower_verified(self, username: str) -> bool:
+        """Returns True if the user has already completed the follow gate."""
+        key = (username or "").lower().strip()
+        if not key:
+            return False
+        # 1. Check in-memory/JSON gate file
+        entry = self._load_gate().get(key, {})
+        if entry.get("delivered"):
+            return True
+        # 2. Check DB verified_followers table
+        try:
+            with db.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT 1 FROM verified_followers WHERE username = ?", (key,))
+                if cursor.fetchone():
+                    return True
+        except Exception:
+            pass
+        return False
+
     def mark_gate_pending(self, username: str) -> None:
         pending = self._load_gate()
-        key = (username or "").lower()
+        key = (username or "").lower().strip()
         if key and (key not in pending or pending[key].get("delivered")):
             pending[key] = {"requested_at": time.time(), "delivered": False}
             self._save_gate(pending)
 
     def is_gate_pending(self, username: str) -> bool:
-        entry = self._load_gate().get((username or "").lower(), {})
+        entry = self._load_gate().get((username or "").lower().strip(), {})
         return bool(entry) and not entry.get("delivered")
 
     def mark_gate_delivered(self, username: str) -> None:
         pending = self._load_gate()
-        key = (username or "").lower()
+        key = (username or "").lower().strip()
         if key in pending:
             pending[key]["delivered"] = True
             self._save_gate(pending)
+        try:
+            with db.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "INSERT OR REPLACE INTO verified_followers (username, source) VALUES (?, ?)",
+                    (key, "auto_dm_claim")
+                )
+                conn.commit()
+        except Exception as e:
+            logger.debug(f"DB verified_followers update skipped: {e}")
 
     @staticmethod
     def is_follow_claim(text: str) -> bool:
@@ -424,10 +462,10 @@ class InstagramDMAutomator:
         logger.info(f"Trigger matched! Comment '{text}' by @{username} matched keyword [{matched_key}].")
 
         # Follow-gated premium assets (BLUEPRINT): withhold the link until the
-        # user claims the follow. First touch -> gate ask + PENDING. Claim
-        # ("followed"/"done") on any later comment -> deliver + clear.
+        # user claims the follow. Dual-Touchpoint: initial gate DM + public ask.
+        # Once verified or claimed -> deliver blueprint links + clear.
         if cfg.get("gated"):
-            if self.is_follow_claim(text) or self.is_gate_pending(username):
+            if self.is_follower_verified(username) or self.is_follow_claim(text) or self.is_gate_pending(username):
                 return self._deliver_gated_blueprint(
                     comment_id, media_id, username, text, matched_key
                 )
@@ -437,6 +475,17 @@ class InstagramDMAutomator:
                 public_reply_id = self.send_public_reply(comment_id, gate_reply)
             except Exception as e:
                 logger.warning(f"Could not send gate reply to comment {comment_id}: {e}")
+
+            # Send initial private DM with follow instructions (links strictly withheld)
+            if getattr(self, "send_initial_gate_dm", True):
+                gate_dm_tmpl = cfg.get("gate_dm_text", "")
+                if gate_dm_tmpl:
+                    gate_dm = gate_dm_tmpl.replace("{username}", username)
+                    try:
+                        self.send_private_dm(comment_id, gate_dm)
+                    except Exception as e:
+                        logger.debug(f"Could not send initial gate DM for comment {comment_id}: {e}")
+
             self.mark_gate_pending(username)
             self.record_processed_comment(
                 comment_id=comment_id, media_id=media_id, username=username,

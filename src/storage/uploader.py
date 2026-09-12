@@ -115,13 +115,15 @@ class AssetUploader:
                 return url
         raise RuntimeError(f"imgbb returned status {resp.status_code}: {resp.text[:200]}")
 
-    def upload_slide_images(self, image_paths: list[str], publication_date: str, dry_run: bool | None = None) -> list[str]:
+    def upload_slide_images(self, image_paths: list[str], publication_date: str, dry_run: bool | None = None, prefer_crawler_cdn: bool = False) -> list[str]:
         """
         Uploads or stages images and returns public URLs.
         Cascade:
         0. If dry_run is True, formats public staging URLs instantly without upload.
         1. S3 / Cloudflare R2 if configured.
-        2. imgbb.com authenticated API (prioritized for CI / GitHub Actions speed & reliability).
+        2. imgbb.com authenticated API (prioritized by default for CI / GitHub Actions).
+           If prefer_crawler_cdn=True, direct image CDNs (freeimage.host, catbox.moe) are prioritized first
+           to avoid Cloudflare crawler challenges (Meta error 2207052).
         3. freeimage.host cloud CDN.
         4. catbox.moe CDN fallback.
         5. litterbox.catbox.moe (24h temp, works from GitHub Actions IPs).
@@ -186,46 +188,36 @@ class AssetUploader:
                 p = Path(path_str)
                 uploaded_url = None
 
-                # Primary (fast & reliable): imgbb if API key is configured
-                if has_imgbb:
+                # Primary: imgbb if not prefer_crawler_cdn
+                if not prefer_crawler_cdn and has_imgbb:
                     try:
                         uploaded_url = self._upload_to_imgbb(p)
                         logger.info(f"Uploaded {p.name} to imgbb.com: {uploaded_url}")
                     except Exception as e_imgbb:
                         logger.warning(f"imgbb.com failed for {p.name}: {e_imgbb}. Trying fallback hosts...")
 
-                # Secondary: freeimage.host
+                # Direct raw CDNs: freeimage.host -> catbox -> litterbox -> 0x0.st
                 if not uploaded_url:
-                    try:
-                        uploaded_url = self._upload_to_freeimage(p)
-                        logger.info(f"Uploaded {p.name} to freeimage.host: {uploaded_url}")
-                    except Exception as e1:
-                        logger.warning(f"freeimage.host failed for {p.name}: {e1}. Trying catbox...")
-                        # Fallback 2: catbox.moe
+                    for name, fn in [
+                        ("freeimage.host", self._upload_to_freeimage),
+                        ("catbox.moe", self._upload_to_catbox),
+                        ("litterbox", self._upload_to_litterbox),
+                        ("0x0.st", self._upload_to_0x0),
+                    ]:
                         try:
-                            uploaded_url = self._upload_to_catbox(p)
-                            logger.info(f"Uploaded {p.name} to catbox.moe: {uploaded_url}")
-                        except Exception as e2:
-                            logger.warning(f"catbox.moe failed for {p.name}: {e2}. Trying litterbox...")
-                            # Fallback 3: litterbox (GitHub Actions compatible)
-                            try:
-                                uploaded_url = self._upload_to_litterbox(p)
-                                logger.info(f"Uploaded {p.name} to litterbox.catbox.moe: {uploaded_url}")
-                            except Exception as e3:
-                                logger.warning(f"litterbox failed for {p.name}: {e3}. Trying 0x0.st...")
-                                # Fallback 4: 0x0.st
-                                try:
-                                    uploaded_url = self._upload_to_0x0(p)
-                                    logger.info(f"Uploaded {p.name} to 0x0.st: {uploaded_url}")
-                                except Exception as e4:
-                                    logger.warning(f"0x0.st failed for {p.name}: {e4}.")
-                                    # Fallback 5: imgbb retry if not tried initially
-                                    if not has_imgbb:
-                                        try:
-                                            uploaded_url = self._upload_to_imgbb(p)
-                                            logger.info(f"Uploaded {p.name} to imgbb.com: {uploaded_url}")
-                                        except Exception as e5:
-                                            logger.error(f"imgbb failed for {p.name}: {e5}. All cloud CDNs exhausted.")
+                            uploaded_url = fn(p)
+                            logger.info(f"Uploaded {p.name} to {name}: {uploaded_url}")
+                            break
+                        except Exception as e_cdn:
+                            logger.warning(f"{name} failed for {p.name}: {e_cdn}. Trying next host...")
+
+                # Fallback to imgbb if prefer_crawler_cdn was True but others failed
+                if not uploaded_url and has_imgbb:
+                    try:
+                        uploaded_url = self._upload_to_imgbb(p)
+                        logger.info(f"Uploaded {p.name} to imgbb.com: {uploaded_url}")
+                    except Exception as e_imgbb2:
+                        logger.warning(f"imgbb.com fallback failed for {p.name}: {e_imgbb2}.")
 
                 if uploaded_url:
                     temp_urls.append(uploaded_url)
@@ -263,6 +255,11 @@ class AssetUploader:
             public_urls.append(public_url)
 
         return public_urls
+
+    def upload_story_image(self, image_path: str, publication_date: str, dry_run: bool | None = None) -> str:
+        """Uploads a vertical 1080x1920 story image to a Meta-crawler-friendly CDN (freeimage.host/catbox.moe)."""
+        urls = self.upload_slide_images([image_path], publication_date, dry_run=dry_run, prefer_crawler_cdn=True)
+        return urls[0]
 
     def upload_video_file(self, video_path: str, publication_date: str, dry_run: bool | None = None) -> str:
         """

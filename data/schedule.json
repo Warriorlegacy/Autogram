@@ -1,50 +1,215 @@
 {
-  "scheduler_enabled": true,
+  "scheduler_enabled": false,
   "daily_slots": [
     {
       "slot": "08:00",
       "label": "Morning Prime",
       "pillar": "AI Tool Breakdown",
+      "format": "carousel",
       "enabled": true
     },
     {
       "slot": "10:30",
       "label": "Mid-Morning High Signal",
       "pillar": "Prompting & Workflow",
+      "format": "carousel",
       "enabled": true
     },
     {
       "slot": "13:00",
       "label": "Lunchtime Tech Deep Dive",
       "pillar": "Tech Explainer",
+      "format": "carousel",
       "enabled": true
     },
     {
       "slot": "15:30",
       "label": "Afternoon Strategy",
       "pillar": "Marketing Psychology",
+      "format": "carousel",
       "enabled": true
     },
     {
       "slot": "18:00",
       "label": "Evening Commute Insights",
       "pillar": "Career & Skills",
+      "format": "carousel",
       "enabled": true
     },
     {
       "slot": "20:30",
       "label": "Prime Time Contrarian",
       "pillar": "Contrarian",
+      "format": "carousel",
       "enabled": true
     },
     {
       "slot": "22:30",
       "label": "Late Night Blueprint",
       "pillar": "AI Tool Breakdown",
+      "format": "carousel",
+      "enabled": true
+    }
+  ],
+  "story_slots": [
+    {
+      "slot": "09:00",
+      "label": "Morning Tech Radar",
+      "pillar": "AI Tool Breakdown",
+      "format": "story",
+      "enabled": true
+    },
+    {
+      "slot": "11:30",
+      "label": "Workflow Optimization Signal",
+      "pillar": "Prompting & Workflow",
+      "format": "story",
+      "enabled": true
+    },
+    {
+      "slot": "14:00",
+      "label": "Lunchtime Code Deep Dive",
+      "pillar": "Tech Explainer",
+      "format": "story",
+      "enabled": true
+    },
+    {
+      "slot": "16:30",
+      "label": "Architecture & Growth Insight",
+      "pillar": "Marketing Psychology",
+      "format": "story",
+      "enabled": true
+    },
+    {
+      "slot": "19:00",
+      "label": "Evening Developer Digest",
+      "pillar": "Trending GitHub Spotlight",
+      "format": "story",
+      "enabled": true
+    },
+    {
+      "slot": "21:30",
+      "label": "Contrarian Engineering Breakdown",
+      "pillar": "Contrarian",
+      "format": "story",
+      "enabled": true
+    },
+    {
+      "slot": "23:30",
+      "label": "Late Night Production Blueprint",
+      "pillar": "Local AI & Edge Compute",
+      "format": "story",
       "enabled": true
     }
   ],
   "timezone": "Asia/Kolkata",
-  "queue": [],
+  "queue": [
+    {
+      "id": "STORY-1001",
+      "scheduled_time": "2026-09-12T09:00:00",
+      "topic": "vLLM High-Throughput Inference Engine: Serving LLMs for $0",
+      "pillar": "Local AI & Edge Compute",
+      "format": "story",
+      "mode": "live",
+      "status": "COMPLETED",
+      "created_at": "2026-09-12T12:00:00",
+      "started_at": "2026-09-12T19:23:28.698281",
+      "completed_at": "2026-09-12T19:24:06.681387"
+    },
+    {
+      "id": "STORY-1002",
+      "scheduled_time": "2026-09-12T11:30:00",
+      "topic": "The 3 Strict Prompt Rules That Cut Token Consumption by 70%",
+      "pillar": "Prompting & Workflow",
+      "format": "story",
+      "mode": "live",
+      "status": "RUNNING",
+      "created_at": "2026-09-12T12:05:00",
+      "started_at": "2026-09-12T19:23:28.698317"
+    },
+    {
+      "id": "STORY-1003",
+      "scheduled_time": "2026-09-12T14:00:00",
+      "topic": "Documenso: The Open Source DocuSign Alternative You Can Self-Host",
+      "pillar": "FOSS SaaS Alternatives",
+      "format": "story",
+      "mode": "live",
+      "status": "RUNNING",
+      "created_at": "2026-09-12T12:10:00",
+      "started_at": "2026-09-12T19:23:28.698333"
+    },
+    {
+      "id": "STORY-1004",
+      "scheduled_time": "2026-09-12T16:30:00",
+      "topic": "Compound AI Systems: Why Modular Agents Crush Monolithic Prompts",
+      "pillar": "AI Tool Breakdown",
+      "format": "story",
+      "mode": "live",
+      "status": "RUNNING",
+      "created_at": "2026-09-12T12:15:00",
+      "started_at": "2026-09-12T19:23:28.698348"
+    },
+    {
+      "id": "STORY-1005",
+      "scheduled_time": "2026-09-12T19:00:00",
+      "topic": "Trending GitHub: Zero-Touch Autonomous Agent Architecture Blueprint",
+      "pillar": "Trending GitHub Spotlight",
+      "format": "story",
+      "mode": "live",
+      "status": "RUNNING",
+      "created_at": "2026-09-12T12:20:00",
+      "started_at": "2026-09-12T19:23:28.698363"
+    },
+    {
+      "id": "STORY-1006",
+      "scheduled_time": "2026-09-12T21:30:00",
+      "topic": "The Fine-Tuning Fallacy: Why Context Caching Replaced Expensive Weights",
+      "pillar": "Contrarian",
+      "format": "story",
+      "mode": "live",
+      "status": "QUEUED",
+      "created_at": "2026-09-12T12:25:00"
+    },
+    {
+      "id": "STORY-1007",
+      "scheduled_time": "2026-09-12T23:30:00",
+      "topic": "Production Agent Checklist: Deterministic State Routing vs Hallucinations",
+      "pillar": "Tech Explainer",
+      "format": "story",
+      "mode": "live",
+      "status": "QUEUED",
+      "created_at": "2026-09-12T12:30:00"
+    },
+    {
+      "id": "SCH-1001",
+      "scheduled_time": "2026-09-13T08:00:00",
+      "topic": "Why Multi-Agent Systems Beat Monolithic Prompts in Production",
+      "pillar": "AI Tool Breakdown",
+      "format": "carousel",
+      "mode": "live",
+      "status": "QUEUED",
+      "created_at": "2026-09-10T16:00:00"
+    },
+    {
+      "id": "SCH-1002",
+      "scheduled_time": "2026-09-13T13:00:00",
+      "topic": "Context Caching Architecture & 90% LLM Cost Reduction Blueprint",
+      "pillar": "Tech Explainer",
+      "format": "carousel",
+      "mode": "live",
+      "status": "QUEUED",
+      "created_at": "2026-09-10T16:15:00"
+    },
+    {
+      "id": "SCH-1003",
+      "scheduled_time": "2026-09-13T20:30:00",
+      "topic": "The 'Fine-Tuning is Dead' Fallacy: When RAG Fails at Scale",
+      "pillar": "Contrarian",
+      "format": "carousel",
+      "mode": "dry-run",
+      "status": "QUEUED",
+      "created_at": "2026-09-10T16:30:00"
+    }
+  ],
   "history": []
 }

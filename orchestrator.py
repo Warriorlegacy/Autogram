@@ -466,10 +466,10 @@ def run_story_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
     # 4. Upload to CDN / Staging
     logger.info("Staging Story asset for Meta Graph API...")
     try:
-        image_urls = with_retries(lambda: uploader.upload_slide_images([str(story_filepath)], today_str, dry_run=dry_run))
-    except TypeError:
-        image_urls = uploader.upload_slide_images([str(story_filepath)], today_str)
-    public_story_url = image_urls[0]
+        public_story_url = with_retries(lambda: uploader.upload_story_image(str(story_filepath), today_str, dry_run=dry_run))
+    except (TypeError, AttributeError):
+        image_urls = uploader.upload_slide_images([str(story_filepath)], today_str, dry_run=dry_run, prefer_crawler_cdn=True)
+        public_story_url = image_urls[0]
 
     # 5. Publish to Meta Instagram Stories
     logger.info(f"Publishing Story to Instagram ({'DRY-RUN' if dry_run else 'LIVE PRODUCTION'})...")

@@ -31,10 +31,16 @@ def test_blueprint_keyword_matching():
 
 
 def test_gate_first_touch_withholds_link(automator):
-    """First BLUEPRINT comment -> gate ask, PENDING, and NO DM is attempted."""
+    """First BLUEPRINT comment -> Dual Touchpoint: gate ask in public reply + gate DM (link strictly withheld)."""
+    dm_captured = {}
+
+    def fake_gate_dm(comment_id, text):
+        dm_captured["comment_id"] = comment_id
+        dm_captured["text"] = text
+        return True
+
     with patch.object(automator, "send_public_reply", return_value="r_gate") as pub, \
-         patch.object(automator, "send_private_dm",
-                      side_effect=AssertionError("DM must not send before follow claim")):
+         patch.object(automator, "send_private_dm", side_effect=fake_gate_dm):
         res = automator.process_comment(
             {"id": "c_gate_1", "text": "Send me the blueprint!", "username": "GateUser1"},
             media_id="m1",
@@ -42,9 +48,33 @@ def test_gate_first_touch_withholds_link(automator):
     assert res["dm_status"] == "GATE_PENDING"
     assert res["public_reply_id"] == "r_gate"
     sent_reply = pub.call_args[0][1]
-    assert "Follow" in sent_reply and "FOLLOWED" in sent_reply
-    assert "raw.githubusercontent" not in sent_reply  # link withheld
+    assert "Follow" in sent_reply or "DONE" in sent_reply
+    # Ensure link is strictly withheld in both public reply and initial gate DM
+    assert "BLUEPRINT.md" not in sent_reply
+    assert "BLUEPRINT.md" not in dm_captured.get("text", "")
+    assert "BLUEPRINT.pdf" not in dm_captured.get("text", "")
+    assert "Follow" in dm_captured.get("text", "")
     assert automator.is_gate_pending("GateUser1") is True
+
+
+def test_verified_follower_gets_instant_dm(automator):
+    """Verified followers bypass gate and receive blueprint DM on first comment."""
+    automator.mark_gate_delivered("VIPFollower")
+    captured = {}
+
+    def fake_dm(comment_id, text):
+        captured["text"] = text
+        return True
+
+    with patch.object(automator, "send_public_reply", return_value="r_vip"), \
+         patch.object(automator, "send_private_dm", side_effect=fake_dm):
+        res = automator.process_comment(
+            {"id": "c_vip_1", "text": "Show me your studio blueprint", "username": "VIPFollower"},
+            media_id="m1",
+        )
+    assert res["dm_status"] == "DM_SENT"
+    assert "BLUEPRINT.md" in captured["text"] or "BLUEPRINT.pdf" in captured["text"]
+    assert "AI ENGINEERING STUDIO" in captured["text"]
 
 
 def test_gate_claim_delivers_blueprint(automator):

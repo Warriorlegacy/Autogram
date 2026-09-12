@@ -40,8 +40,12 @@ class YouTubeShortsPublisher:
 
     def get_credentials(self):
         """Loads or refreshes Google OAuth2 credentials."""
-        from google.auth.transport.requests import Request
-        from google.oauth2.credentials import Credentials
+        try:
+            from google.auth.transport.requests import Request
+            from google.oauth2.credentials import Credentials
+        except ImportError:
+            logger.warning("google-auth is not installed; cannot load YouTube credentials.")
+            return None
 
         creds = None
         # 1. Try loading from token file

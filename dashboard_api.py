@@ -1275,6 +1275,68 @@ def api_cron_auto_dm():
             pipeline_log.append(f"[{datetime.now().strftime('%H:%M:%S')}] [CRON-JOB.ORG ERROR] {e}")
         return jsonify({"ok": False, "error": str(e)}), 500
 
+@app.route("/BLUEPRINT.md", methods=["GET"])
+def api_blueprint_markdown():
+    """Serve the master Signhify Studio blueprint markdown document."""
+    md_file = BASE_DIR / "BLUEPRINT.md"
+    if md_file.exists():
+        from flask import Response
+        return Response(md_file.read_text(encoding="utf-8"), mimetype="text/markdown; charset=utf-8")
+    return jsonify({"error": "BLUEPRINT.md not found"}), 404
+
+@app.route("/BLUEPRINT.pdf", methods=["GET"])
+def api_blueprint_pdf():
+    """Serve the publication-grade Signhify Studio blueprint PDF."""
+    pdf_file = BASE_DIR / "BLUEPRINT.pdf"
+    if pdf_file.exists():
+        return send_from_directory(str(BASE_DIR), "BLUEPRINT.pdf", mimetype="application/pdf")
+    return jsonify({"error": "BLUEPRINT.pdf not found"}), 404
+
+@app.route("/api/webhook/instagram", methods=["GET", "POST"])
+def api_webhook_instagram():
+    """
+    Official Meta Instagram Webhook endpoint for zero-latency Auto-DM and comments.
+    - GET: Responds to Meta webhook subscription verification handshake.
+    - POST: Processes real-time comment and DM notifications from Instagram Graph API.
+    """
+    if request.method == "GET":
+        mode = request.args.get("hub.mode")
+        token = request.args.get("hub.verify_token")
+        challenge = request.args.get("hub.challenge")
+        verify_token = os.environ.get("META_WEBHOOK_VERIFY_TOKEN", "signhify_autogram_webhook")
+
+        if mode == "subscribe" and token == verify_token:
+            return challenge or "", 200
+        return "Forbidden", 403
+
+    # POST payload from Meta Instagram Webhook
+    try:
+        data = request.get_json(silent=True) or {}
+        from src.instagram.dm_automator import dm_automator
+
+        # Quick background scan or comment parsing
+        entries = data.get("entry", [])
+        for entry in entries:
+            for change in entry.get("changes", []):
+                val = change.get("value", {})
+                if "text" in val and "id" in val:
+                    # Individual comment payload
+                    c_id = val.get("id")
+                    c_text = val.get("text", "")
+                    c_user = val.get("from", {}).get("username", "user")
+                    media_id = val.get("media", {}).get("id", "")
+                    dm_automator.process_comment(
+                        {"id": c_id, "text": c_text, "username": c_user},
+                        media_id=media_id
+                    )
+
+        # Fallback trigger scan
+        threading.Thread(target=lambda: dm_automator.scan_and_automate(limit_posts=2), daemon=True).start()
+        return jsonify({"ok": True, "status": "processed"}), 200
+    except Exception as e:
+        logger.error(f"Error handling Instagram webhook: {e}")
+        return jsonify({"ok": False, "error": str(e)}), 500
+
 @app.route("/api/cron/status", methods=["GET"])
 def api_cron_status():
     """Returns webhook configuration and recommended cron-job.org setup."""
