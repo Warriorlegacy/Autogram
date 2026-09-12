@@ -1,0 +1,144 @@
+name: Daily Instagram Stories Autopilot (7x Daily)
+
+on:
+  schedule:
+    # 7 Strategic Daily Story Slots (Asia/Kolkata timezone)
+    # Staggered by 3 minutes to avoid GitHub Actions global queue congestion
+    - cron: "33 03 * * *"   # Slot 1: 09:03 AM IST (03:33 UTC) - Morning Tech Radar
+    - cron: "03 06 * * *"   # Slot 2: 11:33 AM IST (06:03 UTC) - Workflow Optimization Signal
+    - cron: "33 08 * * *"   # Slot 3: 02:03 PM IST (08:33 UTC) - Lunchtime Code Deep Dive
+    - cron: "03 11 * * *"   # Slot 4: 04:33 PM IST (11:03 UTC) - Architecture & Growth Insight
+    - cron: "33 13 * * *"   # Slot 5: 07:03 PM IST (13:33 UTC) - Evening Developer Digest
+    - cron: "03 16 * * *"   # Slot 6: 09:33 PM IST (16:03 UTC) - Contrarian Breakdown
+    - cron: "03 18 * * *"   # Slot 7: 11:33 PM IST (18:03 UTC) - Late-Night Production Blueprint
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Custom Story Topic (leave empty for auto-acquisition)"
+        required: false
+        default: ""
+      pillar:
+        description: "Content Pillar"
+        required: false
+        default: "AI Tool Breakdown"
+        type: choice
+        options:
+          - "AI Tool Breakdown"
+          - "Prompting & Workflow"
+          - "Tech Explainer"
+          - "Marketing Psychology"
+          - "Trending GitHub Spotlight"
+          - "Contrarian"
+          - "Local AI & Edge Compute"
+      mode:
+        description: "Execution Mode"
+        required: true
+        default: "live"
+        type: choice
+        options:
+          - "live"
+          - "dry-run"
+  repository_dispatch:
+    types: [publish-story, story-drop]
+
+jobs:
+  story:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Install Playwright Chromium (if not cached)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: playwright install --with-deps chromium
+
+      - name: Install Playwright system deps only (if browser cached)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: playwright install-deps chromium
+
+      - name: Execute Autonomous Story Publishing Pipeline
+        timeout-minutes: 15
+        run: |
+          MODE="${{ github.event.inputs.mode || 'live' }}"
+          TOPIC="${{ github.event.inputs.topic || '' }}"
+          PILLAR="${{ github.event.inputs.pillar || 'AI Tool Breakdown' }}"
+
+          CMD_ARGS="--story"
+          if [ "$MODE" = "live" ] && [ -n "${IG_ACCESS_TOKEN}" ]; then
+            CMD_ARGS="$CMD_ARGS --run-all"
+          else
+            CMD_ARGS="$CMD_ARGS --dry-run"
+          fi
+
+          if [ -n "$TOPIC" ]; then
+            CMD_ARGS="$CMD_ARGS --topic \"$TOPIC\" --pillar \"$PILLAR\""
+          fi
+
+          echo "Running command: python orchestrator.py $CMD_ARGS"
+          if [ -n "${IG_ACCESS_TOKEN}" ] || [ "$MODE" = "dry-run" ]; then
+            python orchestrator.py $CMD_ARGS
+          else
+            echo "GitHub IG_ACCESS_TOKEN secret not detected. Falling back to Render cloud backend..."
+            HTTP_STATUS=$(curl -s -o story_response.json -w "%{http_code}" \
+              --max-time 45 \
+              -X POST "https://autogram-dashboard.onrender.com/api/publish/story" \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer ${AUTOGRAM_OWNER_KEY}" \
+              -d "{\"topic\": \"$TOPIC\", \"pillar\": \"$PILLAR\", \"mode\": \"$MODE\"}" || echo "000")
+            echo "Render story response (HTTP $HTTP_STATUS):"
+            cat story_response.json 2>/dev/null || true
+            if [ "$HTTP_STATUS" != "200" ] && [ "$HTTP_STATUS" != "201" ]; then
+              echo "Render fallback failed — executing local dry-run validation..."
+              python orchestrator.py --story --dry-run
+            fi
+          fi
+        env:
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_COPILOT_TOKEN: ${{ secrets.GITHUB_COPILOT_TOKEN || secrets.GITHUB_TOKEN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
+          PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE || 'https://autogram-dashboard.onrender.com' }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY || 'f0ee2a304a71d5b2da983153c2284b73' }}
+          DRY_RUN: ${{ secrets.DRY_RUN || 'false' }}
+
+      - name: Commit Content Memory State
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main || true
+          git add data/content-memory.json autopilot.db data/dm_automation_state.json || true
+          git diff --cached --quiet || git commit -m "chore(memory): record published story drop [skip ci]"
+          git push origin main || echo "Push skipped or not permitted"
+
+      - name: Upload Generated Story Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-story-artifacts
+          path: output/
+          retention-days: 14

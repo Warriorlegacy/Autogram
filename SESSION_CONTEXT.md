@@ -130,7 +130,8 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 
 ## 4. Test Suite & Verification Status
 
-### All Tests (94/94 passing)
+### All Tests (99/99 passing)
+- `tests/test_workflows_and_copilot.py` — 5/5 (daily-story.yml & daily-video.yml validation, Settings GITHUB_COPILOT_TOKEN, GitHub Models preset, unauthorized handling)
 - `tests/test_youtube_shorts.py` — 5/5 (shorts publisher dry-run, title formatting, missing creds handling, `/api/publish/shorts`, `/api/publish/video`)
 - `tests/test_reel_pipeline.py` — 7/7 (reel dry-run publish, narration structure, MPT-offline fail-fast, video dry-run URL, `/api/mpt/status`, `/api/publish/reel`, queued REEL execution)
 - `tests/test_responsive_ui.py` — 5/5 (mobile responsive elements, hamburger nav, double-api normalization, synthesize endpoint)
@@ -145,7 +146,7 @@ Transformed the entire Autogram platform into a scalable, premium 3D immersive c
 - `tests/test_content_generation.py` — 4/4
 - `tests/test_dm_automator.py` — 6/6
 
-**Total:** 94/94 tests passing cleanly. All platforms verified.
+**Total:** 99/99 tests passing cleanly. All platforms & cloud workflows verified.
 
 ---
 

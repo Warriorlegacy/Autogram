@@ -247,6 +247,57 @@ Return ONLY valid JSON.
                 continue
         raise last_err or RuntimeError("All OpenRouter free models failed")
 
+    def generate_with_github_models(self, topic: dict, sources: list[dict]) -> dict:
+        """
+        100% Free GitHub Models / Copilot API Tier (GPT-4o, Llama 3.1 70B, Mistral Large).
+        Uses GITHUB_COPILOT_TOKEN or GITHUB_TOKEN on https://models.inference.ai.azure.com.
+        """
+        token = getattr(settings, "github_copilot_token", None) or os.environ.get("GITHUB_COPILOT_TOKEN") or os.environ.get("GITHUB_TOKEN", "")
+        if not token:
+            raise ValueError("No GITHUB_COPILOT_TOKEN or GITHUB_TOKEN configured")
+
+        url = "https://models.inference.ai.azure.com/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        models = [
+            "gpt-4o",
+            "gpt-4o-mini",
+            "Meta-Llama-3.1-70B-Instruct",
+            "Mistral-large-2407"
+        ]
+        last_err = None
+        for model in models:
+            payload = {
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}"},
+                    {"role": "user", "content": self._build_user_prompt(topic, sources)}
+                ],
+                "response_format": {"type": "json_object"},
+                "temperature": 0.7
+            }
+            try:
+                resp = requests.post(url, headers=headers, json=payload, timeout=30)
+                if resp.status_code == 200:
+                    raw_text = resp.json()["choices"][0]["message"]["content"]
+                    data = self._parse_json_response(raw_text)
+                    if "slides" in data and len(data["slides"]) >= 5:
+                        logger.info(f"GitHub Models generation successful with {model}.")
+                        return data
+                if resp.status_code in (401, 403):
+                    logger.warning(f"GitHub token unauthorized (HTTP {resp.status_code}).")
+                    raise ValueError(f"GitHub Models unauthorized (HTTP {resp.status_code})")
+                resp.raise_for_status()
+            except Exception as e:
+                last_err = e
+                logger.warning(f"GitHub Models '{model}' failed: {e}. Trying next...")
+                if "unauthorized" in str(e).lower() or "401" in str(e):
+                    break
+                continue
+        raise last_err or RuntimeError("All GitHub Models failed")
+
     def generate_with_cloudflare_ai(self, topic: dict, sources: list[dict]) -> dict:
         """
         100% Free Cloudflare Workers AI (10,000 free Neurons/day).
@@ -532,6 +583,16 @@ Return ONLY valid JSON.
                 logger.warning(f"Gemini generation error ({e}). Falling back to next free provider.")
                 self._disabled_providers.add("gemini")
 
+        # 2.5. GitHub Models / Copilot (100% Free Tier: GPT-4o, Llama 3.1 70B)
+        github_token = getattr(settings, "github_copilot_token", None) or os.environ.get("GITHUB_COPILOT_TOKEN") or os.environ.get("GITHUB_TOKEN", "").strip()
+        if "github_models" not in self._disabled_providers and (provider in ["auto", "github_models", "copilot"]) and github_token:
+            try:
+                logger.info("Generating carousel with GitHub Models / Copilot (Free GPT-4o)...")
+                return self._normalize_carousel(self.generate_with_github_models(topic, sources), topic)
+            except Exception as e:
+                logger.warning(f"GitHub Models generation error ({e}). Falling back to next free provider.")
+                self._disabled_providers.add("github_models")
+
         # 3. Cloudflare Workers AI (100% Free Tier: 10,000 Neurons/day)
         cf_token = getattr(settings, "cloudflare_api_token", None) or os.environ.get("CLOUDFLARE_API_TOKEN", "").strip()
         cf_account = getattr(settings, "cloudflare_account_id", None) or os.environ.get("CLOUDFLARE_ACCOUNT_ID", "").strip()
@@ -596,7 +657,30 @@ Return ONLY valid JSON.
         return self._normalize_carousel(get_rich_synthesized_carousel(topic, sources), topic)
 
     def _free_narration(self, prompt: str) -> dict | None:
-        """Best-effort narration JSON via $0 providers (groq -> gemini -> ollama)."""
+        """Best-effort narration JSON via $0 providers (github_models -> groq -> gemini -> ollama)."""
+        # 0. GitHub Models / Copilot ($0, high-quality GPT-4o / Llama 3.1)
+        copilot_token = getattr(settings, "github_copilot_token", None) or os.environ.get("GITHUB_COPILOT_TOKEN") or os.environ.get("GITHUB_TOKEN", "")
+        if copilot_token and "github_models" not in self._disabled_providers:
+            try:
+                resp = requests.post(
+                    "https://models.inference.ai.azure.com/chat/completions",
+                    headers={"Authorization": f"Bearer {copilot_token}", "Content-Type": "application/json"},
+                    json={
+                        "model": "gpt-4o-mini",
+                        "messages": [
+                            {"role": "system", "content": "Return ONLY valid JSON."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "response_format": {"type": "json_object"},
+                        "temperature": 0.7,
+                    },
+                    timeout=30,
+                )
+                if resp.status_code == 200:
+                    return self._parse_json_response(resp.json()["choices"][0]["message"]["content"])
+            except Exception as e:
+                logger.warning(f"Reel narration via GitHub Models failed ({e}). Trying fallback...")
+
         # 1. Groq free tier (OpenAI-compatible chat completions)
         groq_key = getattr(settings, "groq_api_key", None) or os.environ.get("GROQ_API_KEY", "")
         if groq_key and "groq" not in self._disabled_providers:

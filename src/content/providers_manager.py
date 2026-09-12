@@ -33,6 +33,14 @@ DEFAULT_PROVIDERS = {
             "default_model": "gpt-4o-mini",
             "models": ["gpt-4o", "gpt-4o-mini", "o3-mini", "gpt-4-turbo"]
         },
+        "github_models": {
+            "name": "GitHub Models (Copilot)",
+            "base_url": "https://models.inference.ai.azure.com",
+            "auth_header": "Authorization",
+            "auth_prefix": "Bearer ",
+            "default_model": "gpt-4o",
+            "models": ["gpt-4o", "gpt-4o-mini", "Meta-Llama-3.1-70B-Instruct", "Meta-Llama-3.1-8B-Instruct", "Mistral-large-2407"]
+        },
         "anthropic": {
             "name": "Anthropic Claude",
             "base_url": "https://api.anthropic.com/v1",
