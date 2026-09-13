@@ -1,0 +1,61 @@
+name: Daily Instagram Reels Autopilot
+
+on:
+  schedule:
+    - cron: '0 13 * * *' # 1:00 PM UTC Daily = 18:30 IST (1 reel/day)
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install FFmpeg with Libass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libass-dev fonts-liberation
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Reels Generation Pipeline
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          python -c "
+          from scripts.pipeline_reels import execute_reels_pipeline
+          import json
+          res = execute_reels_pipeline('The 1% Rule of Compounding Daily Habits')
+          with open('metadata.json', 'w') as f:
+              json.dump(res, f)
+          "
+
+      - name: Upload Video to Public CDN and Publish to Instagram
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          META_GRAPH_ACCESS_TOKEN: ${{ secrets.META_GRAPH_ACCESS_TOKEN }}
+        run: |
+          python -c "
+          import json
+          from scripts.storage_helper import upload_to_supabase
+          from scripts.publish_instagram import publish_reel_to_instagram
+
+          with open('metadata.json') as f:
+              data = json.load(f)
+
+          public_url = upload_to_supabase(data['video_path'])
+          print(f'Hosted public URL: {public_url}')
+          publish_reel_to_instagram(public_url, data['caption'])
+          "

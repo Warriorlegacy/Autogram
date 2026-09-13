@@ -2,30 +2,9 @@
   "recent_posts": [
     {
       "date": "2026-09-13",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "Skeleton-of-Thought (SoT): Accelerate LLMs by 4x",
-      "hook": "Stop paying for slow LLMs. This open-source framework runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "LazyGit: Simple Terminal UI for Git Commands",
-      "hook": "Stop paying for complex Git GUIs. This 100% open source terminal UI runs on your own machine.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
-      "pillar": "Open Source Economics & Contrarian",
-      "topic": "The Hidden Costs of Self-Hosting: When Paying for SaaS Makes Sense",
-      "hook": "Stop blindly self-hosting everything. Sometimes, SaaS is the smarter, cheaper choice.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
       "pillar": "Developer Power Tools & CLI",
       "topic": "The Zero-Hallucination SQL Generator: Prompt Code That Never Invents Column Names",
-      "hook": "Stop throwing away money on broken SQL queries. This open source tool generates accurate schema prompts every time.",
+      "hook": "Stop generating broken SQL. This 100% open source prompt framework runs on your own hardware.",
       "score": 100
     },
     {
@@ -411,6 +390,27 @@
       "pillar": "Tech Industry Explainer",
       "topic": "Meta Graph API v23 Changes: Stricter Quotas and Direct Content Publishing",
       "hook": "How AI models generate text 3x faster without losing intelligence.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-09",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-09",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-09",
+      "pillar": "AI Tool Breakdown",
+      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
+      "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
       "score": 100
     },
     {

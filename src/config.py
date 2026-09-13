@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     mpt_base_url: str = Field(default="http://127.0.0.1:8080", alias="MPT_BASE_URL")
     pexels_api_key: str | None = Field(default=None, alias="PEXELS_API_KEY")
 
+    # Reels pipeline (spec: OpenRouter :free scripts, HF ZeroGPU video, Supabase CDN)
+    supabase_url: str | None = Field(default=None, alias="SUPABASE_URL")
+    supabase_key: str | None = Field(default=None, alias="SUPABASE_KEY")
+    reels_voice: str = Field(default="en-US-ChristopherNeural", alias="REELS_VOICE")
+
     # Meta Instagram Graph API
     ig_user_id: str | None = Field(default=None, alias="IG_USER_ID")
     ig_access_token: str | None = Field(default=None, alias="IG_ACCESS_TOKEN")

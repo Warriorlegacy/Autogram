@@ -1,0 +1,139 @@
+name: Reels Autopilot 10x Daily
+
+# 10 autonomous Reels per day on @signhify.studio. Runs on GitHub-hosted
+# runners — your PC can be OFF. Requirements for hands-free operation:
+#   Repo secrets: OPENROUTER_API_KEY, IG_USER_ID, IG_ACCESS_TOKEN,
+#                 GEMINI_API_KEY (narration fallback), PEXELS_API_KEY not needed.
+#                 Optional: SUPABASE_URL / SUPABASE_KEY (else free file hosts).
+#   Quota budget: 10 reels/day fits Meta's ~25 publishes/24h ONLY if other
+#                 auto-publish workflows (daily-video, daily-post, daily-story)
+#                 are paused or their slots reduced. Publisher fails closed at 24.
+#   Minutes budget: ~6 min/run x 10 x 30 ~= 1800/mo (free plan = 2000/mo).
+
+on:
+  # Parked: daily_reels.yml owns the schedule now (1 reel/day). Uncomment to
+  # scale back up to 10x. Manual + cron-job.org dispatch still work.
+  # schedule:
+  #   - cron: '0 2 * * *'    # 07:30 IST
+  #   - cron: '0 4 * * *'    # 09:30 IST
+  #   - cron: '0 6 * * *'    # 11:30 IST
+  #   - cron: '30 7 * * *'   # 13:00 IST
+  #   - cron: '0 9 * * *'    # 14:30 IST
+  #   - cron: '30 10 * * *'  # 16:00 IST
+  #   - cron: '0 12 * * *'   # 17:30 IST
+  #   - cron: '30 13 * * *'  # 19:00 IST
+  #   - cron: '0 15 * * *'   # 20:30 IST
+  #   - cron: '30 16 * * *'  # 22:00 IST
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Custom topic (empty = auto-pick by slot)'
+        required: false
+        default: ''
+  repository_dispatch:
+    types: [publish-reel, publish-reels-10x] # cron-job.org backup trigger path
+
+concurrency:
+  group: reels-10x-publish
+  cancel-in-progress: false # queue, never double-publish a slot
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install FFmpeg with Libass
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg libass-dev fonts-liberation
+
+      - name: Cache Whisper model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-base-int8-v1
+
+      - name: Install Python Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pick Slot Topic (deterministic rotation, no network)
+        id: pick
+        run: |
+          TOPIC_OVERRIDE="${{ github.event.inputs.topic || github.event.client_payload.topic || '' }}"
+          PICKED=$(python -c "
+          import json, datetime
+          from src.research.fetcher import fetcher
+          from src.research.scorer import scorer, CONTENT_PILLARS
+          override = '''$TOPIC_OVERRIDE'''.strip()
+          if override:
+              print(override); raise SystemExit
+          slots = ['02:00','04:00','06:00','07:30','09:00','10:30','12:00','13:30','15:00','16:30']
+          now = datetime.datetime.utcnow().strftime('%H:%M')
+          slot = min(range(len(slots)), key=lambda i: abs(int(slots[i][:2])*60+int(slots[i][3:])-(int(now[:2])*60+int(now[3:]))))
+          sources = fetcher.load_seed_records()
+          idx = (datetime.date.today().toordinal()*10+slot) % len(sources)
+          s = sources[idx]
+          print(s.get('source_title'))
+          " | tail -n 1)
+          echo "topic=$PICKED" >> "$GITHUB_OUTPUT"
+          echo "Slot topic: $PICKED"
+
+      - name: Run Reels Generation Pipeline
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          python -c "
+          from scripts.pipeline_reels import execute_reels_pipeline
+          import json
+          res = execute_reels_pipeline('''${{ steps.pick.outputs.topic }}''')
+          with open('metadata.json', 'w') as f:
+              json.dump(res, f)
+          print('Rendered:', res['video_path'])
+          "
+
+      - name: Upload Video to Public CDN and Publish to Instagram
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
+        run: |
+          python -c "
+          import json
+          from scripts.storage_helper import upload_to_supabase
+          from scripts.publish_instagram import publish_reel_to_instagram
+
+          with open('metadata.json') as f:
+              data = json.load(f)
+
+          public_url = upload_to_supabase(data['video_path'])
+          print(f'Hosted public URL: {public_url}')
+          post_id = publish_reel_to_instagram(public_url, data['caption'])
+          with open('post_id.txt', 'w') as f:
+              f.write(post_id)
+          "
+
+      - name: Upload Run Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ github.run_number }}
+          path: |
+            workspace/final_reel.mp4
+            metadata.json
+            post_id.txt
+          retention-days: 14
