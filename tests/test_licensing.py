@@ -37,16 +37,35 @@ def test_missing_or_blank_key():
 
 
 def test_client_license_generation_and_validation():
-    """Verify generating and validating client licenses for various tiers."""
-    for tier in ["starter", "growth", "enterprise"]:
+    """Verify generating and validating client licenses for canonical tiers."""
+    for tier in ["starter", "growth", "agency_pro"]:
         key = generate_license("Acme Labs", tier=tier, days=30)
         assert key.startswith(f"AG-{tier.upper()}-")
-        
+
         result = verify_license(key)
         assert result["valid"] is True
         assert result["is_owner"] is False
         assert result["tier"] == tier
         assert result["client"] == "ACMELABS"
+
+
+def test_legacy_enterprise_key_still_validates_as_agency_pro():
+    """Legacy keys minted with the ENTERPRISE slug remain valid and map to agency_pro."""
+    # New keys mint the canonical slug
+    key = generate_license("Legacy Client", tier="enterprise", days=30)
+    assert key.startswith("AG-AGENCY_PRO-")
+
+    # Simulate a genuinely legacy key: signed over the ENTERPRISE payload
+    import time, hmac as hmac_mod, hashlib
+    from src.auth.licensing import get_salt
+    slug = "LEGACYCLT"
+    exp_hex = hex(int(time.time()) + (30 * 86400))[2:].upper()
+    sig = hmac_mod.new(get_salt().encode(), f"ENTERPRISE:{exp_hex}:{slug}".encode(), hashlib.sha256).hexdigest()[:8].upper()
+    legacy_key = f"AG-ENTERPRISE-{exp_hex}-{slug}-{sig}"
+
+    result = verify_license(legacy_key)
+    assert result["valid"] is True
+    assert result["tier"] == "agency_pro"
 
 
 def test_tampered_license_signature():

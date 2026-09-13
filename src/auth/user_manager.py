@@ -14,92 +14,16 @@ from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional, List
 
+# Tier definitions come from data/pricing.json (single source of truth) via src/auth/pricing.py.
+# Edit prices/features in the JSON — not here.
+from src.auth.pricing import TIERS, get_tiers
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR / "autopilot.db"
 SESSION_SECRET = os.getenv("AUTOGRAM_SESSION_SECRET", "autogram_secure_session_secret_token_2026_signhify")
 
 # Password hashing configuration (PBKDF2-HMAC-SHA256, 100,000 rounds)
 HASH_ITERATIONS = 100000
-
-TIERS = {
-    "starter": {
-        "name": "Starter",
-        "price_monthly": 29,
-        "price_annual": 290,
-        "badge": "Entry",
-        "features": [
-            "30 Carousels / month",
-            "Auto-Detect AI Models",
-            "Standard Prompt Library (15+ prompts)",
-            "3 Design Templates",
-            "Manual Publishing Export",
-            "Email Support"
-        ],
-        "limits": {
-            "carousels_per_month": 30,
-            "reels_per_month": 10,
-            "connected_accounts": 1
-        }
-    },
-    "growth": {
-        "name": "Growth Pro",
-        "price_monthly": 79,
-        "price_annual": 790,
-        "badge": "Most Popular",
-        "features": [
-            "120 Carousels / month",
-            "40 AI Video Reels / month",
-            "All AI Providers (OpenAI, Claude, Groq, Ollama, Custom)",
-            "Full Prompt Library (30+ prompts)",
-            "All 5 Carousel Design Templates",
-            "7x Daily Automated Scheduler",
-            "Direct Meta Graph API Publishing",
-            "Priority Support"
-        ],
-        "limits": {
-            "carousels_per_month": 120,
-            "reels_per_month": 40,
-            "connected_accounts": 3
-        }
-    },
-    "agency_pro": {
-        "name": "Agency Pro",
-        "price_monthly": 199,
-        "price_annual": 1990,
-        "badge": "Uncapped",
-        "features": [
-            "Unlimited Carousels & Reels",
-            "Custom Endpoints & Private LLM Proxies",
-            "Full White-Label Watermark Removal",
-            "Unlimited Client Workspaces",
-            "Auto-DM Engine & Comment Funnels",
-            "Dedicated Account Manager & SLA",
-            "Custom CSS Design System Overrides"
-        ],
-        "limits": {
-            "carousels_per_month": 99999,
-            "reels_per_month": 99999,
-            "connected_accounts": 10
-        }
-    },
-    "owner": {
-        "name": "Master Owner VIP",
-        "price_monthly": 0,
-        "price_annual": 0,
-        "badge": "Admin Master",
-        "features": [
-            "100% Unrestricted Root Master Access",
-            "Zero System Rate Limits",
-            "Direct Subprocess & Cloud Daemon Control",
-            "License Key Minting & User Tier Management"
-        ],
-        "limits": {
-            "carousels_per_month": 999999,
-            "reels_per_month": 999999,
-            "connected_accounts": 999
-        }
-    }
-}
 
 
 def get_db():
@@ -236,8 +160,11 @@ class UserManager:
         if not password or len(password) < 6:
             return {"ok": False, "error": "Password must be at least 6 characters long."}
 
-        tier = tier.lower()
-        if tier not in ["starter", "growth", "agency_pro", "owner"]:
+        tier = tier.lower().strip()
+        # Legacy 'enterprise' slug == agency_pro; anything else unknown falls back to starter.
+        if tier == "enterprise":
+            tier = "agency_pro"
+        if tier not in TIERS:
             tier = "starter"
 
         hashed = hash_password(password)

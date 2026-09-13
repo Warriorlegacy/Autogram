@@ -374,12 +374,13 @@ graph TD
 - **CLI Unlock**: Automatic on every terminal run.
 
 ### 8.2 Client Pricing & Payment Setup
-- **UPI ID**: `6202442690@jio`
-- **WhatsApp Support**: `+91 6202442690`
-- **Plans**:
-  1. **Starter Autopilot**: ₹39,999 / mo ($497 USD) — 3 Carousels/week
-  2. **Growth Autopilot**: ₹79,999 / mo ($997 USD) — Daily Carousel + Reels Scripts
-  3. **Enterprise Swarm**: ₹1,99,999 / mo ($2,497 USD) — Custom Pillars, Multi-Account
+- **Single source of truth:** [`data/pricing.json`](file:///d:/Autogram/data/pricing.json) — edit tier names, prices, features, UPI details and Stripe links there. The backend (`/api/auth/pricing`), landing page (`index.html`), and checkout modal (`js/app.js`) all read from it.
+- **UPI ID**: `6202442690@jio` (configurable in `data/pricing.json` → `upi.id`)
+- **WhatsApp Support**: `+91 6202442690` (configurable in `data/pricing.json` → `upi.whatsapp_number`)
+- **Plans** (canonical, USD):
+  1. **Starter Autopilot**: $29 / mo ($290/yr) — 30 Carousels/mo, 1 account
+  2. **Growth Autopilot**: $79 / mo ($790/yr) — 120 Carousels + 40 Reels/mo, scheduler, 3 accounts
+  3. **Enterprise Swarm** (tier key `agency_pro`): $199 / mo ($1,990/yr) — Unlimited, white-label, 10 accounts, SLA
 
 ### 8.3 Issuing a Client License Key
 When a customer pays via UPI and sends their screenshot to WhatsApp, issue their key using either method:

@@ -1,0 +1,107 @@
+{
+  "_comment": "Canonical pricing source of truth. All tiers, prices, checkout links and payment details derive from this file. Edit numbers here — never in code or HTML.",
+  "currency": "USD",
+  "upi": {
+    "id": "6202442690@jio",
+    "payee_name": "Autogram AI",
+    "whatsapp_number": "916202442690",
+    "whatsapp_display": "+91 6202442690"
+  },
+  "tiers": [
+    {
+      "key": "starter",
+      "name": "Starter Autopilot",
+      "price_monthly": 29,
+      "price_annual": 290,
+      "badge": "Entry",
+      "usd_equivalent_label": null,
+      "tagline": "15 Carousels/mo · 1 Core Pillar",
+      "features": [
+        "30 Carousels / month",
+        "Auto-Detect AI Models",
+        "Standard Prompt Library (15+ prompts)",
+        "3 Design Templates",
+        "Manual Publishing Export",
+        "Email Support"
+      ],
+      "limits": {
+        "carousels_per_month": 30,
+        "reels_per_month": 10,
+        "connected_accounts": 1
+      },
+      "stripe_url": null,
+      "checkout_style": "upi",
+      "cta_label": "Pay via UPI & WhatsApp"
+    },
+    {
+      "key": "growth",
+      "name": "Growth Autopilot",
+      "price_monthly": 79,
+      "price_annual": 790,
+      "badge": "Most Popular",
+      "usd_equivalent_label": null,
+      "tagline": "30 Daily Carousels · Full Rotation",
+      "features": [
+        "120 Carousels / month",
+        "40 AI Video Reels / month",
+        "All AI Providers (OpenAI, Claude, Groq, Ollama, Custom)",
+        "Full Prompt Library (30+ prompts)",
+        "All 5 Carousel Design Templates",
+        "7x Daily Automated Scheduler",
+        "Direct Meta Graph API Publishing",
+        "Priority Support"
+      ],
+      "limits": {
+        "carousels_per_month": 120,
+        "reels_per_month": 40,
+        "connected_accounts": 3
+      },
+      "stripe_url": null,
+      "checkout_style": "upi",
+      "cta_label": "Pay via UPI & WhatsApp"
+    },
+    {
+      "key": "agency_pro",
+      "name": "Enterprise Swarm",
+      "price_monthly": 199,
+      "price_annual": 1990,
+      "badge": "Uncapped",
+      "usd_equivalent_label": null,
+      "tagline": "Multi-Account · Dedicated SLA",
+      "features": [
+        "Unlimited Carousels & Reels",
+        "Custom Endpoints & Private LLM Proxies",
+        "Full White-Label Watermark Removal",
+        "Unlimited Client Workspaces",
+        "Auto-DM Engine & Comment Funnels",
+        "Dedicated Account Manager & SLA",
+        "Custom CSS Design System Overrides"
+      ],
+      "limits": {
+        "carousels_per_month": 99999,
+        "reels_per_month": 99999,
+        "connected_accounts": 10
+      },
+      "stripe_url": null,
+      "checkout_style": "contact",
+      "cta_label": "Talk to Enterprise"
+    }
+  ],
+  "owner": {
+    "name": "Master Owner VIP",
+    "price_monthly": 0,
+    "price_annual": 0,
+    "badge": "Admin Master",
+    "features": [
+      "100% Unrestricted Root Master Access",
+      "Zero System Rate Limits",
+      "Direct Subprocess & Cloud Daemon Control",
+      "License Key Minting & User Tier Management"
+    ],
+    "limits": {
+      "carousels_per_month": 999999,
+      "reels_per_month": 999999,
+      "connected_accounts": 999
+    }
+  }
+}

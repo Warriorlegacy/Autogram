@@ -191,7 +191,7 @@
             <span>Launch Neural Dashboard</span>
             <span class="btn-icon-circle">⚡</span>
           </a>
-          <a href="#pricing" class="btn btn-secondary btn-3d btn-3d-emerald trigger-booking-modal" data-plan="Growth Autopilot" style="padding: 16px 30px; font-size: 16px;">
+          <a href="#pricing" class="btn btn-secondary btn-3d btn-3d-emerald trigger-booking-modal" data-tier="growth" style="padding: 16px 30px; font-size: 16px;">
             <span>Deploy My Autopilot</span>
             <span class="btn-icon-circle">→</span>
           </a>
@@ -444,7 +444,7 @@
             </div>
 
             <div style="margin-top: 28px;">
-              <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%;">
+              <a href="#pricing" class="btn btn-primary trigger-booking-modal" data-tier="growth" style="width: 100%;">
                 <span>Lock In This ROI Today</span>
                 <span class="btn-icon-circle">→</span>
               </a>
@@ -485,10 +485,10 @@
             <div class="plan-name">Starter Plan</div>
             <p class="plan-desc">For creators and solo builders creating high-signal carousels with instant AI setup.</p>
             <div class="plan-price">
-              <span id="price-starter" class="price-num">$29</span>
-              <span class="price-period">/ month</span>
+              <span class="price-num" data-price-for="starter">$29</span>
+              <span class="price-period" data-price-period>/ month</span>
             </div>
-            <div style="font-size:12px;color:var(--text-muted)">₹2,499/mo</div>
+            <div style="font-size:12px;color:var(--text-muted)">30 Carousels/mo · 1 account</div>
             <ul class="plan-features">
               <li class="plan-feature-item"><span class="feature-check">✓</span> 30 Carousels / month</li>
               <li class="plan-feature-item"><span class="feature-check">✓</span> 1 Connected Instagram Account</li>
@@ -501,7 +501,7 @@
           </div>
           <div class="pricing-btn-wrapper">
             <a href="dashboard.html" class="btn btn-3d btn-3d-ghost" style="width: 100%; text-decoration: none;">
-              <span>Start with Starter ($29)</span>
+              <span data-cta-for="starter">Start with Starter ($29)</span>
             </a>
           </div>
         </div>
@@ -513,10 +513,10 @@
             <div class="plan-name">Growth Pro</div>
             <p class="plan-desc">Full autonomous daily publishing engine for high-growth founders and tech companies.</p>
             <div class="plan-price">
-              <span id="price-growth" class="price-num">$79</span>
-              <span class="price-period">/ month</span>
+              <span class="price-num" data-price-for="growth">$79</span>
+              <span class="price-period" data-price-period>/ month</span>
             </div>
-            <div style="font-size:12px;color:var(--text-muted)">₹5,999/mo</div>
+            <div style="font-size:12px;color:var(--text-muted)">120 Carousels + 40 Reels/mo · 3 accounts</div>
             <ul class="plan-features">
               <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>120 Carousels / month</strong></li>
               <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>40 AI Video Reels / month</strong></li>
@@ -531,7 +531,7 @@
           </div>
           <div class="pricing-btn-wrapper">
             <a href="dashboard.html" class="btn btn-3d btn-3d-cyan" style="width: 100%; text-decoration: none;">
-              <span>Deploy Growth Pro ($79)</span>
+              <span data-cta-for="growth">Deploy Growth Pro ($79)</span>
             </a>
           </div>
         </div>
@@ -542,10 +542,10 @@
             <div class="plan-name">Agency Pro</div>
             <p class="plan-desc">Uncapped horsepower for digital agencies, media brands, and high-volume operations.</p>
             <div class="plan-price">
-              <span id="price-enterprise" class="price-num">$199</span>
-              <span class="price-period">/ month</span>
+              <span class="price-num" data-price-for="agency_pro">$199</span>
+              <span class="price-period" data-price-period>/ month</span>
             </div>
-            <div style="font-size:12px;color:var(--text-muted)">₹14,999/mo</div>
+            <div style="font-size:12px;color:var(--text-muted)">Unlimited · 10 accounts · SLA</div>
             <ul class="plan-features">
               <li class="plan-feature-item"><span class="feature-check">✓</span> <strong>Unlimited Carousels & Video Reels</strong></li>
               <li class="plan-feature-item"><span class="feature-check">✓</span> 10 Connected Accounts & Workspaces</li>
@@ -558,7 +558,7 @@
           </div>
           <div class="pricing-btn-wrapper">
             <a href="dashboard.html" class="btn btn-3d btn-3d-emerald" style="width: 100%; text-decoration: none;">
-              <span>Get Agency Pro ($199)</span>
+              <span data-cta-for="agency_pro">Get Agency Pro ($199)</span>
             </a>
           </div>
         </div>
@@ -685,13 +685,12 @@
           <div id="modal-plan-title" style="font-size: 17px; font-weight: 800; color: #FFF;">Growth Autopilot</div>
         </div>
         <div style="text-align: right;">
-          <div id="modal-plan-price-inr" style="font-size: 20px; font-weight: 800; color: var(--neon-cyan);">₹79,999<span style="font-size: 12px; color: var(--text-muted);"> / mo</span></div>
-          <div id="modal-plan-price-usd" style="font-size: 12px; color: var(--text-muted);">$997 USD equivalent</div>
+          <div id="modal-plan-price-inr" style="font-size: 20px; font-weight: 800; color: var(--neon-cyan);">$79<span style="font-size: 12px; color: var(--text-muted);"> / mo</span></div>
         </div>
       </div>
 
       <!-- Step 1: Pay via UPI -->
-      <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+      <div id="checkout-step-1" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
         <div style="font-size: 13px; font-weight: 700; color: #FFF; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
           <span style="background: var(--neon-cyan); color: #000; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;">1</span>
           Scan QR or Pay via Official UPI ID:
@@ -713,14 +712,14 @@
               Supported apps: <strong>Google Pay, PhonePe, Paytm, BHIM, Cred</strong>, or any banking UPI app.
             </div>
             <div style="margin-top: 8px;">
-              <a href="upi://pay?pa=6202442690@jio&pn=Autogram%20AI&cu=INR" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px;">📱 Direct Mobile UPI Link</a>
+              <a href="upi://pay?pa=6202442690@jio&pn=Autogram%20AI&cu=INR" id="direct-upi-link" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px;">📱 Direct Mobile UPI Link</a>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Step 2: Send Screenshot on WhatsApp -->
-      <div style="background: rgba(37, 211, 102, 0.04); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+      <div id="checkout-step-2" style="background: rgba(37, 211, 102, 0.04); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: 14px; padding: 18px; margin-bottom: 20px;">
         <div style="font-size: 13px; font-weight: 700; color: #FFF; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
           <span style="background: #25D366; color: #000; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;">2</span>
           Send Payment Screenshot on WhatsApp for Verification:
@@ -770,34 +769,34 @@
         <!-- Banner for UPI & WhatsApp -->
         <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--neon-cyan); border-radius: 10px; padding: 10px 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
           <div style="font-size: 12px; color: #FFF;">
-            ⚡ <strong>UPI ID:</strong> <code style="color: var(--neon-cyan); font-weight: 700;">6202442690@jio</code>
+            ⚡ <strong>UPI ID:</strong> <code style="color: var(--neon-cyan); font-weight: 700;" data-upi-id>6202442690@jio</code>
           </div>
           <div style="font-size: 12px; color: #FFF;">
-            📱 <strong>WhatsApp Verification:</strong> <span style="color: #25D366; font-weight: 700;">+91 6202442690</span>
+            📱 <strong>WhatsApp Verification:</strong> <span style="color: #25D366; font-weight: 700;" data-upi-whatsapp>+91 6202442690</span>
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
           <div class="portal-paywall-card">
             <div style="font-size: 16px; font-weight: 700; color: #FFF;">Starter Autopilot</div>
-            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;">₹39,999<span style="font-size: 12px; color: var(--text-muted);">/mo ($497)</span></div>
-            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">15 Carousels/mo · 1 Core Pillar</div>
-            <button class="btn btn-secondary trigger-booking-modal" data-plan="Starter Autopilot" style="width: 100%; font-size: 12px; padding: 8px 12px;">Pay via UPI & WhatsApp</button>
+            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;"><span data-price-for="starter">$29</span><span style="font-size: 12px; color: var(--text-muted);" data-price-period>/mo</span></div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;" data-tagline-for="starter">15 Carousels/mo · 1 Core Pillar</div>
+            <button class="btn btn-secondary trigger-booking-modal" data-tier="starter" style="width: 100%; font-size: 12px; padding: 8px 12px;">Pay via UPI & WhatsApp</button>
           </div>
 
           <div class="portal-paywall-card featured">
             <div style="font-size: 11px; font-family: var(--font-mono); color: var(--neon-cyan); margin-bottom: 2px;">MOST POPULAR</div>
             <div style="font-size: 16px; font-weight: 700; color: #FFF;">Growth Autopilot</div>
-            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;">₹79,999<span style="font-size: 12px; color: var(--text-muted);">/mo ($997)</span></div>
-            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">30 Daily Carousels · Full Rotation</div>
-            <button class="btn btn-primary trigger-booking-modal" data-plan="Growth Autopilot" style="width: 100%; font-size: 12px; padding: 8px 12px;">Pay via UPI & WhatsApp</button>
+            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;"><span data-price-for="growth">$79</span><span style="font-size: 12px; color: var(--text-muted);" data-price-period>/mo</span></div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;" data-tagline-for="growth">30 Daily Carousels · Full Rotation</div>
+            <button class="btn btn-primary trigger-booking-modal" data-tier="growth" style="width: 100%; font-size: 12px; padding: 8px 12px;">Pay via UPI & WhatsApp</button>
           </div>
 
           <div class="portal-paywall-card">
             <div style="font-size: 16px; font-weight: 700; color: #FFF;">Enterprise Swarm</div>
-            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;">₹1,99,999<span style="font-size: 12px; color: var(--text-muted);">/mo ($2,497)</span></div>
-            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Multi-Account · Dedicated SLA</div>
-            <button class="btn btn-secondary trigger-booking-modal" data-plan="Enterprise Swarm" style="width: 100%; font-size: 12px; padding: 8px 12px;">Talk to Enterprise</button>
+            <div style="font-size: 22px; font-weight: 800; color: var(--neon-cyan); margin: 6px 0;"><span data-price-for="agency_pro">$199</span><span style="font-size: 12px; color: var(--text-muted);" data-price-period>/mo</span></div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;" data-tagline-for="agency_pro">Multi-Account · Dedicated SLA</div>
+            <button class="btn btn-secondary trigger-booking-modal" data-tier="agency_pro" style="width: 100%; font-size: 12px; padding: 8px 12px;">Talk to Enterprise</button>
           </div>
         </div>
 
@@ -882,9 +881,9 @@
           <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; align-items: center;">
             <input type="text" id="issue-client-name" class="form-input" placeholder="Client / Company Name">
             <select id="issue-tier-select" class="form-input" style="background: #0D121F; color: #FFF;">
-              <option value="starter">Starter ($497)</option>
-              <option value="growth" selected>Growth ($997)</option>
-              <option value="enterprise">Enterprise ($2,497)</option>
+              <option value="starter">Starter ($29)</option>
+              <option value="growth" selected>Growth ($79)</option>
+              <option value="agency_pro">Enterprise Swarm ($199)</option>
             </select>
             <input type="number" id="issue-days-input" class="form-input" value="30" title="Days Active">
             <button id="owner-issue-key-btn" class="btn btn-primary" style="padding: 10px 18px; font-size: 12px;">Issue Key</button>

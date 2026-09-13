@@ -25,6 +25,11 @@ load_dotenv()
 from src.ops.guardian import send_alert
 
 from src.auth.user_manager import user_manager, verify_session_token, TIERS
+from src.auth.pricing import load_pricing
+from src.auth.licensing import generate_license, is_owner_key
+
+import logging
+logger = logging.getLogger("autogram.dashboard")
 from src.content.providers_manager import (
     providers_manager,
     PROVIDER_PRESETS,
@@ -49,7 +54,7 @@ def get_brand_config() -> dict:
             return json.loads(BRAND_PATH.read_text(encoding="utf-8"))
         except Exception:
             pass
-    return {"handle": "@signhify.studio", "watermark": "SIGNHIFY.STUDIO", "name": "Piyush | Growth Systems"}
+    return {"handle": "@signhify.studio", "watermark": "SIGNHIFY.STUDIO", "name": "Piyush Raj Singh | Full A.I. Engineering Studio"}
 
 app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path="")
 CORS(app)
@@ -2035,7 +2040,58 @@ def api_auth_logout():
 
 @app.route("/api/auth/pricing", methods=["GET"])
 def api_auth_pricing():
-    return jsonify({"ok": True, "tiers": TIERS})
+    """Single source of truth for all frontends: data/pricing.json (with Stripe env overrides)."""
+    pricing = load_pricing()
+    return jsonify({"ok": True, "currency": pricing["currency"], "upi": pricing["upi"], "tiers": pricing["tiers"]})
+
+
+# Light in-memory rate limit for license minting (per IP): 30/hour.
+_LICENSE_ISSUE_TIMESTAMPS = {}
+_LICENSE_ISSUE_MAX_PER_HOUR = 30
+
+
+@app.route("/api/auth/issue-license", methods=["POST"])
+def api_auth_issue_license():
+    """Mint a REAL HMAC-signed client license key.
+
+    Requires either:
+      - Owner master key in the body (owner_key) — same gate as the pipeline, or
+      - An authenticated admin session (Bearer token).
+    The dispenser on index.html uses the owner-key path; dashboard admins use sessions.
+    """
+    # Rate limit
+    now = time.time()
+    client_ip = request.headers.get("X-Forwarded-For", request.remote_addr or "unknown").split(",")[0].strip()
+    stamps = [t for t in _LICENSE_ISSUE_TIMESTAMPS.get(client_ip, []) if now - t < 3600]
+    if len(stamps) >= _LICENSE_ISSUE_MAX_PER_HOUR:
+        return jsonify({"ok": False, "error": "Rate limit exceeded. Try again later."}), 429
+    stamps.append(now)
+    _LICENSE_ISSUE_TIMESTAMPS[client_ip] = stamps
+
+    data = request.get_json(silent=True) or {}
+    client_name = (data.get("client") or "").strip()
+    tier = (data.get("tier") or "growth").strip()
+    try:
+        days = max(1, min(int(data.get("days", 30)), 3650))
+    except (TypeError, ValueError):
+        days = 30
+
+    if not client_name:
+        return jsonify({"ok": False, "error": "Client name is required."}), 400
+
+    # Gate: owner master key OR authenticated admin session.
+    owner_key = (data.get("owner_key") or "").strip()
+    is_admin = False
+    if not is_owner_key(owner_key):
+        user = get_current_user_from_request()
+        if user and user.get("role") == "admin":
+            is_admin = True
+        else:
+            return jsonify({"ok": False, "error": "Owner key or admin session required."}), 403
+
+    key = generate_license(client_name, tier=tier, days=days)
+    logger.info(f"License issued: tier={tier} client={client_name!r} days={days} via={'owner_key' if not is_admin else 'admin_session'}")
+    return jsonify({"ok": True, "key": key, "tier": tier, "client": client_name, "days": days})
 
 @app.route("/api/auth/users", methods=["GET"])
 @app.route("/api/admin/users", methods=["GET"])
@@ -2231,6 +2287,154 @@ def api_output_file(filepath):
 @app.route("/settings")
 def dashboard():
     return send_from_directory(str(BASE_DIR), "dashboard.html")
+
+# ─── Makerzz P0–P8 Engine (additive /api/v2/ surface — zero disturbance) ──────
+
+from src.engine.run_manager import RunManager, RUNS_DIR
+from src.engine.runner import MakerzzRunner
+from src.engine.state_machine import Phase, ApprovalRequired
+from src.billing.credit_ledger import ledger
+
+
+@app.route("/api/v2/runs")
+def api_v2_runs():
+    """List all durable Makerzz runs and their current P0-P8 status."""
+    return jsonify({"ok": True, "runs": RunManager.list_runs()})
+
+
+@app.route("/api/v2/runs/new", methods=["POST"])
+def api_v2_runs_new():
+    """Initialize a new P0 run from a brief / profile payload."""
+    data = request.get_json(silent=True) or {}
+    brief = {
+        "brand": data.get("brand", "Signhify Studio"),
+        "creator": data.get("creator", "Piyush Raj Singh"),
+        "niche": data.get("niche", ""),
+        "audience": data.get("audience", ""),
+        "voice": data.get("voice", "direct, technical, calm"),
+        "handle": data.get("handle", "@signhify.studio"),
+        "platforms": data.get("platforms", ["instagram"]),
+        "timezone": data.get("timezone", "Asia/Kolkata"),
+        "posting_slot": data.get("posting_slot", "19:30"),
+        "cadence": data.get("cadence", {"carousel": 1, "reel": 1}),
+        "approval_policy": data.get("approval_policy"),
+        "mode": data.get("mode", "approve"),
+        "profile": data.get("profile"),
+        "competitors": data.get("competitors", []),
+    }
+    if not brief["niche"]:
+        return jsonify({"ok": False, "error": "niche is required (P0 brief gate)"}), 400
+    try:
+        rm = RunManager.create(brief=brief, slug=data.get("slug"))
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)[:300]}), 500
+    return jsonify({"ok": True, "run_id": rm.run_id, "summary": rm.summary()}), 201
+
+
+@app.route("/api/v2/runs/<run_id>/step", methods=["POST"])
+def api_v2_run_step(run_id):
+    """Trigger the next stage (with approval + credit checks)."""
+    try:
+        rm = RunManager.load(run_id)
+    except FileNotFoundError:
+        return jsonify({"ok": False, "error": f"Run '{run_id}' not found"}), 404
+    data = request.get_json(silent=True) or {}
+    target = data.get("phase")
+    try:
+        phase = Phase(target) if target else None
+    except ValueError:
+        return jsonify({"ok": False, "error": f"Unknown phase '{target}'"}), 400
+    runner = MakerzzRunner(rm)
+    try:
+        result = runner.step(phase)
+        return jsonify({"ok": True, **result})
+    except ApprovalRequired as ar:
+        return jsonify({
+            "ok": False,
+            "status": "AWAITING_APPROVAL",
+            "phase": ar.phase.value,
+            "error": str(ar),
+        }), 202
+
+
+@app.route("/api/v2/runs/<run_id>/approve", methods=["POST"])
+def api_v2_run_approve(run_id):
+    """User approval for a pending stage."""
+    try:
+        rm = RunManager.load(run_id)
+    except FileNotFoundError:
+        return jsonify({"ok": False, "error": f"Run '{run_id}' not found"}), 404
+    data = request.get_json(silent=True) or {}
+    target = data.get("phase")
+    if not target:
+        return jsonify({"ok": False, "error": "phase is required"}), 400
+    try:
+        phase = Phase(target)
+    except ValueError:
+        return jsonify({"ok": False, "error": f"Unknown phase '{target}'"}), 400
+    result = MakerzzRunner(rm).approve(phase)
+    return jsonify({"ok": True, **result})
+
+
+@app.route("/api/v2/runs/<run_id>/resume", methods=["POST"])
+def api_v2_run_resume(run_id):
+    """Resume a run from its last validated gate artifact."""
+    try:
+        rm = RunManager.load(run_id)
+    except FileNotFoundError:
+        return jsonify({"ok": False, "error": f"Run '{run_id}' not found"}), 404
+    try:
+        result = MakerzzRunner(rm).resume()
+        return jsonify({"ok": True, **result})
+    except ApprovalRequired as ar:
+        return jsonify({"ok": False, "status": "AWAITING_APPROVAL", "phase": ar.phase.value}), 202
+
+
+@app.route("/api/v2/runs/<run_id>/artifacts")
+def api_v2_run_artifacts(run_id):
+    """Inspect generated JSON/media artifacts of a run."""
+    try:
+        rm = RunManager.load(run_id)
+    except FileNotFoundError:
+        return jsonify({"ok": False, "error": f"Run '{run_id}' not found"}), 404
+    summary = rm.summary()
+    payload = {"ok": True, **summary}
+    # Inline small JSON artifacts for convenience
+    artifacts = {}
+    for name in summary.get("artifacts", []):
+        if name.endswith(".json"):
+            try:
+                artifacts[name] = json.loads((rm.run_dir / name).read_text(encoding="utf-8"))
+            except Exception:
+                pass
+    payload["artifact_contents"] = artifacts
+    return jsonify(payload)
+
+
+@app.route("/api/v2/ledger")
+def api_v2_ledger():
+    """View credit ledger transactions and current balance."""
+    user_id = request.args.get("user_id", "owner")
+    entries = ledger.list_entries(user_id=user_id if user_id != "all" else None, limit=200)
+    balance = ledger.get_balance(user_id) if user_id != "all" else None
+    return jsonify({
+        "ok": True,
+        "user_id": user_id,
+        "balance": balance,
+        "is_owner": ledger.is_owner(user_id),
+        "entries": entries,
+    })
+
+
+@app.route("/api/v2/adapters")
+def api_v2_adapters():
+    """Distribution adapter capability status (never leaks secrets)."""
+    from src.distribution import get_adapters
+    return jsonify({
+        "ok": True,
+        "adapters": [ad.configuration_status() for ad in get_adapters().values()],
+    })
+
 
 @app.route("/health")
 @app.route("/api/health")

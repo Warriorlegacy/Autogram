@@ -40,8 +40,11 @@ def generate_license(client_name: str, tier: str = "growth", days: int = 30) -> 
     Format: AG-{TIER}-{EXP_HEX}-{CLIENT_SLUG}-{SIG}
     """
     tier_clean = tier.strip().upper()
-    if tier_clean not in ["STARTER", "GROWTH", "ENTERPRISE", "OWNER"]:
+    # Canonical tiers: starter / growth / agency_pro (== legacy "ENTERPRISE" slug), plus internal owner.
+    if tier_clean not in ["STARTER", "GROWTH", "AGENCY_PRO", "ENTERPRISE", "OWNER"]:
         tier_clean = "GROWTH"
+    if tier_clean == "ENTERPRISE":
+        tier_clean = "AGENCY_PRO"  # mint canonical slug so dashboard gates match backend tiers
 
     client_slug = "".join(c for c in client_name.upper() if c.isalnum())[:10]
     if not client_slug:
@@ -100,7 +103,8 @@ def verify_license(license_key: Optional[str]) -> Dict[str, Any]:
 
     _, tier_clean, exp_hex, client_slug, sig = parts
 
-    # Validate HMAC signature
+    # Validate HMAC signature (payload must use the tier string exactly as minted,
+    # so legacy ENTERPRISE keys still pass — normalization happens after this check)
     payload = f"{tier_clean}:{exp_hex}:{client_slug}"
     salt = get_salt().encode("utf-8")
     expected_sig = hmac.new(salt, payload.encode("utf-8"), hashlib.sha256).hexdigest()[:8].upper()
@@ -114,6 +118,10 @@ def verify_license(license_key: Optional[str]) -> Dict[str, Any]:
             "reason": "Tampered or counterfeit license signature.",
             "expires_at": None,
         }
+
+    # Normalize legacy tier slugs AFTER signature verification.
+    if tier_clean == "ENTERPRISE":
+        tier_clean = "AGENCY_PRO"
 
     # Check expiration date
     try:
@@ -169,7 +177,7 @@ def main():
     parser = argparse.ArgumentParser(description="Autogram Licensing & Monetization Gate")
     parser.add_argument("--issue", action="store_true", help="Generate a new client license key")
     parser.add_argument("--client", type=str, default="Client", help="Client name or company name")
-    parser.add_argument("--tier", type=str, default="growth", choices=["starter", "growth", "enterprise", "owner"], help="Subscription tier")
+    parser.add_argument("--tier", type=str, default="growth", choices=["starter", "growth", "agency_pro", "enterprise", "owner"], help="Subscription tier (enterprise is a legacy alias for agency_pro)")
     parser.add_argument("--days", type=int, default=30, help="Duration in days (default: 30)")
     parser.add_argument("--verify", type=str, help="Verify an existing license key or owner key")
     parser.add_argument("--status", action="store_true", help="Check active environment license status")

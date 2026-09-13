@@ -5,11 +5,11 @@
 
 const AUTOGRAM_CONFIG = {
   defaultOwnerKey: 'autogram_owner_vip_2026',
-  stripeLinks: {
-    starter: 'https://buy.stripe.com/starter_tier',
-    growth: 'https://buy.stripe.com/growth_tier',
-    enterprise: 'https://buy.stripe.com/enterprise_tier'
-  },
+  // Stripe checkout links are NOT hardcoded here anymore. Canonical source: data/pricing.json,
+  // served at /api/auth/pricing (tier.stripe_url, overridable via STRIPE_*_URL env vars).
+  // Fetch them at runtime when needed:
+  //   fetch('/api/auth/pricing').then(r => r.json()).then(p => p.tiers.growth.stripe_url)
+  stripeLinks: {},
   salt: 'autogram_master_monetization_secret_2026_salt'
 };
 
@@ -280,30 +280,52 @@ class AutogramAuth {
       });
     }
 
-    // Owner License Key Generator Tool
+    // Owner License Key Generator Tool — server-signed via /api/auth/issue-license
     const issueKeyBtn = document.getElementById('owner-issue-key-btn');
     if (issueKeyBtn) {
       issueKeyBtn.addEventListener('click', () => {
         const clientName = document.getElementById('issue-client-name').value.trim() || 'CLIENT';
         const tier = document.getElementById('issue-tier-select').value;
         const days = parseInt(document.getElementById('issue-days-input').value) || 30;
-
-        const slug = clientName.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10) || 'CLIENT';
-        const expEpoch = Math.floor(Date.now() / 1000) + (days * 86400);
-        const expHex = expEpoch.toString(16).toUpperCase();
-        const pseudoSig = Math.random().toString(16).substring(2, 10).toUpperCase();
-
-        const key = `AG-${tier.toUpperCase()}-${expHex}-${slug}-${pseudoSig}`;
         const outputEl = document.getElementById('issued-key-display');
-        if (outputEl) {
+        if (outputEl) outputEl.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); margin-top: 10px;">⏳ Minting signed license key…</div>';
+
+        const renderKey = (key, signed) => {
+          if (!outputEl) return;
           outputEl.innerHTML = `
             <div style="background: rgba(0,240,255,0.1); border: 1px solid var(--neon-cyan); border-radius: 8px; padding: 12px; margin-top: 10px;">
-              <div style="font-size: 11px; color: var(--text-muted);">NEW CLIENT LICENSE KEY (${days} DAYS):</div>
+              <div style="font-size: 11px; color: var(--text-muted);">NEW CLIENT LICENSE KEY (${days} DAYS)${signed ? ' · ✅ HMAC-SIGNED' : ' · ⚠️ DEMO (unsigned — verify against backend before delivery)'}</div>
               <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #FFF; margin: 4px 0;">${key}</div>
               <button onclick="navigator.clipboard.writeText('${key}'); alert('Copied to clipboard!')" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px; margin-top: 6px;">Copy Key</button>
             </div>
           `;
-        }
+        };
+
+        const pseudoFallback = () => {
+          const slug = clientName.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10) || 'CLIENT';
+          const expEpoch = Math.floor(Date.now() / 1000) + (days * 86400);
+          const expHex = expEpoch.toString(16).toUpperCase();
+          const pseudoSig = Math.random().toString(16).substring(2, 10).toUpperCase();
+          renderKey(`AG-${tier.toUpperCase()}-${expHex}-${slug}-${pseudoSig}`, false);
+        };
+
+        // Owner key authorizes minting; fall back to admin session token when present.
+        const storedKey = localStorage.getItem('ag_auth_key') || '';
+        const headers = { 'Content-Type': 'application/json' };
+        const sessionToken = localStorage.getItem('autogram_session_token');
+        if (sessionToken) headers['Authorization'] = `Bearer ${sessionToken}`;
+
+        fetch('/api/auth/issue-license', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ client: clientName, tier, days, owner_key: this.role === 'owner' ? storedKey : '' })
+        })
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.ok && res.key) renderKey(res.key, true);
+            else pseudoFallback();
+          })
+          .catch(pseudoFallback);
       });
     }
 
