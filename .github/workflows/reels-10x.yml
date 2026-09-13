@@ -43,6 +43,8 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: read
+    env:
+      DRY_RUN: 'false' # engine defaults to dry-run=True; explicit live for scheduled posts
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
