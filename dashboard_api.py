@@ -2306,21 +2306,23 @@ def api_v2_runs():
 def api_v2_runs_new():
     """Initialize a new P0 run from a brief / profile payload."""
     data = request.get_json(silent=True) or {}
+    src = data.get("brief") if isinstance(data.get("brief"), dict) else data
     brief = {
-        "brand": data.get("brand", "Signhify Studio"),
-        "creator": data.get("creator", "Piyush Raj Singh"),
-        "niche": data.get("niche", ""),
-        "audience": data.get("audience", ""),
-        "voice": data.get("voice", "direct, technical, calm"),
-        "handle": data.get("handle", "@signhify.studio"),
-        "platforms": data.get("platforms", ["instagram"]),
-        "timezone": data.get("timezone", "Asia/Kolkata"),
-        "posting_slot": data.get("posting_slot", "19:30"),
-        "cadence": data.get("cadence", {"carousel": 1, "reel": 1}),
-        "approval_policy": data.get("approval_policy"),
-        "mode": data.get("mode", "approve"),
-        "profile": data.get("profile"),
-        "competitors": data.get("competitors", []),
+        "brand": src.get("brand", "Signhify Studio"),
+        "creator": src.get("creator", "Piyush Raj Singh"),
+        "niche": src.get("niche", ""),
+        "audience": src.get("audience", ""),
+        "voice": src.get("voice", "direct, technical, calm"),
+        "handle": src.get("handle", "@signhify.studio"),
+        "platforms": src.get("platforms", ["instagram"]),
+        "timezone": src.get("timezone", "Asia/Kolkata"),
+        "posting_slot": src.get("posting_slot", "19:30"),
+        "cadence": src.get("cadence", {"carousel": 1, "reel": 1}),
+        "approval_policy": src.get("approval_policy"),
+        "mode": src.get("mode", "approve"),
+        "profile": src.get("profile"),
+        "competitors": src.get("competitors", []),
+        "include_video": src.get("include_video", False),
     }
     if not brief["niche"]:
         return jsonify({"ok": False, "error": "niche is required (P0 brief gate)"}), 400
@@ -2423,6 +2425,7 @@ def api_v2_ledger():
         "balance": balance,
         "is_owner": ledger.is_owner(user_id),
         "entries": entries,
+        "history": entries,
     })
 
 

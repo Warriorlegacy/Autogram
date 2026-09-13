@@ -18,17 +18,23 @@ CSS_FILE = Path(__file__).parent / "css" / "design-system.css"
 
 LAYOUT_TO_TEMPLATE = {
     "hook": "hook.html",
+    "authority_hook": "authority_hook.html",
     "standard": "standard.html",
     "explanation": "standard.html",
     "checklist": "checklist.html",
     "comparison": "comparison.html",
     "diagram": "diagram.html",
     "framework": "framework.html",
+    "receipt": "receipt_breakdown.html",
+    "competitor": "competitor_harvester.html",
+    "calendar_matrix": "calendar_matrix.html",
+    "pipeline": "pipeline_flow.html",
     "takeaway": "takeaway.html",
-    "cta": "cta.html"
+    "cta": "cta.html",
+    "mega_cta": "mega_cta.html"
 }
 
-AVAILABLE_THEMES = ["blueprint", "obsidian", "swiss", "sage", "crimson"]
+AVAILABLE_THEMES = ["blueprint", "obsidian", "swiss", "sage", "crimson", "glitch", "hormozi"]
 
 def resolve_theme(carousel_data: dict) -> str:
     """
@@ -42,7 +48,9 @@ def resolve_theme(carousel_data: dict) -> str:
     pillar = (carousel_data.get("pillar") or "").lower()
     topic = (carousel_data.get("topic") or "").lower()
 
-    if any(k in pillar or k in topic for k in ["swarm", "agent", "code", "terminal", "cyber", "pipeline", "stack", "dev"]):
+    if any(k in pillar or k in topic for k in ["hormozi", "glitch", "makerzz", "autopilot", "omnipresence", "lead"]):
+        return "glitch"
+    elif any(k in pillar or k in topic for k in ["swarm", "agent", "code", "terminal", "cyber", "pipeline", "stack", "dev"]):
         return "obsidian"
     elif any(k in pillar or k in topic for k in ["monochrome", "swiss", "law", "truth", "framework", "career"]):
         return "swiss"
@@ -72,9 +80,9 @@ class CarouselRenderer:
             "brand_name": "Signhify Studio",
             "handle": "@signhify.studio",
             "watermark": "SIGNHIFY.STUDIO",
-            "name": "Piyush | Growth Systems",
-            "footer_text": "SIGNHIFY.STUDIO · PIYUSH | GROWTH SYSTEMS",
-            "sign_off": "My name is Piyush. Stop posting. Start shipping.",
+            "name": "Piyush Raj Singh | Full A.I. Engineering Studio",
+            "footer_text": "@SIGNHIFY.STUDIO · SIGNHIFY.STUDIO",
+            "sign_off": "My name is Piyush Raj Singh. Stop posting. Start shipping.",
             "colors": {}
         }
         self.css_content = CSS_FILE.read_text(encoding="utf-8") if CSS_FILE.exists() else ""

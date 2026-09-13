@@ -94,7 +94,7 @@
   - def _mpt_storage()
   - def _slot_precheck(dry_run, fmt, needs_ig_quota)
   - def _run_guarded(label, dry_run, fn)
-  - def run_pipeline(dry_run, custom_topic, custom_pillar)
+  - def run_pipeline(dry_run, custom_topic, custom_pillar, style)
   - def run_story_pipeline(dry_run, custom_topic, custom_pillar)
   - def run_reel_pipeline(dry_run, custom_topic, custom_pillar)
   - def run_shorts_pipeline(dry_run, custom_topic, custom_pillar)
@@ -329,7 +329,7 @@
   - def get_rich_synthesized_carousel(topic, sources)
 
 ### `src/content/generator.py`
-  - class ContentGenerator [methods: __init__, _load_prompt, _load_brand, _build_user_prompt, generate_with_gemini, _parse_json_response, generate_with_groq, generate_with_openrouter, generate_with_github_models, generate_with_cloudflare_ai, generate_with_nvidia_nim, generate_with_ollama, generate_with_openai, _normalize_carousel, generate_with_huggingface, generate_carousel, _free_narration, generate_reel_script, generate_story_content]
+  - class ContentGenerator [methods: __init__, _load_prompt, _load_brand, _build_user_prompt, generate_with_gemini, _parse_json_response, generate_with_groq, generate_with_openrouter, generate_with_github_models, generate_with_cloudflare_ai, generate_with_nvidia_nim, generate_with_ollama, generate_with_openai, _normalize_carousel, generate_with_huggingface, generate_glitch_hormozi_carousel, generate_carousel, _free_narration, generate_reel_script, generate_story_content]
 
 ### `src/content/image_generator.py`
   - class ImageGenerator [methods: __init__, _enhance_prompt, generate_with_pollinations, generate_with_imagen, generate_with_dalle, generate_with_cloudflare, generate_image]
@@ -347,6 +347,10 @@
 
 ### `src/content/script_writer.py`
   - class ScriptWriter [methods: __init__, generate_caption, generate_caption_for_topic, generate_first_comment, generate_reels_script, generate_edit_plan, generate_x_thread, generate_linkedin_post]
+
+### `src/content/video_engine.py`
+  - def format_ass_timestamp(seconds)
+  - class VideoEngine [methods: __init__, compile_kinetic_subtitles, composite_video, produce_reel]
 
 ### `src/db/database.py`
   - class Database [methods: __init__, get_connection, init_schema, record_source, save_content_item, update_publication_status, get_recent_topics]
@@ -369,6 +373,10 @@
 ### `src/instagram/token_manager.py`
   - class TokenManager [methods: __init__, refresh_token]
 
+### `src/leads/comment_automation.py`
+  - def init_leads_table()
+  - class CommentLeadAutomation [methods: __init__, process_incoming_comment, list_recent_leads]
+
 ### `src/ops/__init__.py`
   (scripts / configuration)
 
@@ -387,6 +395,9 @@
 
 ### `src/research/fetcher.py`
   - class SourceFetcher [methods: __init__, load_seed_records, fetch_rss_feed, fetch_trending_niche_signals, fetch_github_trending, acquire_sources]
+
+### `src/research/pattern_analyzer.py`
+  - class PatternAnalyzer [methods: __init__, extract_patterns]
 
 ### `src/research/scorer.py`
   - class TopicScorer [methods: __init__, load_memory, score_candidate, select_best_topic]
@@ -470,6 +481,11 @@
   - def test_deduplication_skips_processed(automator)
   - def test_get_stats(automator)
   - def test_scan_and_automate_dry_run(automator)
+
+### `tests/test_glitch_hormozi_engine.py`
+  - def test_glitch_hormozi_carousel_generation()
+  - def test_template_html_rendering()
+  - def test_comment_auto_lead_capture()
 
 ### `tests/test_growth_engine.py`
   - def test_viral_hashtags_clustering()

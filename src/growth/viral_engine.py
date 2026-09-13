@@ -165,7 +165,7 @@ class ViralGrowthEngine:
             "⚡ Want the runnable blueprint? Comment 'FOSS' below and I'll DM you the full GitHub repo link + docker-compose file.\n\n"
             "📌 Save this post for your next self-hosting sprint.\n"
             "🚀 Follow @signhify.studio for daily high-leverage open source tools & architectures.\n\n"
-            "— My name is Piyush. Stop posting. Start shipping.\n\n"
+            "— My name is Piyush Raj Singh. Stop posting. Start shipping.\n\n"
             "💬 Are you paying for SaaS or running open source on your own infrastructure?"
         )
         full_caption = self.format_caption_with_hashtags(caption_body, tags)

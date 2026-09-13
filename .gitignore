@@ -17,6 +17,8 @@ workspace/*
 !workspace/.gitkeep
 scratch/
 .pytest_cache/
+runs/
+assets/download/
 
 # Node
 node_modules/

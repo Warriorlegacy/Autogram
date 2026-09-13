@@ -34,9 +34,15 @@ class Settings(BaseSettings):
     cloudflare_account_id: str | None = Field(default=None, alias="CLOUDFLARE_ACCOUNT_ID")
     cloudflare_api_token: str | None = Field(default=None, alias="CLOUDFLARE_API_TOKEN")
 
-    # Video Generation (local MoneyPrinterTurbo render server — $0: edge-tts + Pexels free + FFmpeg)
+    # Video Generation (JSON2Video, local MoneyPrinterTurbo, Edge-TTS + FFmpeg)
     mpt_base_url: str = Field(default="http://127.0.0.1:8080", alias="MPT_BASE_URL")
     pexels_api_key: str | None = Field(default=None, alias="PEXELS_API_KEY")
+    json2video_api_key: str | None = Field(default=None, alias="JSON2VIDEO_API_KEY")
+    heygen_api_key: str | None = Field(default=None, alias="HEYGEN_API_KEY")
+
+    # Enterprise Omnipresence & Research Adapters (Optional)
+    ayrshare_api_key: str | None = Field(default=None, alias="AYRSHARE_API_KEY")
+    apify_api_key: str | None = Field(default=None, alias="APIFY_API_KEY")
 
     # Reels pipeline (spec: OpenRouter :free scripts, HF ZeroGPU video, Supabase CDN)
     supabase_url: str | None = Field(default=None, alias="SUPABASE_URL")

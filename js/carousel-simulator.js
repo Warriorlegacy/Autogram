@@ -81,7 +81,7 @@
       image: "public/assets/slides/slide_09.jpg",
       role: "Conversion CTA",
       headline: "Comment CONTENT to Get The Blueprint",
-      body: "100% free resource delivered instantly to your DMs. My name is Piyush. Stop posting. Start shipping.",
+      body: "100% free resource delivered instantly to your DMs. My name is Piyush Raj Singh. Stop posting. Start shipping.",
       proof: "Direct Meta Graph API and comment-to-DM conversion trigger.",
       status: "VERIFIED"
     }

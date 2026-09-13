@@ -544,6 +544,97 @@ Return ONLY valid JSON.
                 continue
         raise last_err or RuntimeError("All Hugging Face models failed")
 
+    def generate_glitch_hormozi_carousel(self, topic: dict, sources: list[dict] = None) -> dict:
+        """
+        Generates the specialized 8-slide Makerzz / Hormozi Autopilot carousel structure
+        following the exact aesthetics and architecture of the reference system.
+        """
+        from src.research.pattern_analyzer import PatternAnalyzer
+        analyzer = PatternAnalyzer()
+        patterns = analyzer.extract_patterns(topic.get("title", ""))
+
+        title = topic.get("title", "Autonomous Posting.")
+        subtitle = topic.get("summary", "Be everywhere. Every platform. Without touching it.")
+        receipt = patterns.get("receipt_audit", {})
+        trigger = patterns.get("conversion_trigger", {})
+
+        slides = [
+            {
+                "slide_number": 1,
+                "layout": "authority_hook",
+                "category": "ALEX HORMOZI-STYLE",
+                "headline": title if len(title) < 35 else "Autonomous Posting.",
+                "subtitle": subtitle,
+                "image_path": ""
+            },
+            {
+                "slide_number": 2,
+                "layout": "receipt",
+                "headline": "The Hormozi rule: be everywhere.",
+                "quote": '"Post reliably. On all platforms. Crank the volume." — ALEX HORMOZI',
+                "receipt_title": receipt.get("title", "MANUAL OMNIPRESENCE · PER MONTH"),
+                "items": receipt.get("items", []),
+                "total_hours": receipt.get("total_hours", "50 HRS"),
+                "annotation": receipt.get("annotation", "this is why most people quit by month two.")
+            },
+            {
+                "slide_number": 3,
+                "layout": "standard",
+                "title": "The Compounding Math of Volume.",
+                "headline": "Why Omnipresence Wins.",
+                "body": "Algorithm reach is fickle. Audience attention is fragmented across 13 networks. Creators who post once a day on one platform are mathematically invisible compared to systems that syndicate effortlessly.",
+                "takeaway": "Volume without friction creates compounding domain authority."
+            },
+            {
+                "slide_number": 4,
+                "layout": "competitor",
+                "step_label": "STEP 2",
+                "headline": "Paste any profile link.",
+                "subtext": "Yours — or the three competitors you wish you were.",
+                "annotation": "steal the pattern, not the post."
+            },
+            {
+                "slide_number": 5,
+                "layout": "calendar_matrix",
+                "step_label": "STEP 3",
+                "headline": "It writes your month.",
+                "subtext": "Scripts, hooks and captions — in your voice, from their patterns."
+            },
+            {
+                "slide_number": 6,
+                "layout": "pipeline",
+                "step_label": "STEP 4",
+                "headline": "It renders everything.",
+                "subtext": "Carousels, avatar video, the edit — no Canva, no camera, no timeline."
+            },
+            {
+                "slide_number": 7,
+                "layout": "takeaway",
+                "title": "The Architectural Shift",
+                "headline": "Stop Posting Manually.",
+                "body": "Human hours are meant for closing deals and building products. Software belongs in production. When creation, verification, and syndication run synchronously on a scheduler, consistency becomes guaranteed.",
+                "takeaway": "Zero manual overhead equals infinite creative staying power."
+            },
+            {
+                "slide_number": 8,
+                "layout": "mega_cta",
+                "cta_prefix": trigger.get("prefix", "comment"),
+                "trigger_word": trigger.get("keyword", "AUTO"),
+                "subtext": trigger.get("subtext", "Get the Hormozi-style autopilot on your account."),
+                "button_text": trigger.get("button", "RUN IT ON YOUR ACCOUNT →")
+            }
+        ]
+
+        carousel_data = {
+            "topic": topic.get("title", "Autonomous Posting"),
+            "pillar": topic.get("pillar", "AI Automation"),
+            "theme": "glitch",
+            "slides": slides,
+            "caption": f"Be everywhere on autopilot. Every platform. Without touching it.\n\nComment 'AUTO' and we'll send you our complete autonomous social engine blueprint.\n\n#automation #ai #hormozi #solopreneur #systemdesign",
+            "hashtags": ["#automation", "#ai", "#hormozi", "#solopreneur", "#systemdesign"]
+        }
+        return self._normalize_carousel(carousel_data, topic)
+
     def generate_carousel(self, topic: dict, sources: list[dict]) -> dict:
         """
         Master generation method with intelligent multi-provider auto-fallback.
@@ -558,6 +649,10 @@ Return ONLY valid JSON.
         8. OpenAI (Optional Paid)
         9. Free Built-In Anti-Repetition Synthesis Engine (Guaranteed zero-failure fail-safe)
         """
+        if topic.get("style") in ["glitch-hormozi", "hormozi", "makerzz", "glitch"]:
+            logger.info("Generating Glitch/Hormozi 8-slide Makerzz Autopilot carousel...")
+            return self.generate_glitch_hormozi_carousel(topic, sources)
+
         provider = (settings.llm_provider or "auto").lower()
         model_str = (settings.llm_model or "").lower()
 

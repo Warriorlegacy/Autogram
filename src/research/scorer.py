@@ -109,6 +109,12 @@ class TopicScorer:
             cand["calculated_score"] = score
             scored.append(cand)
 
+        if not scored:
+            raise ValueError(
+                "select_best_topic received zero candidates. Upstream acquisition "
+                "and gating must guarantee at least one candidate."
+            )
+
         # Separate fresh unposted candidates from duplicate items
         fresh = [c for c in scored if c.get("calculated_score", 0) > 0.0]
 

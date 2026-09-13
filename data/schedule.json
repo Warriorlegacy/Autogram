@@ -167,8 +167,10 @@
       "pillar": "Contrarian",
       "format": "story",
       "mode": "live",
-      "status": "QUEUED",
-      "created_at": "2026-09-12T12:25:00"
+      "status": "COMPLETED",
+      "created_at": "2026-09-12T12:25:00",
+      "started_at": "2026-09-13T17:54:10.940150",
+      "completed_at": "2026-09-13T17:55:03.177433"
     },
     {
       "id": "STORY-1007",
@@ -177,8 +179,9 @@
       "pillar": "Tech Explainer",
       "format": "story",
       "mode": "live",
-      "status": "QUEUED",
-      "created_at": "2026-09-12T12:30:00"
+      "status": "RUNNING",
+      "created_at": "2026-09-12T12:30:00",
+      "started_at": "2026-09-13T17:54:10.940170"
     },
     {
       "id": "SCH-1001",
@@ -187,8 +190,9 @@
       "pillar": "AI Tool Breakdown",
       "format": "carousel",
       "mode": "live",
-      "status": "QUEUED",
-      "created_at": "2026-09-10T16:00:00"
+      "status": "RUNNING",
+      "created_at": "2026-09-10T16:00:00",
+      "started_at": "2026-09-13T17:54:10.940177"
     },
     {
       "id": "SCH-1002",
@@ -197,8 +201,9 @@
       "pillar": "Tech Explainer",
       "format": "carousel",
       "mode": "live",
-      "status": "QUEUED",
-      "created_at": "2026-09-10T16:15:00"
+      "status": "RUNNING",
+      "created_at": "2026-09-10T16:15:00",
+      "started_at": "2026-09-13T17:54:10.940183"
     },
     {
       "id": "SCH-1003",

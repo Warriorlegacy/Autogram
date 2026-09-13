@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slide {{ slide.slide_number }} - Pipeline Flow</title>
+  <link rel="stylesheet" href="../css/design-system.css">
+</head>
+<body class="slide-canvas {{ meta.theme_class or 'theme-glitch' }}">
+  <!-- Header Strip -->
+  <header class="header-strip">
+    <div class="header-watermark">© 2026</div>
+    <div class="header-handle" style="font-family: var(--font-mono); letter-spacing: 2px; font-weight: 700;">{{ brand.handle | upper }}</div>
+    <div class="header-counter" style="font-family: var(--font-mono); font-weight: 700;">
+      {{ "%02d" % slide.slide_number }} / {{ "%02d" % meta.total_slides }}
+    </div>
+  </header>
+
+  <!-- Step Marker & Claude Logo -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 6px;">
+    <div class="step-badge-pill">{{ slide.step_label or 'STEP 4' }}</div>
+    <div class="claude-brand-badge">
+      <svg class="claude-burst-icon" viewBox="0 0 100 100" fill="currentColor">
+        <circle cx="50" cy="50" r="12"/>
+        <line x1="50" y1="12" x2="50" y2="30" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+        <line x1="50" y1="70" x2="50" y2="88" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+        <line x1="12" y1="50" x2="30" y2="50" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+        <line x1="70" y1="50" x2="88" y2="50" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+        <line x1="23" y1="23" x2="36" y2="36" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+        <line x1="64" y1="64" x2="77" y2="77" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+        <line x1="77" y1="23" x2="64" y2="36" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+        <line x1="36" y1="64" x2="23" y2="77" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+      </svg>
+      <span class="claude-brand-name">Claude</span>
+    </div>
+  </div>
+
+  <main style="display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
+    <!-- Headline Section -->
+    <div>
+      <h1 class="authority-headline-huge" style="font-size: 80px; margin-bottom: 8px;">
+        {{ slide.headline or 'It renders everything.' }}
+      </h1>
+      <p class="authority-subtext-clean" style="margin-bottom: 16px; font-size: 24px;">
+        {{ slide.subtext or 'Carousels, avatar video, the edit — no Canva, no camera, no timeline.' }}
+      </p>
+    </div>
+
+    <!-- Production Pipeline Chain -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+      <!-- Script Icon -->
+      <div style="display: flex; flex-direction: column; align-items: center; width: 80px;">
+        <svg class="claude-burst-icon" viewBox="0 0 100 100" fill="currentColor" style="width: 42px; height: 42px;">
+          <circle cx="50" cy="50" r="14"/>
+          <line x1="50" y1="10" x2="50" y2="30" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+          <line x1="50" y1="70" x2="50" y2="90" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+          <line x1="10" y1="50" x2="30" y2="50" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+          <line x1="70" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; color: var(--text-muted); margin-top: 4px;">SCRIPT</span>
+      </div>
+
+      <span style="color: var(--accent-orange); font-size: 18px;">• • • ▶</span>
+
+      <!-- Box 1: Image / Carousels -->
+      <div style="background: #FFFFFF; border: 1px solid rgba(15, 23, 42, 0.08); border-radius: 16px; padding: 14px 18px; text-align: center; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03); width: 160px;">
+        <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 4px;">
+          <span style="font-family: var(--font-mono); font-weight: 900; font-size: 18px;">GPT</span>
+          <span style="background: #000; color: #fff; border-radius: 4px; padding: 1px 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 700;">fal</span>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+          IMAGE GEN · CAROUSELS
+        </div>
+      </div>
+
+      <span style="color: var(--accent-orange); font-size: 18px;">• • • ▶</span>
+
+      <!-- Box 2: Avatar Video -->
+      <div style="background: #FFFFFF; border: 1px solid rgba(15, 23, 42, 0.08); border-radius: 16px; padding: 14px 18px; text-align: center; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03); width: 160px;">
+        <div style="font-size: 20px; margin-bottom: 4px;">▶️ 👤</div>
+        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+          HEYGEN · AVATAR VIDEO
+        </div>
+      </div>
+
+      <span style="color: var(--accent-orange); font-size: 18px;">• • • ▶</span>
+
+      <!-- Box 3: The Edit -->
+      <div style="background: #FFFFFF; border: 1px solid rgba(15, 23, 42, 0.08); border-radius: 16px; padding: 14px 18px; text-align: center; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03); width: 170px;">
+        <div style="font-family: var(--font-mono); font-size: 18px; font-weight: 900; color: var(--text-primary); margin-bottom: 4px;">
+          HYPERFRAME
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+          THE EDIT + ENGINE
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Showcase: 6 Slide Cards + 2 Phone Mockups -->
+    <div style="display: flex; justify-content: space-between; gap: 18px; margin-top: 6px;">
+      <!-- Left: 6 Deck Cards Grid -->
+      <div style="flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+        {% set deck_cards = [
+          ("01/06", "HOOK THEM FAST.", "🧲"),
+          ("02/06", "OFFER ONE IDEA.", "💡"),
+          ("03/06", "BUILD THE SYSTEM.", "🧊"),
+          ("04/06", "REMOVE FRICTION.", "🚫"),
+          ("05/06", "DELIVER RESULTS.", "📈"),
+          ("06/06", "SCALE RELENTLESSLY.", "🚀")
+        ] %}
+        {% for num, title, icon in deck_cards %}
+          <div style="background: #FFFFFF; border: 1px solid rgba(15, 23, 42, 0.08); border-radius: 12px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02); height: 86px; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent-orange);">{{ num }}</span>
+              <span style="width: 16px; height: 16px; border-radius: 50%; background: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;">✓</span>
+            </div>
+            <div style="font-family: var(--font-display); font-size: 13px; font-weight: 900; color: var(--accent-orange); line-height: 1.1; margin: 4px 0;">
+              {{ title }}
+            </div>
+            <div style="font-size: 18px;">{{ icon }}</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Right: Two Phone Mockups -->
+      <div style="display: flex; gap: 12px;">
+        <!-- Mockup 1: Avatar Video -->
+        <div style="width: 145px; height: 210px; background: #0F172A; border-radius: 18px; border: 3px solid #1E293B; box-shadow: 0 12px 30px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: space-between; padding: 10px; position: relative;">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #94A3B8;">
+            <span>0:20</span>
+            <span style="color: #16A34A; font-weight: 900;">✓</span>
+          </div>
+          <div style="text-align: center; color: #FFFFFF;">
+            <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px;">AVATAR VIDEO</div>
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent-orange); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 14px;">▶</div>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 9px; color: #64748B; text-align: center;">44.1kHz AAC</div>
+        </div>
+
+        <!-- Mockup 2: Final Edit -->
+        <div style="width: 145px; height: 210px; background: #0F172A; border-radius: 18px; border: 3px solid #1E293B; box-shadow: 0 12px 30px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: space-between; padding: 10px; position: relative;">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #94A3B8;">
+            <span>0:20</span>
+            <span style="color: #16A34A; font-weight: 900;">✓</span>
+          </div>
+          <div style="text-align: center; color: #FFFFFF;">
+            <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px;">FINAL EDIT</div>
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent-orange); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 14px;">▶</div>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 9px; color: #64748B; text-align: center;">1080x1920 MP4</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Stat & Done Badge -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px;">
+      <div style="background: #000000; color: #FFFFFF; font-family: var(--font-mono); font-size: 14px; font-weight: 800; padding: 8px 16px; border-radius: 8px; letter-spacing: 1px;">
+        Done: 6 ok, 0 fail
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--text-secondary); letter-spacing: 1.5px;">
+        6 SLIDES • 1 VIDEO • 13 CAPTIONS • 40 SECONDS
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Strip -->
+  <footer class="footer-strip" style="border-top: 1px solid rgba(15, 23, 42, 0.08); padding-top: 14px; margin-top: 14px;">
+    <div class="footer-brand" style="font-family: var(--font-mono); font-weight: 700; letter-spacing: 2px;">
+      {{ brand.footer_text or '@SIGNHIFY.STUDIO · SIGNHIFY.STUDIO' }}
+    </div>
+    <div class="carousel-dots-luxury">
+      {% for i in range(meta.total_slides) %}
+        <span class="dot-luxury {% if i + 1 == slide.slide_number %}dot-active-luxury{% endif %}"></span>
+      {% endfor %}
+    </div>
+  </footer>
+</body>
+</html>

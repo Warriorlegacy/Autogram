@@ -57,7 +57,7 @@ class ScriptWriter:
                 pass
 
         handle = brand.get("handle", "@signhify.studio")
-        sign_off = brand.get("sign_off", "My name is Piyush. Stop posting. Start shipping.")
+        sign_off = brand.get("sign_off", "My name is Piyush Raj Singh. Stop posting. Start shipping.")
         secondary_links = brand.get("secondary_links", "")
 
         trigger_word = carousel.get("trigger_word") or (slides[-1].get("trigger_word") if slides else "FOSS") or "FOSS"

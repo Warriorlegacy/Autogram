@@ -1,0 +1,32 @@
+{
+  "brand": "Signhify Studio",
+  "creator": "Piyush Raj Singh",
+  "niche": "autonomous posting systems for solo founders",
+  "audience": "indie hackers and solo founders shipping in public",
+  "voice": "direct, technical, calm",
+  "handle": "@signhify.studio",
+  "platforms": ["instagram"],
+  "timezone": "Asia/Kolkata",
+  "posting_slot": "19:30",
+  "cadence": {"carousel": 1, "reel": 1},
+  "profile": {
+    "handle": "signhify.studio",
+    "platform": "instagram",
+    "followers": 4200,
+    "posts": [
+      {"caption": "Stop posting manually. The autopilot rendered 30 carousels while you slept.", "format": "carousel", "likes": 340, "comments": 28, "shares": 41, "views": 5200, "url": "https://instagram.com/p/demo1"},
+      {"caption": "The Hormozi rule: be everywhere. One engine, seven daily drops.", "format": "reel", "likes": 890, "comments": 76, "shares": 120, "views": 14500, "url": "https://instagram.com/p/demo2"},
+      {"caption": "Zero-cost stack: Edge-TTS + FFmpeg + Meta Graph API. Full receipts in this slide.", "format": "carousel", "likes": 210, "comments": 12, "shares": 18, "views": 3100, "url": "https://instagram.com/p/demo3"}
+    ]
+  },
+  "competitors": [
+    {
+      "handle": "fossbuilder",
+      "platform": "instagram",
+      "followers": 18000,
+      "posts": [
+        {"caption": "I replaced $400/mo of SaaS with 3 open-source repos. Here is the stack.", "format": "carousel", "likes": 1200, "comments": 95, "shares": 210, "views": 21000, "url": "https://instagram.com/p/comp1"}
+      ]
+    }
+  ]
+}

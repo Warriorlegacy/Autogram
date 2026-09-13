@@ -1,243 +1,248 @@
-# Autogram Dashboard Redesign — Implementation Plan
+# Implementation Plan — Makerzz God-Mode Autonomous Social Operating System (P0–P8)
 
-**Date:** 2026-09-11
-**Reference:** https://makerzz.space
-**Target:** https://autogram-dashboard.onrender.com/dashboard (dashboard.html + index.html)
+Integrate the complete **Makerzz Autonomous Social-Content Operating System** as specified in [`MAKERZZ_REVERSE_ENGINEER_GOD_MODE.md`](file:///d:/Autogram/MAKERZZ_REVERSE_ENGINEER_GOD_MODE.md) and [`Autonomous Posting System Architecture.pdf`](file:///d:/Autogram/Autonomous%20Posting%20System%20Architecture.pdf) into Autogram, **without disturbing or altering any currently functioning system** (such as the daily Reels GitHub Action, `dashboard_api.py`, or `scripts/pipeline_reels.py`).
 
 ---
 
-## 1. Current State Analysis
+## User Review Required
 
-### What exists
-| File | What it does | Lines |
-|---|---|---|
-| `dashboard.html` | Monolith SPA — 4,696 lines, inline CSS + HTML + JS | ~4,700 |
-| `index.html` | Marketing landing page | 770 |
-| `css/landing.css` | Landing page design tokens + layout | 397 |
-| `css/components.css` | Simulator, pricing, terminal, modal, toast | 771 |
-| `js/*.js` | Three.js scene, carousel simulator, ROI calc, auth | 5 files |
-| `renderer/css/design-system.css` | Slide renderer tokens (850+ lines) | — |
+> [!IMPORTANT]
+> **Zero-Disturbance Guarantee:**
+> All existing production paths remain 100% operational:
+>
+> 1. `scripts/pipeline_reels.py` and `.github/workflows/daily_reels.yml` (publishing live daily reels to Instagram at 13:00 UTC) remain completely untouched.
+> 2. Existing CLI commands (`python orchestrator.py --run-all`, `--dry-run`, `--style glitch-hormozi`) retain identical behavior and arguments.
+> 3. Existing Flask Dashboard (`dashboard_api.py` on port 5050) continues serving `dashboard.html` and `index.html` seamlessly; all new endpoints will be mounted additively under `/api/v2/`.
+> 4. All brand assets strictly enforce **Signhify Studio** (`signhify.studio`), `@signhify.studio`, and creator **Piyush Raj Singh** ("My name is Piyush Raj Singh. Stop posting. Start shipping.").
 
-### Current design identity
-- **Dark OLED cyber-terminal** — neon cyan/violet glows, scanlines, WebGL 3D lattice, "Neural Mission Control" branding
-- **Fonts:** Archivo + Space Grotesk + JetBrains Mono
-- **Palette:** `#060606` void, `#00F0FF` cyan, `#8B5CF6` violet, `#10B981` emerald, `#FFC22B` amber
-- **Cards:** Double-bezel "doppel-shell" with frosted glass inner core
-
-### Makerzz reference identity
-- **Clean editorial dark** — no scanlines, no 3D lattices, no terminal aesthetic
-- **Fonts:** Archivo (display) + Space Grotesk (body) + JetBrains Mono (code) — same stack, different application
-- **Palette:** `#060606` void, `#0E6F77` teal, `#FFC22B` amber, `#10222A` ink — **warm, not neon**
-- **Buttons:** Pill-shaped (`border-radius: 999px`), 3D shadow (`box-shadow: 0px 5px 0px`), amber primary
-- **Cards:** Flat with subtle borders, no glow effects, no double-bezel
-- **Layout:** Generous whitespace, single-column hero, no sidebar dashboard
+> [!NOTE]
+> **External Services & Hybrid Zero-Cost Fallback:**
+> The Makerzz architecture references external enterprise services (Ayrshare for 13-platform dispatch, Apify for profile scraping, HeyGen for talking avatars). We will build this with a **Dual-Mode Adapter Architecture**:
+>
+> - **Enterprise Mode:** Used when API keys are supplied in `.env` (`AYRSHARE_API_KEY`, `APIFY_API_KEY`, `HEYGEN_API_KEY`).
+> - **Self-Hosted Zero-Cost Engine (Default):** Uses existing zero-cost pipelines (direct Meta Graph API for Instagram, Playwright HTML/CSS canvas for carousels, Edge-TTS + Faster-Whisper + FFmpeg for vertical video, open-source RSS/HN/GitHub scraper for research).
 
 ---
 
-## 2. Gap Analysis: What to Change
-
-### HIGH PRIORITY (visual identity shift)
-
-| # | Area | Current (Autogram) | Target (Makerzz-like) | Effort |
-|---|---|---|---|---|
-| 1 | **Remove scanlines + noise overlays** | `body::after` scanlines, `.cyber-scanlines`, `.cyber-noise` | Clean solid backgrounds | Delete 3 CSS rules |
-| 2 | **Remove WebGL 3D lattice** | `#dashboard-webgl` Three.js canvas | No 3D background | Remove `<canvas>` + script |
-| 3 | **Button system** | Neon glow pill buttons with cyan glow shadows | 3D push-effect pill buttons with `box-shadow: 0px 5px 0px #10222A` | Rewrite `.btn` classes |
-| 4 | **Card system** | Double-bezel doppel-shell with frosted glass | Flat cards with `1px solid rgba(255,255,255,0.08)` borders | Rewrite `.doppel-shell` |
-| 5 | **Color accent** | Cyan `#00F0FF` as primary accent | Teal `#0E6F77` + Amber `#FFC22B` as primary accents | Update CSS variables |
-| 6 | **Typography tone** | "NEURAL MISSION CONTROL v2.5" sci-fi labels | Clean, editorial, product-focused labels | Rewrite headings/copy |
-| 7 | **Sidebar** | 280px fixed sidebar with nav items | Makerzz has no sidebar — uses top nav or no nav in app | Decision needed |
-
-### MEDIUM PRIORITY (layout + UX)
-
-| # | Area | Change | Effort |
-|---|---|---|---|
-| 8 | **Hero/dashboard header** | Replace terminal telemetry bar with clean status bar | Rewrite topbar HTML+CSS |
-| 9 | **Streak/level badges** | Remove gamification chrome (🔥 streak, LVL 9) | Delete sidebar streak card |
-| 10 | **Pipeline terminal** | Replace terminal console with clean step-by-step progress | New component |
-| 11 | **Platform grid** | Makerzz: horizontal icon row with labels. Ours: grid of cards with status | Restyle to match |
-| 12 | **Pricing section** | Makerzz: 3 clean cards with bullet lists. Ours: already close but with neon glow | Remove glow, add 3D shadow |
-| 13 | **FAQ/accordion** | Makerzz has clean FAQ. Ours: none on dashboard | Add FAQ component |
-| 14 | **Footer** | Makerzz: minimal 3-column footer. Ours: none on dashboard | Add minimal footer |
-
-### LOW PRIORITY (polish)
-
-| # | Area | Change | Effort |
-|---|---|---|---|
-| 15 | **Animations** | Makerzz: subtle fade-in, no confetti/particles | Remove confetti canvas |
-| 16 | **Mobile responsive** | Makerzz: clean mobile layout. Ours: sidebar breaks on mobile | Add mobile hamburger/nav |
-| 17 | **Font weights** | Makerzz: lighter weights for body (400-500), bold only for headings | Audit weight usage |
-
----
-
-## 3. Implementation Phases
-
-### Phase 1: Design Token Migration (30 min)
-**Goal:** Make the CSS variables match makerzz's palette and typography
-
-**Files to edit:** `dashboard.html` `:root` block (lines 26-88)
+## Architecture Overview: The P0–P8 Gated State Machine
 
 ```
-Changes:
-- --makerzz-teal: #0E6F77 (keep, already exists)
-- --makerzz-amber: #FFC22B (keep, already exists)
-- Remove --cyan, --cyan-glow as PRIMARY accents
-- Make teal the primary interactive color
-- Make amber the CTA/primary action color
-- Keep violet/emerald as secondary badges only
+                              INPUT: Brief / Profile / Competitor URLs
+                                                │
+                                                ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│ P0: SETUP & ONBOARDING          │ Gate: brief.json (validated niche, audience, voice)       │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ P1: NICHE & COMPETITOR SCAN     │ Gate: scan.json (engagement velocity, 8 ranked angles)    │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ P2: STRATEGY & 30-DAY CALENDAR  │ Gate: calendar.json (Hormozi rule, slot allocation)       │
+├─────────────────────────────────┴───────────────────────────────────────────────────────────┤
+│                                 PARALLEL PRODUCTION GATES                                   │
+│  ┌──────────────────────────────────────────────┐ ┌──────────────────────────────────────┐  │
+│  │ P3: SCRIPT ENGINE (Spoken Text Only)         │ │ P6: CAROUSEL COMPILER                │  │
+│  │ Gate: script.txt + verification.json         │ │ Gate: carousel_plan.json + prompts   │  │
+│  │ (<2.5 words/s, no markdown/bracket tags)     │ │ (8-slide Makerzz/Hormozi layout)     │  │
+│  ├──────────────────────────────────────────────┤ ├──────────────────────────────────────┤  │
+│  │ P4: AVATAR / MOTION VIDEO                    │ │ P6-R: HEADLESS RENDER ENGINE         │  │
+│  │ Gate: video.mp4 + provider_job.json          │ │ Gate: slides/*.jpg (Playwright 1080p)│  │
+│  ├──────────────────────────────────────────────┤ └──────────────────────────────────────┘  │
+│  │ P5: EDIT PLAN & KINETIC TIMELINE             │                                           │
+│  │ Gate: edit_plan.json (beats, SFX, overlays)  │                                           │
+│  └──────────────────────────────────────────────┘                                           │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ P7: DISTRIBUTION ADAPTERS       │ Gate: queue.json -> published_receipt.json                │
+│                                 │ (Native Meta Graph API + Optional Ayrshare 13-platform)   │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│ P8: AUDIT REPORT & CREDIT LEDGER│ Gate: report.pdf + ledger_entries                         │
+│                                 │ (Append-only SQLite ledger, no fabricated metrics)        │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Verify:** Every button, link, and badge still has visible contrast on `#060606` background.
-
-### Phase 2: Remove Cyber Chrome (15 min)
-**Goal:** Strip the sci-fi overlays that makerzz doesn't have
-
-**Delete these CSS rules from dashboard.html:**
-- `body::after` scanlines (lines ~118-132)
-- `.cyber-noise` (lines ~134-141)
-- `#confetti-canvas` (line ~143-148)
-- `#dashboard-webgl` canvas element + Three.js script tag
-
-**Delete from index.html:**
-- `css/landing.css` scanlines rule (lines 52-62)
-- `js/three-scene.js` script tag
-
-### Phase 3: Button System Rewrite (45 min)
-**Goal:** Replace neon glow buttons with makerzz-style 3D push buttons
-
-**Current:** `.btn-island-primary` with `box-shadow: 0 0 24px var(--cyan-glow)`
-**Target:** `.btn-makerzz-primary` with `box-shadow: 0px 5px 0px #10222A` (already partially implemented in lines 697-749)
-
-**Action:**
-1. Make `.btn-makerzz-amber` the default primary button
-2. Make `.btn-makerzz-white` the secondary button
-3. Remove `.btn-island-primary`, `.btn-island-violet`, `.btn-primary` glow variants
-4. Update all button references in HTML
-
-### Phase 4: Card System Rewrite (30 min)
-**Goal:** Replace doppel-shell cards with flat makerzz-style cards
-
-**Current:** `.doppel-shell` with backdrop-filter blur + double border
-**Target:** Simple `.card` with `background: var(--bg-surface)`, `border: 1px solid var(--border-outer)`, `border-radius: 16px`
-
-**Action:**
-1. Create `.card` class matching makerzz flat card style
-2. Replace all `.doppel-shell > .doppel-core` patterns
-3. Remove backdrop-filter blur from cards (keep it only on sidebar/topbar)
-
-### Phase 5: Layout Restructure (1-2 hrs)
-**Goal:** Restructure dashboard to match makerzz's clean single-column flow
-
-**Decision: Keep sidebar or go top-nav?**
-- Makerzz: no sidebar in app, top nav with pills
-- Current Autogram: 280px sidebar with 15+ nav items
-- **Recommendation:** Keep sidebar but make it collapsible on mobile, clean up nav items
-
-**Action:**
-1. Reduce sidebar width from 280px to 260px
-2. Remove streak/level gamification card from sidebar
-3. Clean up nav labels: "Command & Control" → "Dashboard", "Content Studio & Publish LIVE" → "Studio"
-4. Remove emoji prefixes from nav items
-5. Add a clean topbar with user avatar + minimal telemetry (not terminal-style)
-
-### Phase 6: Content/Copy Rewrite (1 hr)
-**Goal:** Replace sci-fi terminal copy with makerzz-style editorial copy
-
-**Examples:**
-| Current | Makerzz-style |
-|---|---|
-| "NEURAL MISSION CONTROL v2.5" | "Dashboard" |
-| "⚡ Mission Control" | "Overview" |
-| "✍️ Content Studio & Publish LIVE" | "Studio" |
-| "🛡️ Proof & Gate Ledger (P0-P8)" | "Pipeline" |
-| "🚀 Pipeline Console" | "Runs" |
-| "Live Telemetry" | "Status" |
-| "Autonomous 7x Daily Publishing Daemon" | "Auto-publishing schedule" |
-
-### Phase 7: Landing Page Alignment (1 hr)
-**Goal:** Make index.html match makerzz's landing page structure
-
-**Makerzz landing structure:**
-1. Clean top nav (logo + 6 links + CTA)
-2. Hero: "Paste your social media here" with input + platform pills
-3. "How it runs" — 4-step numbered flow with images
-4. "What you actually get" — screenshot walkthrough carousel
-5. "What autopilot means" — growth chart + feature grid
-6. "Where it posts" — platform icon row
-7. FAQ accordion
-8. CTA footer
-
-**Autogram current structure:**
-1. HUD telemetry bar + nav
-2. Hero: "Turn Instagram Into An Autonomous B2B Acquisition Engine"
-3. 3D Carousel Simulator
-4. Architecture section
-5. ROI Calculator
-6. Pricing cards
-7. Terminal console
-
-**Action:**
-1. Remove HUD telemetry bar from index.html
-2. Simplify hero to makerzz-style clean headline + input CTA
-3. Replace 3D simulator with clean screenshot walkthrough
-4. Replace terminal with FAQ accordion
-5. Keep pricing cards but restyle to match makerzz flat style
+Every run executes inside an isolated workspace directory `runs/<run_id>/` with durable, inspectable JSON and media artifacts.
 
 ---
 
-## 4. File Change Summary
+## Proposed Additions & Modifications
 
-| File | Action | Est. Lines Changed |
-|---|---|---|
-| `dashboard.html` | Major edit — CSS tokens, remove scanlines, rewrite buttons/cards, restructure layout | ~800 |
-| `index.html` | Major edit — remove HUD bar, rewrite hero, add FAQ, clean up structure | ~300 |
-| `css/landing.css` | Medium edit — remove scanlines, update tokens to match new palette | ~50 |
-| `css/components.css` | Medium edit — restyle pricing cards, remove terminal glow | ~80 |
-| `js/three-scene.js` | Delete or gut (no 3D background) | -120 |
-| `js/app.js` | Minor — remove confetti, sound synthesizer references | ~30 |
+### 1. Core State Machine & Run Engine (`src/engine/`)
 
-**New files needed:** None. All changes are edits to existing files.
+New decoupled package implementing the P0–P8 lifecycle, artifact gating, approval policies, and idempotency.
 
----
+#### [NEW] [src/engine/state_machine.py](file:///d:/Autogram/src/engine/state_machine.py)
 
-## 5. What NOT to Change
+- Defines typed `Phase` enum (`P0_SETUP`, `P1_SCAN`, `P2_STRATEGY`, `P3_SCRIPT`, `P4_VIDEO`, `P5_EDIT_PLAN`, `P6_CAROUSEL`, `P7_PUBLISH`, `P8_REPORT`).
+- Defines `StageStatus` (`PENDING`, `APPROVED`, `RUNNING`, `COMPLETED`, `FAILED`, `BLOCKED_CREDITS`).
+- Implements `StagePolicy` (`approve` vs `auto`). When stage policy is `approve`, execution pauses and waits for user authorization before billable work or publishing.
 
-These Autogram features are stronger than makerzz and should stay:
+#### [NEW] [src/engine/run_manager.py](file:///d:/Autogram/src/engine/run_manager.py)
 
-- **Sidebar navigation** — makerzz doesn't have a dashboard like this; our sidebar is better for power users
-- **Platform connection grid** — our 13-platform grid with status badges is more detailed
-- **Pipeline state machine visualization** — makerzz describes it in prose; we show it live
-- **Auto-DM engine** — unique feature, not in makerzz
-- **Cron-job.org webhook integration** — unique feature
-- **3D Slide Deck Inspector** — our carousel viewer is more interactive
-- **Brand.json design system** — the renderer design system is separate and should not change
+- Manages `runs/<run_id>/` lifecycle and persists artifact hashes (`sha256`), run metadata, and execution checkpoints.
+- Guarantees **resumability**: if a stage fails or browser disconnects, rerunning picks up from the last validated gate artifact without duplicating already rendered slides or charged credits.
+
+#### [NEW] [src/engine/idempotency.py](file:///d:/Autogram/src/engine/idempotency.py)
+
+- Formats idempotency keys: `{brand_id}:{run_id}:{stage}:{asset_id}:{action}`.
+- Prevents double-submissions to external providers or publish endpoints.
 
 ---
 
-## 6. Execution Order
+### 2. Verification-Gated Scripting & Edit Plans (`src/content/`)
 
-```
-Phase 1: Tokens        → 30 min  → Visual palette shifts immediately
-Phase 2: Remove chrome → 15 min  → Clean, less noisy
-Phase 3: Buttons       → 45 min  → Biggest visual impact
-Phase 4: Cards         → 30 min  → Consistency
-Phase 5: Layout        → 2 hrs   → Structural alignment
-Phase 6: Copy          → 1 hr    — Tone alignment
-Phase 7: Landing       → 1 hr    — Full alignment
-                       ────────
-                       ~5.5 hrs total
-```
+#### [NEW] [src/content/script_verifier.py](file:///d:/Autogram/src/content/script_verifier.py)
 
-**Start with Phase 1+2+3 together** — these are all CSS-only changes that immediately make the dashboard feel makerzz-like without touching HTML structure.
+- Strict verifier mandated by Makerzz and Architecture PDF:
+  - **Spoken Cadence:** Validates spoken speed $\le 2.5$ words/second.
+  - **No Bracket Tags:** Rejects `[HOOK]`, `[CTA]`, `(pause)`, `(smile)`, `Beat 1:`.
+  - **No Markdown/Formatting:** Rejects `**bold**`, `## Header`, bullet lists, timecodes (`00:14`).
+  - **Zero Emojis:** Spoken text must be purely verbal for voice engines.
+- **Fail-Closed Auto-Retry:** If a script fails verification, automatically invokes LLM with precise feedback (up to 3 retries) rather than silently mutating text.
+
+#### [NEW] [src/content/edit_plan_compiler.py](file:///d:/Autogram/src/content/edit_plan_compiler.py)
+
+- Separates production instructions from spoken text. Produces `edit_plan.json`:
+  - Visual beats and camera framing (cut, punch-in, zoom).
+  - Kinetic subtitle timings and highlighting triggers.
+  - B-roll search queries / background assets.
+  - Sound effect (SFX) cue points and transitions.
 
 ---
 
-## 7. Verification
+### 3. Competitor Ingestion & Strategy Matrix (`src/research/`)
 
-After each phase, check:
-1. `dashboard.html` renders in browser without JS errors
-2. `index.html` renders without broken layouts
-3. All buttons are clickable and have visible hover states
-4. No neon glow artifacts remain (unless intentional)
-5. Mobile viewport (< 768px) doesn't break
-6. Existing API calls in `dashboard_api.py` still work (no backend changes needed)
+#### [NEW] [src/research/niche_scanner.py](file:///d:/Autogram/src/research/niche_scanner.py)
+
+- Normalizes competitor profile data into structured signals.
+- Computes engagement velocity:
+  $$\text{Engagement Rate} = \frac{\text{Likes} + (\text{Comments} \times 2) + (\text{Shares} \times 4)}{\text{Views}}$$
+- Extracts 8 ranked content angles: Angle, Novelty Score, Mechanism, Evidence, and Reproducible Format.
+- Saves validated `scan.json`.
+
+#### [NEW] [src/research/calendar_compiler.py](file:///d:/Autogram/src/research/calendar_compiler.py)
+
+- Generates a 30-day content calendar (`calendar.json`) based on the 8 ranked angles.
+- Enforces:
+  - Cadence constraints (e.g., 1 Reel + 1 Carousel / day).
+  - Format diversity (no identical layouts 3 days in a row).
+  - Timezone-aware posting slots (`Asia/Kolkata` default, 19:30 IST).
+  - Deterministic random minute jitter for organic distribution.
+
+---
+
+### 4. Multi-Platform Distribution Adapters (`src/distribution/`)
+
+#### [NEW] [src/distribution/base_adapter.py](file:///d:/Autogram/src/distribution/base_adapter.py)
+
+- Defines abstract `PublishAdapter` protocol:
+  - `get_capabilities()` -> text, image, video, carousel, aspect ratios, caption limits.
+  - `validate_post(canonical_post)`.
+  - `publish(canonical_post, media_urls)`.
+  - `get_metrics(remote_post_id)`.
+
+#### [NEW] [src/distribution/adapters/instagram_adapter.py](file:///d:/Autogram/src/distribution/adapters/instagram_adapter.py)
+
+- Wraps the existing `src/instagram/publisher.py` into the new adapter interface without modifying `src/instagram/publisher.py`.
+
+#### [NEW] [src/distribution/adapters/ayrshare_adapter.py](file:///d:/Autogram/src/distribution/adapters/ayrshare_adapter.py)
+
+- Implements 13-platform dispatch via Ayrshare API (`https://api.ayrshare.com/api/post`) when `AYRSHARE_API_KEY` is present.
+- Targets: Instagram, YouTube Shorts, LinkedIn, TikTok, Facebook, Threads, X, Pinterest, Bluesky, Reddit, Telegram, Discord, Google Business Profile.
+- If unconfigured, reports clean capability status: `{"configured": false, "reason": "Missing AYRSHARE_API_KEY"}`.
+
+---
+
+### 5. Append-Only Credit Ledger & Audit Reporting (`src/billing/`)
+
+#### [NEW] [src/billing/credit_ledger.py](file:///d:/Autogram/src/billing/credit_ledger.py)
+
+- Transactional SQLite ledger in `autopilot.db` (`credit_ledger` table).
+- Rules:
+  - Entries are **append-only**; never mutate a previous transaction.
+  - Standardized cost table:
+    - Scan: 40 credits
+    - Script: 12 credits
+    - Edit Plan: 20 credits
+    - Carousel Prompts & Plan: 30 credits
+    - Standard Slide Render: 3 credits / slide
+    - Vertical Video Compositing: 202 credits
+    - Publishing: 0 credits (unmetered economics model)
+  - `AUTOGRAM_OWNER_KEY` provides VIP unlimited credit balance.
+  - Fail-closed: if credits are insufficient for non-owner, aborts stage cleanly before calling paid providers.
+
+#### [NEW] [src/billing/report_generator.py](file:///d:/Autogram/src/billing/report_generator.py)
+
+- Compiles the final run audit report into `runs/<run_id>/report.json` and styled PDF `runs/<run_id>/report.pdf`:
+  - Input brief & research sources.
+  - Ranked angles & decisions taken.
+  - Shipped assets (slides, video paths, captions).
+  - Exact publish receipts & remote post IDs.
+  - Ledger debits & credit breakdown.
+  - Analytics snapshots (or explicit `unavailable` marker — never fabricated).
+
+---
+
+### 6. Dashboard & CLI Integration (Additive Only)
+
+#### [MODIFY] [dashboard_api.py](file:///d:/Autogram/dashboard_api.py)
+
+- Add additive `/api/v2/` endpoints without altering any existing `/api/` routes:
+  - `GET /api/v2/runs` — List all durable runs and their current P0-P8 status.
+  - `POST /api/v2/runs/new` — Initialize a new P0 run from brief/profile link.
+  - `POST /api/v2/runs/<run_id>/step` — Trigger next stage (with approval check).
+  - `POST /api/v2/runs/<run_id>/approve` — User approval for pending stage.
+  - `GET /api/v2/runs/<run_id>/artifacts` — Inspect generated JSON/media artifacts.
+  - `GET /api/v2/ledger` — View credit ledger transactions and balance.
+
+#### [MODIFY] [orchestrator.py](file:///d:/Autogram/orchestrator.py)
+
+- Add `--makerzz-run [brief_path]` and `--resume-run [run_id]` flags to CLI parser. Existing flags (`--dry-run`, `--run-all`, `--schedule`, `--style`) retain 100% backward compatibility.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+1. **State Machine & Gate Transition Tests:**
+
+   ```bash
+   pytest tests/test_makerzz_state_machine.py -v
+   ```
+
+   - Validates that P1 cannot execute without a valid `brief.json`.
+   - Validates that P3 script verifier strictly fails scripts with markdown or bracket section titles.
+   - Validates that already-rendered slides are skipped on resumption.
+
+2. **Credit Ledger Transaction Tests:**
+
+   ```bash
+   pytest tests/test_credit_ledger.py -v
+   ```
+
+   - Validates atomic balance calculation and append-only immutability.
+   - Validates owner VIP bypass and non-owner fail-closed behavior.
+
+3. **Regression Test on Existing Systems:**
+
+   ```bash
+   pytest tests/test_glitch_hormozi_engine.py tests/test_growth_engine.py -v
+   ```
+
+   - Confirms all 14 slide templates, lead capture, and existing pipeline commands work identically.
+
+4. **Dry-Run Pipeline Execution:**
+   ```bash
+   python orchestrator.py --dry-run --style glitch-hormozi
+   ```
+
+   - Verifies the standard end-to-end publishing pipeline completes without errors.
+
+---
+
+## Open Questions for User Approval
+
+1. **Ayrshare Multi-Platform API Key:**  
+   Do you have an active Ayrshare API key, or should the default multi-platform dispatcher operate in **Direct Meta Mode** (publishing to Instagram via Meta Graph API, and staging other platform payloads locally)?
+2. **Avatar Video Mode:**  
+   When vertical videos are rendered in P4:
+   - Should it use our internal **Zero-Cost Edge-TTS + Kinetic Subtitles + Zoompan** engine (active now)?
+   - Or should it support optional HeyGen API green-screen integration if a `HEYGEN_API_KEY` is provided in `.env`?

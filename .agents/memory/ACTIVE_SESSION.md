@@ -5,17 +5,25 @@
 - Maintain a zero-token persistent memory system for AI pair-programming agents (Antigravity, OpenCode, Claude Code).
 
 ## 2. CURRENT STAGE & STATUS
-- **Stage**: Multimodal Video Generation + Kinetic Highlight Subtitles + Agent Memory Persistence.
-- **Specification Document**: [`AI_AGENT_MASTER_SPECIFICATION.md`](file:///d:/Autogram/AI_AGENT_MASTER_SPECIFICATION.md) created and validated.
-- **AST Architecture Map**: Generated at [`.agents/memory/ARCHITECTURE_MAP.md`](file:///d:/Autogram/.agents/memory/ARCHITECTURE_MAP.md).
-- **Video Engine**: Edge-TTS (voice), Faster-Whisper (int8 word timestamps), Pollinations.ai FLUX (9:16 background), ASS kinetic subtitles, FFmpeg zoompan.
-- **Hugging Face Token**: Configured in `.env` (`HUGGINGFACE_API_KEY` & `HF_TOKEN`) for ZeroGPU video spaces & model inference.
+- **Stage**: Makerzz / Hormozi Autopilot Engine Integrated & Verified.
+- **Branding**: Official Signhify Studio (`@signhify.studio`, `signhify.studio`) & creator name **Piyush Raj Singh** ("My name is Piyush Raj Singh. Stop posting. Start shipping.").
+- **Slide Templates**: 6 new custom high-converting templates (`authority_hook.html`, `receipt_breakdown.html`, `competitor_harvester.html`, `calendar_matrix.html`, `pipeline_flow.html`, `mega_cta.html`).
+- **Research & Pattern Engine**: `src/research/pattern_analyzer.py` ("Steal the pattern, not the post").
+- **Video & Reels Engine**: `src/content/video_engine.py` (Edge-TTS, Faster-Whisper, ASS kinetic karaoke highlighting, FFmpeg zoompan).
+- **Lead Capture & Auto-DM**: `src/leads/comment_automation.py` ("comment AUTO" trigger & SQLite lead tracking).
+- **Verification**: All 3 unit tests in `tests/test_glitch_hormozi_engine.py` passing.
 
 ## 3. KEY ARTIFACTS & ACTIVE FILES
-- [`AI_AGENT_MASTER_SPECIFICATION.md`](file:///d:/Autogram/AI_AGENT_MASTER_SPECIFICATION.md): Complete architecture, code, and roadmap.
-- [`scripts/generate_repo_map.py`](file:///d:/Autogram/scripts/generate_repo_map.py): AST symbol compressor for zero-token context loading.
-- [`.agents/memory/ARCHITECTURE_MAP.md`](file:///d:/Autogram/.agents/memory/ARCHITECTURE_MAP.md): Compressed codebase structural map (< 10 KB).
-- [`.agents/workflows/start.md`](file:///d:/Autogram/.agents/workflows/start.md): Session startup protocol for AI agents.
+- `renderer/templates/authority_hook.html`: Slide 01/08 authority cutout & Claude squircle card.
+- `renderer/templates/receipt_breakdown.html`: Slide 02/08 serrated audit receipt with handwritten callout.
+- `renderer/templates/competitor_harvester.html`: Slide 04/08 URL input card & pattern intelligence flow.
+- `renderer/templates/calendar_matrix.html`: Slide 05/08 7-day 13-platform schedule & 1-click approval.
+- `renderer/templates/pipeline_flow.html`: Slide 06/08 multi-stage AI render engine with phone mockups.
+- `renderer/templates/mega_cta.html`: Slide 08/08 massive "comment AUTO" inverted badge & comparison tray.
+- `src/research/pattern_analyzer.py`: Framework & time-audit synthesizer.
+- `src/content/video_engine.py`: 1080x1920 vertical reel generator with kinetic subtitles.
+- `src/leads/comment_automation.py`: Lead logger & DM dispatcher.
+- `data/brand.json`: Configured with Piyush Raj Singh and Signhify Studio.
 
 ## 4. IMMEDIATE NEXT ACTIONS FOR RESUMING AGENT
 1. **DO NOT** run recursive file searches or directory listings.
@@ -43,3 +51,14 @@
 
 ## 8. SESSION UPDATE — 2026-09-13: SCALED TO 1 REEL/DAY
 - `daily_reels.yml` schedule re-enabled (1 cron: 13:00 UTC = 18:30 IST). `reels-10x.yml` schedule parked (manual + dispatch only) — uncomment to scale back up. YAML re-validated. Minutes now ≈180/mo; quota pressure gone.
+
+## 9. SESSION UPDATE — 2026-09-13: PUSHED LIVE, SECRETS SET, DRY-RUN TRAP FIXED
+- Committed 19 files (a768452, rebased over bot memory commits; ledger conflicts resolved with --theirs) + fix commit 85d2f26. Pushed to `main` (fb78138..85d2f26).
+- Set 6 repo secrets via gh: OPENROUTER_API_KEY, GEMINI_API_KEY (new key), IG_USER_ID, IG_ACCESS_TOKEN, INSTAGRAM_BUSINESS_ACCOUNT_ID, META_GRAPH_ACCESS_TOKEN.
+- **Critical catch:** engine `dry_run` defaults True and repo DRY_RUN *secret* is not an env var — scheduled runs would have mock-published forever. Added job-level `DRY_RUN: 'false'` to both reels workflows.
+- Next run: today 13:00 UTC (18:30 IST). Watch Actions → Daily Instagram Reels Autopilot.
+
+## 10. SESSION UPDATE — 2026-09-13: MAKERZZ OS VERIFIED & DEPLOYED
+- **Integrated Makerzz God-Mode OS:** Completed P0-P8 pipeline with credit ledger, run manager, niche scanner, calendar compiler, script verifier, edit plan compiler, JSON2Video engine, and distribution adapters.
+- **Fixed & Verified Engines:** Restored `src/content/json2video_engine.py`, updated status code expectations in API v2 routes, and verified all 52 core tests across `test_glitch_hormozi_engine`, `test_makerzz_state_machine`, `test_reels_spec`, `test_api_v2_runs`, `test_json2video_engine`, and `test_credit_ledger`.
+- **Clean Deployment:** Updated `.gitignore` for ephemeral run artifacts, staged all production modules, and pushed to `origin main`.

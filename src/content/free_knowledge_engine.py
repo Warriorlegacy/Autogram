@@ -79,7 +79,7 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "Most founders believe scaling content requires a $10,000/month agency retainer or a full-time marketing hire. In 2026, the playing field has fundamentally inverted.\n\nBy chaining together Claude 3.5 Sonnet, v0.dev, Perplexity, n8n, and Gamma, a single builder can research, write, design, and automate multi-channel distribution for exactly $0.\n\nKey tools broken down inside:\n• Claude 3.5: Nuance-heavy copywriting & frameworks\n• v0.dev: Instant production UI & landing pages\n• Perplexity: Fact-checked real-time market data\n• n8n: 100% free workflow orchestration\n• Gamma: Rapid visual presentation design\n\n👉 Swipe through for the architectural breakdown.\n\n⚡ Want the direct links and the exact copy-paste prompt templates? Comment 'AGENCY' below and I'll send them straight to your DMs.\n\n📌 Save this stack for your next product launch.\n🚀 Follow @signhify.studio for battle-tested growth systems every week.",
-        "hashtags": ["#AITools", "#GrowthHacking", "#TechFounders", "#AutomationStack", "#ClaudeAI", "#ProductivityHacks", "#PiyushGlitch"]
+        "hashtags": ["#AITools", "#GrowthHacking", "#TechFounders", "#AutomationStack", "#ClaudeAI", "#ProductivityHacks", "#SignhifyStudio"]
     },
 
     # Day 1 (Tuesday): The $0 Outbound Pipeline
@@ -147,7 +147,7 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "Cold outreach is not dead — spam is dead. If you are blasting 1,000 generic emails a day from a fresh domain, you are simply burning your IP reputation.\n\nThe highest-converting agencies in 2026 use signal-based, 3-sentence outreach powered by free tools like Apollo and Hunter.\n\nInside this breakdown:\n• How to filter high-intent prospects for $0\n• The domain verification protocol that stops spam flags\n• The 3-sentence cold email framework that founders actually read\n• Setting up a free Notion deal velocity pipeline\n\n👉 Swipe to study the full acquisition architecture.\n\n⚡ Want the Notion CRM template and the 3 high-reply email scripts? Comment 'OUTBOUND' and I'll send the download link directly to your DMs.\n\n📌 Save this for your next sales sprint.\n🚀 Follow @signhify.studio for actionable B2B growth systems.",
-        "hashtags": ["#B2BGrowth", "#ColdOutreach", "#SalesFunnels", "#ClientAcquisition", "#SaaSFounders", "#PiyushGlitch"]
+        "hashtags": ["#B2BGrowth", "#ColdOutreach", "#SalesFunnels", "#ClientAcquisition", "#SaaSFounders", "#SignhifyStudio"]
     },
 
     # Day 2 (Wednesday): 24/7 Content Repurposing Machine
@@ -215,7 +215,7 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "The biggest lie in digital marketing is that you need to spend 20 hours a week creating content from scratch for every individual platform.\n\nTop practitioners record a 3-minute voice note on their phone, transcribe it with free Whisper, and let a structured prompt chain generate their entire week's distribution pipeline.\n\nInside this carousel:\n• Zero-cost transcription using open-source Whisper\n• Multi-platform prompt architecture for LinkedIn, X & Instagram\n• Headless rendering for pixel-perfect carousel slides\n• Automating publication via Meta Graph API\n\n👉 Swipe through to see the entire technical workflow.\n\n⚡ Comment 'CONTENT' below and I will DM you the exact prompt sequence + the automation script.\n\n📌 Save this post before your next content sprint.\n🚀 Follow @signhify.studio for daily high-leverage growth architectures.",
-        "hashtags": ["#ContentRepurposing", "#ProductivityTools", "#AIEngineering", "#ContentStrategy", "#PiyushGlitch", "#Solopreneur"]
+        "hashtags": ["#ContentRepurposing", "#ProductivityTools", "#AIEngineering", "#ContentStrategy", "#SignhifyStudio", "#Solopreneur"]
     },
 
     # Day 3 (Thursday): Open-Source Solo Tech Stack
@@ -283,7 +283,7 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "Subscription creep is one of the quietest killers of early-stage profitability. A typical startup stack easily burns $1,200 to $2,000 every single month across DocuSign, Calendly, Zapier, Firebase, and analytics.\n\nIn 2026, the open-source ecosystem has matured to the point where self-hosted and free-tier alternatives offer superior reliability and zero vendor lock-in.\n\nOur top 7 open-source replacements:\n1. Supabase (Replaces Firebase)\n2. Cal.com (Replaces Calendly)\n3. Documenso (Replaces DocuSign)\n4. PostHog (Replaces Mixpanel)\n5. n8n (Replaces Zapier/Make)\n6. Umami (Replaces GA4)\n7. Stirling-PDF (Replaces Adobe Acrobat)\n\n👉 Swipe to examine the architecture and pricing breakdown.\n\n⚡ Comment 'STACK' below and I'll send you the complete 1-click Docker Compose file to spin up these tools instantly.\n\n📌 Save this guide for your next infrastructure audit.\n🚀 Follow @signhify.studio for high-output engineering systems.",
-        "hashtags": ["#OpenSource", "#SelfHosted", "#DevTools", "#TechStack", "#Supabase", "#WebDevelopment", "#PiyushGlitch"]
+        "hashtags": ["#OpenSource", "#SelfHosted", "#DevTools", "#TechStack", "#Supabase", "#WebDevelopment", "#SignhifyStudio"]
     },
 
     # Day 4 (Friday): High-Growth Prompt Frameworks
@@ -351,7 +351,7 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "If your content reads like robotic AI output, it is not because the models are weak — it is because your prompt lacks negative boundaries and architectural tension.\n\nWhen you eliminate conversational fluff and enforce strict stylistic constraints, Claude and Gemini produce writing that feels indistinguishable from a top-tier industry practitioner.\n\nInside this carousel:\n• The Tension-First hook formula for scroll-stopping hooks\n• The Negative Boundary fence that removes all AI buzzwords\n• The Gary Vee carousel blueprint for maximum save velocity\n• Converting passive viewers into active DM conversations\n\n👉 Swipe to study the prompt schemas.\n\n⚡ Comment 'PROMPTS' below and I will send you the 15 copy-paste prompt templates directly to your DMs.\n\n📌 Save this post for your prompt library.\n🚀 Follow @signhify.studio for engineering-driven growth frameworks.",
-        "hashtags": ["#PromptEngineering", "#ContentCreation", "#AIWriting", "#GrowthMarketing", "#PiyushGlitch", "#GaryVeeStyle"]
+        "hashtags": ["#PromptEngineering", "#ContentCreation", "#AIWriting", "#GrowthMarketing", "#SignhifyStudio", "#GaryVeeStyle"]
     },
 
     # Day 5 (Saturday): Autonomous AI Agents for Free
@@ -419,7 +419,7 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "AI agents are no longer restricted to specialized machine learning teams with million-dollar infrastructure budgets. Today, any founder can assemble an autonomous business agent using visual tools in under an hour.\n\nBy connecting n8n Community Edition to Groq Cloud's free Llama 3.3 endpoint and a Telegram bot interface, you have a private assistant that monitors news, checks databases, and handles client triage around the clock.\n\nInside this carousel:\n• Setting up n8n AI Agent nodes visually\n• Connecting Groq Cloud for sub-second inference\n• Equipping agents with web search and database tools\n• Building a private Telegram command center\n\n👉 Swipe to explore the step-by-step architecture.\n\n⚡ Comment 'AGENTS' below and I will send the pre-built n8n workflow JSON straight to your DMs.\n\n📌 Save this post before building your next automation.\n🚀 Follow @signhify.studio for production AI workflows every week.",
-        "hashtags": ["#AIAgents", "#n8n", "#NoCode", "#Groq", "#WorkflowAutomation", "#PiyushGlitch", "#TechInnovation"]
+        "hashtags": ["#AIAgents", "#n8n", "#NoCode", "#Groq", "#WorkflowAutomation", "#SignhifyStudio", "#TechInnovation"]
     },
 
     # Day 6 (Sunday): 1-Person 7-Figure Growth System
@@ -553,7 +553,7 @@ DAILY_7_SCHEDULE = [
             }
         ],
         "caption": "Subscription creep is the silent killer of solo founders and engineering teams.\n\nBy leveraging open-source alternatives like Coolify, Hoppscotch, Supabase, and Turso, you can run production-grade infrastructure for the cost of a single $5 VPS.\n\nInside this breakdown:\n• Self-hosting applications without DevOps complexity\n• Instant API testing without electron memory hogs\n• Zero-maintenance distributed Postgres and SQLite databases\n\n👉 Swipe through to see the complete setup.\n\n⚡ Comment 'DEV' below and I will send the complete Docker Compose files directly to your DMs.\n\n📌 Save this post for your next project.\n🚀 Follow @signhify.studio for daily high-leverage systems.",
-        "hashtags": ["#OpenSource", "#DevOps", "#WebDevelopment", "#IndieHacker", "#SoftwareEngineering", "#PiyushGlitch"]
+        "hashtags": ["#OpenSource", "#DevOps", "#WebDevelopment", "#IndieHacker", "#SoftwareEngineering", "#SignhifyStudio"]
     }
 ]
 
@@ -659,7 +659,7 @@ def synthesize_topic_carousel(topic: dict, sources: list[dict]) -> dict:
         "trigger_word": trigger_word,
         "slides": slides,
         "caption": caption,
-        "hashtags": ["#TechStack", "#Automation", "#FounderSystems", "#GrowthArchitecture", "#PiyushGlitch", "#SoloFounder"],
+        "hashtags": ["#TechStack", "#Automation", "#FounderSystems", "#GrowthArchitecture", "#SignhifyStudio", "#SoloFounder"],
         "alt_text": f"Educational carousel detailing {title}.",
         "cta": f"Comment '{trigger_word}' to get the complete free blueprint sent to your DMs."
     }

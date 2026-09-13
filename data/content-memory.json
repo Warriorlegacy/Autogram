@@ -2,9 +2,149 @@
   "recent_posts": [
     {
       "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel and Heroku. Self-host with Coolify for $0.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo plans. Self-host Coolify for $0.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Stop paying $200/mo for Vercel. Self-host everything with Coolify.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo plan. Coolify: Self-hosted, open-source, and free.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Stop throwing money at Vercel. Self-host Coolify and save $200/mo.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo bill. Coolify: The Self-Hosted Vercel and Heroku Alternative.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch $200/mo Vercel. Self-host Coolify for $0 and never pay again.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch $200/mo Vercel. Run self-hosted Coolify in 60 seconds.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo plans. Coolify is the 100% open source, self-hosted alternative.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo bill. Coolify is the open source self-hosted PaaS you own forever.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo and self-host with Coolify for zero vendor lock-in.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo bill. Coolify is the 100% open source, self-hosted alternative.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch Vercel's $200/mo plan. Self-host Coolify for $0 and deploy Next.js apps in minutes.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Stop throwing money at Vercel ($200+/month). This open source alternative runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "Open Source Economics & Contrarian",
+      "topic": "The Open Source Bait-and-Switch: Why Startups Relicense from MIT to BSL",
+      "hook": "Stop paying $50-$200/month for SaaS. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
+      "hook": "Stop paying $50-$200/mo for GNU Grep. This ultra-fast, 100% open source text search tool runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
+      "hook": "Ditch $50-$200/month SaaS text search. Ripgrep: $0, ultra-fast, and yours forever.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "Skeleton-of-Thought (SoT): Accelerate LLMs by 4x",
+      "hook": "Stop wasting LLM tokens. This prompt framework generates content 4x faster.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "Skeleton-of-Thought (SoT): The Secret Prompt Framework That Accelerates LLMs by 4x",
+      "hook": "Stop overpaying for slow LLM generations. This 100% open framework accelerates output by 4x.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "LazyGit: Simple Terminal UI for Git Commands",
+      "hook": "Stop wrestling with Git CLI. Your terminal needs LazyGit.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-13",
       "pillar": "Open Source Economics & Contrarian",
       "topic": "The Hidden Costs of Self-Hosting: When Paying for SaaS Actually Makes Sense",
-      "hook": "STOP self-hosting EVERYTHING. Sometimes SaaS saves you more money.",
+      "hook": "Stop blindly self-hosting. Sometimes SaaS *saves* you money.",
       "score": 100
     },
     {
@@ -278,146 +418,6 @@
       "pillar": "Career & Skills",
       "topic": "From Code Monkey to Systems Architect: The 2026 Engineering Transition",
       "hook": "Code Monkeys are obsolete: 2026 demands Systems Architects",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "Tech",
-      "topic": "GPU Cluster Economics: The Real Cost of Training vs Inference in 2026",
-      "hook": "Training vs Inference: The 10x GPU Cost Gap",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "Prompting & Workflow",
-      "topic": "Belief-Desire-Intention (BDI) Architectures for AI Automation",
-      "hook": "BDI Architectures Boost AI Automation Efficiency by 40%",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "AI",
-      "topic": "Belief-Desire-Intention (BDI) Architectures for AI Automation",
-      "hook": "Your AI agents struggle? Monolithic LLMs are the problem.",
-      "score": 100
-    },
-    {
-      "date": "2024-07-29",
-      "pillar": "Marketing",
-      "topic": "The Death of Top-of-Funnel Fluff: How Evidence-Led Content Wins B2B Buyers",
-      "hook": "Your 'awareness' content is actively repelling B2B buyers.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "AI | Marketing",
-      "topic": "Beyond AI Hype: Evidence-Led Content Wins B2B Buyers in Tech",
-      "hook": "AI Hype Is Dead: B2B Buyers Demand Technical Proof, Not Promises.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "AI",
-      "topic": "Local Small Language Models in Production: 3B Parameters with Tool Calling",
-      "hook": "Your 70B LLM is Overkill. A 3B Model Can Do More.",
-      "score": 100
-    },
-    {
-      "date": "2024-05-23",
-      "pillar": "Career & Skills",
-      "topic": "The Zero-Debt Automation Stack: Building Pipelines That Run Themselves",
-      "hook": "Most AI Automation Creates Debt. Build Zero-Debt Pipelines Instead.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "System Design & Developer Productivity",
-      "topic": "7 Open-Source Tools Every Solo Founder Needs in 2026",
-      "hook": "7 Open-source tools that save you $18,000 a year in SaaS fees.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "System Design & Developer Productivity",
-      "topic": "7 Open-Source Tools Every Solo Founder Needs in 2026",
-      "hook": "7 Open-source tools that save you $18,000 a year in SaaS fees.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "System Design & Developer Productivity",
-      "topic": "7 Open-Source Tools Every Solo Founder Needs in 2026",
-      "hook": "7 Open-source tools that save you $18,000 a year in SaaS fees.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "Prompting & Workflow",
-      "topic": "Context Window Degradation: Why Truncation Trumps Bloated Contexts",
-      "hook": "Stop writing prompts like emails. Use this 4-block architecture.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "Myth-Bust / Contrarian",
-      "topic": "Why 90% of Fine-Tuning Projects Are a Waste of Capital",
-      "hook": "'AI will replace marketers' is backwards. Here is what actually happens.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "Marketing Psychology",
-      "topic": "Save-and-Share Mechanics: The Psychology of Reference-Grade Carousels",
-      "hook": "Why your enterprise decoy tier is secretly killing sales.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Deterministic UI Rendering vs Diffusion Models: The Typography Problem",
-      "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "Prompting & Workflow",
-      "topic": "Self-Correcting Agentic Pipelines: Bounded Loops vs Runaway Retries",
-      "hook": "Stop writing prompts like emails. Use this 4-block architecture.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "Myth-Bust / Contrarian",
-      "topic": "The $10,000/Month Agency Retainer Is Obsolete",
-      "hook": "'AI will replace marketers' is backwards. Here is what actually happens.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "Tech Industry Explainer",
-      "topic": "Meta Graph API v23 Changes: Stricter Quotas and Direct Content Publishing",
-      "hook": "How AI models generate text 3x faster without losing intelligence.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-09",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Why proprietary AI plugins are dead \u2014 and what replaced them.",
       "score": 100
     }
   ],

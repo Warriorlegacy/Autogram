@@ -186,7 +186,7 @@ class InstagramPublisher:
                     "👉 Swipe through all slides to see the exact implementation blueprint.\n\n"
                     "📌 Save this post before your next architecture sprint.\n"
                     "🚀 Follow @signhify.studio for battle-tested AI automation & systems design.\n\n"
-                    "— My name is Piyush. Stop posting. Start shipping.\n\n"
+                    "— My name is Piyush Raj Singh. Stop posting. Start shipping.\n\n"
                     ".\n.\n"
                     f"{tags}"
                 )
