@@ -1,14 +1,11 @@
 name: Daily Autonomous Video Autopilot (Shorts & Reels)
 
-on:
-  schedule:
-    # 4 Daily Cloud Video Slots (Asia/Kolkata) — PC-off proof, $0 CI-lite lane
-    # (Pexels + edge-TTS + FFmpeg on the runner; MPT stays the local quality path).
-    # Free-minutes math: ~5 min/run x 4 x 30 ~= 600/mo; stories+carousels ~= 945/mo.
-    - cron: "0 2 * * *"    # 07:30 IST — Morning reel
-    - cron: "0 7 * * *"    # 12:30 IST — Midday reel
-    - cron: "0 12 * * *"   # 17:30 IST — Evening reel
-    - cron: "0 16 * * *"   # 21:30 IST — Night reel
+# schedule:
+#   # Parked in favor of daily_reels.yml (3x Daily)
+#   - cron: "0 2 * * *"
+#   - cron: "0 7 * * *"
+#   - cron: "0 12 * * *"
+#   - cron: "0 16 * * *"
   workflow_dispatch:
     inputs:
       destination:

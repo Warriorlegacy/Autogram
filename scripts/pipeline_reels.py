@@ -40,6 +40,89 @@ FREE_MODELS = [
     "google/gemma-4-31b-it:free",
 ]
 
+CURATED_VIRAL_REEL_TOPICS = [
+    {"topic": "vLLM vs Ollama: 24x High-Throughput LLM Serving for $0", "pillar": "Local AI & Edge Compute"},
+    {"topic": "Documenso: Stop Paying $40/User/Month for DocuSign", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "Coolify: Self-Host Next.js and Docker Apps with Zero Lock-In", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "Uptime Kuma: Free Self-Hosted Status Page That Beats Datadog", "pillar": "Developer Power Tools & CLI"},
+    {"topic": "Open-WebUI: Run ChatGPT Plus 100% Offline with Local Models", "pillar": "Local AI & Edge Compute"},
+    {"topic": "PocketBase: An Entire Backend & Realtime Auth in a Single 15MB File", "pillar": "Self-Hosted Architecture"},
+    {"topic": "Stirling-PDF: The 100% Local Adobe Acrobat Pro Alternative", "pillar": "Trending GitHub Spotlight"},
+    {"topic": "LazyGit: Why 50,000+ Developers Abandoned GUI Git Clients", "pillar": "Developer Power Tools & CLI"},
+    {"topic": "Ripgrep: Recursive Regex Search 10x Faster Than GNU Grep", "pillar": "Developer Power Tools & CLI"},
+    {"topic": "Caddy 2: Automatic HTTPS Reverse Proxy with 3 Lines of Config", "pillar": "Self-Hosted Architecture"},
+    {"topic": "SearXNG: Private Self-Hosted Metasearch Without Google Tracking", "pillar": "Self-Hosted Architecture"},
+    {"topic": "Authentik: Open Source Identity & SSO Replacing $1,000/mo Auth0", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "PostHog: Full-Featured Product Analytics Without Cloud Invoices", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "Vaultwarden: Lightweight Bitwarden Server on a $5/mo VPS", "pillar": "Self-Hosted Architecture"},
+    {"topic": "RustDesk: The Self-Hosted TeamViewer and AnyDesk Alternative", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "Immich: High-Performance Google Photos Alternative You Own", "pillar": "Trending GitHub Spotlight"},
+    {"topic": "AppFlowy: Open Source Notion Alternative with Local Data Privacy", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "Cal.com: Self-Hosted Meeting Scheduler Without Calendly Fees", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "Tree-of-Thoughts Prompt: 3 Autonomous Reviewers in One Prompt", "pillar": "Prompting & Workflow"},
+    {"topic": "Skeleton-of-Thought: The UC Berkeley Method Accelerating LLMs 4x", "pillar": "Local AI & Edge Compute"},
+    {"topic": "Chain-of-Density: Condense 10,000-Word Docs into 5 Dense Takeaways", "pillar": "Local AI & Edge Compute"},
+    {"topic": "Why Multi-Agent Systems Beat Monolithic Prompts in Production", "pillar": "Tech Explainer"},
+    {"topic": "Context Caching Architecture: How to Slash 90% of LLM API Costs", "pillar": "Tech Explainer"},
+    {"topic": "The Zero-Hallucination SQL Pattern: Strict Schema AST Bounds", "pillar": "Developer Power Tools & CLI"},
+    {"topic": "The Deep-Research Agent: 6 Hours of Technical Analysis in 60s", "pillar": "Local AI & Edge Compute"},
+    {"topic": "The 1% Rule of Compounding Daily Habits in Software Engineering", "pillar": "Marketing Psychology"},
+    {"topic": "Why Micro-SaaS Startups Relicense from MIT to BSL", "pillar": "Open Source Economics & Contrarian"},
+    {"topic": "The Hidden Cost of Cloud Subscriptions: Owning Your Compute", "pillar": "Open Source Economics & Contrarian"},
+    {"topic": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy", "pillar": "Trending GitHub Spotlight"},
+    {"topic": "n8n: Self-Hosted Automation Engine Replacing Zapier for $0", "pillar": "FOSS SaaS Alternatives"},
+]
+
+
+def get_unique_viral_reel_topic(override_topic: str | None = None) -> str:
+    """Selects a fresh, high-virality topic strictly avoiding past memory."""
+    import difflib
+    import json
+    from datetime import datetime
+
+    if override_topic and override_topic.strip():
+        return override_topic.strip()
+
+    mem_file = Path(__file__).resolve().parent.parent / "data" / "content-memory.json"
+    recent_topics: list[str] = []
+    if mem_file.exists():
+        try:
+            mem = json.loads(mem_file.read_text(encoding="utf-8"))
+            recent_topics = [
+                p.get("topic", "").lower().replace("[reel]", "").replace("[story]", "").strip()
+                for p in mem.get("recent_posts", [])
+                if p.get("topic")
+            ]
+        except Exception:
+            recent_topics = []
+
+    def is_dup(cand: str) -> bool:
+        c_low = cand.lower().strip()
+        for past in recent_topics[:40]:  # check against 40 most recent postings
+            if not past:
+                continue
+            if c_low in past or past in c_low:
+                return True
+            if difflib.SequenceMatcher(None, c_low, past).ratio() >= 0.65:
+                return True
+        return False
+
+    # 1. Filter curated candidates for unposted topics
+    unposted = [c["topic"] for c in CURATED_VIRAL_REEL_TOPICS if not is_dup(c["topic"])]
+    if unposted:
+        return unposted[0]
+
+    # 2. If all curated have been posted recently, find the one posted longest ago
+    def recency_rank(topic_str: str) -> int:
+        t_low = topic_str.lower()
+        for idx, past in enumerate(recent_topics):
+            if t_low in past or past in t_low or difflib.SequenceMatcher(None, t_low, past).ratio() >= 0.65:
+                return idx
+        return 999999
+
+    sorted_by_oldest = sorted(CURATED_VIRAL_REEL_TOPICS, key=lambda c: recency_rank(c["topic"]), reverse=True)
+    return sorted_by_oldest[0]["topic"]
+
 
 def generate_reel_content(topic: str) -> dict:
     """Viral script + visual prompt + caption via OpenRouter :free (falls back to engine)."""
@@ -47,12 +130,13 @@ def generate_reel_content(topic: str) -> dict:
 
     api_key = os.getenv("OPENROUTER_API_KEY", "")
     system_prompt = (
-        "You are an elite Instagram viral content director. Create an engaging 20-second Reel script. "
+        "You are an elite Instagram viral content director for @signhify.studio. Create an engaging 20-second Reel script. "
         "Return STRICT JSON with keys: "
-        "'script' (concise spoken text under 45 words, high-tension hook, no emojis), "
+        "'script' (concise spoken text under 45 words, high-tension hook, no emojis, MUST end with: 'Follow signhify.studio for more.'), "
         "'visual_prompt' (photorealistic 9:16 portrait scene description, dramatic volumetric lighting), "
-        "'caption' (punchy caption with 5 niche hashtags)."
+        "'caption' (punchy caption with 5 niche hashtags ending with follow @signhify.studio for more)."
     )
+    data = None
     if api_key:
         from openai import OpenAI
 
@@ -68,25 +152,48 @@ def generate_reel_content(topic: str) -> dict:
                     ],
                     response_format={"type": "json_object"},
                 )
-                data = json.loads(res.choices[0].message.content)
-                if "script" in data and "visual_prompt" in data:
-                    data.setdefault("caption", f"{topic} #reels #viral #psychology #facts #shorts")
-                    return data
-            except Exception as e:  # ponytail: try next free model, engine fallback below
+                parsed = json.loads(res.choices[0].message.content)
+                if "script" in parsed and "visual_prompt" in parsed:
+                    data = parsed
+                    break
+            except Exception as e:
                 last_err = e
                 logger.warning(f"OpenRouter {model} failed: {e}")
-        logger.warning(f"All OpenRouter :free models failed ({last_err}); using engine fallback.")
+        if not data:
+            logger.warning(f"All OpenRouter :free models failed ({last_err}); using engine fallback.")
 
-    # $0 fallback: existing engine chain (groq/gemini/ollama/template — never fails)
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    from src.content.generator import generator
+    if not data:
+        # $0 fallback: existing engine chain (groq/gemini/ollama/template — never fails)
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from src.content.generator import generator
 
-    script = generator.generate_reel_script({"topic": topic, "pillar": "Tech Explainer"})
-    return {
-        "script": script["narration"],
-        "visual_prompt": f"Cinematic 9:16 portrait of {script['subject']}, dramatic volumetric lighting, photorealistic",
-        "caption": f"{script['caption']}\n\n{' '.join(script['hashtags'])}",
-    }
+        script = generator.generate_reel_script({"topic": topic, "pillar": "Tech Explainer"})
+        data = {
+            "script": script["narration"],
+            "visual_prompt": f"Cinematic 9:16 portrait of {script['subject']}, dramatic volumetric lighting, photorealistic",
+            "caption": f"{script['caption']}\n\n{' '.join(script['hashtags'])}",
+        }
+
+    # Defensive regex enforcement: spoken script MUST end with 'Follow signhify.studio for more.'
+    script_text = str(data.get("script") or "").strip()
+    cta = "Follow signhify.studio for more."
+    cleaned_spoken = re.sub(
+        r"[\s\.\,\!\?]*follow\s+@?signhify\.?studio(\s+for\s+more)?[\s\.\,\!\?]*$",
+        "",
+        script_text,
+        flags=re.IGNORECASE,
+    ).strip()
+    if cleaned_spoken:
+        data["script"] = f"{cleaned_spoken}. {cta}"
+    else:
+        data["script"] = f"Stop paying for bloated software. {topic}. {cta}"
+
+    caption = str(data.get("caption") or f"{topic} #reels #viral #tech #opensource").strip()
+    if not re.search(r"follow\s+@?signhify\.?studio", caption, re.IGNORECASE):
+        caption = f"{caption}\n\n👉 Follow @signhify.studio for more daily AI architectures."
+    data["caption"] = caption
+
+    return data
 
 
 async def synthesize_speech(text: str, output_path: str = AUDIO_FILE):
@@ -197,9 +304,15 @@ def render_ffmpeg(
     subprocess.run(cmd, check=True)
 
 
-def execute_reels_pipeline(topic: str) -> dict:
+def execute_reels_pipeline(topic: str = "") -> dict:
     import json as _json
+    from datetime import datetime
 
+    topic = (topic or "").strip()
+    if not topic or topic.lower() in ("auto", "none", "null"):
+        topic = get_unique_viral_reel_topic()
+
+    logger.info(f"Executing Reels pipeline with unique topic: '{topic}'")
     data = generate_reel_content(topic)
     asyncio.run(synthesize_speech(data["script"], AUDIO_FILE))
     download_visual(data["visual_prompt"], BACKGROUND_IMG)
@@ -214,9 +327,30 @@ def execute_reels_pipeline(topic: str) -> dict:
     }
     with open(str(BASE_DIR / "metadata.json"), "w", encoding="utf-8") as f:
         _json.dump(result, f, indent=2)
+
+    # Persist topic into content-memory.json for zero-repetition across workflows
+    try:
+        mem_file = Path(__file__).resolve().parent.parent / "data" / "content-memory.json"
+        if mem_file.exists():
+            mem = _json.loads(mem_file.read_text(encoding="utf-8"))
+            recent = mem.get("recent_posts", [])
+            recent.insert(0, {
+                "date": datetime.utcnow().strftime("%Y-%m-%d"),
+                "pillar": "Reels Autopilot",
+                "topic": f"[Reel] {topic}",
+                "hook": data["script"][:60],
+                "score": 95.0
+            })
+            mem["recent_posts"] = recent[:80]
+            mem_file.write_text(_json.dumps(mem, indent=2), encoding="utf-8")
+            logger.info(f"Recorded Reel '{topic}' to content-memory.json.")
+    except Exception as e:
+        logger.warning(f"Could not record Reel to memory: {e}")
+
     return result
 
 
 if __name__ == "__main__":
-    result = execute_reels_pipeline(sys.argv[1] if len(sys.argv) > 1 else "The Neuroscience of the Flow State")
+    passed_topic = sys.argv[1] if len(sys.argv) > 1 else ""
+    result = execute_reels_pipeline(passed_topic)
     print(f"Generated Reel at: {result['video_path']}")

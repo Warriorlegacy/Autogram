@@ -628,7 +628,7 @@ def synthesize_topic_carousel(topic: dict, sources: list[dict]) -> dict:
             "slide_number": 8,
             "layout": "cta",
             "headline": f"Get the {title} Implementation Pack",
-            "body": f"Comment '{trigger_word}' below and I will send the complete workflow blueprint + starter scripts to your DMs.",
+            "body": f"Comment '{trigger_word}' below for the complete blueprint. Follow signhify.studio for more.",
             "trigger_word": trigger_word
         }
     ]
@@ -645,7 +645,7 @@ def synthesize_topic_carousel(topic: dict, sources: list[dict]) -> dict:
         f"👉 Swipe through for the architectural breakdown.\n\n"
         f"⚡ Want the implementation guide & direct templates? Comment '{trigger_word}' below and I'll DM you the complete package.\n\n"
         f"📌 Save this post for your next build sprint.\n"
-        f"🚀 Follow @signhify.studio for daily high-leverage growth systems."
+        f"🚀 Follow signhify.studio for more."
     )
 
     return {

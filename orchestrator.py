@@ -512,6 +512,18 @@ def run_story_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
     logger.info(f"Instagram Story Run Completed Successfully! Media ID: {media_id}")
     logger.info("==================================================")
 
+    # 7. Persist to content-memory.json for anti-repetition
+    try:
+        from src.analytics.optimizer import optimizer
+        optimizer.update_memory_with_post({
+            "publication_date": today_str,
+            "pillar": winner_topic.get("pillar"),
+            "topic": f"[Story] {winner_topic.get('topic')}",
+            "hook": story_data.get("headline", "")
+        }, score=95.0)
+    except Exception as e:
+        logger.warning(f"Could not record story to memory: {e}")
+
     return manifest
 
 def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, custom_pillar: str | None = None) -> dict:
@@ -609,6 +621,18 @@ def run_reel_pipeline(dry_run: bool = False, custom_topic: str | None = None, cu
     logger.info("==================================================")
     logger.info(f"Instagram Reel Run Completed Successfully! Media ID: {media_id}")
     logger.info("==================================================")
+
+    # 7. Persist to content-memory.json for anti-repetition
+    try:
+        from src.analytics.optimizer import optimizer
+        optimizer.update_memory_with_post({
+            "publication_date": today_str,
+            "pillar": winner_topic.get("pillar"),
+            "topic": f"[Reel] {winner_topic.get('topic')}",
+            "hook": reel_script.get("narration", "")[:60]
+        }, score=95.0)
+    except Exception as e:
+        logger.warning(f"Could not record reel to memory: {e}")
 
     return manifest
 
@@ -717,17 +741,17 @@ def run_video_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
 
 
 def run_scheduler(dry_run: bool = False):
-    """Runs a local continuous scheduler daemon for 7 carousels, 7 stories, and 10 video drops."""
+    """Runs a local continuous scheduler daemon for 2 carousels, 2 stories, and 3 viral reels."""
     import time
-    DAILY_SLOTS = ["08:00", "10:30", "13:00", "15:30", "18:00", "20:30", "22:30"] # 7 Carousels
-    STORY_SLOTS = ["09:00", "11:30", "14:00", "16:30", "19:00", "21:30", "23:30"] # 7 Stories
-    VIDEO_SLOTS = ["08:00", "09:45", "11:00", "12:00", "13:45", "15:00", "16:30", "18:30", "20:00", "22:00"] # 10 Videos
+    DAILY_SLOTS = ["11:30", "19:30"]  # 2 Carousels (IST)
+    STORY_SLOTS = ["09:30", "17:30"]  # 2 Stories (IST)
+    VIDEO_SLOTS = ["10:30", "14:30", "20:30"]  # 3 Viral Reels (IST)
 
     logger.info("==================================================")
-    logger.info(" Autogram Autonomous Scheduler Active (24 Drops/Day)")
-    logger.info(f" 7 Carousels: {', '.join(DAILY_SLOTS)} ({settings.timezone})")
-    logger.info(f" 7 Stories:   {', '.join(STORY_SLOTS)} ({settings.timezone})")
-    logger.info(f" 10 Videos:   {', '.join(VIDEO_SLOTS)} ({settings.timezone})")
+    logger.info(" Autogram Autonomous Scheduler Active (7 Drops/Day: 3 Reels, 2 Stories, 2 Carousels)")
+    logger.info(f" 2 Carousels: {', '.join(DAILY_SLOTS)} ({settings.timezone})")
+    logger.info(f" 2 Stories:   {', '.join(STORY_SLOTS)} ({settings.timezone})")
+    logger.info(f" 3 Reels:     {', '.join(VIDEO_SLOTS)} ({settings.timezone})")
     logger.info(f" Operating Mode: {'DRY RUN / SIMULATION' if dry_run or settings.dry_run else 'LIVE PRODUCTION'}")
     logger.info("==================================================")
     logger.info("Scheduler daemon running. Press Ctrl+C to terminate.")

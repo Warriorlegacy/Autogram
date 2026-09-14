@@ -256,6 +256,226 @@
       "excerpt": "Simulates an offensive application security auditor scanning code for OWASP Top 10 vulnerabilities, unauthenticated IDORs, and SSRF flaws with exploit PoCs and hardened code patches.",
       "source_type": "prompt_code",
       "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-01",
+      "source_title": "Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
+      "publisher": "Louis Lam",
+      "pillar": "Developer Power Tools & CLI",
+      "published_at": "2026-09-12T10:00:00Z",
+      "url": "https://github.com/louislam/uptime-kuma",
+      "excerpt": "Say goodbye to $200/mo Pingdom and Datadog bills. Uptime Kuma monitors HTTP, TCP, DNS, and Docker containers with beautiful real-time status pages and Telegram/Discord alerts on a 50MB RAM footprint.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-02",
+      "source_title": "SearXNG: Private Self-Hosted Metasearch Without Google Tracking",
+      "publisher": "SearXNG Team",
+      "pillar": "Self-Hosted Architecture",
+      "published_at": "2026-09-12T11:00:00Z",
+      "url": "https://github.com/searxng/searxng",
+      "excerpt": "Aggregates search results from 70+ search engines while stripping all user tracking, profiling, and telemetry. Host your own private search engine with a single Docker container.",
+      "source_type": "github_repository",
+      "trust_score": 0.97
+    },
+    {
+      "source_id": "FOSS-P7-03",
+      "source_title": "Authentik: Open Source Identity Provider & SSO Replacing Auth0",
+      "publisher": "BeryJu.org",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-12T12:00:00Z",
+      "url": "https://github.com/goauthentik/authentik",
+      "excerpt": "Auth0 charges hundreds per month once you exceed basic tiers. Authentik delivers SAML, OAuth2, OIDC, and multi-factor auth across all your private servers and SaaS apps with zero per-user fees.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-04",
+      "source_title": "PostHog: Open Source Product Analytics and Feature Flags",
+      "publisher": "PostHog Engineering",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-12T13:00:00Z",
+      "url": "https://github.com/PostHog/posthog",
+      "excerpt": "Replaces Mixpanel, LaunchDarkly, and Hotjar in one self-hosted platform. Full event ingestion, session replay, heatmaps, and AB testing on your own infrastructure with total GDPR compliance.",
+      "source_type": "github_repository",
+      "trust_score": 0.99
+    },
+    {
+      "source_id": "FOSS-P7-05",
+      "source_title": "Vaultwarden: Lightweight Bitwarden Password Manager for Self-Hosting",
+      "publisher": "Vaultwarden Project",
+      "pillar": "Self-Hosted Architecture",
+      "published_at": "2026-09-12T14:00:00Z",
+      "url": "https://github.com/dani-garcia/vaultwarden",
+      "excerpt": "Written in Rust, Vaultwarden implements the full Bitwarden API in under 20MB of RAM. Store enterprise team credentials, 2FA tokens, and secure notes with zero monthly cloud subscriptions.",
+      "source_type": "github_repository",
+      "trust_score": 0.99
+    },
+    {
+      "source_id": "FOSS-P7-06",
+      "source_title": "RustDesk: Open Source Remote Desktop Replacing TeamViewer and AnyDesk",
+      "publisher": "RustDesk",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-12T15:00:00Z",
+      "url": "https://github.com/rustdesk/rustdesk",
+      "excerpt": "Commercial remote desktop licenses cost $50/seat/mo and cut connections mid-session. RustDesk lets you establish peer-to-peer encrypted remote desktop connections on your own relay server.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-07",
+      "source_title": "Immich: Self-Hosted High-Performance Photo Backup Replacing Google Photos",
+      "publisher": "Immich Community",
+      "pillar": "Trending GitHub Spotlight",
+      "published_at": "2026-09-12T16:00:00Z",
+      "url": "https://github.com/immich-app/immich",
+      "excerpt": "Google Photos charges $10/mo for 2TB cloud storage. Immich offers lightning-fast mobile backup, facial recognition, vector search, and RAW photo processing on your local home server.",
+      "source_type": "github_repository",
+      "trust_score": 0.99
+    },
+    {
+      "source_id": "FOSS-P7-08",
+      "source_title": "AppFlowy: Open Source Notion Alternative with Local Data Privacy",
+      "publisher": "AppFlowy-IO",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-12T17:00:00Z",
+      "url": "https://github.com/AppFlowy-IO/AppFlowy",
+      "excerpt": "Built with Flutter and Rust, AppFlowy gives teams Notion-style wikis, Kanban boards, and database tables with 100% offline data sovereignty and zero vendor lock-in.",
+      "source_type": "github_repository",
+      "trust_score": 0.97
+    },
+    {
+      "source_id": "FOSS-P7-09",
+      "source_title": "Cal.com: Open Source Scheduling Infrastructure Replacing Calendly",
+      "publisher": "Cal.com Team",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-12T18:00:00Z",
+      "url": "https://github.com/calcom/cal.com",
+      "excerpt": "Calendly charges $16/user/month for basic routing and custom branding. Cal.com is an open-source scheduling engine with calendar sync, webhooks, and team routing running on Next.js.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-10",
+      "source_title": "Plane: Open Source Project Management Tool Replacing Jira and Linear",
+      "publisher": "MakePlane",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-12T19:00:00Z",
+      "url": "https://github.com/makeplane/plane",
+      "excerpt": "Linear and Jira charge per-seat SaaS bills that compound rapidly. Plane provides issue tracking, cycles, modules, and roadmaps with a modern dark-mode interface self-hosted via Docker.",
+      "source_type": "github_repository",
+      "trust_score": 0.97
+    },
+    {
+      "source_id": "FOSS-P7-11",
+      "source_title": "Penpot: Open Source Design & Prototyping Platform Replacing Figma",
+      "publisher": "Penpot Team",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-12T20:00:00Z",
+      "url": "https://github.com/penpot/penpot",
+      "excerpt": "Adobe and Figma lock UI designers into proprietary cloud formats. Penpot runs on open web standards (SVG, CSS Grid, Flexbox) natively in the browser and self-hosts on private hardware.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-12",
+      "source_title": "Supabase: Open Source Firebase Alternative with Postgres, Auth, and Storage",
+      "publisher": "Supabase Engineering",
+      "pillar": "Trending GitHub Spotlight",
+      "published_at": "2026-09-12T21:00:00Z",
+      "url": "https://github.com/supabase/supabase",
+      "excerpt": "Over 75k GitHub stars: Supabase provides a production Postgres database, Row Level Security, instant REST & GraphQL APIs, realtime subscriptions, and auth running on docker compose for $0.",
+      "source_type": "github_repository",
+      "trust_score": 0.99
+    },
+    {
+      "source_id": "FOSS-P7-13",
+      "source_title": "Meilisearch: Lightning Fast Open Source Search Engine Outperforming Algolia",
+      "publisher": "Meilisearch",
+      "pillar": "Developer Power Tools & CLI",
+      "published_at": "2026-09-12T22:00:00Z",
+      "url": "https://github.com/meilisearch/meilisearch",
+      "excerpt": "Algolia's search usage billing spikes unexpectedly. Meilisearch is a Rust-powered typo-tolerant search engine providing sub-50ms search-as-you-type responses with zero setup friction.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-14",
+      "source_title": "Paperless-ngx: Open Source Document Archiving with Automatic OCR",
+      "publisher": "Paperless-ngx Team",
+      "pillar": "Self-Hosted Architecture",
+      "published_at": "2026-09-12T23:00:00Z",
+      "url": "https://github.com/paperless-ngx/paperless-ngx",
+      "excerpt": "Scan invoices, contracts, and receipts into a single self-hosted document vault with automatic machine-learning categorization, full-text search, and tagging on local hardware.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-15",
+      "source_title": "Hoppscotch: Open Source Lightweight API Client Replacing Postman",
+      "publisher": "Hoppscotch Team",
+      "pillar": "Developer Power Tools & CLI",
+      "published_at": "2026-09-13T08:00:00Z",
+      "url": "https://github.com/hoppscotch/hoppscotch",
+      "excerpt": "Postman forced mandatory cloud accounts and broke offline workflows. Hoppscotch is a 100% open source, lightweight web and desktop API testing ecosystem with zero cloud telemetry.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-16",
+      "source_title": "NocoDB: Open Source Smart Spreadsheet Database Replacing Airtable",
+      "publisher": "NocoDB Community",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-13T09:00:00Z",
+      "url": "https://github.com/nocodb/nocodb",
+      "excerpt": "Airtable's strict row limits and $20/user pricing hinder growing startups. NocoDB turns any existing MySQL or PostgreSQL database into a collaborative smart spreadsheet with unlimited rows.",
+      "source_type": "github_repository",
+      "trust_score": 0.97
+    },
+    {
+      "source_id": "FOSS-P7-17",
+      "source_title": "Twenty: Modern Open Source CRM Replacing Salesforce and HubSpot",
+      "publisher": "Twenty CRM",
+      "pillar": "FOSS SaaS Alternatives",
+      "published_at": "2026-09-13T10:00:00Z",
+      "url": "https://github.com/twentyhq/twenty",
+      "excerpt": "Salesforce and HubSpot charge thousands in annual contracts. Twenty is an AGPL-licensed, self-hosted CRM built with TypeScript and PostgreSQL that puts contact data under your direct ownership.",
+      "source_type": "github_repository",
+      "trust_score": 0.97
+    },
+    {
+      "source_id": "FOSS-P7-18",
+      "source_title": "Portainer: Lightweight Container Management Web UI for Docker",
+      "publisher": "Portainer.io",
+      "pillar": "Self-Hosted Architecture",
+      "published_at": "2026-09-13T11:00:00Z",
+      "url": "https://github.com/portainer/portainer",
+      "excerpt": "Manage Docker containers, images, networks, volumes, and stacks across home labs and cloud VPS instances through an intuitive visual dashboard with 1-click redeployments.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
+    },
+    {
+      "source_id": "FOSS-P7-19",
+      "source_title": "Grafana: Open Source Observability & Metric Visualization Dashboards",
+      "publisher": "Grafana Labs",
+      "pillar": "Developer Power Tools & CLI",
+      "published_at": "2026-09-13T12:00:00Z",
+      "url": "https://github.com/grafana/grafana",
+      "excerpt": "Visualize Prometheus metrics, Postgres queries, and server telemetry in high-performance dashboards without paying $15/host SaaS monitoring premiums.",
+      "source_type": "github_repository",
+      "trust_score": 0.99
+    },
+    {
+      "source_id": "FOSS-P7-20",
+      "source_title": "Affine: Open Source Next-Gen Collaborative Workspace Unifying Docs and Whiteboards",
+      "publisher": "TOeverything",
+      "pillar": "Trending GitHub Spotlight",
+      "published_at": "2026-09-13T13:00:00Z",
+      "url": "https://github.com/toeverything/AFFiNE",
+      "excerpt": "Unifies Notion, Miro, and Monday into a single privacy-first canvas. Switch effortlessly between structured documents and infinite spatial whiteboard diagrams on local hardware.",
+      "source_type": "github_repository",
+      "trust_score": 0.98
     }
   ]
 }

@@ -432,7 +432,7 @@ class MakerzzRunner:
             f"The mechanism is simple: {mechanism}. "
             f"Look at the evidence in this niche and you will see the same pattern. "
             f"Ship one piece of content every day for thirty days and the data will speak. "
-            f"Save this, start tonight, and comment SYSTEM for the full playbook."
+            f"Save this, start tonight, and comment SYSTEM for the full playbook. Follow signhify.studio for more."
         )
 
     def _synthetic_profile(self, brief: dict) -> dict:

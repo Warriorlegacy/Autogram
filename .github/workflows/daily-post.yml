@@ -1,13 +1,13 @@
-name: Daily Instagram Autopilot (7x Daily)
+name: Daily Instagram Autopilot (2x Daily Carousels)
 
 on:
-  # Triggered exclusively by cron-job.org dispatch jobs
-  # ("Autogram Slot 1-7", Asia/Kolkata) for second-precise scheduling.
-  # No native `schedule:` here by design — it would double-post carousels.
+  schedule:
+    - cron: '0 6 * * *'  # 11:30 AM IST (06:00 UTC) — Midday Prime Carousel
+    - cron: '0 14 * * *' # 07:30 PM IST (14:00 UTC) — Evening Prime Carousel
   workflow_dispatch:
     inputs:
       topic:
-        description: "Custom Topic (leave empty for auto-trending)"
+        description: "Custom Topic (leave empty for zero-repetition auto-trending)"
         required: false
         default: ""
       pillar:
@@ -30,7 +30,7 @@ on:
         type: choice
         options:
           - "live"
-  repository_dispatch:     # Allows external second-precise webhooks (cron-job.org / curl) to trigger runs
+  repository_dispatch:
     types: [publish-slot, daily-post]
 
 jobs:

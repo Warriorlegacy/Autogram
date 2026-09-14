@@ -874,6 +874,7 @@ Return ONLY valid JSON.
             "Write a 45-55 second Instagram Reels voiceover script (110-130 spoken words, punchy, "
             "no stage directions, no emojis) plus an IG caption and 8 hashtags. "
             f"Topic: {topic_str}. Pillar: {pillar_str}. Proof point: {stat}. "
+            "The narration MUST end with the call to action: 'Follow signhify.studio for more.' "
             'Return ONLY JSON: {"narration": "...", "caption": "...", "hashtags": ["#..", ...]}'
         )
         data = self._free_narration(prompt) or {}
@@ -882,10 +883,17 @@ Return ONLY valid JSON.
             narration = (
                 f"Stop paying for bloated SaaS. {topic_str} gives you the same power for zero dollars. "
                 f"Proof: {stat}. Self-host in one command, own your data, scale without a bill. "
-                f"Comment REEL and I will send the full setup blueprint to your DMs. Follow for daily free AI stacks."
+                f"Comment REEL and I will send the full setup blueprint to your DMs. Follow signhify.studio for more."
             )
+        # Defensive regex enforcement: spoken narration MUST end with the required CTA
+        import re
+        if not re.search(r"follow\s+@?signhify\.?studio(\s+for\s+more)?", narration, re.IGNORECASE):
+            narration = narration.rstrip(".!?, ") + ". Follow signhify.studio for more."
+
         caption = str(data.get("caption") or f"{topic_str}: the $0 self-hosted blueprint. Comment REEL for the setup.").strip()
         hashtags = data.get("hashtags") or ["#BuildInPublic", "#OpenSource", "#SelfHosted", "#AIEngineering", "#DevTools", "#IndieHacker", "#TechReels", "#SignhifyStudio"]
+        if not re.search(r"follow\s+@?signhify\.?studio", caption, re.IGNORECASE):
+            caption = f"{caption}\n\n👉 Follow @signhify.studio for more daily AI architectures."
         caption = f"{caption}\n\n🚀 Built by @signhify.studio — FULL AI ENGINEERING STUDIO | 🔗 signhify.studio"
         return {
             "topic": topic_str,
@@ -960,7 +968,7 @@ Return ONLY valid JSON.
             "metric_label": metric_lbl,
             "takeaways": takeaways,
             "code_command": code_cmd,
-            "cta_text": "Follow @signhify.studio · FULL AI ENGINEERING STUDIO — Link in Bio",
+            "cta_text": "Follow signhify.studio for more · FULL AI ENGINEERING STUDIO",
             "publication_date": datetime.now().strftime("%Y-%m-%d")
         }
 

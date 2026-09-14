@@ -35,10 +35,8 @@ class TopicScorer:
         Calculates normalized score (0-100) based on relevance, utility, and FOSS signals.
         """
         topic = candidate.get("topic", "").lower()
-        
-        # Check against anti-repetition memory with precise duplicate detection
-        import difflib
         c_low = topic.strip()
+        import difflib
         tool_signatures = [
             "open-webui", "openwebui", "coolify", "stirling", "n8n", "documenso", "ollama",
             "vllm", "affine", "supabase", "pocketbase", "appwrite", "penpot", "plane",
@@ -49,8 +47,13 @@ class TopicScorer:
             "chain-of-density", "tree-of-thought", "skeleton-of-thought",
             "chain-of-verification", "megaprompt"
         ]
-        for past in memory.get("recent_posts", []):
-            past_topic = past.get("topic", "").lower().strip()
+        
+        # Check against anti-repetition memory with precise duplicate detection
+        # Strict exclusion applies to the most recent 25 postings to enforce deep rotation
+        recent_posts = memory.get("recent_posts", [])
+        strict_window = recent_posts[:25]
+        for past in strict_window:
+            past_topic = past.get("topic", "").lower().replace("[reel]", "").replace("[story]", "").strip()
             if not past_topic:
                 continue
             # Substring containment
@@ -70,7 +73,7 @@ class TopicScorer:
                 return 0.0
 
         # Pillar rotation & diversity logic
-        recent_pillars = [p.get("pillar") for p in memory.get("recent_posts", [])[:5] if p.get("pillar")]
+        recent_pillars = [p.get("pillar") for p in recent_posts[:5] if p.get("pillar")]
         pillar = candidate.get("pillar", "")
         diversity_bonus = 0.0
         if recent_pillars:
@@ -125,10 +128,26 @@ class TopicScorer:
             reason = f"Top score ({winner.get('calculated_score')}) with high utility and zero overlap with recent memory."
         else:
             logger.warning("All candidate topics matched recent memory! Forcing selection of candidate with least recent footprint.")
-            scored.sort(key=lambda x: x.get("calculated_score", 0), reverse=True)
+            import difflib
+            recent_topics = [
+                p.get("topic", "").lower().replace("[reel]", "").replace("[story]", "").strip()
+                for p in memory.get("recent_posts", [])
+                if p.get("topic")
+            ]
+
+            def recency_footprint(cand: dict) -> int:
+                c_low = cand.get("topic", "").lower().strip()
+                for idx, past in enumerate(recent_topics):
+                    if not past:
+                        continue
+                    if c_low in past or past in c_low or difflib.SequenceMatcher(None, c_low, past).ratio() >= 0.65:
+                        return idx
+                return 999999
+
+            scored.sort(key=recency_footprint, reverse=True)
             winner = scored[0]
             backup = scored[1] if len(scored) > 1 else scored[0]
-            reason = "Forced fallback to available candidate."
+            reason = f"Forced rotation: Selected topic with least recent memory footprint (recency rank: {recency_footprint(winner)})."
 
         return {
             "winner": winner,

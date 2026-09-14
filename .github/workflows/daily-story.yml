@@ -1,13 +1,13 @@
-name: Daily Instagram Stories Autopilot (7x Daily)
+name: Daily Instagram Stories Autopilot (2x Daily)
 
 on:
-  # Triggered exclusively by cron-job.org dispatch jobs
-  # ("Autogram Story 1-7", Asia/Kolkata) for second-precise scheduling.
-  # No native `schedule:` here by design — it would double-post stories.
+  schedule:
+    - cron: '0 4 * * *'  # 09:30 AM IST (04:00 UTC) — Morning High-Signal Story
+    - cron: '0 12 * * *' # 05:30 PM IST (12:00 UTC) — Evening Tech Radar Story
   workflow_dispatch:
     inputs:
       topic:
-        description: "Custom Story Topic (leave empty for auto-acquisition)"
+        description: "Custom Story Topic (leave empty for zero-repetition auto-acquisition)"
         required: false
         default: ""
       pillar:

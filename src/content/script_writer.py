@@ -75,7 +75,7 @@ class ScriptWriter:
             f'⚡ Want the full GitHub repo + docker-compose file? Comment "{trigger_word}" below and I\'ll send it straight to your DMs.',
             "",
             "📌 Save this post before your next self-hosting sprint.",
-            f"🚀 Follow {handle} for daily battle-tested open source tools & architectures.",
+            f"🚀 Follow signhify.studio for more.",
             "",
             f"— {sign_off}"
         ]
@@ -199,7 +199,7 @@ class ScriptWriter:
                     "time": "0:38 - 0:42",
                     "label": "Call To Action",
                     "visual": "Point down to profile handle / carousel feed post.",
-                    "spoken": "I put the full docker compose file and setup guide in today's carousel. Comment 'FOSS' below and I'll DM it to you."
+                    "spoken": "I put the full docker compose file and setup guide in today's carousel. Comment 'FOSS' below and I'll DM it to you. Follow signhify.studio for more."
                 }
             ],
             "b_roll_suggestions": [
