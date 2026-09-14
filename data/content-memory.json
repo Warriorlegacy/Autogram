@@ -3,6 +3,13 @@
     {
       "date": "2026-09-14",
       "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-14",
+      "pillar": "FOSS SaaS Alternatives",
       "topic": "AppFlowy: Open Source Notion Alternative with Local Data Privacy",
       "hook": "Stop paying for Notion. This 100% open source repo runs on your own hardware.",
       "score": 100
