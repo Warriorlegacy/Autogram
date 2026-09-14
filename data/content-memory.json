@@ -4,6 +4,13 @@
       "date": "2026-09-14",
       "pillar": "FOSS SaaS Alternatives",
       "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Ditch $200/mo Vercel. Self-host Coolify for $0.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-14",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
       "hook": "Stop paying for Vercel. This 100% open source repo runs on your own hardware.",
       "score": 100
     },
@@ -411,13 +418,6 @@
       "pillar": "AI Tool Breakdown",
       "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
       "hook": "Monolithic LLMs are 60% more error-prone than compound AI systems",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Monolithic LLMs are 60% more prone to error propagation",
       "score": 100
     }
   ],
