@@ -1,14 +1,17 @@
-name: Daily Instagram Reels Autopilot (3x Daily)
+name: Daily Instagram Reels Autopilot — Signhify Studio Promotion (3x Daily)
+
+# Autonomous Instagram Reels engine promoting Signhify Studio & the AI 3D Website Builder
+# Live Website: https://signhify.dpdns.org | Brand: @signhify.studio
 
 on:
   schedule:
-    - cron: '0 5 * * *'  # 10:30 AM IST (05:00 UTC) — Morning Viral Reel
-    - cron: '0 9 * * *'  # 02:30 PM IST (09:00 UTC) — Afternoon Viral Reel
-    - cron: '0 15 * * *' # 08:30 PM IST (15:00 UTC) — Night Viral Reel
+    - cron: '0 5 * * *'  # 10:30 AM IST (05:00 UTC) — Morning Signhify Viral Reel
+    - cron: '0 9 * * *'  # 02:30 PM IST (09:00 UTC) — Afternoon Signhify Viral Reel
+    - cron: '0 15 * * *' # 08:30 PM IST (15:00 UTC) — Night Signhify Viral Reel
   workflow_dispatch:
     inputs:
       topic:
-        description: "Custom Reel Topic (leave empty for zero-repetition auto-selection)"
+        description: "Custom Reel Topic (e.g. 'How Signhify builds Apple-grade 3D sites from 1 prompt' or leave empty for auto-rotation of Signhify topics)"
         required: false
         default: ""
   repository_dispatch:

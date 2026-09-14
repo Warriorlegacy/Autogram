@@ -41,36 +41,42 @@ FREE_MODELS = [
 ]
 
 CURATED_VIRAL_REEL_TOPICS = [
-    {"topic": "vLLM vs Ollama: 24x High-Throughput LLM Serving for $0", "pillar": "Local AI & Edge Compute"},
-    {"topic": "Documenso: Stop Paying $40/User/Month for DocuSign", "pillar": "FOSS SaaS Alternatives"},
-    {"topic": "Coolify: Self-Host Next.js and Docker Apps with Zero Lock-In", "pillar": "FOSS SaaS Alternatives"},
-    {"topic": "Uptime Kuma: Free Self-Hosted Status Page That Beats Datadog", "pillar": "Developer Power Tools & CLI"},
-    {"topic": "Open-WebUI: Run ChatGPT Plus 100% Offline with Local Models", "pillar": "Local AI & Edge Compute"},
-    {"topic": "PocketBase: An Entire Backend & Realtime Auth in a Single 15MB File", "pillar": "Self-Hosted Architecture"},
-    {"topic": "Stirling-PDF: The 100% Local Adobe Acrobat Pro Alternative", "pillar": "Trending GitHub Spotlight"},
-    {"topic": "LazyGit: Why 50,000+ Developers Abandoned GUI Git Clients", "pillar": "Developer Power Tools & CLI"},
-    {"topic": "Ripgrep: Recursive Regex Search 10x Faster Than GNU Grep", "pillar": "Developer Power Tools & CLI"},
-    {"topic": "Caddy 2: Automatic HTTPS Reverse Proxy with 3 Lines of Config", "pillar": "Self-Hosted Architecture"},
-    {"topic": "SearXNG: Private Self-Hosted Metasearch Without Google Tracking", "pillar": "Self-Hosted Architecture"},
-    {"topic": "Authentik: Open Source Identity & SSO Replacing $1,000/mo Auth0", "pillar": "FOSS SaaS Alternatives"},
-    {"topic": "PostHog: Full-Featured Product Analytics Without Cloud Invoices", "pillar": "FOSS SaaS Alternatives"},
-    {"topic": "Vaultwarden: Lightweight Bitwarden Server on a $5/mo VPS", "pillar": "Self-Hosted Architecture"},
-    {"topic": "RustDesk: The Self-Hosted TeamViewer and AnyDesk Alternative", "pillar": "FOSS SaaS Alternatives"},
-    {"topic": "Immich: High-Performance Google Photos Alternative You Own", "pillar": "Trending GitHub Spotlight"},
-    {"topic": "AppFlowy: Open Source Notion Alternative with Local Data Privacy", "pillar": "FOSS SaaS Alternatives"},
-    {"topic": "Cal.com: Self-Hosted Meeting Scheduler Without Calendly Fees", "pillar": "FOSS SaaS Alternatives"},
-    {"topic": "Tree-of-Thoughts Prompt: 3 Autonomous Reviewers in One Prompt", "pillar": "Prompting & Workflow"},
-    {"topic": "Skeleton-of-Thought: The UC Berkeley Method Accelerating LLMs 4x", "pillar": "Local AI & Edge Compute"},
-    {"topic": "Chain-of-Density: Condense 10,000-Word Docs into 5 Dense Takeaways", "pillar": "Local AI & Edge Compute"},
-    {"topic": "Why Multi-Agent Systems Beat Monolithic Prompts in Production", "pillar": "Tech Explainer"},
-    {"topic": "Context Caching Architecture: How to Slash 90% of LLM API Costs", "pillar": "Tech Explainer"},
-    {"topic": "The Zero-Hallucination SQL Pattern: Strict Schema AST Bounds", "pillar": "Developer Power Tools & CLI"},
-    {"topic": "The Deep-Research Agent: 6 Hours of Technical Analysis in 60s", "pillar": "Local AI & Edge Compute"},
-    {"topic": "The 1% Rule of Compounding Daily Habits in Software Engineering", "pillar": "Marketing Psychology"},
-    {"topic": "Why Micro-SaaS Startups Relicense from MIT to BSL", "pillar": "Open Source Economics & Contrarian"},
-    {"topic": "The Hidden Cost of Cloud Subscriptions: Owning Your Compute", "pillar": "Open Source Economics & Contrarian"},
-    {"topic": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy", "pillar": "Trending GitHub Spotlight"},
-    {"topic": "n8n: Self-Hosted Automation Engine Replacing Zapier for $0", "pillar": "FOSS SaaS Alternatives"},
+    {"topic": "Signhify: Build Apple-Grade 3D Scroll Websites from 1 Single Prompt (signhify.dpdns.org)", "pillar": "AI 3D Website Builder"},
+    {"topic": "Stop Paying $5,000 to Web Design Agencies: Ship 3D Sites in 10 Minutes with Signhify", "pillar": "Agency Disruption"},
+    {"topic": "The Death of WebGL & Three.js: How Signhify Ships 60 FPS 3D Scroll with Zero Code", "pillar": "AI 3D Website Builder"},
+    {"topic": "Export Production HTML, CSS & Express Backend from a 3D Prompt: 100% MIT Code on Signhify", "pillar": "Developer Power Tools"},
+    {"topic": "Cyberpunk Kinetic Watch: 360° Exploded 3D Gear Assembly Generated on signhify.dpdns.org", "pillar": "3D Preset Showcase"},
+    {"topic": "Titanium EV Supercar: Wind-Tunnel Aerodynamics 3D Launch Page Built with Signhify", "pillar": "3D Preset Showcase"},
+    {"topic": "Multi-Video Continuation: Chain Cinematic 3D Videos into an Interactive Scroll Story", "pillar": "AI 3D Website Builder"},
+    {"topic": "Product Injection AI: Drop Any Product Photo into a 3D Scroll Journey on signhify.dpdns.org", "pillar": "AI 3D Website Builder"},
+    {"topic": "Zenith Spatial Headset: Interactive Micro-OLED Optical 3D Layers on signhify.dpdns.org", "pillar": "3D Preset Showcase"},
+    {"topic": "Nova AI Code Copilot: Dark Glassmorphic 3D Developer Platform Built from 1 Prompt", "pillar": "3D Preset Showcase"},
+    {"topic": "Orbital Quantum Compute: Deep Tech Particle Physics & 3D Cryo-Chamber Visuals on Signhify", "pillar": "3D Preset Showcase"},
+    {"topic": "Vortex Wireless Audio: Exploded Hardware 3D Scroll & Instant Checkout Page", "pillar": "3D Preset Showcase"},
+    {"topic": "How a Founder Replaced a $4,000 Agency Quote with a 15-Minute Session on signhify.dpdns.org", "pillar": "Agency Disruption"},
+    {"topic": "Zero Code, 60 FPS Smooth: The Frame Extraction Breakthrough Behind signhify.dpdns.org", "pillar": "AI 3D Website Builder"},
+    {"topic": "AuditMind AI: Autonomous Ledger Rules & R&D Tax Credit Scanner Built by Signhify", "pillar": "Enterprise WASM Suite"},
+    {"topic": "ContractSentinel AI: In-Browser OOXML DOCX Contract Redliner Powered by Signhify", "pillar": "Enterprise WASM Suite"},
+    {"topic": "CodeVortex SRE: Kubernetes Stack Trace to AST Syntax Diff Triage by Signhify Studio", "pillar": "Enterprise WASM Suite"},
+    {"topic": "DataLightning AI: In-Browser DuckDB-WASM Million-Row SQL Analytics on signhify.dpdns.org", "pillar": "Enterprise WASM Suite"},
+    {"topic": "TalentPulse AI: In-Browser Pyodide WASM Technical Assessment Sandbox by Signhify", "pillar": "Enterprise WASM Suite"},
+    {"topic": "Why Flat 2D Websites Will Be Obsolete: The Cinematic 3D Shift at signhify.dpdns.org", "pillar": "Contrarian Tech"},
+    {"topic": "The $5/mo AI 3D Website Studio That Outperforms $10,000 Design Retainers: Signhify", "pillar": "Agency Disruption"},
+    {"topic": "Adjustable FPS Engine: Buttery Smooth 10 to 40 FPS Parallax on Every Mobile Device", "pillar": "AI 3D Website Builder"},
+    {"topic": "Iterative Chat Editing: Tweak Copy, Colors, and 3D Sections with Live AI on Signhify", "pillar": "AI 3D Website Builder"},
+    {"topic": "How Interactive 3D Scroll Increases E-Commerce Landing Page Conversions by 320%", "pillar": "Growth & Marketing"},
+    {"topic": "From 1 Prompt to Deployed 3D Website with Full ZIP Download: Try signhify.dpdns.org", "pillar": "AI 3D Website Builder"},
+    {"topic": "SynthMed AI: Clinical Patient Dialogue to Structured SOAP & ICD-10 Notes by Signhify", "pillar": "Enterprise WASM Suite"},
+    {"topic": "AdGenesis AI: 50+ Multi-Channel Ad Variations & Multi-Armed Bandit ROAS Engine", "pillar": "Enterprise WASM Suite"},
+    {"topic": "TenderBot Global: Autonomous RFP Compliance & Government Proposal Drafter by Signhify", "pillar": "Enterprise WASM Suite"},
+    {"topic": "QualiCheck AI: In-Browser 60 FPS Edge Computer Vision Defect Metrology by Signhify", "pillar": "Enterprise WASM Suite"},
+    {"topic": "HyperLocalize AI: Millisecond Video Subtitle Timing & Cultural Translation Studio", "pillar": "Enterprise WASM Suite"},
+    {"topic": "How to Build Tesla-Grade Interactive Launch Pages with Zero 3D Knowledge on Signhify", "pillar": "AI 3D Website Builder"},
+    {"topic": "Why Top Agencies Secretly Use Signhify Studio to 10x Client Delivery Speed", "pillar": "Agency Disruption"},
+    {"topic": "Launch a Funded-Looking SaaS Landing Page in an Afternoon at signhify.dpdns.org", "pillar": "Agency Disruption"},
+    {"topic": "100% MIT Code Ownership: Why Signhify Crushes Closed Proprietary Website Builders", "pillar": "Developer Power Tools"},
+    {"topic": "The 6-Agent Swarm Behind Signhify's Instant 3D Website Compiler (signhify.dpdns.org)", "pillar": "AI 3D Website Builder"},
+    {"topic": "Build a Viral 3D Portfolio That Stops Hiring Managers in Their Tracks: signhify.dpdns.org", "pillar": "Developer Power Tools"},
 ]
 
 
@@ -130,11 +136,14 @@ def generate_reel_content(topic: str) -> dict:
 
     api_key = os.getenv("OPENROUTER_API_KEY", "")
     system_prompt = (
-        "You are an elite Instagram viral content director for @signhify.studio. Create an engaging 20-second Reel script. "
-        "Return STRICT JSON with keys: "
-        "'script' (concise spoken text under 45 words, high-tension hook, no emojis, MUST end with: 'Follow signhify.studio for more.'), "
-        "'visual_prompt' (photorealistic 9:16 portrait scene description, dramatic volumetric lighting), "
-        "'caption' (punchy caption with 5 niche hashtags ending with follow @signhify.studio for more)."
+        "You are the elite viral growth director for Signhify Studio (@signhify.studio), promoting the revolutionary "
+        "AI 3D Website Builder at signhify.dpdns.org. Signhify turns a single prompt into cinematic scroll-reactive 3D websites — "
+        "10x faster than web design agencies, zero WebGL or Three.js code needed, native 60 FPS browser scroll, and instant ZIP export with full HTML/CSS/Express backend. "
+        "Create an engaging 20-second viral Reel script that hooks viewers, showcases Signhify's capability, and directs them to signhify.dpdns.org. "
+        "Return STRICT JSON with keys:\n"
+        "'script' (concise spoken text under 45 words, high-tension hook, no emojis, MUST end with: 'Build yours at signhify.dpdns.org. Follow signhify.studio for more.'),\n"
+        "'visual_prompt' (photorealistic 9:16 vertical scene: cinematic 3D website interface on dark glassmorphic UI, luxury product exploded view, or titanium supercar aerodynamics, volumetric studio lighting, 8k),\n"
+        "'caption' (punchy caption highlighting the 3D builder with website link signhify.dpdns.org, CTA to comment '3D' for direct link, ending with follow @signhify.studio for more, plus 6 niche hashtags)."
     )
     data = None
     if api_key:
@@ -167,18 +176,18 @@ def generate_reel_content(topic: str) -> dict:
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
         from src.content.generator import generator
 
-        script = generator.generate_reel_script({"topic": topic, "pillar": "Tech Explainer"})
+        script = generator.generate_reel_script({"topic": topic, "pillar": "AI 3D Website Builder"})
         data = {
             "script": script["narration"],
-            "visual_prompt": f"Cinematic 9:16 portrait of {script['subject']}, dramatic volumetric lighting, photorealistic",
-            "caption": f"{script['caption']}\n\n{' '.join(script['hashtags'])}",
+            "visual_prompt": f"Cinematic 9:16 vertical luxury 3D interactive website interface for {script['subject']}, dark mode glassmorphic UI, glowing volumetric lighting, photorealistic 8k render",
+            "caption": f"{script['caption']}\n\n🌐 Build yours: signhify.dpdns.org\n💬 Comment '3D' for the direct link!\n\n{' '.join(script['hashtags'])}",
         }
 
     # Defensive regex enforcement: spoken script MUST end with 'Follow signhify.studio for more.'
     script_text = str(data.get("script") or "").strip()
-    cta = "Follow signhify.studio for more."
+    cta = "Build yours at signhify.dpdns.org. Follow signhify.studio for more."
     cleaned_spoken = re.sub(
-        r"[\s\.\,\!\?]*follow\s+@?signhify\.?studio(\s+for\s+more)?[\s\.\,\!\?]*$",
+        r"[\s\.\,\!\?]*((build|try|get|start)\s+(yours\s+)?(at\s+)?signhify\.dpdns\.org\.?\s*)?follow\s+@?signhify\.?studio(\s+for\s+more)?[\s\.\,\!\?]*$",
         "",
         script_text,
         flags=re.IGNORECASE,
@@ -186,11 +195,24 @@ def generate_reel_content(topic: str) -> dict:
     if cleaned_spoken:
         data["script"] = f"{cleaned_spoken}. {cta}"
     else:
-        data["script"] = f"Stop paying for bloated software. {topic}. {cta}"
+        data["script"] = f"Stop paying $5,000 for web design agencies. Signhify Studio turns a single prompt into a cinematic 3D scroll website in minutes with zero code and full export. {cta}"
 
-    caption = str(data.get("caption") or f"{topic} #reels #viral #tech #opensource").strip()
+    caption = str(data.get("caption") or "").strip()
+    if not caption or len(caption) < 20:
+        caption = (
+            f"🚀 {topic}\n\n"
+            f"Build cinematic 3D scroll websites from a single prompt — 10x faster with Signhify Studio.\n"
+            f"✨ Zero WebGL, zero Three.js, buttery 60 FPS native browser scroll.\n"
+            f"📦 100% MIT code ownership — download full ZIP with HTML, CSS & Express backend.\n\n"
+            f"🌐 Try it free: signhify.dpdns.org\n"
+            f"💬 Comment '3D' and I'll DM you the direct builder link!\n\n"
+            f"👉 Follow @signhify.studio for more daily AI architectures.\n\n"
+            f"#SignhifyStudio #AIWebsite #3DWebsite #WebDesign #WebDev #BuildInPublic #AItools #LandingPage"
+        )
+    if "signhify.dpdns.org" not in caption:
+        caption = f"{caption}\n\n🌐 Build yours now: https://signhify.dpdns.org"
     if not re.search(r"follow\s+@?signhify\.?studio", caption, re.IGNORECASE):
-        caption = f"{caption}\n\n👉 Follow @signhify.studio for more daily AI architectures."
+        caption = f"{caption}\n\n👉 Follow @signhify.studio for daily AI architectures."
     data["caption"] = caption
 
     return data

@@ -881,20 +881,20 @@ Return ONLY valid JSON.
         narration = str(data.get("narration") or "").strip()
         if not narration:
             narration = (
-                f"Stop paying for bloated SaaS. {topic_str} gives you the same power for zero dollars. "
-                f"Proof: {stat}. Self-host in one command, own your data, scale without a bill. "
-                f"Comment REEL and I will send the full setup blueprint to your DMs. Follow signhify.studio for more."
+                f"Stop paying $5,000 to web design agencies. With Signhify Studio, {topic_str} turns into a cinematic 3D scroll website in minutes. "
+                f"Zero WebGL, zero Three.js, buttery 60 FPS motion, and 100% production code export. "
+                f"Build yours at signhify.dpdns.org. Follow signhify.studio for more."
             )
         # Defensive regex enforcement: spoken narration MUST end with the required CTA
         import re
         if not re.search(r"follow\s+@?signhify\.?studio(\s+for\s+more)?", narration, re.IGNORECASE):
             narration = narration.rstrip(".!?, ") + ". Follow signhify.studio for more."
 
-        caption = str(data.get("caption") or f"{topic_str}: the $0 self-hosted blueprint. Comment REEL for the setup.").strip()
-        hashtags = data.get("hashtags") or ["#BuildInPublic", "#OpenSource", "#SelfHosted", "#AIEngineering", "#DevTools", "#IndieHacker", "#TechReels", "#SignhifyStudio"]
+        caption = str(data.get("caption") or f"{topic_str}: build cinematic 3D websites in minutes with Signhify Studio.").strip()
+        hashtags = data.get("hashtags") or ["#BuildInPublic", "#SignhifyStudio", "#AIWebsite", "#3DWebsite", "#WebDesign", "#WebDev", "#IndieHacker", "#TechReels"]
         if not re.search(r"follow\s+@?signhify\.?studio", caption, re.IGNORECASE):
             caption = f"{caption}\n\n👉 Follow @signhify.studio for more daily AI architectures."
-        caption = f"{caption}\n\n🚀 Built by @signhify.studio — FULL AI ENGINEERING STUDIO | 🔗 signhify.studio"
+        caption = f"{caption}\n\n🌐 Try the 3D Builder: https://signhify.dpdns.org\n🚀 Built by @signhify.studio — FULL AI ENGINEERING STUDIO | 🔗 signhify.studio"
         return {
             "topic": topic_str,
             "pillar": pillar_str,

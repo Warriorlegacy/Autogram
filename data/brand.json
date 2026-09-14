@@ -1,12 +1,14 @@
 {
   "brand_name": "Signhify Studio",
   "handle": "@signhify.studio",
+  "website": "https://signhify.dpdns.org",
+  "website_display": "signhify.dpdns.org",
   "watermark": "SIGNHIFY.STUDIO",
   "avatar_letter": "P",
   "name": "Piyush Raj Singh | Full A.I. Engineering Studio",
-  "footer_text": "@SIGNHIFY.STUDIO · SIGNHIFY.STUDIO",
+  "footer_text": "@SIGNHIFY.STUDIO · SIGNHIFY.DPDNS.ORG",
   "sign_off": "My name is Piyush Raj Singh. Stop posting. Start shipping.",
-  "positioning": "Signhify Studio is a FULL A.I. ENGINEERING STUDIO. We do not sell billable hours or marketing theories. We engineer self-hosted, zero-marginal-cost software systems, autonomous multi-agent pipelines, production RAG & fine-tuned LLM architectures, and viral short-form machines that compound enterprise attention 24/7.",
+  "positioning": "Signhify Studio is a FULL A.I. ENGINEERING STUDIO and creators of the Signhify AI 3D Website Builder (signhify.dpdns.org). We engineer cinematic scroll-reactive websites from a single prompt, autonomous software systems, and viral short-form engines.",
   "target_audience": [
     "Software Engineers & Systems Developers",
     "Tech Founders & Solopreneurs",
