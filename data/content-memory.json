@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-14",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Story] Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
+      "hook": "Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-14",
       "pillar": "FOSS SaaS Alternatives",
       "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
       "hook": "Stop paying $200/month for Vercel. This 100% open source repo runs on your own hardware.",
@@ -193,7 +200,7 @@
       "date": "2026-09-11",
       "pillar": "AI Tool Breakdown",
       "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Monolithic LLMs are a thing of the past – compound AI systems outperform them by 60%.",
+      "hook": "Monolithic LLMs are a thing of the past \u2013 compound AI systems outperform them by 60%.",
       "score": 100
     },
     {
@@ -213,8 +220,8 @@
     {
       "date": "2026-09-10",
       "pillar": "Tech Industry Explainer",
-      "topic": "On the Navier–Stokes Millennium Prize Problem",
-      "hook": "The unsolved Navier–Stokes Millennium Prize Problem is not just a math challenge, but a hidden key to unlocking 10x operational efficiency in AI systems.",
+      "topic": "On the Navier\u2013Stokes Millennium Prize Problem",
+      "hook": "The unsolved Navier\u2013Stokes Millennium Prize Problem is not just a math challenge, but a hidden key to unlocking 10x operational efficiency in AI systems.",
       "score": 100
     },
     {
@@ -249,7 +256,7 @@
       "date": "2026-09-10",
       "pillar": "AI Tool Breakdown",
       "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Monolithic LLMs are broken – it's time to upgrade to compound AI systems",
+      "hook": "Monolithic LLMs are broken \u2013 it's time to upgrade to compound AI systems",
       "score": 95
     },
     {
