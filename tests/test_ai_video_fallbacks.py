@@ -10,11 +10,19 @@ import pytest
 from scripts.pipeline_reels import (
     download_ai_video,
     render_ffmpeg,
+    _try_hyperframes,
     _try_gradio_ai_video,
     _try_json2video,
     _try_pexels_video,
     _try_flux_image,
 )
+
+
+@pytest.fixture(autouse=True)
+def disable_hyperframes_for_legacy_tier_tests():
+    """Ensure HyperFrames Tier 0 does not intercept legacy 5-tier fallback tests."""
+    with patch("scripts.pipeline_reels._try_hyperframes", return_value=None):
+        yield
 
 
 def test_download_ai_video_tier1_success(tmp_path):

@@ -8,7 +8,11 @@
     "test": "pytest tests -v",
     "generate": "python orchestrator.py --run-all",
     "dry-run": "python orchestrator.py --dry-run",
-    "render-test": "python orchestrator.py --render-only"
+    "render-test": "python orchestrator.py --render-only",
+    "render-reel": "python orchestrator.py --generate-hyperframes-reel"
+  },
+  "devDependencies": {
+    "hyperframes": "^0.8.40"
   },
   "keywords": [
     "instagram",

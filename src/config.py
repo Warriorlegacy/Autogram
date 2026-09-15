@@ -50,6 +50,7 @@ class Settings(BaseSettings):
     supabase_url: str | None = Field(default=None, alias="SUPABASE_URL")
     supabase_key: str | None = Field(default=None, alias="SUPABASE_KEY")
     reels_voice: str = Field(default="en-US-ChristopherNeural", alias="REELS_VOICE")
+    enable_hyperframes: bool = Field(default=True, alias="ENABLE_HYPERFRAMES")
 
     # Meta Instagram Graph API
     ig_user_id: str | None = Field(default=None, alias="IG_USER_ID")

@@ -46,6 +46,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg libass-dev fonts-liberation
 
+      - name: Setup Node.js 22 (for HyperFrames Engine)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Node Dependencies
+        run: |
+          npm install
+
       - name: Install Python Dependencies
         run: |
           pip install -r requirements.txt

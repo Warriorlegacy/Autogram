@@ -868,6 +868,7 @@ def main():
     parser.add_argument("--generate-image", type=str, metavar="PROMPT", help="Generate standalone conceptual tech image")
     parser.add_argument("--generate-script", action="store_true", help="Generate carousel script and caption only")
     parser.add_argument("--generate-reel", action="store_true", help="Generate 30-45s Reels / Shorts video script")
+    parser.add_argument("--generate-hyperframes-reel", action="store_true", help="Generate 1080x1920 marketing promo reel via HyperFrames HTML/GSAP engine")
     parser.add_argument("--schedule", action="store_true", help="Run local autonomous daily scheduler daemon")
     parser.add_argument("--story", action="store_true", help="Generate and publish an Instagram Story (1080x1920, 9:16)")
     parser.add_argument("--reel", action="store_true", help="Generate and publish an Instagram Reel (9:16 MP4 via local MoneyPrinterTurbo)")
@@ -939,6 +940,14 @@ def main():
         print("\n" + "="*50)
         print(reel["formatted_text"])
         print("="*50 + "\n")
+        return
+
+    if args.generate_hyperframes_reel:
+        from src.content.hyperframes_engine import hyperframes_engine
+        topic = args.topic or "Signhify Studio: Build Apple-Grade 3D Scroll Websites from 1 Single Prompt"
+        print(f"\n[HyperFrames Engine] Generating promotional Reel for: '{topic}'...")
+        res = hyperframes_engine.render_reel(topic=topic)
+        print(f"[HyperFrames Engine] Render complete! Video saved to: {res['video_path']}\n")
         return
 
     if args.refresh_token:

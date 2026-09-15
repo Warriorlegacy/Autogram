@@ -168,6 +168,27 @@ class JSON2VideoEngine:
                     raise
 
         if fallback_to_local:
+            # 1. First try HyperFrames for premium deterministic HTML/GSAP motion graphics
+            try:
+                from src.content.hyperframes_engine import HyperFramesEngine
+                if HyperFramesEngine.is_available():
+                    logger.info("Attempting local render via HyperFrames deterministic engine...")
+                    hf_engine = HyperFramesEngine()
+                    out_p = Path(output_path) if output_path else None
+                    hf_res = hf_engine.render_reel(
+                        topic=script_text[:80],
+                        script_text=script_text,
+                        output_path=str(out_p) if out_p else None,
+                    )
+                    return {
+                        "provider": "hyperframes",
+                        "status": "completed",
+                        "video_path": hf_res["video_path"],
+                        "duration_seconds": hf_res.get("duration", 20.0),
+                    }
+            except Exception as hf_err:
+                logger.warning(f"HyperFrames local render failed ({hf_err}); trying FFmpeg VideoEngine.")
+
             logger.info("Falling back to local FFmpeg / Edge-TTS VideoEngine.")
             from src.content.video_engine import VideoEngine
             engine = VideoEngine()

@@ -379,21 +379,57 @@ def _try_flux_image(prompt: str, output_path: str) -> str:
     return output_path
 
 
+def _try_hyperframes(topic: str, script_text: str = "", audio_path: str | None = None, output_path: str = BACKGROUND_VIDEO) -> str | None:
+    """Tier 0: HyperFrames HTML/CSS/GSAP deterministic video rendering engine."""
+    enable_hf = os.getenv("ENABLE_HYPERFRAMES", "true").lower() in ("true", "1", "yes")
+    if not enable_hf:
+        return None
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from src.content.hyperframes_engine import HyperFramesEngine
+
+        if not HyperFramesEngine.is_available():
+            logger.info("HyperFrames prerequisites not met (Node >= 22 / FFmpeg missing); skipping.")
+            return None
+
+        logger.info(f"Attempting HyperFrames Motion Graphics Reel for '{topic}'...")
+        engine = HyperFramesEngine()
+        res = engine.render_reel(
+            topic=topic,
+            script_text=script_text,
+            audio_path=audio_path,
+            output_path=output_path,
+        )
+        if res and os.path.exists(output_path) and os.path.getsize(output_path) > 1024:
+            logger.info(f"HyperFrames video generated successfully: {output_path}")
+            return output_path
+    except Exception as e:
+        logger.warning(f"HyperFrames video generation failed ({e}); falling back to next tier.")
+    return None
+
+
 def download_ai_video(
     prompt: str,
     topic: str = "",
     script_text: str = "",
+    audio_path: str | None = None,
     output_video_path: str = BACKGROUND_VIDEO,
     output_image_path: str = BACKGROUND_IMG,
 ) -> dict:
     """
-    5-Tier Cascading AI Cinematic Video Dispatcher:
+    6-Tier Cascading Video Engine:
+    Tier 0: HyperFrames HTML/CSS/GSAP Deterministic Motion Graphics (100% Free, Zero Hallucination)
     Tier 1: Wan 2.1 / LTX-Video via Hugging Face ZeroGPU (gradio_client)
     Tier 2: JSON2Video Cloud API (user-configured key)
     Tier 3: Fal.ai / Apiframe REST APIs (if configured)
     Tier 4: Pexels 4K Portrait Cinematic Stock Video (free API)
     Tier 5: Pollinations FLUX.1 + 2.5D FFmpeg Zoompan (zero-fail foundation)
     """
+    # Tier 0: HyperFrames deterministic engine
+    t0 = _try_hyperframes(topic or prompt, script_text, audio_path, output_video_path)
+    if t0:
+        return {"provider": "hyperframes", "type": "video", "path": t0, "has_audio": bool(audio_path)}
+
     # Tier 1: True AI Video
     t1 = _try_gradio_ai_video(prompt, output_video_path)
     if t1:
@@ -561,17 +597,25 @@ def execute_reels_pipeline(topic: str = "") -> dict:
         prompt=data["visual_prompt"],
         topic=topic,
         script_text=data["script"],
+        audio_path=AUDIO_FILE,
         output_video_path=BACKGROUND_VIDEO,
         output_image_path=BACKGROUND_IMG,
     )
-    compile_word_level_ass(AUDIO_FILE, SUBTITLES_ASS)
-    render_ffmpeg(
-        visual_path=visual_meta["path"],
-        audio_path=AUDIO_FILE,
-        ass_path=SUBTITLES_ASS,
-        output_path=OUTPUT_REEL,
-        is_video=(visual_meta["type"] == "video"),
-    )
+
+    if visual_meta.get("provider") == "hyperframes":
+        import shutil
+        if visual_meta["path"] != OUTPUT_REEL:
+            shutil.copyfile(visual_meta["path"], OUTPUT_REEL)
+        logger.info(f"HyperFrames Reel ready at {OUTPUT_REEL}")
+    else:
+        compile_word_level_ass(AUDIO_FILE, SUBTITLES_ASS)
+        render_ffmpeg(
+            visual_path=visual_meta["path"],
+            audio_path=AUDIO_FILE,
+            ass_path=SUBTITLES_ASS,
+            output_path=OUTPUT_REEL,
+            is_video=(visual_meta["type"] == "video"),
+        )
     result = {
         "video_path": OUTPUT_REEL,
         "caption": data["caption"],
