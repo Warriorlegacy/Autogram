@@ -41,6 +41,19 @@ SIGNHIFY_JOBS = [
         "hour": 12,
         "minute": 30,
     },
+    # 2x Daily Hindi Promo Reels for Signhify Studio
+    {
+        "title": "Signhify Hindi Reel 1 (01:30 PM IST) - Afternoon Hinglish Promo",
+        "event_type": "publish-hindi",
+        "hour": 13,
+        "minute": 30,
+    },
+    {
+        "title": "Signhify Hindi Reel 2 (09:30 PM IST) - Evening Hinglish Promo",
+        "event_type": "publish-hindi",
+        "hour": 21,
+        "minute": 30,
+    },
 ]
 
 
