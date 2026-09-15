@@ -919,6 +919,38 @@
       "public_reply_id": "17931072657144052",
       "dm_status": "PUBLIC_ONLY",
       "timestamp": 1789448779.950804
+    },
+    "sim_c_8882_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_18882",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789457419.9857838
+    },
+    "sim_c_8882_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_19994",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789457422.381427
+    },
+    "sim_c_9811_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_69811",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789457471.6451988
+    },
+    "sim_c_9811_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_71646",
+      "dm_status": "DM_SENT",
+      "timestamp": 1789457473.1373193
     }
   }
 }

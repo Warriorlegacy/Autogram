@@ -309,4 +309,7 @@ class AssetUploader:
             "Configure S3/R2 or set PUBLIC_CDN_BASE to your live public HTTPS domain."
         )
 
+    # Convenience alias for carousel pipelines
+    upload_carousel = upload_slide_images
+
 uploader = AssetUploader()

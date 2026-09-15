@@ -626,31 +626,45 @@
       font-weight: 700;
     }
 
-    /* Subtitle Track */
+    /* Subtitle Track Container & Per-Scene Subtitles */
+    .sub-container {
+      position: relative;
+      height: 95px;
+      width: 100%;
+    }
+
     .sub-bar {
-      padding: 22px 32px;
-      background: rgba(2, 6, 23, 0.9);
+      position: absolute;
+      inset: 0;
+      padding: 16px 28px;
+      background: rgba(2, 6, 23, 0.92);
       backdrop-filter: blur(16px);
-      border: 1.5px solid rgba(0, 229, 153, 0.4);
+      border: 1.5px solid rgba(0, 229, 153, 0.45);
       border-radius: 20px;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       text-align: center;
       color: #FFFFFF;
       line-height: 1.35;
-      min-height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .sub-bar.active {
+      opacity: 1;
+      visibility: visible;
     }
   </style>
 </head>
 <body>
   <div id="stage" data-composition-id="marketing_reel" data-start="0" data-width="1080" data-height="1920">
-    <div class="glow-orb-1"></div>
-    <div class="glow-orb-2"></div>
-    <div class="tech-grid"></div>
+    <div class="glow-orb-1" id="orb-1"></div>
+    <div class="glow-orb-2" id="orb-2"></div>
+    <div class="tech-grid" id="bg-grid"></div>
 
     <!-- Instagram Safe Zone Wrapper -->
     <div class="safe-zone">
@@ -674,8 +688,8 @@
         <!-- SCENE 1: HOOK -->
         <div id="scene-hook" class="scene glass-card active clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="1">
           <div class="hook-alert">⚡ {{ hook_alert|default('CRITICAL NOTICE') }}</div>
-          <h1 class="hook-title"><span class="gradient-text">{{ hook_title|default('Stop Paying $5,000') }}</span> for 3D Websites</h1>
-          <p class="hook-sub">{{ hook_sub|default('Ship Apple-grade 60 FPS scroll-reactive 3D web pages in 10 minutes with AI.') }}</p>
+          <h1 class="hook-title"><span class="gradient-text">{{ hook_title }}</span></h1>
+          <p class="hook-sub">{{ scene1_narration }}</p>
           
           <div class="prompt-terminal">
             <div class="terminal-header">
@@ -683,7 +697,7 @@
               <span>v2.4 READY</span>
             </div>
             <div class="terminal-body">
-              <span class="prompt-tag">&gt; </span>"Build a 60 FPS scroll-interactive 3D landing page with real physics"
+              <span class="prompt-tag">&gt; </span>"{{ scene1_narration }}"
             </div>
           </div>
         </div>
@@ -699,7 +713,7 @@
             <div class="compare-row compare-new">
               <div class="compare-label">✓ Signhify AI Engine</div>
               <div class="compare-main">1 Prompt & 10 Minutes</div>
-              <div class="compare-desc">Instant 3D scroll physics, native 60 FPS GPU acceleration, full code export.</div>
+              <div class="compare-desc">{{ scene2_narration }}</div>
             </div>
           </div>
         </div>
@@ -723,21 +737,18 @@
                     <div class="cube-face face-right">NO CODE</div>
                     <div class="cube-face face-left">MIT ZIP</div>
                     <div class="cube-face face-top">AI</div>
-                    <div class="cube-face face-bottom">SIGNHIFY</div>
+                    <div class="cube-face face-bottom">GPU</div>
                   </div>
                 </div>
               </div>
               <div class="feature-pill-row">
-                <span class="feature-pill">Zero WebGL Code</span>
-                <span class="feature-pill">60 FPS Native</span>
-                <span class="feature-pill">100% MIT</span>
+                <div class="feature-pill">Three.js</div>
+                <div class="feature-pill">WebGL Shaders</div>
+                <div class="feature-pill">Scroll Triggers</div>
+                <div class="feature-pill">Clean ZIP</div>
               </div>
-              <h2 class="feature-title">{{ feature_title|default('Production 3D Sites Built From 1 Prompt') }}</h2>
-              <ul class="feature-points">
-                <li><span>▶</span> Interactive 3D camera scroll mechanics</li>
-                <li><span>▶</span> Mobile-optimized hardware acceleration</li>
-                <li><span>▶</span> Full HTML, CSS & JS ZIP download</li>
-              </ul>
+              <h2 class="feature-title">Native 60 FPS 3D Canvas</h2>
+              <p class="compare-desc" style="font-size: 24px; color: #E2E8F0; margin-top: 4px;">{{ scene3_narration }}</p>
             </div>
           </div>
         </div>
@@ -798,9 +809,23 @@
 
       </div>
 
-      <!-- Spoken Caption Dynamic Bar -->
-      <div id="subtitle-track" class="sub-bar clip" data-start="0" data-duration="{{ total_duration }}" data-track-index="2">
-        <span id="subtitle-text">{{ spoken_preview|default('Transform any idea into a cinematic 3D scroll website at signhify.dpdns.org') }}</span>
+      <!-- Spoken Caption Dynamic Tracks Container (Synchronized with each scene) -->
+      <div class="sub-container">
+        <div id="sub-1" class="sub-bar clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene1_narration }}"</span>
+        </div>
+        <div id="sub-2" class="sub-bar clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene2_narration }}"</span>
+        </div>
+        <div id="sub-3" class="sub-bar clip" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene3_narration }}"</span>
+        </div>
+        <div id="sub-4" class="sub-bar clip" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene4_narration }}"</span>
+        </div>
+        <div id="sub-5" class="sub-bar clip" data-start="{{ scene5_start }}" data-duration="{{ scene5_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene5_narration }}"</span>
+        </div>
       </div>
 
     </div>
@@ -837,11 +862,24 @@
       document.getElementById('scene-cta')
     ];
 
+    const subtitles = [
+      document.getElementById('sub-1'),
+      document.getElementById('sub-2'),
+      document.getElementById('sub-3'),
+      document.getElementById('sub-4'),
+      document.getElementById('sub-5')
+    ];
+
+    const orb1 = document.getElementById('orb-1');
+    const orb2 = document.getElementById('orb-2');
+    const bgGrid = document.getElementById('bg-grid');
+
     const tl = gsap.timeline({ paused: true });
 
     let cumulativeTime = 0;
     scenes.forEach((scene, idx) => {
       const dur = sceneDurations[idx];
+      const sub = subtitles[idx];
       
       // Animate scene in
       tl.to(scene, {
@@ -853,27 +891,53 @@
         ease: 'power3.out'
       }, cumulativeTime);
 
-      // Micro-animations per scene scaled proportionally to scene duration
-      const tIn = Math.min(0.3, dur * 0.2);
+      // Animate subtitle track in synchronously
+      if (sub) {
+        tl.to(sub, {
+          opacity: 1,
+          visibility: 'visible',
+          y: 0,
+          scale: 1,
+          duration: 0.28,
+          ease: 'power2.out'
+        }, cumulativeTime);
+      }
+
+      // Background video / lighting alignment per scene
       if (idx === 0) {
+        // Scene 1 Hook: High energy emerald & cyan pulse
+        tl.to(orb1, { x: 50, y: 100, scale: 1.2, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.to(orb2, { x: -60, y: -80, scale: 1.1, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
         tl.from(scene.querySelector('.hook-title'), { y: 25, opacity: 0, duration: dur * 0.25 }, cumulativeTime + dur * 0.05);
         const promptTerm = scene.querySelector('.prompt-terminal');
         if (promptTerm) tl.from(promptTerm, { scale: 0.92, opacity: 0, duration: dur * 0.25 }, cumulativeTime + dur * 0.12);
       } else if (idx === 1) {
+        // Scene 2 Compare: Shift orbs to contrast mode
+        tl.to(orb1, { x: -80, y: 200, scale: 0.9, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.to(orb2, { x: 90, y: 50, scale: 1.3, duration: dur, ease: 'power2.out' }, cumulativeTime);
         tl.from(scene.querySelectorAll('.compare-row'), { y: 20, opacity: 0, stagger: dur * 0.08, duration: dur * 0.25 }, cumulativeTime + dur * 0.05);
       } else if (idx === 2) {
+        // Scene 3 Showcase: 3D perspective grid acceleration
+        tl.to(orb1, { x: 120, y: -50, scale: 1.4, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.to(orb2, { x: -100, y: 150, scale: 1.1, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
         tl.from(scene.querySelector('.mockup-window'), { scale: 0.9, opacity: 0, duration: dur * 0.25, ease: 'power2.out' }, cumulativeTime + dur * 0.05);
         tl.from(scene.querySelectorAll('.feature-pill'), { scale: 0.85, opacity: 0, stagger: dur * 0.05, duration: dur * 0.2 }, cumulativeTime + dur * 0.12);
       } else if (idx === 3) {
+        // Scene 4 Proof: Solid emerald energy blast
+        tl.to(orb1, { x: -40, y: -100, scale: 1.25, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.to(orb2, { x: 80, y: -60, scale: 1.35, duration: dur, ease: 'power2.out' }, cumulativeTime);
         tl.from(scene.querySelectorAll('.stat-card'), { x: -25, opacity: 0, stagger: dur * 0.08, duration: dur * 0.25 }, cumulativeTime + dur * 0.05);
       } else if (idx === 4) {
+        // Scene 5 CTA: Radiant focus on logo center
+        tl.to(orb1, { x: 0, y: 0, scale: 1.5, duration: dur, ease: 'sine.out' }, cumulativeTime);
+        tl.to(orb2, { x: 0, y: 0, scale: 1.5, duration: dur, ease: 'sine.out' }, cumulativeTime);
         tl.from(scene.querySelector('.hero-logo-wrapper'), { scale: 0.4, rotation: -12, opacity: 0, duration: dur * 0.25, ease: 'back.out(1.8)' }, cumulativeTime + dur * 0.05);
         tl.from(scene.querySelector('.cta-headline'), { y: 20, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.12);
         tl.from(scene.querySelector('.cta-box'), { scale: 0.9, opacity: 0, duration: dur * 0.2, ease: 'back.out(1.5)' }, cumulativeTime + dur * 0.18);
         tl.from(scene.querySelector('.cta-comment-sticker'), { y: 15, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.24);
       }
 
-      // Animate scene out (except for the last scene)
+      // Animate scene & subtitle out (except for the last scene)
       if (idx < scenes.length - 1) {
         const outTime = cumulativeTime + dur - 0.25;
         tl.to(scene, {
@@ -883,6 +947,15 @@
           duration: 0.25,
           ease: 'power2.in'
         }, outTime);
+        if (sub) {
+          tl.to(sub, {
+            opacity: 0,
+            y: 12,
+            scale: 0.96,
+            duration: 0.22,
+            ease: 'power2.in'
+          }, outTime);
+        }
       }
 
       cumulativeTime += dur;

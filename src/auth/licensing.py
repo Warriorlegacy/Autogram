@@ -173,6 +173,14 @@ def get_active_license_status() -> Dict[str, Any]:
     return verify_license(client_key)
 
 
+def verify_license_gate() -> Dict[str, Any]:
+    """Enforces license gate; raises PermissionError if access is rejected."""
+    status = get_active_license_status()
+    if not status.get("valid"):
+        raise PermissionError(f"Licensing gate rejected: {status.get('reason')}")
+    return status
+
+
 def main():
     parser = argparse.ArgumentParser(description="Autogram Licensing & Monetization Gate")
     parser.add_argument("--issue", action="store_true", help="Generate a new client license key")

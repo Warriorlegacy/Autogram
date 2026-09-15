@@ -95,6 +95,45 @@ class HyperFramesEngine:
             pass
         return 20.0
 
+    def _segment_script_into_scenes(self, script_text: str, topic: str) -> dict:
+        """
+        Segments raw narration into 5 coherent scenes (Hook, Compare, Showcase, Proof, CTA)
+        so that on-screen visuals and dynamic subtitle tracks align perfectly with spoken words.
+        """
+        clean = re.sub(r"\s+", " ", (script_text or "").strip())
+        raw_parts = [p.strip() for p in re.split(r"(?<=[.!?])\s+|(?<=\w)—(?=\w)", clean) if p.strip()]
+
+        s1_default = f"Stop paying $5,000 for 3D websites. {topic}"
+        s2_default = "Traditional agencies take 4 weeks of complex Three.js code. Signhify gives you instant 3D scroll."
+        s3_default = "From zero WebGL code to native 60 FPS hardware acceleration, you get production-grade physics."
+        s4_default = "Boost your engagement by 320% compared to flat 2D landing pages with full MIT code export."
+        s5_default = "Build yours free at signhify.dpdns.org. Comment '3D' for direct link. Follow @signhify.studio."
+
+        if len(raw_parts) >= 5:
+            s1 = raw_parts[0]
+            s2 = raw_parts[1]
+            s3 = raw_parts[2]
+            s4 = raw_parts[3]
+            s5 = " ".join(raw_parts[4:])
+        elif len(raw_parts) == 4:
+            s1, s2, s3, s4, s5 = raw_parts[0], raw_parts[1], raw_parts[2], s4_default, raw_parts[3]
+        elif len(raw_parts) == 3:
+            s1, s2, s3, s4, s5 = raw_parts[0], raw_parts[1], s3_default, s4_default, raw_parts[2]
+        elif len(raw_parts) == 2:
+            s1, s2, s3, s4, s5 = raw_parts[0], s2_default, s3_default, s4_default, raw_parts[1]
+        elif len(raw_parts) == 1 and raw_parts[0]:
+            s1, s2, s3, s4, s5 = raw_parts[0], s2_default, s3_default, s4_default, s5_default
+        else:
+            s1, s2, s3, s4, s5 = s1_default, s2_default, s3_default, s4_default, s5_default
+
+        return {
+            "s1_narration": s1,
+            "s2_narration": s2,
+            "s3_narration": s3,
+            "s4_narration": s4,
+            "s5_narration": s5,
+        }
+
     def compile_composition(
         self,
         topic: str,
@@ -137,14 +176,12 @@ class HyperFramesEngine:
             shutil.copyfile(logo_src, logo_dest)
             logo_dest_name = "logo.jpeg"
 
-        # 3. Extract hook / features from topic or script
+        # 3. Segment script into 5 scene narrations aligned with video scenes
+        segments = self._segment_script_into_scenes(script_text, topic)
         hook_title = topic
         if ":" in topic:
             parts = topic.split(":", 1)
             hook_title = parts[0].strip()
-            hook_sub = parts[1].strip()
-        else:
-            hook_sub = script_text[:120] if script_text else "Turn 1 prompt into a 3D scroll website in minutes."
 
         template = self.env.get_template(template_name)
         rendered_html = template.render(
@@ -152,11 +189,13 @@ class HyperFramesEngine:
             total_duration=total_dur,
             audio_file=audio_dest_name,
             logo_file=logo_dest_name,
-            spoken_preview=script_text[:140] if script_text else "Build yours at signhify.dpdns.org. Follow @signhify.studio",
             hook_alert="NEW 3D ENGINE",
             hook_title=hook_title[:60],
-            hook_sub=hook_sub[:140],
-            feature_title="Instant 3D Scroll Pages With Zero Three.js Code",
+            scene1_narration=segments["s1_narration"],
+            scene2_narration=segments["s2_narration"],
+            scene3_narration=segments["s3_narration"],
+            scene4_narration=segments["s4_narration"],
+            scene5_narration=segments["s5_narration"],
             scene1_start=0.0,
             scene1_duration=s1,
             scene2_start=round(s1, 2),

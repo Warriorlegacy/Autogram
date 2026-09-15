@@ -869,6 +869,8 @@ def main():
     parser.add_argument("--generate-script", action="store_true", help="Generate carousel script and caption only")
     parser.add_argument("--generate-reel", action="store_true", help="Generate 30-45s Reels / Shorts video script")
     parser.add_argument("--generate-hyperframes-reel", action="store_true", help="Generate 1080x1920 marketing promo reel via HyperFrames HTML/GSAP engine")
+    parser.add_argument("--generate-promo-carousel", action="store_true", help="Generate and render 1080x1350 Signhify Studio promo carousel slides")
+    parser.add_argument("--promo-carousel", action="store_true", help="Generate and publish 1080x1350 Signhify Studio promo carousel to Instagram feed")
     parser.add_argument("--schedule", action="store_true", help="Run local autonomous daily scheduler daemon")
     parser.add_argument("--story", action="store_true", help="Generate and publish an Instagram Story (1080x1920, 9:16)")
     parser.add_argument("--reel", action="store_true", help="Generate and publish an Instagram Reel (9:16 MP4 via local MoneyPrinterTurbo)")
@@ -948,6 +950,19 @@ def main():
         print(f"\n[HyperFrames Engine] Generating promotional Reel for: '{topic}'...")
         res = hyperframes_engine.render_reel(topic=topic)
         print(f"[HyperFrames Engine] Render complete! Video saved to: {res['video_path']}\n")
+        return
+
+    if args.generate_promo_carousel:
+        from scripts.pipeline_carousel import run_carousel_pipeline
+        print("\n[Signhify Carousel Engine] Generating promotional carousel slides...")
+        res = run_carousel_pipeline(topic=args.topic, dry_run=True)
+        print(f"[Signhify Carousel Engine] Render complete! {res['slides_count']} slides generated to {res['local_images'][0]}.\n")
+        return
+
+    if args.promo_carousel:
+        from scripts.pipeline_carousel import run_carousel_pipeline
+        dry = args.dry_run or (not args.run_all)
+        _run_guarded("promo-carousel", dry, lambda: run_carousel_pipeline(topic=args.topic, dry_run=dry))
         return
 
     if args.refresh_token:

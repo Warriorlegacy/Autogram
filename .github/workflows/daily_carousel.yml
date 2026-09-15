@@ -1,0 +1,97 @@
+name: Daily Instagram Promo Carousel — Signhify Studio (Viral 3D Web Builder)
+
+# Autonomous Instagram Carousel Engine promoting Signhify Studio & the AI 3D Website Builder
+# Live Website: https://signhify.dpdns.org | Brand: @signhify.studio
+
+on:
+  schedule:
+    - cron: '30 6 * * *'   # 12:00 PM IST (06:30 UTC) — Midday Signhify Promo Carousel
+    - cron: '30 13 * * *'  # 07:00 PM IST (13:30 UTC) — Evening Signhify Promo Carousel
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Custom Carousel Topic (leave empty for canonical Signhify 3D Engine breakdown)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Dry run mode (true to test render/upload without publishing to live Instagram)"
+        required: false
+        default: "false"
+  repository_dispatch:
+    types: [publish-carousel, promo-carousel]
+
+concurrency:
+  group: daily-carousel-publish
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Install Playwright Chromium
+        run: |
+          playwright install chromium --with-deps
+
+      - name: Run Promo Carousel Generation & Publication
+        env:
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID || secrets.IG_USER_ID }}
+          META_GRAPH_ACCESS_TOKEN: ${{ secrets.META_GRAPH_ACCESS_TOKEN || secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID || secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN || secrets.META_GRAPH_ACCESS_TOKEN }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
+          TOPIC_INPUT: ${{ github.event.inputs.topic || '' }}
+        run: |
+          python -c "
+          import os, sys
+          from scripts.pipeline_carousel import run_carousel_pipeline
+
+          topic = os.getenv('TOPIC_INPUT', '').strip() or None
+          dry_run = os.getenv('DRY_RUN', 'false').lower() == 'true'
+
+          manifest = run_carousel_pipeline(topic=topic, dry_run=dry_run)
+          print(f'Carousel execution finished successfully!')
+          print(f'Slides Count: {manifest[\"slides_count\"]}')
+          print(f'Media ID: {manifest[\"media_id\"]}')
+          "
+
+      - name: Commit Content Memory State (Zero Repetition)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main || true
+          git add data/content-memory.json autopilot.db || true
+          git diff --cached --quiet || git commit -m "chore(memory): record published promo carousel [skip ci]"
+          git push origin main || echo "Push skipped or not permitted"
+
+      - name: Upload Carousel Slide Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: carousel-${{ github.run_number }}
+          path: |
+            workspace/promo_carousel/**
+          retention-days: 14

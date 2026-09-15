@@ -1,5 +1,5 @@
 {
-  "scheduler_enabled": true,
+  "scheduler_enabled": false,
   "daily_slots": [
     {
       "slot": "11:30",

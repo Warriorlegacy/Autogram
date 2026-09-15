@@ -167,9 +167,10 @@ class InstagramPublisher:
         logger.info(f"Published carousel to Instagram live feed: Media ID = {media_id}")
         return media_id
 
-    def publish_carousel(self, image_urls: list[str], alt_texts: list[str], caption: str) -> str:
+    def publish_carousel(self, image_urls: list[str], alt_texts: list[str] | None = None, caption: str = "") -> str:
         """End-to-end carousel publishing flow."""
         logger.info(f"Starting Instagram publish sequence for {len(image_urls)} slides...")
+        alt_texts = alt_texts or [f"Slide {i+1}" for i in range(len(image_urls))]
 
         # Ensure caption and hashtags are ALWAYS present while posting
         caption = (caption or "").strip()
