@@ -1,12 +1,11 @@
-name: Daily Instagram Promo Carousel — Signhify Studio (Viral 3D Web Builder)
+name: Daily Instagram Promo Carousel — Signhify Studio (Viral 3D Web Builder 1x daily)
 
 # Autonomous Instagram Carousel Engine promoting Signhify Studio & the AI 3D Website Builder
 # Live Website: https://signhify.dpdns.org | Brand: @signhify.studio
 
 on:
   schedule:
-    - cron: '30 6 * * *'   # 12:00 PM IST (06:30 UTC) — Midday Signhify Promo Carousel
-    - cron: '30 13 * * *'  # 07:00 PM IST (13:30 UTC) — Evening Signhify Promo Carousel
+    - cron: '0 7 * * *'   # 12:30 PM IST (07:00 UTC) — Daily Signhify Promo Carousel (1x daily)
   workflow_dispatch:
     inputs:
       topic:
