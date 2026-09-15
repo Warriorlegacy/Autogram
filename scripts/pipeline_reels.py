@@ -22,12 +22,17 @@ from pathlib import Path
 
 import requests
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent.parent / "workspace"
 BASE_DIR.mkdir(parents=True, exist_ok=True)
 
-VOICE_NAME = os.getenv("REELS_VOICE", "en-US-ChristopherNeural")
+VOICE_NAME = os.getenv("REELS_VOICE", "en-US-BrianMultilingualNeural")
 
 AUDIO_FILE = str(BASE_DIR / "audio.mp3")
 BACKGROUND_IMG = str(BASE_DIR / "background.jpg")
@@ -131,18 +136,133 @@ def get_unique_viral_reel_topic(override_topic: str | None = None) -> str:
     return sorted_by_oldest[0]["topic"]
 
 
-def generate_reel_content(topic: str) -> dict:
-    """Viral script + visual prompt + caption via OpenRouter :free (falls back to engine)."""
+VIRAL_SCRIPT_FRAMEWORKS = [
+    {
+        "id": "agency_disruptor",
+        "angle": "Agency Disruption",
+        "script": "Web design agencies are furious about this tool. Instead of charging $8,000 and waiting a month for Three.js code, Signhify Studio turns a single prompt into an Apple-grade 3D scroll website in 45 seconds. Zero code needed. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Futuristic 3D website exploding hardware gear on sleek dark glassmorphic UI, glowing emerald neon volumetric studio lighting, 8k",
+        "caption": "⚡ Fired the agency. Replaced them with one prompt.\n\nSignhify Studio compiles full Three.js & WebGL 3D scroll websites in seconds.\n📦 1-click clean MIT ZIP export.\n\n🌐 Try it free: signhify.dpdns.org\n💬 Comment '3D' for direct link!\n\n#SignhifyStudio #3DWeb #WebDesign #Threejs #WebDev #BuildInPublic"
+    },
+    {
+        "id": "apple_secret",
+        "angle": "Apple Keynote Secret",
+        "script": "Ever wonder how Apple builds those insane 3D scroll websites? Where the hardware explodes and rotates as you scroll your finger? You do not need a math degree anymore. Signhify's spatial AI compiles WebGL shaders instantly. Native 60 FPS speed. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Apple style titanium device exploded view on luxury dark 3D website canvas, smooth camera orbit path, cinematic lighting, 8k",
+        "caption": "🍏 The Apple 3D scroll secret is out.\n\nBuild cinematic spatial websites that react to scroll velocity without touching WebGL code.\n\n🌐 Build yours: signhify.dpdns.org\n💬 Comment '3D' and I'll DM you the link!\n\n#AppleStyle #3DWebsite #WebDev #UIUX #Frontend #SignhifyStudio"
+    },
+    {
+        "id": "speed_run",
+        "angle": "Speed Run Challenge",
+        "script": "Can an AI build a full 60 FPS Three.js website before my espresso brews? Watch this. One plain-English prompt, and Signhify Studio compiles spatial camera physics, interactive lighting, and touch controls live in your browser. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Fast paced 3D website builder UI with live particle physics canvas, dark cyberpunk neon accents, 8k",
+        "caption": "☕ Built a complete 3D interactive website in 45 seconds.\n\nZero WebGL boilerplate. 100% clean downloadable code.\n\n🌐 Test it now: signhify.dpdns.org\n💬 Comment '3D' below!\n\n#CreativeCoding #NoCode3D #WebDesign #SpeedBuild #SignhifyStudio"
+    },
+    {
+        "id": "2d_is_dead",
+        "angle": "2D Is Dead Manifesto",
+        "script": "In 2026, flat 2D websites feel like paper brochures. If your landing page does not have interactive 3D spatial depth, visitors leave in three seconds. Signhify gives you Apple-level 3D scroll with zero code. Boost conversions 300%. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Contrast between boring flat 2D webpage and vibrant dimensional 3D spatial website, neon emerald lighting, 8k",
+        "caption": "💀 Flat 2D websites are officially obsolete.\n\nGive your visitors an unforgettable 3D spatial experience in 1 click.\n\n🌐 Try free: signhify.dpdns.org\n💬 Comment '3D' for the direct access link!\n\n#WebDesignTrends #3DWeb #SaaS #GrowthHacking #SignhifyStudio"
+    },
+    {
+        "id": "ecommerce_conversions",
+        "angle": "E-Commerce 320% ROI",
+        "script": "This single 3D interactive watch preview increased store checkout conversion by 320%. Customers rotated every titanium gear in real-time 3D right on their phone. The founder built it with zero code on Signhify Studio. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Luxury cybernetic timepiece 3D interactive product configurator on dark glassmorphic mobile viewport, 8k",
+        "caption": "📈 +320% higher conversion with 3D product previews.\n\nStop losing buyers to static photos. Let them touch and rotate your product in 60 FPS 3D.\n\n🌐 Launch yours: signhify.dpdns.org\n💬 Comment '3D' for link!\n\n#EcommerceGrowth #Shopify #3DCommerce #ConversionRate #SignhifyStudio"
+    },
+    {
+        "id": "zero_threejs_dev",
+        "angle": "Zero Three.js Knowledge",
+        "script": "WebGL shaders used to take three years to master. Now? You just describe your product, your colors, and your camera motion. Signhify's spatial compiler outputs clean, production-ready code with full ZIP export. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Developer terminal showing code compiling into glowing 3D wireframe mesh in real-time browser canvas, 8k",
+        "caption": "⚡ Three.js without the headache.\n\nDescribe your 3D vision in plain English. Signhify compiles the shaders and physics for you.\n\n🌐 Build free: signhify.dpdns.org\n💬 Comment '3D' for access!\n\n#JavaScript #WebGL #Threejs #WebDeveloper #SignhifyStudio"
+    },
+    {
+        "id": "saas_founder_hack",
+        "angle": "SaaS Founder Hack",
+        "script": "I replaced a $10,000 design agency with a single AI prompt. Instead of endless Figma revisions, Signhify Studio generates an interactive 3D product showcase with scroll-reactive camera trajectories for zero dollars. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "High-ticket B2B SaaS landing page with floating 3D glass data cubes and glowing metrics, 8k",
+        "caption": "💡 Replaced a $10k agency with 1 prompt.\n\nGive your startup the landing page it deserves. 60 FPS mobile-ready 3D.\n\n🌐 Try it now: signhify.dpdns.org\n💬 Comment '3D' for direct link!\n\n#Startup #IndieHackers #SaaS #BuildInPublic #SignhifyStudio"
+    },
+    {
+        "id": "mobile_60fps",
+        "angle": "Mobile 60 FPS Breakthrough",
+        "script": "Most 3D websites crash mobile browsers. Here is why this one does not. Signhify's GPU compiler automatically optimizes geometry and draw calls so you get locked 60 frames per second on any iPhone or Android. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Smartphone screen running silky smooth 60 FPS 3D scroll animation with zero stutter, green metrics overlay, 8k",
+        "caption": "📱 60 FPS 3D Web on mobile without lag.\n\nSignhify optimizes every polycount and shader call automatically.\n\n🌐 Test on your phone: signhify.dpdns.org\n💬 Comment '3D' for link!\n\n#MobileFirst #WebPerf #FrontendDev #3DWeb #SignhifyStudio"
+    },
+    {
+        "id": "mit_code_sovereignty",
+        "angle": "100% Code Ownership",
+        "script": "Stop paying monthly rent for closed website builders that hold your design hostage. Signhify Studio lets you download the complete MIT-licensed ZIP bundle with clean HTML, CSS, and Express backend. Host it anywhere. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Clean ZIP folder icon unpacking into modern developer project structure on dark UI, glowing green verified check, 8k",
+        "caption": "🔓 100% code ownership. Zero subscription lock-in.\n\nDownload the full production ZIP and deploy anywhere for free.\n\n🌐 Build yours: signhify.dpdns.org\n💬 Comment '3D' for link!\n\n#OpenSource #WebDev #FullStack #DeveloperTools #SignhifyStudio"
+    },
+    {
+        "id": "cyberpunk_portfolio",
+        "angle": "Cyberpunk Portfolio",
+        "script": "Want a portfolio that gets you hired in 10 seconds? Drop the boring PDF resumes. Signhify Studio generates a futuristic, dark-mode 3D spatial portfolio with glowing particle fields and smooth camera transitions. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Insanely cool dark mode developer portfolio with glowing 3D cybernetic orb and interactive timeline, 8k",
+        "caption": "🚀 Land senior tech roles with a 3D portfolio.\n\nStop sending boring PDFs. Stand out with interactive 3D spatial depth.\n\n🌐 Create yours: signhify.dpdns.org\n💬 Comment '3D' for link!\n\n#Portfolio #TechCareers #WebDev #UIUX #SignhifyStudio"
+    },
+    {
+        "id": "product_reveal",
+        "angle": "Cinematic Product Reveal",
+        "script": "Turn any product idea into an Apple-style 3D scroll journey. Signhify Studio analyzes your prompt, generates volumetric studio lighting, and maps out a cinematic scroll trajectory that mesmerizes customers. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Photorealistic 3D titanium gadget slowly rotating inside dark studio with volumetric mist and emerald highlights, 8k",
+        "caption": "✨ Cinematic 3D product launches made effortless.\n\nFrom concept prompt to interactive scroll in 10 minutes.\n\n🌐 Build free: signhify.dpdns.org\n💬 Comment '3D' for link!\n\n#ProductDesign #Keynote #AppleDesign #3DWeb #SignhifyStudio"
+    },
+    {
+        "id": "60s_challenge",
+        "angle": "60-Second Challenge",
+        "script": "Watch me build a billionaire-grade 3D site before this Reel ends. Step 1: type your prompt. Step 2: watch the 3D WebGL canvas generate live. Step 3: click download ZIP and deploy to Vercel in seconds. Done. Build yours at signhify.dpdns.org. Follow signhify.studio for more.",
+        "visual_prompt": "Rapid split-screen showing text prompt transforming into high-end interactive 3D website in seconds, 8k",
+        "caption": "⏱️ From blank prompt to live 3D site in 60 seconds.\n\nTry it free right now in your browser.\n\n🌐 signhify.dpdns.org\n💬 Comment '3D' and I'll send you the direct access link!\n\n#WebDesign #QuickBuild #AIWeb #TechReels #SignhifyStudio"
+    },
+]
+
+
+def _select_fresh_script_framework() -> dict:
+    """Selects the least recently used viral script framework to guarantee script uniqueness."""
     import json
+    mem_file = Path(__file__).resolve().parent.parent / "data" / "content-memory.json"
+    recent_hooks: list[str] = []
+    if mem_file.exists():
+        try:
+            mem = json.loads(mem_file.read_text(encoding="utf-8"))
+            recent_hooks = [
+                p.get("hook", "").lower() or p.get("topic", "").lower()
+                for p in mem.get("recent_posts", [])
+            ]
+        except Exception:
+            recent_hooks = []
+
+    for fw in VIRAL_SCRIPT_FRAMEWORKS:
+        fw_hook = fw["script"][:40].lower()
+        if not any(fw_hook in h or h in fw_hook for h in recent_hooks[:30]):
+            return fw
+
+    import random
+    return random.choice(VIRAL_SCRIPT_FRAMEWORKS)
+
+
+def generate_reel_content(topic: str) -> dict:
+    """Viral script + visual prompt + caption via OpenRouter / multi-framework rotation."""
+    import json
+
+    # Pick a fresh framework angle to guarantee uniqueness every run
+    chosen_fw = _select_fresh_script_framework()
 
     api_key = os.getenv("OPENROUTER_API_KEY", "")
     system_prompt = (
         "You are the elite viral growth director for Signhify Studio (@signhify.studio), promoting the revolutionary "
         "AI 3D Website Builder at signhify.dpdns.org. Signhify turns a single prompt into cinematic scroll-reactive 3D websites — "
         "10x faster than web design agencies, zero WebGL or Three.js code needed, native 60 FPS browser scroll, and instant ZIP export with full HTML/CSS/Express backend. "
-        "Create an engaging 20-second viral Reel script that hooks viewers, showcases Signhify's capability, and directs them to signhify.dpdns.org. "
+        f"Angle for this video: '{chosen_fw['angle']}'. Create a completely fresh, energetic, conversational human promo script. "
         "Return STRICT JSON with keys:\n"
-        "'script' (concise spoken text under 45 words, high-tension hook, no emojis, MUST end with: 'Build yours at signhify.dpdns.org. Follow signhify.studio for more.'),\n"
+        "'script' (concise spoken text under 45 words, high-tension hook, conversational promo cadence, no emojis, MUST end with: 'Build yours at signhify.dpdns.org. Follow signhify.studio for more.'),\n"
         "'visual_prompt' (photorealistic 9:16 vertical scene: cinematic 3D website interface on dark glassmorphic UI, luxury product exploded view, or titanium supercar aerodynamics, volumetric studio lighting, 8k),\n"
         "'caption' (punchy caption highlighting the 3D builder with website link signhify.dpdns.org, CTA to comment '3D' for direct link, ending with follow @signhify.studio for more, plus 6 niche hashtags)."
     )
@@ -158,7 +278,7 @@ def generate_reel_content(topic: str) -> dict:
                     model=model,
                     messages=[
                         {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": f"Topic: {topic}"},
+                        {"role": "user", "content": f"Topic: {topic} | Angle: {chosen_fw['angle']}"},
                     ],
                     response_format={"type": "json_object"},
                 )
@@ -170,18 +290,14 @@ def generate_reel_content(topic: str) -> dict:
                 last_err = e
                 logger.warning(f"OpenRouter {model} failed: {e}")
         if not data:
-            logger.warning(f"All OpenRouter :free models failed ({last_err}); using engine fallback.")
+            logger.warning(f"All OpenRouter :free models failed ({last_err}); using dynamic framework rotation.")
 
     if not data:
-        # $0 fallback: existing engine chain (groq/gemini/ollama/template — never fails)
-        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-        from src.content.generator import generator
-
-        script = generator.generate_reel_script({"topic": topic, "pillar": "AI 3D Website Builder"})
+        # Fallback to the rotated unique framework (guarantees diverse, high-converting scripts every run)
         data = {
-            "script": script["narration"],
-            "visual_prompt": f"Cinematic 9:16 vertical luxury 3D interactive website interface for {script['subject']}, dark mode glassmorphic UI, glowing volumetric lighting, photorealistic 8k render",
-            "caption": f"{script['caption']}\n\n🌐 Build yours: signhify.dpdns.org\n💬 Comment '3D' for the direct link!\n\n{' '.join(script['hashtags'])}",
+            "script": chosen_fw["script"],
+            "visual_prompt": chosen_fw["visual_prompt"],
+            "caption": chosen_fw["caption"],
         }
 
     # Defensive regex enforcement: spoken script MUST end with 'Follow signhify.studio for more.'
@@ -196,20 +312,11 @@ def generate_reel_content(topic: str) -> dict:
     if cleaned_spoken:
         data["script"] = f"{cleaned_spoken}. {cta}"
     else:
-        data["script"] = f"Stop paying $5,000 for web design agencies. Signhify Studio turns a single prompt into a cinematic 3D scroll website in minutes with zero code and full export. {cta}"
+        data["script"] = chosen_fw["script"]
 
     caption = str(data.get("caption") or "").strip()
     if not caption or len(caption) < 20:
-        caption = (
-            f"🚀 {topic}\n\n"
-            f"Build cinematic 3D scroll websites from a single prompt — 10x faster with Signhify Studio.\n"
-            f"✨ Zero WebGL, zero Three.js, buttery 60 FPS native browser scroll.\n"
-            f"📦 100% MIT code ownership — download full ZIP with HTML, CSS & Express backend.\n\n"
-            f"🌐 Try it free: signhify.dpdns.org\n"
-            f"💬 Comment '3D' and I'll DM you the direct builder link!\n\n"
-            f"👉 Follow @signhify.studio for more daily AI architectures.\n\n"
-            f"#SignhifyStudio #AIWebsite #3DWebsite #WebDesign #WebDev #BuildInPublic #AItools #LandingPage"
-        )
+        caption = chosen_fw["caption"]
     if "signhify.dpdns.org" not in caption:
         caption = f"{caption}\n\n🌐 Build yours now: https://signhify.dpdns.org"
     if not re.search(r"follow\s+@?signhify\.?studio", caption, re.IGNORECASE):
@@ -222,7 +329,9 @@ def generate_reel_content(topic: str) -> dict:
 async def synthesize_speech(text: str, output_path: str = AUDIO_FILE):
     import edge_tts
 
-    comm = edge_tts.Communicate(text, voice=VOICE_NAME, rate="+5%", pitch="+0Hz")
+    # BrianMultilingualNeural delivers human, expressive, promotional cadence
+    voice = os.getenv("REELS_VOICE", "en-US-BrianMultilingualNeural")
+    comm = edge_tts.Communicate(text, voice=voice, rate="+6%", pitch="+0Hz")
     await comm.save(output_path)
 
 

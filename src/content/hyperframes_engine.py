@@ -220,7 +220,7 @@ class HyperFramesEngine:
         audio_path: Optional[str] = None,
         output_path: Optional[str] = None,
         duration: Optional[float] = None,
-        timeout: int = 180,
+        timeout: int = 480,
     ) -> Dict[str, Any]:
         """
         Compiles the HTML composition and invokes HyperFrames CLI to render the MP4 video.

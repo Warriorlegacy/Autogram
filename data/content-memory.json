@@ -10,13 +10,6 @@
     {
       "date": "2026-09-14",
       "pillar": "FOSS SaaS Alternatives",
-      "topic": "Cal.com: Open Source Scheduling Infrastructure Replacing Calendly",
-      "hook": "Stop paying for Calendly. This 100% open source repo runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-14",
-      "pillar": "FOSS SaaS Alternatives",
       "topic": "[Story] Documenso: The Open Source DocuSign Alternative",
       "hook": "Documenso: The Open Source DocuSign Alternative",
       "score": 95.0
@@ -355,6 +348,13 @@
       "topic": "[Promo Carousel] Signhify Autonomous 3D Web Engine",
       "pillar": "Autonomous 3D Web Engine",
       "media_id": "mock_published_media_503604",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-09-15",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
       "type": "carousel"
     }
   ],
