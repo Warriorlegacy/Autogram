@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>{{ topic }}</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
 
     * {
       margin: 0;
@@ -13,8 +13,8 @@
     }
 
     body {
-      background-color: #030712;
-      color: #F9FAFB;
+      background-color: #020617;
+      color: #F8FAFC;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       width: 1080px;
       height: 1920px;
@@ -26,45 +26,45 @@
       position: relative;
       width: 1080px;
       height: 1920px;
-      background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #090d16 60%, #030712 100%);
+      background: radial-gradient(circle at 50% 12%, #064e3b 0%, #06261f 35%, #020617 80%);
       overflow: hidden;
     }
 
-    /* Ambient dynamic glow orbs */
+    /* Ambient Dynamic Glow Orbs */
     .glow-orb-1 {
       position: absolute;
-      width: 700px;
-      height: 700px;
+      width: 850px;
+      height: 850px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(99, 102, 241, 0) 70%);
-      top: -100px;
-      right: -150px;
-      filter: blur(60px);
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.28) 0%, rgba(0, 229, 153, 0) 70%);
+      top: -120px;
+      right: -200px;
+      filter: blur(80px);
       z-index: 1;
       pointer-events: none;
     }
 
     .glow-orb-2 {
       position: absolute;
-      width: 800px;
-      height: 800px;
+      width: 850px;
+      height: 850px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(6, 182, 212, 0) 70%);
-      bottom: 200px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0) 70%);
+      bottom: 120px;
       left: -200px;
-      filter: blur(80px);
+      filter: blur(90px);
       z-index: 1;
       pointer-events: none;
     }
 
-    /* Grid overlay for tech aesthetic */
+    /* High-tech grid overlay */
     .tech-grid {
       position: absolute;
       inset: 0;
       background-size: 60px 60px;
       background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, rgba(0, 229, 153, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 229, 153, 0.05) 1px, transparent 1px);
       z-index: 2;
       pointer-events: none;
     }
@@ -72,64 +72,78 @@
     /* Instagram Safe Zone Container */
     .safe-zone {
       position: absolute;
-      top: 140px;
+      top: 130px;
       left: 60px;
-      right: 140px; /* Safe space on the right for IG action buttons */
-      bottom: 340px; /* Safe space at the bottom for IG caption & sound bar */
+      right: 140px; /* Safe space on right for IG action buttons */
+      bottom: 330px; /* Safe space at bottom for IG caption and audio */
       z-index: 10;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    /* Header Bar */
+    /* Top Brand Header Bar */
     .brand-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
       padding-bottom: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .brand-badge {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 22px;
-      background: rgba(99, 102, 241, 0.15);
-      border: 1px solid rgba(99, 102, 241, 0.4);
+      gap: 14px;
+      padding: 8px 24px 8px 10px;
+      background: rgba(6, 78, 59, 0.5);
+      border: 1.5px solid rgba(0, 229, 153, 0.7);
       border-radius: 999px;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #A5B4FC;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #FFFFFF;
+      box-shadow: 0 0 24px rgba(0, 229, 153, 0.35);
     }
 
-    .brand-badge .dot {
-      width: 12px;
-      height: 12px;
-      background: #06B6D4;
+    .brand-header-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1.5px solid rgba(0, 229, 153, 0.9);
+      box-shadow: 0 0 16px rgba(0, 229, 153, 0.6);
+    }
+
+    .header-dot {
+      width: 14px;
+      height: 14px;
+      background: #00E599;
       border-radius: 50%;
-      box-shadow: 0 0 12px #06B6D4;
+      box-shadow: 0 0 14px #00E599;
     }
 
     .live-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 20px;
-      color: #9CA3AF;
+      font-weight: 800;
+      color: #00E599;
+      background: rgba(0, 229, 153, 0.12);
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 229, 153, 0.4);
       letter-spacing: 1px;
     }
 
-    /* Scene Containers */
+    /* Scene Viewport */
     .scene-viewport {
       position: relative;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin: 40px 0;
+      margin: 30px 0;
     }
 
     .scene {
@@ -141,7 +155,7 @@
       opacity: 0;
       visibility: hidden;
       transform: translateY(30px) scale(0.98);
-      transition: opacity 0.4s ease;
+      transition: opacity 0.35s ease;
     }
 
     .scene.active {
@@ -150,41 +164,48 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Glassmorphism Card Style */
+    /* Glassmorphic Core Card */
     .glass-card {
-      background: rgba(17, 24, 39, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 28px;
-      padding: 44px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      background: rgba(10, 20, 30, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1.5px solid rgba(0, 229, 153, 0.3);
+      border-radius: 36px;
+      padding: 50px 44px;
+      box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
 
-    /* Scene 1: Hook */
+    /* SCENE 1: HOOK */
     .hook-alert {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 22px;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: #F43F5E;
+      color: #EF4444;
       margin-bottom: 24px;
-      background: rgba(244, 63, 94, 0.12);
-      border: 1px solid rgba(244, 63, 94, 0.3);
-      padding: 8px 18px;
-      border-radius: 8px;
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      padding: 8px 20px;
+      border-radius: 12px;
       width: fit-content;
     }
 
     .hook-title {
-      font-size: 64px;
+      font-size: 66px;
       font-weight: 900;
       line-height: 1.15;
       letter-spacing: -1.5px;
-      margin-bottom: 28px;
-      background: linear-gradient(135deg, #FFFFFF 20%, #E0E7FF 60%, #818CF8 100%);
+      margin-bottom: 24px;
+      color: #FFFFFF;
+      text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+    }
+
+    .hook-title .gradient-text {
+      background: linear-gradient(135deg, #A7F3D0 0%, #00E599 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -192,124 +213,214 @@
     .hook-sub {
       font-size: 32px;
       font-weight: 600;
-      color: #94A3B8;
+      color: #E2E8F0;
+      line-height: 1.45;
+      margin-bottom: 36px;
+    }
+
+    /* Cyber Terminal Box in Hook */
+    .prompt-terminal {
+      background: #030712;
+      border: 1px solid rgba(0, 229, 153, 0.4);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      color: #00E599;
+    }
+
+    .terminal-body {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      color: #F8FAFC;
       line-height: 1.4;
     }
 
-    /* Scene 2: Comparison (Old vs New) */
+    .terminal-body .prompt-tag {
+      color: #00E599;
+      font-weight: 800;
+    }
+
+    /* SCENE 2: COMPARISON */
     .compare-grid {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
     }
 
     .compare-row {
-      padding: 32px;
-      border-radius: 20px;
+      padding: 36px;
+      border-radius: 24px;
     }
 
     .compare-old {
-      background: rgba(239, 68, 68, 0.08);
-      border: 1px solid rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1.5px solid rgba(239, 68, 68, 0.35);
     }
 
     .compare-new {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+      background: rgba(0, 229, 153, 0.12);
+      border: 1.5px solid rgba(0, 229, 153, 0.6);
+      box-shadow: 0 0 40px rgba(0, 229, 153, 0.25);
     }
 
     .compare-label {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
     .compare-old .compare-label { color: #F87171; }
-    .compare-new .compare-label { color: #34D399; }
+    .compare-new .compare-label { color: #00E599; }
 
     .compare-main {
-      font-size: 40px;
-      font-weight: 800;
-      margin-bottom: 8px;
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 10px;
       color: #FFFFFF;
     }
 
     .compare-desc {
       font-size: 26px;
-      color: #9CA3AF;
-      line-height: 1.35;
+      color: #CBD5E1;
+      line-height: 1.4;
     }
 
-    /* Scene 3: Product / Feature Showcase */
+    /* SCENE 3: 3D PERSPECTIVE SHOWCASE */
     .mockup-window {
-      background: #0F172A;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 24px;
+      background: rgba(11, 23, 36, 0.95);
+      border: 2px solid rgba(0, 229, 153, 0.45);
+      border-radius: 32px;
       overflow: hidden;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 229, 153, 0.2);
     }
 
     .window-bar {
-      height: 48px;
-      background: #1E293B;
+      height: 56px;
+      background: #0F172A;
       display: flex;
       align-items: center;
-      padding: 0 20px;
-      gap: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0 24px;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .dot-red { width: 14px; height: 14px; background: #EF4444; border-radius: 50%; }
-    .dot-yellow { width: 14px; height: 14px; background: #F59E0B; border-radius: 50%; }
-    .dot-green { width: 14px; height: 14px; background: #10B981; border-radius: 50%; }
+    .dot-red { width: 16px; height: 16px; background: #EF4444; border-radius: 50%; }
+    .dot-yellow { width: 16px; height: 16px; background: #F59E0B; border-radius: 50%; }
+    .dot-green { width: 16px; height: 16px; background: #00E599; border-radius: 50%; }
 
     .window-url {
       flex: 1;
       margin-left: 20px;
-      background: #090D16;
-      border-radius: 8px;
-      padding: 6px 14px;
+      background: #030712;
+      border-radius: 10px;
+      padding: 8px 18px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      color: #38BDF8;
+      font-size: 22px;
+      font-weight: 700;
+      color: #00E599;
       text-align: center;
+      border: 1px solid rgba(0, 229, 153, 0.35);
     }
 
     .mockup-content {
-      padding: 40px 32px;
+      padding: 40px 36px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 22px;
     }
+
+    /* 3D Rotating Cube */
+    .viewport-3d-stage {
+      width: 100%;
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cube-container {
+      width: 140px;
+      height: 140px;
+      perspective: 700px;
+    }
+
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateCube 9s linear infinite;
+    }
+
+    @keyframes rotateCube {
+      0% { transform: rotateX(-20deg) rotateY(0deg); }
+      100% { transform: rotateX(-20deg) rotateY(360deg); }
+    }
+
+    .cube-face {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 2px solid #00E599;
+      background: rgba(0, 229, 153, 0.14);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 25px rgba(0, 229, 153, 0.4), inset 0 0 25px rgba(0, 229, 153, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: 1px;
+    }
+
+    .face-front  { transform: translateZ(70px); }
+    .face-back   { transform: rotateY(180deg) translateZ(70px); }
+    .face-right  { transform: rotateY(90deg) translateZ(70px); }
+    .face-left   { transform: rotateY(-90deg) translateZ(70px); }
+    .face-top    { transform: rotateX(90deg) translateZ(70px); }
+    .face-bottom { transform: rotateX(-90deg) translateZ(70px); }
 
     .feature-pill-row {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
     .feature-pill {
-      padding: 10px 18px;
+      padding: 10px 20px;
       border-radius: 999px;
       font-size: 22px;
-      font-weight: 700;
-      background: rgba(99, 102, 241, 0.2);
-      border: 1px solid rgba(99, 102, 241, 0.5);
-      color: #C7D2FE;
+      font-weight: 800;
+      background: rgba(0, 229, 153, 0.18);
+      border: 1.5px solid rgba(0, 229, 153, 0.5);
+      color: #FFFFFF;
     }
 
     .feature-title {
-      font-size: 46px;
-      font-weight: 800;
+      font-size: 44px;
+      font-weight: 900;
       line-height: 1.2;
       color: #FFFFFF;
-      margin-top: 10px;
     }
 
     .feature-points {
@@ -317,23 +428,24 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      margin-top: 10px;
     }
 
     .feature-points li {
       font-size: 26px;
-      color: #CBD5E1;
+      font-weight: 600;
+      color: #E2E8F0;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .feature-points li span {
-      color: #06B6D4;
-      font-weight: 800;
+      color: #00E599;
+      font-weight: 900;
+      font-size: 28px;
     }
 
-    /* Scene 4: Proof & Authority */
+    /* SCENE 4: PROOF & METRICS */
     .stat-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -341,20 +453,20 @@
     }
 
     .stat-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 30px 36px;
+      background: rgba(11, 22, 34, 0.9);
+      border: 1.5px solid rgba(0, 229, 153, 0.35);
+      border-radius: 26px;
+      padding: 32px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
     .stat-num {
-      font-size: 72px;
+      font-size: 76px;
       font-weight: 900;
       letter-spacing: -2px;
-      background: linear-gradient(135deg, #06B6D4, #3B82F6);
+      background: linear-gradient(135deg, #00E599, #38BDF8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       line-height: 1;
@@ -365,66 +477,134 @@
     }
 
     .stat-meta .stat-label {
-      font-size: 28px;
-      font-weight: 800;
+      font-size: 30px;
+      font-weight: 900;
       color: #FFFFFF;
     }
 
     .stat-meta .stat-sub {
-      font-size: 20px;
+      font-size: 22px;
       color: #94A3B8;
       margin-top: 4px;
     }
 
-    /* Scene 5: Call To Action */
+    /* SCENE 5: GRAND LOGO HERO & CTA */
     .cta-container {
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 28px;
+      gap: 26px;
+    }
+
+    .hero-logo-wrapper {
+      position: relative;
+      width: 190px;
+      height: 190px;
+      margin: 0 auto 10px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-logo-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 40px;
+      object-fit: cover;
+      border: 3px solid #00E599;
+      box-shadow: 0 0 60px rgba(0, 229, 153, 0.7), 0 0 120px rgba(0, 229, 153, 0.3);
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero-logo-fallback {
+      width: 180px;
+      height: 180px;
+      border-radius: 40px;
+      background: #064e3b;
+      border: 3px solid #00E599;
+      color: #00E599;
+      font-size: 88px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 3;
+    }
+
+    .pulse-ring {
+      position: absolute;
+      inset: -24px;
+      border-radius: 52px;
+      border: 2px solid rgba(0, 229, 153, 0.5);
+      animation: pulse-ring 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .pulse-ring.ring-2 {
+      animation-delay: 0.8s;
+    }
+
+    .pulse-ring.ring-3 {
+      animation-delay: 1.6s;
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(0.85);
+        opacity: 0.95;
+      }
+      100% {
+        transform: scale(1.7);
+        opacity: 0;
+      }
     }
 
     .cta-super {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 24px;
-      font-weight: 700;
-      color: #06B6D4;
-      letter-spacing: 2px;
+      font-size: 28px;
+      font-weight: 900;
+      color: #00E599;
+      letter-spacing: 3px;
       text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(0, 229, 153, 0.5);
     }
 
     .cta-headline {
-      font-size: 60px;
+      font-size: 56px;
       font-weight: 900;
       line-height: 1.15;
       color: #FFFFFF;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
     }
 
     .cta-box {
       width: 100%;
-      background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+      background: linear-gradient(135deg, #00E599 0%, #06B6D4 100%);
       padding: 32px 40px;
       border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(79, 70, 229, 0.4);
-      margin: 10px 0;
+      box-shadow: 0 20px 50px rgba(0, 229, 153, 0.5);
+      margin: 8px 0;
     }
 
     .cta-url {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 42px;
-      font-weight: 800;
-      color: #FFFFFF;
+      font-size: 44px;
+      font-weight: 900;
+      color: #020617;
       letter-spacing: 0.5px;
     }
 
     .cta-comment-sticker {
       background: rgba(255, 255, 255, 0.1);
-      border: 2px dashed rgba(255, 255, 255, 0.4);
-      border-radius: 18px;
-      padding: 20px 32px;
-      font-size: 28px;
-      font-weight: 700;
+      border: 2px dashed rgba(0, 229, 153, 0.7);
+      border-radius: 20px;
+      padding: 20px 36px;
+      font-size: 30px;
+      font-weight: 800;
       color: #F8FAFC;
       display: flex;
       align-items: center;
@@ -432,29 +612,29 @@
     }
 
     .cta-comment-sticker .key-word {
-      background: #F43F5E;
-      color: #FFFFFF;
-      padding: 6px 16px;
-      border-radius: 8px;
+      background: #00E599;
+      color: #020617;
+      padding: 8px 22px;
+      border-radius: 12px;
       font-weight: 900;
       letter-spacing: 1px;
     }
 
     .cta-follow {
       font-size: 26px;
-      color: #94A3B8;
-      font-weight: 600;
+      color: #CBD5E1;
+      font-weight: 700;
     }
 
-    /* Subtitle Overlay Track */
+    /* Subtitle Track */
     .sub-bar {
-      padding: 20px 30px;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 18px;
+      padding: 22px 32px;
+      background: rgba(2, 6, 23, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(0, 229, 153, 0.4);
+      border-radius: 20px;
       font-size: 28px;
-      font-weight: 700;
+      font-weight: 800;
       text-align: center;
       color: #FFFFFF;
       line-height: 1.35;
@@ -462,12 +642,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .sub-bar .highlight {
-      color: #38BDF8;
-      text-decoration: underline;
-      text-underline-offset: 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
     }
   </style>
 </head>
@@ -480,10 +655,14 @@
     <!-- Instagram Safe Zone Wrapper -->
     <div class="safe-zone">
       
-      <!-- Top Brand Bar -->
+      <!-- Top Brand Header with Logo -->
       <div class="brand-header">
         <div class="brand-badge">
-          <div class="dot"></div>
+          {% if logo_file %}
+          <img src="{{ logo_file }}" class="brand-header-logo" alt="Signhify Logo" />
+          {% else %}
+          <div class="header-dot"></div>
+          {% endif %}
           <span>Signhify Studio</span>
         </div>
         <div class="live-tag">3D ENGINE • 60 FPS</div>
@@ -494,28 +673,38 @@
         
         <!-- SCENE 1: HOOK -->
         <div id="scene-hook" class="scene glass-card active clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="1">
-          <div class="hook-alert">⚡ {{ hook_alert|default('CRITICAL WARNING') }}</div>
-          <h1 class="hook-title">{{ hook_title|default('Stop Paying $5,000 for 3D Websites') }}</h1>
-          <p class="hook-sub">{{ hook_sub|default('Ship cinematic scroll-reactive 3D web pages in 10 minutes with zero code.') }}</p>
-        </div>
-
-        <!-- SCENE 2: COMPARISON (THE OLD WAY vs SIGNHIFY) -->
-        <div id="scene-compare" class="scene glass-card clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="1">
-          <div class="compare-grid">
-            <div class="compare-row compare-old">
-              <div class="compare-label">✕ Traditional Agencies</div>
-              <div class="compare-main">$5,000 & 3-4 Weeks</div>
-              <div class="compare-desc">Heavy Three.js code, slow revisions, no direct export.</div>
+          <div class="hook-alert">⚡ {{ hook_alert|default('CRITICAL NOTICE') }}</div>
+          <h1 class="hook-title"><span class="gradient-text">{{ hook_title|default('Stop Paying $5,000') }}</span> for 3D Websites</h1>
+          <p class="hook-sub">{{ hook_sub|default('Ship Apple-grade 60 FPS scroll-reactive 3D web pages in 10 minutes with AI.') }}</p>
+          
+          <div class="prompt-terminal">
+            <div class="terminal-header">
+              <span>● PROMPT-TO-3D ENGINE</span>
+              <span>v2.4 READY</span>
             </div>
-            <div class="compare-row compare-new">
-              <div class="compare-label">✓ Signhify AI Engine</div>
-              <div class="compare-main">10 Minutes & $0 Code</div>
-              <div class="compare-desc">Instant 1-prompt 3D scroll, native 60 FPS, full ZIP export.</div>
+            <div class="terminal-body">
+              <span class="prompt-tag">&gt; </span>"Build a 60 FPS scroll-interactive 3D landing page with real physics"
             </div>
           </div>
         </div>
 
-        <!-- SCENE 3: SHOWCASE & FEATURE -->
+        <!-- SCENE 2: COMPARISON -->
+        <div id="scene-compare" class="scene glass-card clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="1">
+          <div class="compare-grid">
+            <div class="compare-row compare-old">
+              <div class="compare-label">✕ Traditional Agencies</div>
+              <div class="compare-main">$5,000 & 4 Weeks</div>
+              <div class="compare-desc">Heavy Three.js boilerplate, painful revisions, no code ownership.</div>
+            </div>
+            <div class="compare-row compare-new">
+              <div class="compare-label">✓ Signhify AI Engine</div>
+              <div class="compare-main">1 Prompt & 10 Minutes</div>
+              <div class="compare-desc">Instant 3D scroll physics, native 60 FPS GPU acceleration, full code export.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCENE 3: SHOWCASE & 3D WIREFRAME MOCKUP -->
         <div id="scene-showcase" class="scene clip" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}" data-track-index="1">
           <div class="mockup-window">
             <div class="window-bar">
@@ -525,16 +714,29 @@
               <div class="window-url">https://signhify.dpdns.org</div>
             </div>
             <div class="mockup-content">
+              <!-- Live 3D rotating geometry -->
+              <div class="viewport-3d-stage">
+                <div class="cube-container">
+                  <div class="cube">
+                    <div class="cube-face face-front">3D WEB</div>
+                    <div class="cube-face face-back">60 FPS</div>
+                    <div class="cube-face face-right">NO CODE</div>
+                    <div class="cube-face face-left">MIT ZIP</div>
+                    <div class="cube-face face-top">AI</div>
+                    <div class="cube-face face-bottom">SIGNHIFY</div>
+                  </div>
+                </div>
+              </div>
               <div class="feature-pill-row">
                 <span class="feature-pill">Zero WebGL Code</span>
                 <span class="feature-pill">60 FPS Native</span>
                 <span class="feature-pill">100% MIT</span>
               </div>
-              <h2 class="feature-title">{{ feature_title|default('Production Code Built From 1 Single Prompt') }}</h2>
+              <h2 class="feature-title">{{ feature_title|default('Production 3D Sites Built From 1 Prompt') }}</h2>
               <ul class="feature-points">
                 <li><span>▶</span> Interactive 3D camera scroll mechanics</li>
                 <li><span>▶</span> Mobile-optimized hardware acceleration</li>
-                <li><span>▶</span> Full HTML, CSS & Express ZIP download</li>
+                <li><span>▶</span> Full HTML, CSS & JS ZIP download</li>
               </ul>
             </div>
           </div>
@@ -561,16 +763,28 @@
               <div class="stat-num">100%</div>
               <div class="stat-meta">
                 <div class="stat-label">Code Ownership</div>
-                <div class="stat-sub">Deploy anywhere with no lock-in</div>
+                <div class="stat-sub">Deploy anywhere with no vendor lock-in</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- SCENE 5: CALL TO ACTION -->
+        <!-- SCENE 5: GRAND LOGO HERO OUTRO & CALL TO ACTION -->
         <div id="scene-cta" class="scene glass-card clip" data-start="{{ scene5_start }}" data-duration="{{ scene5_duration }}" data-track-index="1">
           <div class="cta-container">
-            <div class="cta-super">GET STARTED NOW</div>
+            <!-- Animated Hero Logo Asset with Radar Pulse Rings -->
+            <div class="hero-logo-wrapper">
+              <div class="pulse-ring ring-1"></div>
+              <div class="pulse-ring ring-2"></div>
+              <div class="pulse-ring ring-3"></div>
+              {% if logo_file %}
+              <img src="{{ logo_file }}" class="hero-logo-img" alt="Signhify Logo" />
+              {% else %}
+              <div class="hero-logo-fallback">S</div>
+              {% endif %}
+            </div>
+
+            <div class="cta-super">SIGNHIFY STUDIO</div>
             <h2 class="cta-headline">Build Your 3D Site Free Today</h2>
             <div class="cta-box">
               <div class="cta-url">signhify.dpdns.org</div>
@@ -639,17 +853,24 @@
         ease: 'power3.out'
       }, cumulativeTime);
 
-      // Micro-animations per scene
+      // Micro-animations per scene scaled proportionally to scene duration
+      const tIn = Math.min(0.3, dur * 0.2);
       if (idx === 0) {
-        tl.from(scene.querySelector('.hook-title'), { y: 25, opacity: 0, duration: 0.4 }, cumulativeTime + 0.1);
+        tl.from(scene.querySelector('.hook-title'), { y: 25, opacity: 0, duration: dur * 0.25 }, cumulativeTime + dur * 0.05);
+        const promptTerm = scene.querySelector('.prompt-terminal');
+        if (promptTerm) tl.from(promptTerm, { scale: 0.92, opacity: 0, duration: dur * 0.25 }, cumulativeTime + dur * 0.12);
       } else if (idx === 1) {
-        tl.from(scene.querySelectorAll('.compare-row'), { y: 20, opacity: 0, stagger: 0.15, duration: 0.4 }, cumulativeTime + 0.1);
+        tl.from(scene.querySelectorAll('.compare-row'), { y: 20, opacity: 0, stagger: dur * 0.08, duration: dur * 0.25 }, cumulativeTime + dur * 0.05);
       } else if (idx === 2) {
-        tl.from(scene.querySelectorAll('.feature-pill'), { scale: 0.85, opacity: 0, stagger: 0.1, duration: 0.3 }, cumulativeTime + 0.1);
+        tl.from(scene.querySelector('.mockup-window'), { scale: 0.9, opacity: 0, duration: dur * 0.25, ease: 'power2.out' }, cumulativeTime + dur * 0.05);
+        tl.from(scene.querySelectorAll('.feature-pill'), { scale: 0.85, opacity: 0, stagger: dur * 0.05, duration: dur * 0.2 }, cumulativeTime + dur * 0.12);
       } else if (idx === 3) {
-        tl.from(scene.querySelectorAll('.stat-card'), { x: -25, opacity: 0, stagger: 0.15, duration: 0.4 }, cumulativeTime + 0.1);
+        tl.from(scene.querySelectorAll('.stat-card'), { x: -25, opacity: 0, stagger: dur * 0.08, duration: dur * 0.25 }, cumulativeTime + dur * 0.05);
       } else if (idx === 4) {
-        tl.from(scene.querySelector('.cta-box'), { scale: 0.9, opacity: 0, duration: 0.4, ease: 'back.out(1.5)' }, cumulativeTime + 0.1);
+        tl.from(scene.querySelector('.hero-logo-wrapper'), { scale: 0.4, rotation: -12, opacity: 0, duration: dur * 0.25, ease: 'back.out(1.8)' }, cumulativeTime + dur * 0.05);
+        tl.from(scene.querySelector('.cta-headline'), { y: 20, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.12);
+        tl.from(scene.querySelector('.cta-box'), { scale: 0.9, opacity: 0, duration: dur * 0.2, ease: 'back.out(1.5)' }, cumulativeTime + dur * 0.18);
+        tl.from(scene.querySelector('.cta-comment-sticker'), { y: 15, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.24);
       }
 
       // Animate scene out (except for the last scene)

@@ -968,7 +968,7 @@ Return ONLY valid JSON.
             "metric_label": metric_lbl,
             "takeaways": takeaways,
             "code_command": code_cmd,
-            "cta_text": "Follow signhify.studio for more · FULL AI ENGINEERING STUDIO",
+            "cta_text": "Follow @signhify.studio for more · FULL AI ENGINEERING STUDIO",
             "publication_date": datetime.now().strftime("%Y-%m-%d")
         }
 

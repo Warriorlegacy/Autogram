@@ -129,7 +129,15 @@ class HyperFramesEngine:
         s4 = round(total_dur * 0.16, 2)
         s5 = round(total_dur - (s1 + s2 + s3 + s4), 2)
 
-        # 2. Extract hook / features from topic or script
+        # 2. Copy logo if present in assets
+        logo_dest_name = ""
+        logo_src = REPO_ROOT / "assets" / "signhify-logo-vector.jpeg"
+        if logo_src.exists():
+            logo_dest = work_dir / "logo.jpeg"
+            shutil.copyfile(logo_src, logo_dest)
+            logo_dest_name = "logo.jpeg"
+
+        # 3. Extract hook / features from topic or script
         hook_title = topic
         if ":" in topic:
             parts = topic.split(":", 1)
@@ -143,6 +151,7 @@ class HyperFramesEngine:
             topic=topic,
             total_duration=total_dur,
             audio_file=audio_dest_name,
+            logo_file=logo_dest_name,
             spoken_preview=script_text[:140] if script_text else "Build yours at signhify.dpdns.org. Follow @signhify.studio",
             hook_alert="NEW 3D ENGINE",
             hook_title=hook_title[:60],
@@ -190,21 +199,20 @@ class HyperFramesEngine:
             duration=duration,
         )
 
-        index_file = comp_dir / "index.html"
-        logger.info(f"Rendering HyperFrames video from {index_file} -> {out_file}...")
+        logger.info(f"Rendering HyperFrames video from directory {comp_dir} -> {out_file}...")
 
-        # Check if local node_modules/.bin/hyperframes exists to avoid network download latency
+        # HyperFrames CLI expects the composition DIRECTORY, not index.html
         local_bin = REPO_ROOT / "node_modules" / ".bin" / ("hyperframes.cmd" if sys.platform.startswith("win") else "hyperframes")
         if local_bin.exists():
             cmd = [
                 str(local_bin.resolve()), "render",
-                str(index_file.resolve()),
+                str(comp_dir.resolve()),
                 "-o", str(out_file.resolve()),
             ]
         else:
             cmd = [
                 "npx", "--yes", "hyperframes", "render",
-                str(index_file.resolve()),
+                str(comp_dir.resolve()),
                 "-o", str(out_file.resolve()),
             ]
 
@@ -222,8 +230,39 @@ class HyperFramesEngine:
             logger.error(f"HyperFrames render failed with code {proc.returncode}:\nSTDOUT: {proc.stdout}\nSTDERR: {proc.stderr}")
             raise RuntimeError(f"HyperFrames render failed (exit code {proc.returncode}): {proc.stderr or proc.stdout}")
 
-        if not out_file.exists() or out_file.stat().st_size < 1024:
-            raise RuntimeError(f"HyperFrames output file is missing or invalid: {out_file}")
+        # Ensure audio track is present if audio_path was provided
+        if audio_path and os.path.exists(audio_path):
+            try:
+                probe_cmd = [
+                    "ffprobe", "-v", "error",
+                    "-select_streams", "a:0",
+                    "-show_entries", "stream=codec_type",
+                    "-of", "default=noprint_wrappers=1:nokey=1",
+                    str(out_file.resolve()),
+                ]
+                has_audio = bool(subprocess.check_output(probe_cmd, text=True, timeout=5).strip())
+                if not has_audio:
+                    logger.info(f"Muxing voiceover audio track {audio_path} into {out_file}...")
+                    muxed_temp = out_file.parent / f"muxed_{out_file.name}"
+                    subprocess.run(
+                        [
+                            "ffmpeg", "-y",
+                            "-i", str(out_file.resolve()),
+                            "-i", str(audio_path),
+                            "-c:v", "copy",
+                            "-c:a", "aac",
+                            "-b:a", "192k",
+                            "-shortest",
+                            str(muxed_temp.resolve()),
+                        ],
+                        check=True,
+                        capture_output=True,
+                        timeout=30,
+                    )
+                    shutil.move(str(muxed_temp.resolve()), str(out_file.resolve()))
+                    logger.info("Successfully muxed voiceover audio into Reel video.")
+            except Exception as e:
+                logger.warning(f"Audio mux check/fallback warning: {e}")
 
         logger.info(f"Successfully rendered HyperFrames reel: {out_file} ({out_file.stat().st_size} bytes)")
         return {

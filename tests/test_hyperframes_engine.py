@@ -51,6 +51,12 @@ def test_hyperframes_compile_composition(tmp_path):
     assert "window.__timelines.marketing_reel" in content
     assert "signhify.dpdns.org" in content
 
+    # Logo integration check:
+    logo_file = comp_dir / "logo.jpeg"
+    if logo_file.exists():
+        assert "logo.jpeg" in content
+        assert "hero-logo-img" in content
+
 
 def test_hyperframes_render_reel_mock(tmp_path):
     """Verifies that render_reel generates the proper CLI command and returns success metadata."""
@@ -82,7 +88,7 @@ def test_hyperframes_render_reel_mock(tmp_path):
 
             # Verify CLI arguments
             called_cmd = run_spy.call_args[0][0]
-            assert "hyperframes" in called_cmd
+            assert any("hyperframes" in str(arg).lower() for arg in called_cmd)
             assert "render" in called_cmd
             assert "-o" in called_cmd
 
