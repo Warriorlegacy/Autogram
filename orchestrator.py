@@ -741,17 +741,19 @@ def run_video_pipeline(dry_run: bool = False, custom_topic: str | None = None, c
 
 
 def run_scheduler(dry_run: bool = False):
-    """Runs a local continuous scheduler daemon for 2 carousels, 2 stories, and 3 viral reels."""
+    """Runs a local continuous scheduler daemon for 2 carousels, 2 stories, 3 viral reels, and 2 Hindi promos."""
     import time
     DAILY_SLOTS = ["11:30", "19:30"]  # 2 Carousels (IST)
     STORY_SLOTS = ["09:30", "17:30"]  # 2 Stories (IST)
     VIDEO_SLOTS = ["10:30", "14:30", "20:30"]  # 3 Viral Reels (IST)
+    HINDI_SLOTS = ["13:30", "21:30"]  # 2 Hindi Promo Reels (IST)
 
     logger.info("==================================================")
-    logger.info(" Autogram Autonomous Scheduler Active (7 Drops/Day: 3 Reels, 2 Stories, 2 Carousels)")
+    logger.info(" Autogram Autonomous Scheduler Active (9 Drops/Day: 3 Reels, 2 Stories, 2 Carousels, 2 Hindi Promos)")
     logger.info(f" 2 Carousels: {', '.join(DAILY_SLOTS)} ({settings.timezone})")
     logger.info(f" 2 Stories:   {', '.join(STORY_SLOTS)} ({settings.timezone})")
     logger.info(f" 3 Reels:     {', '.join(VIDEO_SLOTS)} ({settings.timezone})")
+    logger.info(f" 2 Hindi:     {', '.join(HINDI_SLOTS)} ({settings.timezone})")
     logger.info(f" Operating Mode: {'DRY RUN / SIMULATION' if dry_run or settings.dry_run else 'LIVE PRODUCTION'}")
     logger.info("==================================================")
     logger.info("Scheduler daemon running. Press Ctrl+C to terminate.")
@@ -798,6 +800,17 @@ def run_scheduler(dry_run: bool = False):
                 run_video_pipeline(dry_run=dry_run)
             except Exception as e:
                 logger.error(f"Scheduled video run error on slot {current_time_str}: {e}")
+
+        # 4. Check Hindi Promo slots
+        h_key = f"hindi_{current_time_str}"
+        if current_time_str in HINDI_SLOTS and h_key not in triggered_today_slots:
+            logger.info(f"Triggering scheduled Hindi Promo publishing run for slot {current_time_str}...")
+            triggered_today_slots.add(h_key)
+            try:
+                from scripts.pipeline_hindi_promo import run_hindi_promo_pipeline
+                run_hindi_promo_pipeline(dry_run=dry_run)
+            except Exception as e:
+                logger.error(f"Scheduled Hindi promo run error on slot {current_time_str}: {e}")
 
         time.sleep(20)
 
@@ -883,6 +896,7 @@ def main():
     parser.add_argument("--style", type=str, default=None, choices=["default", "glitch-hormozi", "glitch", "hormozi"], help="Visual and narrative style (e.g. glitch-hormozi)")
     parser.add_argument("--makerzz-run", type=str, metavar="BRIEF_PATH", default=None, help="Run the Makerzz P0-P8 engine from a brief JSON file (additive, does not touch legacy pipeline)")
     parser.add_argument("--resume-run", type=str, metavar="RUN_ID", default=None, help="Resume an interrupted Makerzz run from its last validated gate artifact")
+    parser.add_argument("--hindi-reel", action="store_true", help="Generate and publish a Signhify Hindi/Hinglish cinematic promo reel via HyperFrames")
 
     args = parser.parse_args()
 
@@ -942,6 +956,12 @@ def main():
         print("\n" + "="*50)
         print(reel["formatted_text"])
         print("="*50 + "\n")
+        return
+
+    if args.hindi_reel:
+        from scripts.pipeline_hindi_promo import run_hindi_promo_pipeline
+        dry = args.dry_run or (not args.run_all)
+        _run_guarded("hindi-reel", dry, lambda: run_hindi_promo_pipeline(dry_run=dry))
         return
 
     if args.generate_hyperframes_reel:
