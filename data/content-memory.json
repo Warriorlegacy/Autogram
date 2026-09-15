@@ -1,20 +1,6 @@
 {
   "recent_posts": [
     {
-      "date": "2026-09-15",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "[Story] Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "hook": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-14",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "[Story] Documenso: The Open Source DocuSign Alternative",
-      "hook": "Documenso: The Open Source DocuSign Alternative",
-      "score": 95.0
-    },
-    {
       "date": "2026-09-14",
       "pillar": "Trending GitHub Spotlight",
       "topic": "Supabase: Open Source Firebase Alternative with Postgres, Auth, and Storage",
@@ -355,6 +341,13 @@
       "topic": "[Promo Carousel] Signhify Studio 3D Launch",
       "pillar": "Autonomous 3D Web Engine",
       "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-09-15",
+      "topic": "[Promo Carousel] Signhify Autonomous 3D Web Engine",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_published_media_911913",
       "type": "carousel"
     }
   ],
