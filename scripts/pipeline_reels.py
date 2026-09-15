@@ -31,6 +31,7 @@ VOICE_NAME = os.getenv("REELS_VOICE", "en-US-ChristopherNeural")
 
 AUDIO_FILE = str(BASE_DIR / "audio.mp3")
 BACKGROUND_IMG = str(BASE_DIR / "background.jpg")
+BACKGROUND_VIDEO = str(BASE_DIR / "background.mp4")
 SUBTITLES_ASS = str(BASE_DIR / "subtitles.ass")
 OUTPUT_REEL = str(BASE_DIR / "final_reel.mp4")
 
@@ -234,6 +235,190 @@ def download_visual(prompt: str, output_path: str = BACKGROUND_IMG):
     image_generator.generate_image(clean, width=1080, height=1920, output_path=output_path)
 
 
+def _try_gradio_ai_video(prompt: str, output_path: str) -> str | None:
+    """Tier 1: Hugging Face ZeroGPU (LTX-Video or Wan 2.1) via gradio_client."""
+    token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_API_KEY")
+    try:
+        from gradio_client import Client
+        logger.info("Attempting Tier 1 AI Video: Lightricks/ltx-video-distilled...")
+        client = Client("Lightricks/ltx-video-distilled", token=token)
+        clean_prompt = prompt[:200]
+        res = client.predict(
+            prompt=clean_prompt,
+            negative_prompt="worst quality, blurry, distorted, flat 2d, watermark",
+            input_image_filepath=None,
+            input_video_filepath=None,
+            height_ui=704,
+            width_ui=512,
+            mode="text-to-video",
+            duration_ui=4,
+            ui_frames_to_use=9,
+            seed_ui=42,
+            randomize_seed=True,
+            ui_guidance_scale=1,
+            improve_texture_flag=True,
+            api_name="/text_to_video",
+        )
+        video_file = None
+        if isinstance(res, (tuple, list)) and len(res) > 0:
+            item = res[0]
+            if isinstance(item, dict) and "video" in item:
+                video_file = item["video"]
+            elif isinstance(item, str) and os.path.exists(item):
+                video_file = item
+        elif isinstance(res, dict) and "video" in res:
+            video_file = res["video"]
+        elif isinstance(res, str) and os.path.exists(res):
+            video_file = res
+
+        if video_file and os.path.exists(video_file):
+            import shutil
+            shutil.copyfile(video_file, output_path)
+            logger.info(f"Tier 1 AI Video generated successfully via LTX-Video: {output_path}")
+            return output_path
+    except Exception as e:
+        logger.warning(f"Tier 1 LTX-Video generation failed/queued ({e}); checking next fallback.")
+    return None
+
+
+def _try_json2video(script_text: str, output_path: str) -> str | None:
+    """Tier 2: JSON2Video Cloud API (configured with user API key)."""
+    api_key = (os.getenv("JSON2VIDEO_API_KEY") or "").strip()
+    if not api_key:
+        return None
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from src.content.json2video_engine import JSON2VideoEngine
+        logger.info("Attempting Tier 2 AI Video: JSON2Video Cloud API...")
+        engine = JSON2VideoEngine(api_key=api_key)
+        res = engine.render_reel(script_text=script_text, output_path=output_path, fallback_to_local=False)
+        if res and os.path.exists(output_path) and os.path.getsize(output_path) > 1024:
+            logger.info(f"Tier 2 video generated via JSON2Video: {output_path}")
+            return output_path
+    except Exception as e:
+        logger.warning(f"Tier 2 JSON2Video generation failed ({e}); checking next fallback.")
+    return None
+
+
+def _try_fal_or_apiframe(prompt: str, output_path: str) -> str | None:
+    """Tier 3: Fal.ai or Apiframe if developer keys are configured."""
+    fal_key = (os.getenv("FAL_KEY") or "").strip()
+    if fal_key:
+        try:
+            logger.info("Attempting Tier 3 AI Video: Fal.ai Wan 2.1 / LTX...")
+            headers = {"Authorization": f"Key {fal_key}", "Content-Type": "application/json"}
+            payload = {"prompt": prompt, "aspect_ratio": "9:16"}
+            r = requests.post("https://queue.fal.run/fal-ai/wan-2.1/t2v", json=payload, headers=headers, timeout=30)
+            if r.status_code in (200, 201):
+                video_url = r.json().get("video", {}).get("url")
+                if video_url:
+                    vid_data = requests.get(video_url, timeout=60).content
+                    Path(output_path).write_bytes(vid_data)
+                    return output_path
+        except Exception as e:
+            logger.warning(f"Tier 3 Fal.ai video generation failed ({e}).")
+
+    apiframe_key = (os.getenv("APIFRAME_API_KEY") or "").strip()
+    if apiframe_key:
+        try:
+            logger.info("Attempting Tier 3 AI Video: Apiframe unified video API...")
+            headers = {"Authorization": f"Bearer {apiframe_key}", "Content-Type": "application/json"}
+            payload = {"prompt": prompt, "model": "kling-v1.5", "aspect_ratio": "9:16"}
+            r = requests.post("https://api.apiframe.pro/v1/video/generate", json=payload, headers=headers, timeout=30)
+            if r.status_code in (200, 201):
+                video_url = r.json().get("output", {}).get("url") or r.json().get("video_url")
+                if video_url:
+                    vid_data = requests.get(video_url, timeout=60).content
+                    Path(output_path).write_bytes(vid_data)
+                    return output_path
+        except Exception as e:
+            logger.warning(f"Tier 3 Apiframe video generation failed ({e}).")
+    return None
+
+
+def _try_pexels_video(topic: str, output_path: str) -> str | None:
+    """Tier 4: Pexels 4K/HD Portrait Cinematic Video (100% Free, 20k req/mo)."""
+    pexels_key = (os.getenv("PEXELS_API_KEY") or "").strip()
+    if not pexels_key:
+        return None
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from src.content.cloud_render import pexels_portrait_clips
+        logger.info(f"Attempting Tier 4 Cinematic Stock Video: Pexels for '{topic}'...")
+        keywords = "technology 3d animation luxury supercar watch abstract neon"
+        t_low = topic.lower()
+        if "watch" in t_low or "timepiece" in t_low:
+            keywords = "luxury watch mechanical"
+        elif "car" in t_low or "supercar" in t_low or "ev" in t_low:
+            keywords = "hypercar sports car night city"
+        elif "headset" in t_low or "spatial" in t_low:
+            keywords = "virtual reality futuristic technology"
+        elif "code" in t_low or "developer" in t_low or "copilot" in t_low:
+            keywords = "coding cyber matrix computer"
+        elif "website" in t_low or "design" in t_low:
+            keywords = "modern design neon 3d abstract"
+
+        clips = pexels_portrait_clips(keywords, count=2)
+        if clips:
+            best_clip = clips[0]
+            logger.info(f"Downloading Pexels cinematic clip from {best_clip['url'][:60]}...")
+            resp = requests.get(best_clip["url"], timeout=60)
+            if resp.status_code == 200 and len(resp.content) > 10000:
+                Path(output_path).write_bytes(resp.content)
+                logger.info(f"Tier 4 Pexels cinematic clip saved to {output_path}")
+                return output_path
+    except Exception as e:
+        logger.warning(f"Tier 4 Pexels cinematic stock failed ({e}); checking next fallback.")
+    return None
+
+
+def _try_flux_image(prompt: str, output_path: str) -> str:
+    """Tier 5: FLUX.1 + 2.5D camera zoompan (100% Free, zero fail foundation)."""
+    logger.info("Using Tier 5: Pollinations FLUX.1 9:16 vertical keyframe + 2.5D zoompan...")
+    download_visual(prompt, output_path)
+    return output_path
+
+
+def download_ai_video(
+    prompt: str,
+    topic: str = "",
+    script_text: str = "",
+    output_video_path: str = BACKGROUND_VIDEO,
+    output_image_path: str = BACKGROUND_IMG,
+) -> dict:
+    """
+    5-Tier Cascading AI Cinematic Video Dispatcher:
+    Tier 1: Wan 2.1 / LTX-Video via Hugging Face ZeroGPU (gradio_client)
+    Tier 2: JSON2Video Cloud API (user-configured key)
+    Tier 3: Fal.ai / Apiframe REST APIs (if configured)
+    Tier 4: Pexels 4K Portrait Cinematic Stock Video (free API)
+    Tier 5: Pollinations FLUX.1 + 2.5D FFmpeg Zoompan (zero-fail foundation)
+    """
+    # Tier 1: True AI Video
+    t1 = _try_gradio_ai_video(prompt, output_video_path)
+    if t1:
+        return {"provider": "ai_video_gradio", "type": "video", "path": t1}
+
+    # Tier 2: JSON2Video
+    t2 = _try_json2video(script_text or prompt, output_video_path)
+    if t2:
+        return {"provider": "json2video", "type": "video", "path": t2}
+
+    # Tier 3: Fal.ai / Apiframe
+    t3 = _try_fal_or_apiframe(prompt, output_video_path)
+    if t3:
+        return {"provider": "fal_ai", "type": "video", "path": t3}
+
+    # Tier 4: Pexels 4K Portrait Stock
+    t4 = _try_pexels_video(topic or prompt, output_video_path)
+    if t4:
+        return {"provider": "pexels_cinematic", "type": "video", "path": t4}
+
+    # Tier 5: Zero-Fail FLUX.1 2.5D Zoompan
+    t5 = _try_flux_image(prompt, output_image_path)
+    return {"provider": "pollinations_flux_zoompan", "type": "image", "path": t5}
+
+
 def to_ass_time(sec: float) -> str:
     h = int(sec // 3600)
     m = int((sec % 3600) // 60)
@@ -297,32 +482,65 @@ def compile_word_level_ass(audio_path: str = AUDIO_FILE, ass_path: str = SUBTITL
 
 
 def render_ffmpeg(
-    image_path: str = BACKGROUND_IMG,
+    visual_path: str = BACKGROUND_IMG,
     audio_path: str = AUDIO_FILE,
     ass_path: str = SUBTITLES_ASS,
     output_path: str = OUTPUT_REEL,
+    is_video: bool = False,
+    image_path: str | None = None,
 ):
+    """
+    Renders 1080x1920 Instagram Reel with kinetic word-level .ass subtitles.
+    If is_video is True or visual_path is an MP4/video, loops the video to match audio duration.
+    If visual_path is an image, applies 2.5D camera zoompan.
+    """
+    if image_path is not None:
+        visual_path = image_path
+
     clean_ass = ass_path.replace("\\", "/").replace(":", "\\:")
-    cmd = [
-        "ffmpeg", "-y",
-        "-loop", "1", "-i", image_path,
-        "-i", audio_path,
-        "-filter_complex",
-        "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,"
-        "crop=1080:1920,"
-        "zoompan=z='min(zoom+0.0012,1.15)':d=750:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30,"
-        f"subtitles='{clean_ass}'[v]",
-        "-map", "[v]",
-        "-map", "1:a",
-        "-c:v", "libx264",
-        "-preset", "fast",
-        "-crf", "18",
-        "-c:a", "aac",
-        "-b:a", "192k",
-        "-pix_fmt", "yuv420p",
-        "-shortest",
-        output_path,
-    ]
+    is_vid = is_video or visual_path.lower().endswith((".mp4", ".mov", ".mkv", ".webm"))
+
+    if is_vid:
+        cmd = [
+            "ffmpeg", "-y",
+            "-stream_loop", "-1", "-i", visual_path,
+            "-i", audio_path,
+            "-filter_complex",
+            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,"
+            "crop=1080:1920,"
+            f"subtitles='{clean_ass}'[v]",
+            "-map", "[v]",
+            "-map", "1:a",
+            "-c:v", "libx264",
+            "-preset", "fast",
+            "-crf", "18",
+            "-c:a", "aac",
+            "-b:a", "192k",
+            "-pix_fmt", "yuv420p",
+            "-shortest",
+            output_path,
+        ]
+    else:
+        cmd = [
+            "ffmpeg", "-y",
+            "-loop", "1", "-i", visual_path,
+            "-i", audio_path,
+            "-filter_complex",
+            "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,"
+            "crop=1080:1920,"
+            "zoompan=z='min(zoom+0.0012,1.15)':d=750:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30,"
+            f"subtitles='{clean_ass}'[v]",
+            "-map", "[v]",
+            "-map", "1:a",
+            "-c:v", "libx264",
+            "-preset", "fast",
+            "-crf", "18",
+            "-c:a", "aac",
+            "-b:a", "192k",
+            "-pix_fmt", "yuv420p",
+            "-shortest",
+            output_path,
+        ]
     subprocess.run(cmd, check=True)
 
 
@@ -337,15 +555,30 @@ def execute_reels_pipeline(topic: str = "") -> dict:
     logger.info(f"Executing Reels pipeline with unique topic: '{topic}'")
     data = generate_reel_content(topic)
     asyncio.run(synthesize_speech(data["script"], AUDIO_FILE))
-    download_visual(data["visual_prompt"], BACKGROUND_IMG)
+
+    # Multi-tier AI video generation with cascading fallback
+    visual_meta = download_ai_video(
+        prompt=data["visual_prompt"],
+        topic=topic,
+        script_text=data["script"],
+        output_video_path=BACKGROUND_VIDEO,
+        output_image_path=BACKGROUND_IMG,
+    )
     compile_word_level_ass(AUDIO_FILE, SUBTITLES_ASS)
-    render_ffmpeg(BACKGROUND_IMG, AUDIO_FILE, SUBTITLES_ASS, OUTPUT_REEL)
+    render_ffmpeg(
+        visual_path=visual_meta["path"],
+        audio_path=AUDIO_FILE,
+        ass_path=SUBTITLES_ASS,
+        output_path=OUTPUT_REEL,
+        is_video=(visual_meta["type"] == "video"),
+    )
     result = {
         "video_path": OUTPUT_REEL,
         "caption": data["caption"],
         "script": data["script"],
         "visual_prompt": data["visual_prompt"],
         "topic": topic,
+        "video_provider": visual_meta.get("provider", "unknown"),
     }
     with open(str(BASE_DIR / "metadata.json"), "w", encoding="utf-8") as f:
         _json.dump(result, f, indent=2)

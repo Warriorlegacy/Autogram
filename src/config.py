@@ -34,10 +34,12 @@ class Settings(BaseSettings):
     cloudflare_account_id: str | None = Field(default=None, alias="CLOUDFLARE_ACCOUNT_ID")
     cloudflare_api_token: str | None = Field(default=None, alias="CLOUDFLARE_API_TOKEN")
 
-    # Video Generation (JSON2Video, local MoneyPrinterTurbo, Edge-TTS + FFmpeg)
+    # Video Generation (JSON2Video, local MoneyPrinterTurbo, Edge-TTS + FFmpeg, Fal.ai, Apiframe)
     mpt_base_url: str = Field(default="http://127.0.0.1:8080", alias="MPT_BASE_URL")
     pexels_api_key: str | None = Field(default=None, alias="PEXELS_API_KEY")
     json2video_api_key: str | None = Field(default=None, alias="JSON2VIDEO_API_KEY")
+    fal_key: str | None = Field(default=None, alias="FAL_KEY")
+    apiframe_api_key: str | None = Field(default=None, alias="APIFRAME_API_KEY")
     heygen_api_key: str | None = Field(default=None, alias="HEYGEN_API_KEY")
 
     # Enterprise Omnipresence & Research Adapters (Optional)
