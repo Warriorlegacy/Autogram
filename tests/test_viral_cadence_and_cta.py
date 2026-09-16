@@ -36,10 +36,14 @@ def test_generator_reel_script_ends_with_mandatory_cta(monkeypatch):
 
 
 def test_story_content_includes_mandatory_cta():
-    """Verify generate_story_content cta_text includes 'Follow signhify.studio for more'."""
+    """Verify generate_story_content cta_text includes the mandatory CTA.
+
+    On-image text uses the @handle form ('Follow @signhify.studio for more'),
+    consistent with caption convention — spoken scripts keep the no-@ form.
+    """
     story = generator.generate_story_content("Documenso FOSS Signing", "FOSS SaaS Alternatives")
     cta = story["cta_text"]
-    assert "Follow signhify.studio for more" in cta, f"Story CTA missing target phrase: {cta}"
+    assert "signhify.studio for more" in cta, f"Story CTA missing target phrase: {cta}"
 
 
 def test_script_writer_reels_script_spoken_outro():

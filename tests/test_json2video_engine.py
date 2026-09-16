@@ -80,8 +80,11 @@ def test_render_reel_fallback(tmp_path):
     out_file = tmp_path / "test_reel.mp4"
 
     with patch.object(engine, "submit_render", side_effect=RuntimeError("API Network Error")):
-        with patch("src.content.video_engine.VideoEngine.render_vertical_reel") as mock_local:
-            mock_local.return_value = {"status": "completed", "video_path": str(out_file), "duration_seconds": 15}
-            res = engine.render_reel("Sample script for fallback test.", output_path=out_file, fallback_to_local=True)
-            assert res["provider"] == "local_ffmpeg"
-            assert res["status"] == "completed"
+        # ponytail: pin HyperFrames unavailable so this exercises the FFmpeg
+        # fallback tier it was written for (engine prefers HyperFrames first).
+        with patch("src.content.hyperframes_engine.HyperFramesEngine.is_available", return_value=False):
+            with patch("src.content.video_engine.VideoEngine.render_vertical_reel") as mock_local:
+                mock_local.return_value = {"status": "completed", "video_path": str(out_file), "duration_seconds": 15}
+                res = engine.render_reel("Sample script for fallback test.", output_path=out_file, fallback_to_local=True)
+                assert res["provider"] == "local_ffmpeg"
+                assert res["status"] == "completed"

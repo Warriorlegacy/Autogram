@@ -34,7 +34,9 @@ def test_topic_scorer():
             "sources": ["https://example.com/test2"]
         }
     ]
-    result = scorer.select_best_topic(candidates)
+    # ponytail: hermetic memory — scoring logic must not depend on the live
+    # production ledger, whose growth otherwise drags the score below 80.
+    result = scorer.select_best_topic(candidates, memory={"recent_posts": [], "banned_topics": []})
     assert result["winner"]["topic"] == "Context Caching Architecture in Multi-Agent Pipelines"
     assert result["winner"]["calculated_score"] > 80
 

@@ -78,17 +78,22 @@ def test_story_image_rendering(tmp_path):
         assert img.size == (1080, 1920)
         assert img.format in ["JPEG", "JPG"]
 
-def test_schedule_json_has_seven_story_slots_and_queue():
-    """Verify data/schedule.json has 7 story slots and 7 queued story postings."""
+def test_schedule_json_has_two_story_slots_and_queue():
+    """Verify data/schedule.json has 2 story slots and a populated story queue.
+
+    Enforced cadence is 3 reels / 2 stories / 2 carousels daily (see
+    test_viral_cadence_and_cta.py::test_workflow_cron_cadence and the 2 crons
+    in .github/workflows/daily-story.yml) — not the retired 7x regime.
+    """
     sched_path = Path("data/schedule.json")
     assert sched_path.exists()
 
     data = json.loads(sched_path.read_text(encoding="utf-8"))
     assert "story_slots" in data
-    assert len(data["story_slots"]) == 7
+    assert len(data["story_slots"]) == 2
 
     story_queue_items = [q for q in data.get("queue", []) if q.get("format") == "story" or str(q.get("id")).startswith("STORY")]
-    assert len(story_queue_items) >= 7
+    assert len(story_queue_items) >= 2
 
 def test_api_publish_story_endpoint(client):
     """Verify POST /api/publish/story returns valid story manifest in dry-run mode."""

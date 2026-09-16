@@ -34,6 +34,37 @@ BASE_DIR.mkdir(parents=True, exist_ok=True)
 
 VOICE_NAME = os.getenv("REELS_VOICE", "en-US-BrianMultilingualNeural")
 
+# Voice roster — rotated every run so consecutive reels never sound identical.
+# All are edge-tts multilingual neural voices with human promo cadence.
+REEL_VOICES = [
+    "en-US-BrianMultilingualNeural",
+    "en-US-AvaMultilingualNeural",
+    "en-US-AndrewMultilingualNeural",
+    "en-US-EmmaMultilingualNeural",
+]
+
+
+def _select_reel_voice() -> str:
+    """Pick the voice for this run: env override wins, else deterministic rotation.
+
+    Indexed by TOTAL post count (not reel count) so voice rotation desyncs from
+    the 2-style template alternation — every run gets a fresh voice+style combo.
+    """
+    override = (os.getenv("REELS_VOICE") or "").strip()
+    if override:
+        return override
+    try:
+        import json as _json
+
+        mem_file = Path(__file__).resolve().parent.parent / "data" / "content-memory.json"
+        if mem_file.exists():
+            mem = _json.loads(mem_file.read_text(encoding="utf-8"))
+            total = len(mem.get("recent_posts", []))
+            return REEL_VOICES[total % len(REEL_VOICES)]
+    except Exception:
+        pass
+    return REEL_VOICES[0]
+
 AUDIO_FILE = str(BASE_DIR / "audio.mp3")
 BACKGROUND_IMG = str(BASE_DIR / "background.jpg")
 BACKGROUND_VIDEO = str(BASE_DIR / "background.mp4")
@@ -352,11 +383,11 @@ def generate_reel_content(topic: str) -> dict:
     return data
 
 
-async def synthesize_speech(text: str, output_path: str = AUDIO_FILE):
+async def synthesize_speech(text: str, output_path: str = AUDIO_FILE, voice: str | None = None):
     import edge_tts
 
-    # BrianMultilingualNeural delivers human, expressive, promotional cadence
-    voice = os.getenv("REELS_VOICE", "en-US-BrianMultilingualNeural")
+    # Rotating multilingual neural voices — human, expressive, promotional cadence
+    voice = voice or _select_reel_voice()
     comm = edge_tts.Communicate(text, voice=voice, rate="+6%", pitch="+0Hz")
     await comm.save(output_path)
 
@@ -729,7 +760,9 @@ def execute_reels_pipeline(topic: str = "") -> dict:
     data = generate_reel_content(topic)
     template_name = _select_reel_template()
     logger.info(f"Selected HyperFrames visual style: {template_name}")
-    asyncio.run(synthesize_speech(data["script"], AUDIO_FILE))
+    voice = _select_reel_voice()
+    logger.info(f"Selected voiceover voice: {voice}")
+    asyncio.run(synthesize_speech(data["script"], AUDIO_FILE, voice))
 
     # Multi-tier AI video generation with cascading fallback
     visual_meta = download_ai_video(
@@ -764,6 +797,7 @@ def execute_reels_pipeline(topic: str = "") -> dict:
         "topic": topic,
         "video_provider": visual_meta.get("provider", "unknown"),
         "template": template_name,
+        "voice": voice,
     }
     with open(str(BASE_DIR / "metadata.json"), "w", encoding="utf-8") as f:
         _json.dump(result, f, indent=2)

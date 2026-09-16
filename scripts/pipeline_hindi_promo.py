@@ -58,6 +58,31 @@ HINDI_VOICE = "hi-IN-SwaraNeural"
 VOICE_RATE = "+5%"
 VOICE_PITCH = "+1Hz"
 
+# Voice roster — rotated every run so consecutive Hindi reels never sound identical.
+HINDI_VOICES = [
+    "hi-IN-SwaraNeural",   # natural Hindi female
+    "hi-IN-MadhurNeural",  # natural Hindi male
+]
+
+
+def _select_hindi_voice() -> str:
+    """Pick the voice for this run: env override wins, else deterministic rotation.
+
+    Indexed by TOTAL post count so voice rotation desyncs from the Hindi-only
+    template alternation — every run gets a fresh voice+style combo.
+    """
+    override = (os.getenv("HINDI_VOICE") or "").strip()
+    if override:
+        return override
+    try:
+        if MEMORY_FILE.exists():
+            mem = json.loads(MEMORY_FILE.read_text(encoding="utf-8"))
+            total = len(mem.get("recent_posts", []))
+            return HINDI_VOICES[total % len(HINDI_VOICES)]
+    except Exception:
+        pass
+    return HINDI_VOICES[0]
+
 # ── Unique Hinglish Scripts ───────────────────────────────────────────
 # Each script is a unique marketing angle — NOT a viral carousel template.
 # Written in a conversational "founder talking to a potential client" tone.
@@ -385,12 +410,13 @@ def _select_script(override_topic: str | None = None) -> dict:
 
 
 # ── Voice Synthesis (edge-tts) ────────────────────────────────────────
-async def _synthesize(text: str, mp3_path: Path, srt_path: Path) -> float:
+async def _synthesize(text: str, mp3_path: Path, srt_path: Path, voice: str | None = None) -> float:
     """Synthesize natural-sounding Hindi voiceover + SRT subtitles."""
     import edge_tts
 
+    voice = voice or _select_hindi_voice()
     communicate = edge_tts.Communicate(
-        text, HINDI_VOICE, rate=VOICE_RATE, pitch=VOICE_PITCH
+        text, voice, rate=VOICE_RATE, pitch=VOICE_PITCH
     )
     submaker = edge_tts.SubMaker()
     with open(mp3_path, "wb") as f:
@@ -442,9 +468,9 @@ async def _synthesize(text: str, mp3_path: Path, srt_path: Path) -> float:
         return max(5.0, len(text.split()) / 2.5)
 
 
-def synthesize_speech(text: str, mp3_path: Path, srt_path: Path) -> float:
+def synthesize_speech(text: str, mp3_path: Path, srt_path: Path, voice: str | None = None) -> float:
     """Sync wrapper for edge-tts Hindi voiceover."""
-    return asyncio.run(_synthesize(text, mp3_path, srt_path))
+    return asyncio.run(_synthesize(text, mp3_path, srt_path, voice))
 
 
 # ── HyperFrames 3D Render ─────────────────────────────────────────────
@@ -539,9 +565,10 @@ def run_hindi_promo_pipeline(dry_run: bool = False, topic_override: str | None =
     output_video = WORKSPACE / "hindi_promo.mp4"
     metadata_path = WORKSPACE / "metadata.json"
 
-    # 1. Synthesize Hindi voiceover (natural-sounding settings)
-    logger.info(f"Synthesizing Hindi voiceover ({HINDI_VOICE}, rate={VOICE_RATE}, pitch={VOICE_PITCH})...")
-    duration = synthesize_speech(script["narration"], mp3_path, srt_path)
+    # 1. Synthesize Hindi voiceover (natural-sounding settings, rotated voice)
+    voice = _select_hindi_voice()
+    logger.info(f"Synthesizing Hindi voiceover ({voice}, rate={VOICE_RATE}, pitch={VOICE_PITCH})...")
+    duration = synthesize_speech(script["narration"], mp3_path, srt_path, voice)
     logger.info(f"Voiceover ready: {mp3_path} ({duration:.1f}s)")
 
     # 2. Render 3D animated video via HyperFrames (logo included automatically)
@@ -579,7 +606,7 @@ def run_hindi_promo_pipeline(dry_run: bool = False, topic_override: str | None =
         "caption": script["caption"],
         "hashtags": script["hashtags"],
         "template": template_name,
-        "voice": HINDI_VOICE,
+        "voice": voice,
         "voice_rate": VOICE_RATE,
         "voice_pitch": VOICE_PITCH,
         "duration_seconds": duration,

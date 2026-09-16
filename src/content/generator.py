@@ -481,7 +481,10 @@ Return ONLY valid JSON.
             "it's important to note": "note that"
         }
         import re
-        patterns = [(re.compile(r'\b' + re.escape(banned) + r'\b', re.IGNORECASE), repl) for banned, repl in banned_replacements.items()]
+        # ponytail: stem match (\w* suffix) so morphological variants like
+        # "seamlessly"/"robustness" are scrubbed too — the quality gate uses
+        # substring matching and would otherwise reject them after scrubbing.
+        patterns = [(re.compile(r'\b' + re.escape(banned) + r'\w*', re.IGNORECASE), repl) for banned, repl in banned_replacements.items()]
 
         def _scrub(val):
             if isinstance(val, str):
