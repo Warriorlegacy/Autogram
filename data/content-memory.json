@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-16",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "[Story] vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "hook": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-16",
       "pillar": "Trending GitHub Spotlight",
       "topic": "Affine: Open Source Next-Gen Collaborative Workspace Unifying Docs and Whiteboards",
       "hook": "Ditch $50-$200/month SaaS and switch to Affine, the open-source collaborative workspace.",
@@ -411,13 +418,6 @@
       "topic": "[Promo Carousel] Signhify Autonomous 3D Web Engine",
       "pillar": "Autonomous 3D Web Engine",
       "media_id": "mock_published_media_503604",
-      "type": "carousel"
-    },
-    {
-      "date": "2026-09-15",
-      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
-      "pillar": "Autonomous 3D Web Engine",
-      "media_id": "mock_carousel_123",
       "type": "carousel"
     }
   ],
