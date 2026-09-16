@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ topic }} — Avatar Presenter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #020617;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #stage {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      background: radial-gradient(circle at 50% 8%, #083344 0%, #06261f 38%, #020617 82%);
+      overflow: hidden;
+    }
+
+    /* Cinematic ambience */
+    .glow-orb-1 {
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.30) 0%, rgba(6, 182, 212, 0) 70%);
+      top: -160px;
+      left: -220px;
+      filter: blur(80px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .glow-orb-2 {
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.26) 0%, rgba(0, 229, 153, 0) 70%);
+      bottom: 80px;
+      right: -240px;
+      filter: blur(90px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .tech-grid {
+      position: absolute;
+      inset: 0;
+      background-size: 60px 60px;
+      background-image:
+        linear-gradient(to right, rgba(6, 182, 212, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.06) 1px, transparent 1px);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .film-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.5;
+      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 5px 5px;
+    }
+
+    /* Instagram Safe Zone */
+    .safe-zone {
+      position: absolute;
+      top: 130px;
+      left: 60px;
+      right: 140px;
+      bottom: 330px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Brand header */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 24px 8px 10px;
+      background: rgba(8, 51, 68, 0.55);
+      border: 1.5px solid rgba(6, 182, 212, 0.7);
+      border-radius: 999px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #FFFFFF;
+      box-shadow: 0 0 24px rgba(6, 182, 212, 0.35);
+    }
+
+    .brand-header-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1.5px solid rgba(6, 182, 212, 0.9);
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.6);
+    }
+
+    .header-dot {
+      width: 14px;
+      height: 14px;
+      background: #06B6D4;
+      border-radius: 50%;
+      box-shadow: 0 0 14px #06B6D4;
+    }
+
+    .live-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 800;
+      color: #67E8F9;
+      background: rgba(6, 182, 212, 0.12);
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      letter-spacing: 1px;
+    }
+
+    /* Scene viewport */
+    .scene-viewport {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(30px) scale(0.98);
+      transition: opacity 0.35s ease;
+    }
+
+    .scene.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .glass-card {
+      background: rgba(10, 20, 30, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1.5px solid rgba(6, 182, 212, 0.32);
+      border-radius: 36px;
+      padding: 44px 40px;
+      box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    /* ── Talking avatar presenter ─────────────────────────── */
+    .presenter-row {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      margin-bottom: 26px;
+    }
+
+    .avatar-frame {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-orbit {
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 2px dashed rgba(6, 182, 212, 0.55);
+      animation: orbitSpin 9s linear infinite;
+      pointer-events: none;
+    }
+
+    .avatar-orbit.o2 {
+      inset: -26px;
+      border-color: rgba(0, 229, 153, 0.35);
+      animation-duration: 14s;
+      animation-direction: reverse;
+    }
+
+    @keyframes orbitSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .avatar-face {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 28%, #164e63 0%, #0b2233 55%, #04121d 100%);
+      border: 3px solid #06B6D4;
+      box-shadow: 0 0 45px rgba(6, 182, 212, 0.55), inset 0 0 30px rgba(6, 182, 212, 0.25);
+      position: relative;
+      overflow: hidden;
+      animation: headBob 3.2s ease-in-out infinite;
+      transform-origin: 50% 80%;
+    }
+
+    @keyframes headBob {
+      0%, 100% { transform: translateY(0) rotate(-1.2deg); }
+      50% { transform: translateY(-9px) rotate(1.2deg); }
+    }
+
+    .avatar-scan {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #67E8F9, transparent);
+      box-shadow: 0 0 14px #67E8F9;
+      animation: faceScan 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes faceScan {
+      0%, 100% { top: 12%; opacity: 0.25; }
+      50% { top: 82%; opacity: 0.9; }
+    }
+
+    .avatar-eyes {
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .avatar-eye {
+      width: 30px;
+      height: 34px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 35%, #ECFEFF 0%, #22D3EE 55%, #0E7490 100%);
+      box-shadow: 0 0 18px #22D3EE;
+      animation: eyeBlink 4.2s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes eyeBlink {
+      0%, 93%, 100% { transform: scaleY(1); }
+      95.5% { transform: scaleY(0.06); }
+    }
+
+    .avatar-brow {
+      position: absolute;
+      top: 42px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 34px;
+    }
+
+    .avatar-brow span {
+      width: 34px;
+      height: 7px;
+      border-radius: 4px;
+      background: rgba(103, 232, 249, 0.75);
+      box-shadow: 0 0 10px rgba(103, 232, 249, 0.6);
+    }
+
+    .avatar-mouth {
+      position: absolute;
+      bottom: 34px;
+      left: 50%;
+      width: 64px;
+      height: 26px;
+      margin-left: -32px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #F0FDFA 0%, #5EEAD4 60%, #0D9488 100%);
+      box-shadow: 0 0 20px rgba(94, 234, 212, 0.8), inset 0 -4px 8px rgba(0, 0, 0, 0.45);
+      transform-origin: center;
+      animation: mouthTalk 0.55s ease-in-out infinite;
+    }
+
+    @keyframes mouthTalk {
+      0%, 100% { transform: scaleY(0.18) scaleX(0.8); }
+      30% { transform: scaleY(1) scaleX(1); }
+      55% { transform: scaleY(0.45) scaleX(0.92); }
+      75% { transform: scaleY(0.85) scaleX(1.02); }
+    }
+
+    .avatar-wave {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      width: 120px;
+      height: 22px;
+      margin-left: -60px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .avatar-wave i {
+      width: 8px;
+      border-radius: 4px;
+      background: #22D3EE;
+      box-shadow: 0 0 8px #22D3EE;
+      animation: waveBar 0.7s ease-in-out infinite;
+    }
+
+    .avatar-wave i:nth-child(1) { height: 12px; animation-delay: 0s; }
+    .avatar-wave i:nth-child(2) { height: 20px; animation-delay: 0.12s; }
+    .avatar-wave i:nth-child(3) { height: 14px; animation-delay: 0.24s; }
+    .avatar-wave i:nth-child(4) { height: 20px; animation-delay: 0.36s; }
+    .avatar-wave i:nth-child(5) { height: 12px; animation-delay: 0.48s; }
+
+    @keyframes waveBar {
+      0%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    .presenter-meta {
+      flex: 1;
+    }
+
+    .presenter-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #67E8F9;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .presenter-line {
+      font-size: 30px;
+      font-weight: 700;
+      color: #E2E8F0;
+      line-height: 1.4;
+    }
+
+    /* Scene typography */
+    .hook-alert {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #67E8F9;
+      margin-bottom: 22px;
+      background: rgba(6, 182, 212, 0.16);
+      border: 1px solid rgba(6, 182, 212, 0.5);
+      padding: 8px 20px;
+      border-radius: 12px;
+      width: fit-content;
+    }
+
+    .hook-title {
+      font-size: 62px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+      color: #FFFFFF;
+      text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+    }
+
+    .hook-title .gradient-text {
+      background: linear-gradient(135deg, #CFFAFE 0%, #22D3EE 60%, #00E599 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hook-sub {
+      font-size: 31px;
+      font-weight: 600;
+      color: #E2E8F0;
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+
+    .compare-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      margin-top: 6px;
+    }
+
+    .compare-row {
+      padding: 32px;
+      border-radius: 24px;
+    }
+
+    .compare-old {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1.5px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .compare-new {
+      background: rgba(0, 229, 153, 0.12);
+      border: 1.5px solid rgba(0, 229, 153, 0.6);
+      box-shadow: 0 0 40px rgba(0, 229, 153, 0.25);
+    }
+
+    .compare-label {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .compare-old .compare-label { color: #F87171; }
+    .compare-new .compare-label { color: #00E599; }
+
+    .compare-main {
+      font-size: 40px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: #FFFFFF;
+    }
+
+    .compare-desc {
+      font-size: 25px;
+      color: #CBD5E1;
+      line-height: 1.4;
+    }
+
+    .feature-pill-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .feature-pill {
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 22px;
+      font-weight: 800;
+      background: rgba(6, 182, 212, 0.16);
+      border: 1.5px solid rgba(6, 182, 212, 0.5);
+      color: #FFFFFF;
+    }
+
+    .feature-title {
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: #FFFFFF;
+      margin-top: 18px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 6px;
+    }
+
+    .stat-card {
+      background: rgba(11, 22, 34, 0.9);
+      border: 1.5px solid rgba(6, 182, 212, 0.4);
+      border-radius: 26px;
+      padding: 30px 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-num {
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #22D3EE, #00E599);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .stat-meta { text-align: right; }
+
+    .stat-meta .stat-label {
+      font-size: 29px;
+      font-weight: 900;
+      color: #FFFFFF;
+    }
+
+    .stat-meta .stat-sub {
+      font-size: 21px;
+      color: #94A3B8;
+      margin-top: 4px;
+    }
+
+    /* CTA */
+    .cta-container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cta-super {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 900;
+      color: #67E8F9;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+    }
+
+    .cta-headline {
+      font-size: 54px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: #FFFFFF;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    }
+
+    .cta-box {
+      width: 100%;
+      background: linear-gradient(135deg, #22D3EE 0%, #00E599 100%);
+      padding: 30px 38px;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(34, 211, 238, 0.45);
+      margin: 6px 0;
+    }
+
+    .cta-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 42px;
+      font-weight: 900;
+      color: #020617;
+      letter-spacing: 0.5px;
+    }
+
+    .cta-comment-sticker {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px dashed rgba(6, 182, 212, 0.7);
+      border-radius: 20px;
+      padding: 18px 34px;
+      font-size: 29px;
+      font-weight: 800;
+      color: #F8FAFC;
+    }
+
+    .cta-comment-sticker .key-word {
+      background: #22D3EE;
+      color: #020617;
+      padding: 8px 22px;
+      border-radius: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .cta-follow {
+      font-size: 25px;
+      color: #CBD5E1;
+      font-weight: 700;
+    }
+
+    /* Subtitle track */
+    .sub-container {
+      position: relative;
+      height: 95px;
+      width: 100%;
+    }
+
+    .sub-bar {
+      position: absolute;
+      inset: 0;
+      padding: 16px 28px;
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(6, 182, 212, 0.45);
+      border-radius: 20px;
+      font-size: 26px;
+      font-weight: 800;
+      text-align: center;
+      color: #FFFFFF;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .sub-bar.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage" data-composition-id="avatar_reel" data-start="0" data-width="1080" data-height="1920" data-fps="25">
+    <div class="glow-orb-1" id="orb-1"></div>
+    <div class="glow-orb-2" id="orb-2"></div>
+    <div class="tech-grid" id="bg-grid"></div>
+    <div class="film-grain"></div>
+
+    <div class="safe-zone">
+
+      <div class="brand-header">
+        <div class="brand-badge">
+          {% if logo_file %}
+          <img src="{{ logo_file }}" class="brand-header-logo" alt="Signhify Logo" />
+          {% else %}
+          <div class="header-dot"></div>
+          {% endif %}
+          <span>Signhify Studio</span>
+        </div>
+        <div class="live-tag">AI HOST • LIVE</div>
+      </div>
+
+      <div class="scene-viewport">
+
+        {% macro presenter(name, line) -%}
+        <div class="presenter-row">
+          <div class="avatar-frame">
+            <div class="avatar-orbit"></div>
+            <div class="avatar-orbit o2"></div>
+            <div class="avatar-face">
+              <div class="avatar-scan"></div>
+              <div class="avatar-brow"><span></span><span></span></div>
+              <div class="avatar-eyes"><div class="avatar-eye"></div><div class="avatar-eye"></div></div>
+              <div class="avatar-mouth"></div>
+              <div class="avatar-wave"><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <div class="presenter-meta">
+            <div class="presenter-name">{{ name }}</div>
+            <div class="presenter-line">{{ line }}</div>
+          </div>
+        </div>
+        {%- endmacro %}
+
+        <!-- SCENE 1: HOOK -->
+        <div id="scene-hook" class="scene glass-card active clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="1">
+          {{ presenter('SIGNHIFY AI HOST', scene1_narration) }}
+          <div class="hook-alert">⚡ {{ hook_alert|default('CRITICAL NOTICE') }}</div>
+          <h1 class="hook-title"><span class="gradient-text">{{ hook_title }}</span></h1>
+          <p class="hook-sub">{{ scene1_narration }}</p>
+        </div>
+
+        <!-- SCENE 2: COMPARISON -->
+        <div id="scene-compare" class="scene glass-card clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="1">
+          {{ presenter('SIGNHIFY AI HOST', scene2_narration) }}
+          <div class="compare-grid">
+            <div class="compare-row compare-old">
+              <div class="compare-label">✕ Traditional Agencies</div>
+              <div class="compare-main">$5,000 &amp; 4 Weeks</div>
+              <div class="compare-desc">Heavy Three.js boilerplate, painful revisions, no code ownership.</div>
+            </div>
+            <div class="compare-row compare-new">
+              <div class="compare-label">✓ Signhify AI Engine</div>
+              <div class="compare-main">1 Prompt &amp; 10 Minutes</div>
+              <div class="compare-desc">{{ scene2_narration }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCENE 3: SHOWCASE -->
+        <div id="scene-showcase" class="scene glass-card clip" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}" data-track-index="1">
+          {{ presenter('SIGNHIFY AI HOST', scene3_narration) }}
+          <div class="feature-pill-row">
+            <div class="feature-pill">Three.js</div>
+            <div class="feature-pill">WebGL Shaders</div>
+            <div class="feature-pill">Scroll Triggers</div>
+            <div class="feature-pill">Clean ZIP</div>
+          </div>
+          <h2 class="feature-title">Native 60 FPS 3D Canvas</h2>
+          <p class="compare-desc" style="font-size: 24px; color: #E2E8F0; margin-top: 12px;">{{ scene3_narration }}</p>
+        </div>
+
+        <!-- SCENE 4: PROOF -->
+        <div id="scene-proof" class="scene glass-card clip" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}" data-track-index="1">
+          {{ presenter('SIGNHIFY AI HOST', scene4_narration) }}
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-num">+320%</div>
+              <div class="stat-meta">
+                <div class="stat-label">Higher Conversion</div>
+                <div class="stat-sub">vs flat 2D landing pages</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">60 FPS</div>
+              <div class="stat-meta">
+                <div class="stat-label">Silky Smooth Scroll</div>
+                <div class="stat-sub">Zero stutter on mobile</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num">100%</div>
+              <div class="stat-meta">
+                <div class="stat-label">Code Ownership</div>
+                <div class="stat-sub">MIT ZIP, host anywhere</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCENE 5: CTA -->
+        <div id="scene-cta" class="scene glass-card clip" data-start="{{ scene5_start }}" data-duration="{{ scene5_duration }}" data-track-index="1">
+          <div class="cta-container">
+            <div class="cta-super">SIGNHIFY STUDIO</div>
+            <h2 class="cta-headline">Build Your 3D Site Free Today</h2>
+            <div class="cta-box">
+              <div class="cta-url">signhify.dpdns.org</div>
+            </div>
+            <div class="cta-comment-sticker">
+              <span>Comment <strong class="key-word">3D</strong> for direct link</span>
+            </div>
+            <div class="cta-follow">Follow @signhify.studio for daily AI tech architectures</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sub-container">
+        <div id="sub-1" class="sub-bar clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene1_narration }}"</span>
+        </div>
+        <div id="sub-2" class="sub-bar clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene2_narration }}"</span>
+        </div>
+        <div id="sub-3" class="sub-bar clip" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene3_narration }}"</span>
+        </div>
+        <div id="sub-4" class="sub-bar clip" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene4_narration }}"</span>
+        </div>
+        <div id="sub-5" class="sub-bar clip" data-start="{{ scene5_start }}" data-duration="{{ scene5_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene5_narration }}"</span>
+        </div>
+      </div>
+
+    </div>
+
+    {% if audio_file %}
+    <audio
+      data-start="0"
+      data-duration="{{ total_duration }}"
+      data-track-index="0"
+      data-volume="1.0"
+      src="{{ audio_file }}"
+    ></audio>
+    {% endif %}
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const sceneDurations = [
+      {{ scene1_duration }},
+      {{ scene2_duration }},
+      {{ scene3_duration }},
+      {{ scene4_duration }},
+      {{ scene5_duration }}
+    ];
+
+    const scenes = [
+      document.getElementById('scene-hook'),
+      document.getElementById('scene-compare'),
+      document.getElementById('scene-showcase'),
+      document.getElementById('scene-proof'),
+      document.getElementById('scene-cta')
+    ];
+
+    const subtitles = [
+      document.getElementById('sub-1'),
+      document.getElementById('sub-2'),
+      document.getElementById('sub-3'),
+      document.getElementById('sub-4'),
+      document.getElementById('sub-5')
+    ];
+
+    const orb1 = document.getElementById('orb-1');
+    const orb2 = document.getElementById('orb-2');
+
+    const tl = gsap.timeline({ paused: true });
+
+    let cumulativeTime = 0;
+    scenes.forEach((scene, idx) => {
+      const dur = sceneDurations[idx];
+      const sub = subtitles[idx];
+
+      tl.to(scene, {
+        opacity: 1,
+        visibility: 'visible',
+        y: 0,
+        scale: 1,
+        duration: 0.35,
+        ease: 'power3.out'
+      }, cumulativeTime);
+
+      if (sub) {
+        tl.to(sub, {
+          opacity: 1,
+          visibility: 'visible',
+          duration: 0.28,
+          ease: 'power2.out'
+        }, cumulativeTime);
+      }
+
+      // Avatar presenter entrance + cinematic orb drift per scene
+      const avatar = scene.querySelector('.avatar-frame');
+      if (avatar) {
+        tl.from(avatar, { scale: 0.6, rotation: -8, opacity: 0, duration: dur * 0.22, ease: 'back.out(1.7)' }, cumulativeTime + dur * 0.03);
+      }
+
+      if (idx === 0) {
+        tl.to(orb1, { x: -60, y: 90, scale: 1.2, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.to(orb2, { x: 60, y: -70, scale: 1.1, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.from(scene.querySelector('.hook-title'), { y: 25, opacity: 0, duration: dur * 0.25 }, cumulativeTime + dur * 0.08);
+      } else if (idx === 1) {
+        tl.to(orb1, { x: 80, y: 180, scale: 0.9, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.to(orb2, { x: -90, y: 40, scale: 1.3, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.from(scene.querySelectorAll('.compare-row'), { y: 20, opacity: 0, stagger: dur * 0.08, duration: dur * 0.25 }, cumulativeTime + dur * 0.06);
+      } else if (idx === 2) {
+        tl.to(orb1, { x: -110, y: -40, scale: 1.4, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.to(orb2, { x: 100, y: 140, scale: 1.1, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.from(scene.querySelectorAll('.feature-pill'), { scale: 0.85, opacity: 0, stagger: dur * 0.05, duration: dur * 0.2 }, cumulativeTime + dur * 0.1);
+        tl.from(scene.querySelector('.feature-title'), { y: 20, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.14);
+      } else if (idx === 3) {
+        tl.to(orb1, { x: 40, y: -90, scale: 1.25, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.to(orb2, { x: -80, y: 60, scale: 1.35, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.from(scene.querySelectorAll('.stat-card'), { x: -25, opacity: 0, stagger: dur * 0.08, duration: dur * 0.25 }, cumulativeTime + dur * 0.06);
+      } else if (idx === 4) {
+        tl.to(orb1, { x: 0, y: 0, scale: 1.5, duration: dur, ease: 'sine.out' }, cumulativeTime);
+        tl.to(orb2, { x: 0, y: 0, scale: 1.5, duration: dur, ease: 'sine.out' }, cumulativeTime);
+        tl.from(scene.querySelector('.cta-headline'), { y: 20, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.1);
+        tl.from(scene.querySelector('.cta-box'), { scale: 0.9, opacity: 0, duration: dur * 0.2, ease: 'back.out(1.5)' }, cumulativeTime + dur * 0.16);
+        tl.from(scene.querySelector('.cta-comment-sticker'), { y: 15, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.22);
+      }
+
+      if (idx < scenes.length - 1) {
+        const outTime = cumulativeTime + dur - 0.25;
+        tl.to(scene, {
+          opacity: 0,
+          y: -20,
+          scale: 0.98,
+          duration: 0.25,
+          ease: 'power2.in'
+        }, outTime);
+        if (sub) {
+          tl.to(sub, {
+            opacity: 0,
+            duration: 0.22,
+            ease: 'power2.in'
+          }, outTime);
+        }
+      }
+
+      cumulativeTime += dur;
+    });
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines.avatar_reel = tl;
+  </script>
+</body>
+</html>

@@ -221,6 +221,7 @@ class HyperFramesEngine:
         output_path: Optional[str] = None,
         duration: Optional[float] = None,
         timeout: int = 480,
+        template_name: str = "marketing_promo.html.jinja2",
     ) -> Dict[str, Any]:
         """
         Compiles the HTML composition and invokes HyperFrames CLI to render the MP4 video.
@@ -236,6 +237,7 @@ class HyperFramesEngine:
             script_text=script_text,
             audio_path=audio_path,
             duration=duration,
+            template_name=template_name,
         )
 
         logger.info(f"Rendering HyperFrames video from directory {comp_dir} -> {out_file}...")
@@ -311,6 +313,7 @@ class HyperFramesEngine:
             "video_path": str(out_file.resolve()),
             "duration": duration or 20.0,
             "topic": topic,
+            "template": template_name,
         }
 
 

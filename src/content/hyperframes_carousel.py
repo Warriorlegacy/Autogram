@@ -8,6 +8,7 @@ architecture blueprints, feature comparisons, and viral comment '3D' CTA.
 import base64
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Optional
 from jinja2 import Environment, FileSystemLoader
@@ -21,6 +22,127 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 TEMPLATE_DIR = REPO_ROOT / "renderer" / "templates" / "carousel"
 LOGO_PATH = REPO_ROOT / "assets" / "signhify-logo-vector.jpeg"
 LOGO_PATH_PNG = REPO_ROOT / "assets" / "signhify-logo-vector.png"
+MEMORY_FILE = REPO_ROOT / "data" / "content-memory.json"
+
+# Curated carousel angles — rotated with memory dedup so no two carousels repeat.
+CAROUSEL_ANGLES = [
+    "Signhify Autonomous 3D Web Engine",
+    "Stop Paying $5,000 to Web Design Agencies",
+    "The Death of WebGL & Three.js Boilerplate",
+    "100% MIT Code Ownership — Host Anywhere",
+    "How 3D Scroll Boosts Conversions 3X",
+    "Launch a Funded-Looking SaaS Page in an Afternoon",
+    "Zero Code, 60 FPS: Mobile-First 3D Websites",
+    "From 1 Prompt to Deployed 3D Website + ZIP",
+    "Why Top Agencies Secretly Use Signhify Studio",
+    "Build a Viral 3D Portfolio That Gets You Hired",
+    "Iterative Chat Editing for 3D Websites",
+    "The 6-Agent Swarm Behind Instant 3D Compilation",
+]
+
+
+def get_unique_carousel_topic() -> str:
+    """Pick the least-recently-used carousel angle vs content-memory.json."""
+    import difflib
+
+    recent: list[str] = []
+    if MEMORY_FILE.exists():
+        try:
+            mem = json.loads(MEMORY_FILE.read_text(encoding="utf-8"))
+            recent = [str(p.get("topic", "")).lower() for p in mem.get("recent_posts", [])]
+        except Exception:
+            recent = []
+
+    def is_dup(cand: str) -> bool:
+        c = cand.lower()
+        for past in recent[:40]:
+            if not past:
+                continue
+            if c in past or past in c:
+                return True
+            if difflib.SequenceMatcher(None, c, past).ratio() >= 0.6:
+                return True
+        return False
+
+    for angle in CAROUSEL_ANGLES:
+        if not is_dup(angle):
+            return angle
+
+    def recency_rank(a: str) -> int:
+        low = a.lower()
+        for idx, past in enumerate(recent):
+            if low in past or past in low or difflib.SequenceMatcher(None, low, past).ratio() >= 0.6:
+                return idx
+        return 999999
+
+    return sorted(CAROUSEL_ANGLES, key=recency_rank, reverse=True)[0]
+
+
+def _generate_ai_slides(topic: Optional[str] = None) -> Optional[tuple[list[dict], str]]:
+    """Generate fresh carousel slide content via OpenRouter free models. Returns (slides, caption) or None."""
+    api_key = os.getenv("OPENROUTER_API_KEY", "")
+    if not api_key:
+        return None
+
+    free_models = [
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "google/gemma-4-31b-it:free",
+    ]
+
+    topic_hint = topic or "Signhify Studio AI 3D Website Builder"
+    system_prompt = (
+        "You are the viral growth director for Signhify Studio (@signhify.studio), "
+        "promoting the AI 3D Website Builder at signhify.dpdns.org. "
+        "Signhify turns a single prompt into cinematic 60 FPS 3D scroll websites — zero code, MIT export.\n\n"
+        "Generate a 7-slide Instagram carousel. Each slide must fit a specific layout.\n"
+        "Return STRICT JSON: {'slides': [slide1, slide2, ...], 'caption': 'instagram caption string'}.\n\n"
+        "Each slide object must have these keys:\n"
+        "- 'layout': one of 'hook', 'comparison', 'architecture', 'features', 'proof', 'quickstart', 'cta'\n"
+        "- 'eyebrow': short uppercase label (e.g. 'NEW REVOLUTION', 'THE REALITY CHECK')\n"
+        "- 'headline_html': main headline with ONE <span class=\"highlight\">wrapped</span> key phrase\n"
+        "- 'subtext': supporting text below headline\n"
+        "The 'comparison' slide should also have 'left' and 'right' objects with 'title', 'items' (list of strings).\n"
+        "The 'architecture' slide should have 'stages' list of objects with 'step', 'title', 'desc'.\n"
+        "The 'features' slide should have 'features' list of objects with 'icon' (emoji), 'title', 'desc'.\n"
+        "The 'proof' slide should have 'stats' list of objects with 'value', 'label'.\n"
+        "The 'quickstart' slide should have 'steps' list of strings.\n\n"
+        "Caption: punchy Instagram caption with signhify.dpdns.org link, CTA to comment '3D', "
+        "ends with 6 hashtags like #SignhifyStudio #3DWeb #WebDev."
+    )
+
+    try:
+        from openai import OpenAI
+        client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=api_key)
+
+        for model in free_models:
+            try:
+                res = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": f"Topic: {topic_hint}. Generate 7 unique carousel slides."},
+                    ],
+                    response_format={"type": "json_object"},
+                    timeout=45,
+                )
+                parsed = json.loads(res.choices[0].message.content)
+                slides = parsed.get("slides", [])
+                caption = parsed.get("caption", "")
+                if len(slides) == 7 and caption:
+                    # Validate layouts are correct
+                    valid_layouts = {"hook", "comparison", "architecture", "features", "proof", "quickstart", "cta"}
+                    if all(s.get("layout") in valid_layouts for s in slides):
+                        logger.info(f"AI carousel slides generated via {model}")
+                        return slides, caption
+            except Exception as e:
+                logger.warning(f"OpenRouter {model} failed for carousel: {e}")
+    except ImportError:
+        logger.warning("openai package not installed; skipping AI carousel generation.")
+    except Exception as e:
+        logger.warning(f"AI carousel generation failed: {e}")
+
+    return None
 
 
 class SignhifyCarouselEngine:
@@ -67,12 +189,16 @@ class SignhifyCarouselEngine:
     def get_default_slides(self, topic: Optional[str] = None) -> list[dict]:
         """
         Returns the canonical 7-slide viral marketing structure for Signhify Studio.
+        The hook headline is topic-aware so fallback carousels never repeat verbatim.
         """
+        hook_topic = (topic or "Apple-Grade 3D Scroll Website").strip()
+        # ponytail: strip HTML if caller passes markup; headline is rendered as HTML below.
+        hook_topic = hook_topic.replace("<", "").replace(">", "")
         return [
             {
                 "layout": "hook",
                 "eyebrow": "NEW REVOLUTION",
-                "headline_html": "We Built an Apple-Grade <span class=\"highlight\">3D Scroll Website</span> in 10 Minutes with AI",
+                "headline_html": f"We Built <span class=\"highlight\">{hook_topic}</span> in 10 Minutes with AI",
                 "subtext": "Stop paying $5,000 for static 2D sites in 2026. The entire web design landscape just changed forever.",
                 "terminal_prompt": "Create an immersive dark-mode portfolio with interactive Three.js floating geometry, responsive mobile camera paths, and 60 FPS scroll triggers."
             },
@@ -174,8 +300,9 @@ class SignhifyCarouselEngine:
 
     def generate_caption(self, topic: Optional[str] = None) -> str:
         """Generates viral high-converting Instagram caption with the comment '3D' CTA trigger."""
+        hook = (topic or "an Apple-grade 3D scroll website").strip()
         return (
-            "⚡ We built an Apple-grade 3D scroll website in 10 minutes with AI.\n\n"
+            f"⚡ We built {hook} in 10 minutes with AI.\n\n"
             "Most founders, creators, and web agencies think interactive 3D requires:\n"
             "✕ $5,000+ agency invoices\n"
             "✕ 4 to 6 weeks of back-and-forth\n"
@@ -197,19 +324,25 @@ class SignhifyCarouselEngine:
     ) -> dict:
         """
         Orchestrates complete promo carousel creation:
-        1. Compiles 7 viral slides.
+        1. Tries AI-generated slides, falls back to hardcoded templates.
         2. Renders all 1080x1350 JPEG images via Playwright.
         3. Formulates the high-converting caption with comment trigger.
         Returns a dict with paths and metadata.
         """
-        slides = self.get_default_slides(topic)
+        topic = topic or get_unique_carousel_topic()
+        ai_result = _generate_ai_slides(topic)
+        if ai_result:
+            slides, caption = ai_result
+        else:
+            slides = self.get_default_slides(topic)
+            caption = self.generate_caption(topic)
+
         image_paths = self.render_carousel(slides, output_dir)
-        caption = self.generate_caption(topic)
 
         return {
             "image_paths": image_paths,
             "caption": caption,
             "slides_count": len(image_paths),
             "output_dir": str(output_dir),
-            "topic": topic or "Signhify Autonomous 3D Web Engine"
+            "topic": topic,
         }

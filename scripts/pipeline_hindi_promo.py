@@ -86,13 +86,6 @@ HINDI_SCRIPTS = [
             "#SignhifyStudio #3DWeb #FirstImpression #WebDesign #HindiTech #BuildInPublic"
         ),
         "hashtags": ["#SignhifyStudio", "#3DWeb", "#FirstImpression", "#WebDesign", "#HindiTech"],
-        "scene_backdrops": [
-            "dark void with single floating light particle",
-            "time-lapse city skyline at night with neon glow",
-            "crystal surface reflecting holographic data streams",
-            "deep ocean with bioluminescent particles rising",
-            "sunset horizon with golden light rays through dust",
-        ],
     },
     {
         "id": "hindi_just_build_it",
@@ -118,13 +111,6 @@ HINDI_SCRIPTS = [
             "#ZeroCode #3DWeb #WebDev #SignhifyStudio #HindiTech #BuildInPublic"
         ),
         "hashtags": ["#ZeroCode", "#3DWeb", "#WebDev", "#SignhifyStudio", "#HindiTech"],
-        "scene_backdrops": [
-            "neon terminal screen with cascading green code",
-            "dark workshop with tools floating in 3D space",
-            "geometric wireframe cube morphing into organic shapes",
-            "code compilation animation with glowing output",
-            "abstract network of connected nodes pulsing with energy",
-        ],
     },
     {
         "id": "hindi_dekho_sach",
@@ -148,13 +134,6 @@ HINDI_SCRIPTS = [
             "#EcommerceGrowth #3DCommerce #SignhifyStudio #HindiTech #ConversionRate"
         ),
         "hashtags": ["#EcommerceGrowth", "#3DCommerce", "#SignhifyStudio", "#HindiTech", "#ConversionRate"],
-        "scene_backdrops": [
-            "dark velvet surface with single spotlight on luxury product",
-            "golden hour light streaming through warehouse windows",
-            "reflective chrome surface with product silhouette",
-            "museum-like gallery with dramatic ceiling lights",
-            "sunset glow over city skyline with product centered",
-        ],
     },
     {
         "id": "hindi_secret_weapon",
@@ -179,19 +158,189 @@ HINDI_SCRIPTS = [
             "#AppleStyle #3DWebsite #WebDev #SignhifyStudio #HindiTech #UIUX"
         ),
         "hashtags": ["#AppleStyle", "#3DWebsite", "#WebDev", "#SignhifyStudio", "#HindiTech"],
-        "scene_backdrops": [
-            "futuristic city skyline at night with holographic billboards",
-            "deep space with nebula colors and floating geometric shapes",
-            "glass bridge over neon-lit canyon at night",
-            "cyberpunk street with rain reflections and holographic signs",
-            "abstract particle field forming into recognizable shapes",
-        ],
+    },
+    {
+        "id": "hindi_startup_hustle",
+        "topic": "Signhify Studio: Startup Ka Secret Weapon",
+        "narration": (
+            "Startup wale bhai, suno. Tumhe 10 lakh ka website chahiye? "
+            "Agency wale 3 mahine lega aur phir bhi bekaar dega. "
+            "Signhify Studio pe ek prompt do — product batao, vibe batao. "
+            "Spatial compiler instantly 3D scroll website banata hai. "
+            "Real-time 60 FPS. Mobile ready. MIT license. "
+            "Seed round se pehle hi website ready. "
+            "Banao free: signhify dot dpdns dot org. "
+            "Follow signhify dot studio for more."
+        ),
+        "subject": "rocket launching from laptop screen with 3D code fragments orbiting",
+        "caption": (
+            "Startup budget tight? Agency ka wait khatam.\n\n"
+            "Ek prompt se Apple-grade 3D website ready.\n"
+            "Seed round se pehle launch karo.\n\n"
+            "Banao free: signhify.dpdns.org\n"
+            "Comment '3D' for link!\n\n"
+            "#StartupIndia #3DWeb #BuildInPublic #SignhifyStudio #HindiTech #MVP"
+        ),
+        "hashtags": ["#StartupIndia", "#3DWeb", "#BuildInPublic", "#SignhifyStudio", "#HindiTech", "#MVP"],
+    },
+    {
+        "id": "hindi_agency_khatma",
+        "topic": "Signhify Studio: Web Design Agency Ka Khatma",
+        "narration": (
+            "Ruko zara. Web design agencies waale pareshan ho gaye kyunki "
+            "Signhify Studio ne sabki band baja di. "
+            "Ek prompt do — product batao, colors batao, camera motion batao. "
+            "Spatial compiler instantly cinematic 3D website banata hai. "
+            "60 FPS hardware-accelerated. Zero code. Full MIT export. "
+            "Agency 3 mahina? Tumhe 3 minute. "
+            "Banao free: signhify dot dpdns dot org. "
+            "Comment '3D' for link."
+        ),
+        "subject": "shattered glass with neon light bursting through cracks in dark room",
+        "caption": (
+            "Web design agencies ka time khatam.\n\n"
+            "3 minute mein 3D cinematic website ready.\n"
+            "Agency 3 mahina? Nah.\n\n"
+            "Banao free: signhify.dpdns.org\n"
+            "Comment '3D' for link!\n\n"
+            "#AgencyLife #3DWeb #SignhifyStudio #HindiTech #WebDesign #Disrupt"
+        ),
+        "hashtags": ["#AgencyLife", "#3DWeb", "#SignhifyStudio", "#HindiTech", "#WebDesign", "#Disrupt"],
+    },
+    {
+        "id": "hindi_zero_to_hero",
+        "topic": "Signhify Studio: Zero Se Hero Tak",
+        "narration": (
+            "Coding nahi aati? Koi baat nahi. "
+            "Signhify Studio se tum bas bol do kya chahiye. "
+            "Spatial compiler khud code likhega — HTML, CSS, JavaScript sab. "
+            "Real-time 3D rendering. Hardware accelerated. "
+            "Portfolio website ho ya product landing page — sab ho jayega. "
+            "MIT license. Apna server pe host karo. "
+            "Banao free: signhify dot dpdns dot org. "
+            "Follow signhify dot studio for more."
+        ),
+        "subject": "transformation sequence from rough sketch to polished 3D website on screen",
+        "caption": (
+            "Coding nahi aati? Chalega.\n\n"
+            "Bol do kya chahiye — spatial compiler baaki sab karega.\n"
+            "Portfolio, landing page, sab ban jayega.\n\n"
+            "Banao free: signhify.dpdns.org\n"
+            "Comment '3D' for link!\n\n"
+            "#NoCode #3DWeb #Portfolio #SignhifyStudio #HindiTech #BeginnerFriendly"
+        ),
+        "hashtags": ["#NoCode", "#3DWeb", "#Portfolio", "#SignhifyStudio", "#HindiTech", "#BeginnerFriendly"],
+    },
+    {
+        "id": "hindi_game_changer",
+        "topic": "Signhify Studio: Game Changer Hai Ye",
+        "narration": (
+            "3D website banane ka tarika badal gaya. "
+            "Pehle WebGL seekho, phir Three.js seekho, phir shader likho. "
+            "Ab? Signhify Studio pe ek prompt do. "
+            "Spatial compiler turant cinematic 3D website banata hai. "
+            "60 FPS. Hardware accelerated. Mobile ready. "
+            "Full source code export — MIT license. "
+            "Ye game changer hai. "
+            "Banao free: signhify dot dpdns dot org. "
+            "Comment '3D' for link."
+        ),
+        "subject": "chess piece transforming into futuristic holographic interface",
+        "caption": (
+            "3D web dev ka game change ho gaya.\n\n"
+            "WebGL + Three.js ka frustration bhool jao.\n"
+            "Ek prompt = cinematic 3D website ready.\n\n"
+            "Banao free: signhify.dpdns.org\n"
+            "Comment '3D' for link!\n\n"
+            "#GameChanger #3DWeb #WebGL #SignhifyStudio #HindiTech #FutureOfWeb"
+        ),
+        "hashtags": ["#GameChanger", "#3DWeb", "#WebGL", "#SignhifyStudio", "#HindiTech", "#FutureOfWeb"],
     },
 ]
 
 
+def _generate_ai_script(override_topic: str | None = None) -> dict | None:
+    """Generate fresh Hinglish promo script via OpenRouter free models. Returns None on failure."""
+    import os
+    api_key = os.getenv("OPENROUTER_API_KEY", "")
+    if not api_key:
+        return None
+
+    free_models = [
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "google/gemma-4-31b-it:free",
+    ]
+
+    topic_hint = override_topic or "any trending tech topic"
+    system_prompt = (
+        "You are the viral Hindi/Hinglish growth director for Signhify Studio (@signhify.studio), "
+        "promoting the AI 3D Website Builder at signhify.dpdns.org. "
+        "Signhify turns a single prompt into cinematic 60 FPS 3D scroll websites — zero code, MIT export.\n\n"
+        "Generate a FRESH, UNIQUE Hinglish (Hindi + English mix) promo script. "
+        "The narration should sound like a founder casually talking to a potential client — conversational, energetic, "
+        "no formal Hindi, mix English tech terms naturally (like 'scroll', '3D website', 'prompt', 'MIT license').\n\n"
+        "Return STRICT JSON with keys:\n"
+        "'topic' (short English title for the angle),\n"
+        "'narration' (Hinglish spoken text, 40-60 words, conversational tone, MUST end with: "
+        "'Banao free: signhify dot dpdns dot org. Comment 3D for link.'),\n"
+        "'subject' (image generation prompt: photorealistic dark cinematic scene with neon accents, 8k),\n"
+        "'caption' (Instagram caption in English+Hinglish mix with line breaks, includes signhify.dpdns.org link, "
+        "CTA to comment '3D', ends with 6 hashtags),\n"
+        "'hashtags' (array of 5-6 hashtag strings like #SignhifyStudio #3DWeb #HindiTech)."
+    )
+
+    try:
+        from openai import OpenAI
+        client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=api_key)
+
+        for model in free_models:
+            try:
+                res = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": f"Topic: {topic_hint}. Generate a unique Hinglish promo."},
+                    ],
+                    response_format={"type": "json_object"},
+                    timeout=30,
+                )
+                parsed = json.loads(res.choices[0].message.content)
+                if all(k in parsed for k in ("narration", "caption", "subject")):
+                    parsed["id"] = "hindi_ai_generated"
+                    logger.info(f"AI script generated via {model}: {parsed.get('topic', 'unknown')}")
+                    return parsed
+            except Exception as e:
+                logger.warning(f"OpenRouter {model} failed for Hindi script: {e}")
+    except ImportError:
+        logger.warning("openai package not installed; skipping AI generation.")
+    except Exception as e:
+        logger.warning(f"AI generation failed: {e}")
+
+    return None
+
+
+def _select_reel_template() -> str:
+    """Alternate HyperFrames visual styles run-to-run so consecutive Hindi reels never look identical."""
+    override = os.getenv("HINDI_REELS_TEMPLATE", "") or os.getenv("REELS_TEMPLATE", "")
+    if override.strip():
+        return override.strip()
+    styles = ["marketing_promo.html.jinja2", "avatar_presenter.html.jinja2"]
+    try:
+        if MEMORY_FILE.exists():
+            mem = json.loads(MEMORY_FILE.read_text(encoding="utf-8"))
+            hindi_count = sum(
+                1 for p in mem.get("recent_posts", [])
+                if "hindi" in str(p.get("topic", "")).lower() or "hindi" in str(p.get("pillar", "")).lower()
+            )
+            return styles[hindi_count % len(styles)]
+    except Exception:
+        pass
+    return styles[0]
+
+
 def _select_script(override_topic: str | None = None) -> dict:
-    """Select least-recently-used script from memory, or by override."""
+    """Select script: AI-generated first, then hardcoded round-robin fallback."""
     if override_topic:
         return {
             "id": "hindi_custom",
@@ -213,32 +362,26 @@ def _select_script(override_topic: str | None = None) -> dict:
                 "#SignhifyStudio #3DWeb #HindiTech #NoCode #BuildInPublic #WebDesign"
             ),
             "hashtags": ["#SignhifyStudio", "#3DWeb", "#HindiTech", "#NoCode", "#BuildInPublic", "#WebDesign"],
-            "scene_backdrops": [
-                "dark void with single floating light particle",
-                "time-lapse city skyline at night with neon glow",
-                "crystal surface reflecting holographic data streams",
-                "deep ocean with bioluminescent particles rising",
-                "sunset horizon with golden light rays through dust",
-            ],
         }
 
-    recent_topics: list[str] = []
+    # Try AI generation first
+    ai_script = _generate_ai_script(override_topic)
+    if ai_script:
+        return ai_script
+
+    # Fallback: round-robin from hardcoded scripts
+    last_idx = 0
     if MEMORY_FILE.exists():
         try:
             mem = json.loads(MEMORY_FILE.read_text(encoding="utf-8"))
-            recent_topics = [
-                (p.get("topic", "")).lower()
-                for p in mem.get("recent_posts", [])
-            ]
+            last_idx = mem.get("hindi_script_index", 0)
         except Exception:
             pass
 
-    for script in HINDI_SCRIPTS:
-        if script["topic"].lower() not in recent_topics[:20]:
-            return script
-
-    import random
-    return random.choice(HINDI_SCRIPTS)
+    idx = last_idx % len(HINDI_SCRIPTS)
+    script = HINDI_SCRIPTS[idx]
+    script["_next_index"] = (last_idx + 1) % len(HINDI_SCRIPTS)
+    return script
 
 
 # ── Voice Synthesis (edge-tts) ────────────────────────────────────────
@@ -310,6 +453,7 @@ def render_with_hyperframes(
     narration: str,
     audio_path: Path,
     output_path: Path,
+    template_name: str = "marketing_promo.html.jinja2",
 ) -> dict:
     """Render 3D animated cinematic reel via HyperFrames HTML/CSS/GSAP engine.
     Logo is automatically included via the template (logo_file variable).
@@ -325,6 +469,7 @@ def render_with_hyperframes(
         script_text=narration,
         audio_path=str(audio_path),
         output_path=str(output_path),
+        template_name=template_name,
     )
     return result
 
@@ -356,7 +501,7 @@ def upload_and_publish(video_path: Path, caption: str) -> str | None:
 
 # ── Memory Logging ────────────────────────────────────────────────────
 def log_to_memory(script: dict, caption: str):
-    """Record published topic to content-memory.json for anti-repetition."""
+    """Record published topic and advance round-robin index."""
     today_str = datetime.now().strftime("%Y-%m-%d")
     try:
         if MEMORY_FILE.exists():
@@ -372,6 +517,11 @@ def log_to_memory(script: dict, caption: str):
             "score": 95.0,
         })
         mem["recent_posts"] = mem["recent_posts"][:80]
+
+        # Advance round-robin index
+        if "_next_index" in script:
+            mem["hindi_script_index"] = script["_next_index"]
+
         MEMORY_FILE.write_text(json.dumps(mem, indent=2), encoding="utf-8")
         logger.info("Recorded Hindi promo to content-memory.json.")
     except Exception as e:
@@ -395,6 +545,8 @@ def run_hindi_promo_pipeline(dry_run: bool = False, topic_override: str | None =
     logger.info(f"Voiceover ready: {mp3_path} ({duration:.1f}s)")
 
     # 2. Render 3D animated video via HyperFrames (logo included automatically)
+    template_name = _select_reel_template()
+    logger.info(f"Selected HyperFrames visual style: {template_name}")
     logger.info("Rendering 3D animated cinematic reel via HyperFrames (logo embedded)...")
     try:
         render_with_hyperframes(
@@ -402,6 +554,7 @@ def run_hindi_promo_pipeline(dry_run: bool = False, topic_override: str | None =
             narration=script["narration"],
             audio_path=str(mp3_path),
             output_path=str(output_video),
+            template_name=template_name,
         )
         logger.info(f"HyperFrames render complete: {output_video}")
     except Exception as e:
@@ -425,6 +578,7 @@ def run_hindi_promo_pipeline(dry_run: bool = False, topic_override: str | None =
         "narration": script["narration"],
         "caption": script["caption"],
         "hashtags": script["hashtags"],
+        "template": template_name,
         "voice": HINDI_VOICE,
         "voice_rate": VOICE_RATE,
         "voice_pitch": VOICE_PITCH,

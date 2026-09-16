@@ -224,6 +224,32 @@ VIRAL_SCRIPT_FRAMEWORKS = [
 ]
 
 
+def _select_reel_template() -> str:
+    """Alternate HyperFrames visual styles run-to-run so consecutive reels never look identical.
+
+    Deterministic rotation based on the number of reels already recorded in
+    content-memory.json; override with REELS_TEMPLATE env var when needed.
+    """
+    override = (os.getenv("REELS_TEMPLATE") or "").strip()
+    if override:
+        return override
+    styles = ["marketing_promo.html.jinja2", "avatar_presenter.html.jinja2"]
+    try:
+        import json as _json
+
+        mem_file = Path(__file__).resolve().parent.parent / "data" / "content-memory.json"
+        if mem_file.exists():
+            mem = _json.loads(mem_file.read_text(encoding="utf-8"))
+            reel_count = sum(
+                1 for p in mem.get("recent_posts", [])
+                if "[reel]" in str(p.get("topic", "")).lower()
+            )
+            return styles[reel_count % len(styles)]
+    except Exception:
+        pass
+    return styles[0]
+
+
 def _select_fresh_script_framework() -> dict:
     """Selects the least recently used viral script framework to guarantee script uniqueness."""
     import json
@@ -488,7 +514,7 @@ def _try_flux_image(prompt: str, output_path: str) -> str:
     return output_path
 
 
-def _try_hyperframes(topic: str, script_text: str = "", audio_path: str | None = None, output_path: str = BACKGROUND_VIDEO) -> str | None:
+def _try_hyperframes(topic: str, script_text: str = "", audio_path: str | None = None, output_path: str = BACKGROUND_VIDEO, template_name: str = "marketing_promo.html.jinja2") -> str | None:
     """Tier 0: HyperFrames HTML/CSS/GSAP deterministic video rendering engine."""
     enable_hf = os.getenv("ENABLE_HYPERFRAMES", "true").lower() in ("true", "1", "yes")
     if not enable_hf:
@@ -501,13 +527,14 @@ def _try_hyperframes(topic: str, script_text: str = "", audio_path: str | None =
             logger.info("HyperFrames prerequisites not met (Node >= 22 / FFmpeg missing); skipping.")
             return None
 
-        logger.info(f"Attempting HyperFrames Motion Graphics Reel for '{topic}'...")
+        logger.info(f"Attempting HyperFrames Motion Graphics Reel for '{topic}' [{template_name}]...")
         engine = HyperFramesEngine()
         res = engine.render_reel(
             topic=topic,
             script_text=script_text,
             audio_path=audio_path,
             output_path=output_path,
+            template_name=template_name,
         )
         if res and os.path.exists(output_path) and os.path.getsize(output_path) > 1024:
             logger.info(f"HyperFrames video generated successfully: {output_path}")
@@ -524,6 +551,7 @@ def download_ai_video(
     audio_path: str | None = None,
     output_video_path: str = BACKGROUND_VIDEO,
     output_image_path: str = BACKGROUND_IMG,
+    template_name: str = "marketing_promo.html.jinja2",
 ) -> dict:
     """
     6-Tier Cascading Video Engine:
@@ -535,7 +563,7 @@ def download_ai_video(
     Tier 5: Pollinations FLUX.1 + 2.5D FFmpeg Zoompan (zero-fail foundation)
     """
     # Tier 0: HyperFrames deterministic engine
-    t0 = _try_hyperframes(topic or prompt, script_text, audio_path, output_video_path)
+    t0 = _try_hyperframes(topic or prompt, script_text, audio_path, output_video_path, template_name)
     if t0:
         return {"provider": "hyperframes", "type": "video", "path": t0, "has_audio": bool(audio_path)}
 
@@ -699,6 +727,8 @@ def execute_reels_pipeline(topic: str = "") -> dict:
 
     logger.info(f"Executing Reels pipeline with unique topic: '{topic}'")
     data = generate_reel_content(topic)
+    template_name = _select_reel_template()
+    logger.info(f"Selected HyperFrames visual style: {template_name}")
     asyncio.run(synthesize_speech(data["script"], AUDIO_FILE))
 
     # Multi-tier AI video generation with cascading fallback
@@ -709,6 +739,7 @@ def execute_reels_pipeline(topic: str = "") -> dict:
         audio_path=AUDIO_FILE,
         output_video_path=BACKGROUND_VIDEO,
         output_image_path=BACKGROUND_IMG,
+        template_name=template_name,
     )
 
     if visual_meta.get("provider") == "hyperframes":
@@ -732,6 +763,7 @@ def execute_reels_pipeline(topic: str = "") -> dict:
         "visual_prompt": data["visual_prompt"],
         "topic": topic,
         "video_provider": visual_meta.get("provider", "unknown"),
+        "template": template_name,
     }
     with open(str(BASE_DIR / "metadata.json"), "w", encoding="utf-8") as f:
         _json.dump(result, f, indent=2)
