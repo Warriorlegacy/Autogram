@@ -1,7 +1,7 @@
 name: Daily Hindi/Hinglish Promo Reel — Signhify Studio (2x Daily)
 
 # Autonomous Hindi/Hinglish cinematic promo engine promoting Signhify Studio
-# Voice: SwaraNeural Hindi, Hinglish scripts, Playwright 1080x1920 rendering
+# Voice: rotated SwaraNeural/MadhurNeural Hindi + AI scripts, HyperFrames 1080x1920 rendering
 # Live Website: https://signhify.dpdns.org | Brand: @signhify.studio
 
 on:
@@ -66,8 +66,17 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID || secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN || secrets.META_GRAPH_ACCESS_TOKEN }}
           META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
+          # Optional pins (leave secrets unset for auto-rotation every run)
+          HINDI_VOICE: ${{ secrets.HINDI_VOICE }}
+          HINDI_REELS_TEMPLATE: ${{ secrets.HINDI_REELS_TEMPLATE }}
         run: |
           python scripts/pipeline_hindi_promo.py
+          python -c "
+          import json
+          meta = json.load(open('workspace/hindi_promo/metadata.json', encoding='utf-8'))
+          print(f'Hindi reel: {meta[\"topic\"]}')
+          print(f'Voice: {meta[\"voice\"]} | Visual style: {meta[\"template\"]} | Mode: {meta[\"mode\"]}')
+          "
 
       - name: Commit Content Memory State
         run: |

@@ -65,6 +65,10 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           ENABLE_HYPERFRAMES: 'true'
+          # Optional pins (leave secrets unset for auto-rotation every run):
+          # REELS_VOICE = one edge-tts voice, REELS_TEMPLATE = one HyperFrames template
+          REELS_VOICE: ${{ secrets.REELS_VOICE }}
+          REELS_TEMPLATE: ${{ secrets.REELS_TEMPLATE }}
           TOPIC_INPUT: ${{ github.event.inputs.topic || '' }}
         run: |
           python -c "
@@ -75,6 +79,8 @@ jobs:
           with open('metadata.json', 'w') as f:
               json.dump(res, f)
           print(f'Successfully compiled Reel: {res[\"video_path\"]}')
+          print(f'Topic: {res[\"topic\"]}')
+          print(f'Voice: {res[\"voice\"]} | Visual style: {res[\"template\"]} | Provider: {res[\"video_provider\"]}')
           print(f'Script: {res[\"script\"]}')
           "
 

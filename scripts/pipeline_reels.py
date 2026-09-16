@@ -35,11 +35,14 @@ BASE_DIR.mkdir(parents=True, exist_ok=True)
 VOICE_NAME = os.getenv("REELS_VOICE", "en-US-BrianMultilingualNeural")
 
 # Voice roster — rotated every run so consecutive reels never sound identical.
-# All are edge-tts multilingual neural voices with human promo cadence.
+# All are verified edge-tts neural voices; male/female alternate for max contrast.
+# 6 voices = 2 full days of 3x-daily reels before any voice repeats.
 REEL_VOICES = [
     "en-US-BrianMultilingualNeural",
     "en-US-AvaMultilingualNeural",
     "en-US-AndrewMultilingualNeural",
+    "en-US-AriaNeural",
+    "en-US-ChristopherNeural",
     "en-US-EmmaMultilingualNeural",
 ]
 
