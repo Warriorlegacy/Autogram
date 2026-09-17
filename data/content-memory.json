@@ -3,6 +3,13 @@
     {
       "date": "2026-09-17",
       "pillar": "Trending GitHub Spotlight",
+      "topic": "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "hook": "Ditch Adobe Acrobat Pro for $240/year. This 100% local open-source PDF suite gives you control and saves you money.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-17",
+      "pillar": "Trending GitHub Spotlight",
       "topic": "[Story] Open-WebUI: The User-Friendly Self-Hosted AI Interface",
       "hook": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
       "score": 95.0
@@ -411,13 +418,6 @@
       "pillar": "Trending GitHub Spotlight",
       "topic": "Stirling-PDF: Open Source Alternative to Adobe Acrobat Pro",
       "hook": "Stop paying $240/year for Adobe Acrobat. This 100% open source repo runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-12",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "The Reverse-Engineering System Prompt: Extracting Code, Architecture & API Contracts from Any URL",
-      "hook": "Stop paying for expensive cloud architecture tools. This open source megaprompt reverses engineers any system.",
       "score": 100
     }
   ],
