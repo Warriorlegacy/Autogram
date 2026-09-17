@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-17",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Story] The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
+      "hook": "The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-17",
       "pillar": "Local AI & Edge Compute",
       "topic": "Chain-of-Density Prompt: Open Source Alternative to Paid AI Summarizers",
       "hook": "Stop paying for AI summarizers. This 100% open source prompt condenses 10k words into 5 dense insights in one pass.",
@@ -412,13 +419,6 @@
       "topic": "Datasette 1.0a39 and 0.65.4 security releases",
       "hook": "Datasette 1.0a39 and 0.65.4 security releases: Open source SQLite exploration and publishing",
       "score": 95
-    },
-    {
-      "date": "2026-09-11",
-      "pillar": "AI Tool Breakdown",
-      "topic": "Compound AI Systems: Why Multi-Agent Orchestration Outperforms Monolithic LLMs",
-      "hook": "Monolithic LLMs are a thing of the past \u2013 compound AI systems outperform them by 60%.",
-      "score": 100
     }
   ],
   "winning_patterns": [
