@@ -1,6 +1,13 @@
 {
   "recent_posts": [
     {
+      "date": "2026-09-17",
+      "pillar": "Open Source Economics & Contrarian",
+      "topic": "The Hidden Costs of Self-Hosting: When Paying for SaaS Actually Makes Sense",
+      "hook": "Stop blindly self-hosting everything. Sometimes, SaaS is the smarter play.",
+      "score": 100
+    },
+    {
       "date": "2026-09-16",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] The Spatial Web",
@@ -412,20 +419,6 @@
       "topic": "On the Navier\u2013Stokes Millennium Prize Problem",
       "hook": "The unsolved Navier\u2013Stokes Millennium Prize Problem is not just a math challenge, but a hidden key to unlocking 10x operational efficiency in AI systems.",
       "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "Marketing Psychology",
-      "topic": "Quoting Terence Tao",
-      "hook": "Quoting Terence Tao can boost your team's productivity by up to 30%.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-10",
-      "pillar": "Prompting & Workflow",
-      "topic": ".blend URL Viewer",
-      "hook": "Say goodbye to tedious Blender file sharing. Introducing the .blend URL Viewer, a game-changer for collaborative 3D modeling.",
-      "score": 95
     }
   ],
   "winning_patterns": [
