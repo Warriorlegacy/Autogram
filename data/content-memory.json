@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-17",
+      "pillar": "Self-Hosted Architecture",
+      "topic": "SearXNG: Private Self-Hosted Metasearch Without Google Tracking",
+      "hook": "Stop letting Google track your searches. Self-host private metasearch for $0.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-17",
       "pillar": "Developer Power Tools & CLI",
       "topic": "[Story] The Zero-Hallucination SQL Generator: Prompt Code That Never Invents Column Names",
       "hook": "The Zero-Hallucination SQL Generator: Prompt Code That Never Invents Column Names",
@@ -411,13 +418,6 @@
       "pillar": "Developer Power Tools & CLI",
       "topic": "Tree-of-Thoughts Megaprompt: Eliminate Code Bugs and Logic Flaws with 3 Autonomous Personas",
       "hook": "Stop throwing money at $50-$200/month SaaS for code debugging. This FOSS tool gives you 74% success rate on complex reasoning.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-12",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
-      "hook": "Stop paying $50-$200/mo for proprietary LLM cloud services. Self-host vLLM in 60 seconds and save forever.",
       "score": 100
     }
   ],
