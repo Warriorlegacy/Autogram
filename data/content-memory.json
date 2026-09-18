@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-18",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Story] LazyGit: Simple Terminal UI for Git Commands",
+      "hook": "LazyGit: Simple Terminal UI for Git Commands",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-18",
       "pillar": "Local AI & Edge Compute",
       "topic": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
       "hook": "Stop paying $200/month for cloud LLM APIs. Self-host vLLM.",
@@ -411,13 +418,6 @@
       "pillar": "Self-Hosted Architecture",
       "topic": "Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
       "hook": "Stop paying for manual SSL. This 100% open source repo runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-12",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
-      "hook": "Ditch $99-$499/month for OpenAI's SaaS proxy. Meet LiteLLM, the 100% open source, self-hosted alternative.",
       "score": 100
     }
   ],
