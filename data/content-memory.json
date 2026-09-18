@@ -3,6 +3,13 @@
     {
       "date": "2026-09-18",
       "pillar": "Self-Hosted Architecture",
+      "topic": "[Story] PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
+      "hook": "PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-18",
+      "pillar": "Self-Hosted Architecture",
       "topic": "Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
       "hook": "Stop paying for Cloudflare Paid Edge. This 100% open source repo runs on your own hardware.",
       "score": 100
@@ -411,13 +418,6 @@
       "pillar": "FOSS SaaS Alternatives",
       "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
       "hook": "Ditch $200+/mo Vercel & Heroku. Self-host everything with Coolify for $0.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
-      "pillar": "Open Source Economics & Contrarian",
-      "topic": "The Open Source Bait-and-Switch: Why Startups Relicense from MIT to BSL",
-      "hook": "Stop paying $50-$200/month for SaaS. This 100% open source repo runs on your own hardware.",
       "score": 100
     }
   ],
