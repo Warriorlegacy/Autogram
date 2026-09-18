@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-18",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Stop paying for Vercel. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-18",
       "pillar": "Local AI & Edge Compute",
       "topic": "The Deep-Research Autonomous Agent Prompt: Turning ChatGPT into a 24/7 Market Intelligence Bot",
       "hook": "Stop paying for cloud AI research. This open source prompt delivers 24/7 market intelligence.",
@@ -411,13 +418,6 @@
       "pillar": "Local AI & Edge Compute",
       "topic": "Skeleton-of-Thought (SoT): Accelerate LLMs by 4x",
       "hook": "Stop wasting LLM tokens. This prompt framework generates content 4x faster.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "Skeleton-of-Thought (SoT): The Secret Prompt Framework That Accelerates LLMs by 4x",
-      "hook": "Stop overpaying for slow LLM generations. This 100% open framework accelerates output by 4x.",
       "score": 100
     }
   ],
