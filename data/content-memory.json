@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-18",
+      "pillar": "Self-Hosted Architecture",
+      "topic": "Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
+      "hook": "Stop paying for Cloudflare Paid Edge. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-18",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] AI 3D Website Builder from Prompt",
       "hook": "Hey yaar, bas ek prompt likhiye, Signhify se ek cinematic 3D",
@@ -411,20 +418,6 @@
       "pillar": "Open Source Economics & Contrarian",
       "topic": "The Open Source Bait-and-Switch: Why Startups Relicense from MIT to BSL",
       "hook": "Stop paying $50-$200/month for SaaS. This 100% open source repo runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
-      "hook": "Stop paying $50-$200/mo for GNU Grep. This ultra-fast, 100% open source text search tool runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "Skeleton-of-Thought (SoT): Accelerate LLMs by 4x",
-      "hook": "Stop wasting LLM tokens. This prompt framework generates content 4x faster.",
       "score": 100
     }
   ],
