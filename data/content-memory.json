@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-18",
+      "pillar": "Hindi Promo",
+      "topic": "[Hindi Reel] AI 3D Website Builder from Prompt",
+      "hook": "Hey yaar, bas ek prompt likhiye, Signhify se ek cinematic 3D",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-18",
       "pillar": "FOSS SaaS Alternatives",
       "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
       "hook": "Stop paying for Vercel. This 100% open source repo runs on your own hardware.",
