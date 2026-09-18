@@ -1,6 +1,13 @@
 {
   "recent_posts": [
     {
+      "date": "2026-09-18",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "hook": "Stop paying $200/month for cloud LLM APIs. Self-host vLLM.",
+      "score": 100
+    },
+    {
       "date": "2026-09-17",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] AI-Powered 3D Websites: No-Code Future",
@@ -411,20 +418,6 @@
       "pillar": "Trending GitHub Spotlight",
       "topic": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
       "hook": "Ditch $99-$499/month for OpenAI's SaaS proxy. Meet LiteLLM, the 100% open source, self-hosted alternative.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-12",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
-      "hook": "Replace $240/year Proprietary cloud LLM inference APIs with this 1-line local setup.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-12",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
-      "hook": "Eliminate Code Bugs and Logic Flaws with 3 Autonomous Personas. No more $50-$200/month SaaS costs.",
       "score": 100
     }
   ],
