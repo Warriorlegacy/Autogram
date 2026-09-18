@@ -3,6 +3,13 @@
     {
       "date": "2026-09-18",
       "pillar": "Local AI & Edge Compute",
+      "topic": "The Deep-Research Autonomous Agent Prompt: Turning ChatGPT into a 24/7 Market Intelligence Bot",
+      "hook": "Stop paying for cloud AI research. This open source prompt delivers 24/7 market intelligence.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-18",
+      "pillar": "Local AI & Edge Compute",
       "topic": "Autonomous Deep Research Agent: Replace Market Intelligence SaaS",
       "hook": "Stop paying for market intelligence SaaS. This 100% open source prompt framework runs on your own hardware.",
       "score": 100
@@ -411,13 +418,6 @@
       "pillar": "Local AI & Edge Compute",
       "topic": "Skeleton-of-Thought (SoT): The Secret Prompt Framework That Accelerates LLMs by 4x",
       "hook": "Stop overpaying for slow LLM generations. This 100% open framework accelerates output by 4x.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-13",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "LazyGit: Simple Terminal UI for Git Commands",
-      "hook": "Stop wrestling with Git CLI. Your terminal needs LazyGit.",
       "score": 100
     }
   ],
