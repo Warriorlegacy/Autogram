@@ -3,6 +3,13 @@
     {
       "date": "2026-09-19",
       "pillar": "Trending GitHub Spotlight",
+      "topic": "[Story] Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "hook": "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-19",
+      "pillar": "Trending GitHub Spotlight",
       "topic": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
       "hook": "Stop paying $20-30/month for ChatGPT Plus. Self-host your own AI interface.",
       "score": 100
@@ -412,13 +419,6 @@
       "topic": "Supabase: Open Source Firebase Alternative with Postgres, Auth, and Storage",
       "hook": "Stop paying for Firebase. This 100% open source repo runs on your own hardware.",
       "score": 100
-    },
-    {
-      "date": "2026-09-14",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
-      "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
-      "score": 95.0
     }
   ],
   "winning_patterns": [
