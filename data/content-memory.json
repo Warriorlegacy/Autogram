@@ -1,6 +1,13 @@
 {
   "recent_posts": [
     {
+      "date": "2026-09-19",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Documenso: Open Source Alternative to DocuSign",
+      "hook": "Stop paying for DocuSign. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
       "date": "2026-09-18",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] AI-Powered 3D Websites: Zero Code Magic",
@@ -412,20 +419,6 @@
       "topic": "[Story] Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
       "hook": "Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
       "score": 95.0
-    },
-    {
-      "date": "2026-09-14",
-      "pillar": "AI Tool Breakdown",
-      "topic": "[Reel] Unit Test Reel Publishing Topic",
-      "hook": "Stop paying $5,000 to web design agencies. With Signhify Stu",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-14",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
-      "hook": "Stop paying $200/month for Vercel. This 100% open source repo runs on your own hardware.",
-      "score": 100
     }
   ],
   "winning_patterns": [
