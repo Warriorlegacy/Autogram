@@ -3,6 +3,13 @@
     {
       "date": "2026-09-20",
       "pillar": "Trending GitHub Spotlight",
+      "topic": "[Story] Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "hook": "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-20",
+      "pillar": "Trending GitHub Spotlight",
       "topic": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
       "hook": "Stop paying for ChatGPT Plus. This 100% open source repo runs on your own hardware.",
       "score": 100
@@ -411,13 +418,6 @@
       "pillar": "FOSS SaaS Alternatives",
       "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
       "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-17",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI Agent Interfaces",
-      "hook": "AI agents bas apps nahi, ab pura interface badal rahe hain\u2014a",
       "score": 95.0
     }
   ],
