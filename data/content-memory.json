@@ -3,6 +3,13 @@
     {
       "date": "2026-09-20",
       "pillar": "FOSS SaaS Alternatives",
+      "topic": "NocoDB: Open Source Smart Spreadsheet Database Replacing Airtable",
+      "hook": "Stop paying for Airtable. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-20",
+      "pillar": "FOSS SaaS Alternatives",
       "topic": "[Story] Coolify: The Self-Hosted Vercel and Heroku Alternative",
       "hook": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
       "score": 95.0
@@ -411,13 +418,6 @@
       "pillar": "Trending GitHub Spotlight",
       "topic": "[Story] LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
       "hook": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-16",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI 3D Website Trend",
-      "hook": "Arrey bhai, dekho, ek hi prompt se tumhara website 60 FPS 3D",
       "score": 95.0
     }
   ],
