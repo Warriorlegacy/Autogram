@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-20",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Story] Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-20",
       "pillar": "Trending GitHub Spotlight",
       "topic": "Affine: Open Source Next-Gen Collaborative Workspace Unifying Docs and Whiteboards",
       "hook": "Stop paying for cloud workspaces. This open source repo runs on your own hardware.",
@@ -412,13 +419,6 @@
       "topic": "[Hindi Reel] AI 3D Website Trend",
       "hook": "Arrey bhai, dekho, ek hi prompt se tumhara website 60 FPS 3D",
       "score": 95.0
-    },
-    {
-      "date": "2026-09-16",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "LazyGit: Simple Terminal UI for Git Commands",
-      "hook": "Stop paying $50/month for slow Git GUIs. This MIT-licensed terminal UI is $0.",
-      "score": 100
     }
   ],
   "winning_patterns": [
