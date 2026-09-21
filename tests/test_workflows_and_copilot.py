@@ -33,12 +33,15 @@ def test_workflow_contents():
     assert "daily-story-artifacts" in story_content
     assert "GITHUB_COPILOT_TOKEN" in story_content
 
-    # Video workflow checks (4 cloud render slots; MPT stays the local quality path)
+    # Video workflow checks: authoritative 60s pipeline, 3 IST slots, no Pexels gate
     assert "cron:" in video_content
-    assert "--video" in video_content or "--reel" in video_content
-    assert "publish-video" in video_content
-    assert "daily-video-artifacts" in video_content
-    assert "GITHUB_COPILOT_TOKEN" in video_content
+    assert video_content.count("cron:") >= 3
+    assert "run_60s_reel" in video_content
+    assert "--slot" in video_content
+    assert "publish-reel" in video_content
+    assert "reel60-" in video_content
+    assert "PEXELS_API_KEY" not in video_content
+    assert "autogram_owner_vip_2026" not in video_content
 
 
 def test_github_copilot_token_in_settings():

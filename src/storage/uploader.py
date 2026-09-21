@@ -29,9 +29,12 @@ class AssetUploader:
 
     def _upload_to_freeimage(self, p: Path) -> str:
         """Uploads image to freeimage.host returning a direct Cloudflare CDN URL."""
+        api_key = settings.imgbb_api_key or os.environ.get("FREEIMAGE_API_KEY", "")
+        if not api_key:
+            raise RuntimeError("freeimage skipped: FREEIMAGE_API_KEY is not configured.")
         resp = requests.post(
             "https://freeimage.host/api/1/upload",
-            data={"key": "6d207e02198a847aa98d0a2a901485a5", "action": "upload", "format": "json"},
+            data={"key": api_key, "action": "upload", "format": "json"},
             files={"source": (p.name, open(p, "rb"), "image/jpeg")},
             timeout=30
         )
@@ -98,7 +101,7 @@ class AssetUploader:
 
     def _upload_to_imgbb(self, p: Path) -> str:
         """Uploads to imgbb.com free API (reliable from all IPs including CI)."""
-        api_key = settings.imgbb_api_key or os.environ.get("IMGBB_API_KEY") or "f0ee2a304a71d5b2da983153c2284b73"
+        api_key = settings.imgbb_api_key or os.environ.get("IMGBB_API_KEY", "")
         if not api_key:
             raise RuntimeError("imgbb skipped: IMGBB_API_KEY is not configured.")
         import base64
@@ -182,7 +185,7 @@ class AssetUploader:
             logger.info("Using 100% Free Public Cloud CDN for Meta Instagram ingestion...")
             all_uploaded = True
             temp_urls = []
-            has_imgbb = bool(settings.imgbb_api_key or os.environ.get("IMGBB_API_KEY") or "f0ee2a304a71d5b2da983153c2284b73")
+            has_imgbb = bool(settings.imgbb_api_key or os.environ.get("IMGBB_API_KEY", ""))
 
             for path_str in image_paths:
                 p = Path(path_str)

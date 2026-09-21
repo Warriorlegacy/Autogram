@@ -1,53 +1,58 @@
-name: Daily Autonomous Video Autopilot (Shorts & Reels)
+name: Signhify 60s Reels Autopilot — 3x Daily (Authoritative)
 
-# schedule:
-#   # Parked in favor of daily_reels.yml (3x Daily)
-#   - cron: "0 2 * * *"
-#   - cron: "0 7 * * *"
-#   - cron: "0 12 * * *"
-#   - cron: "0 16 * * *"
+# AUTHORITATIVE 3-slot publisher. daily_reels.yml is deprecated and must not publish.
+# Slots (Asia/Kolkata): 10:30 / 14:30 / 20:30 IST = 05:00 / 09:00 / 15:00 UTC.
+# Runs fully in GitHub Actions; PC shutdown has no impact. Zero paid services required.
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+    - cron: '0 9 * * *'
+    - cron: '0 15 * * *'
   workflow_dispatch:
     inputs:
-      destination:
-        description: "Publishing Destination"
-        required: true
-        default: "all"
-        type: choice
-        options:
-          - "all"
-          - "reels"
-          - "shorts"
       topic:
-        description: "Custom Video Topic (leave empty for auto-trending)"
+        description: "Custom topic (empty = autonomous discovery)"
         required: false
         default: ""
       pillar:
-        description: "Content Pillar"
+        description: "Content pillar"
         required: false
-        default: "AI Tool Breakdown"
+        default: ""
+      dry_run:
+        description: "Render + QA without publishing"
+        required: false
+        default: "true"
         type: choice
-        options:
-          - "AI Tool Breakdown"
-          - "Prompting & Workflow"
-          - "Tech Explainer"
-          - "Marketing Psychology"
-          - "Trending GitHub Spotlight"
-          - "Contrarian"
-          - "Local AI & Edge Compute"
-      mode:
-        description: "Execution Mode (Always Live)"
-        required: true
-        default: "live"
+        options: ["true", "false"]
+      force_template:
+        description: "Visual theme A-E (empty = rotation)"
+        required: false
+        default: ""
+      publish_reel:
+        description: "Publish Reel"
+        required: false
+        default: "true"
         type: choice
-        options:
-          - "live"
+        options: ["true", "false"]
+      publish_story:
+        description: "Repost same MP4 to Story"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
   repository_dispatch:
     types: [publish-video, publish-reel, publish-shorts]
 
+concurrency:
+  # One publisher per slot; retries never double-publish (slot-key idempotency).
+  group: signhify-60s-${{ github.workflow }}-${{ github.run_id }}-${{ github.event.schedule || github.event.inputs.topic || 'slot' }}
+  cancel-in-progress: false
+
 jobs:
-  video:
+  reel60:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 55
     permissions:
       contents: write
     steps:
@@ -56,103 +61,90 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
+      - name: Resolve publishing slot (IST)
+        id: slot
+        run: |
+          H=$(date -u +%H)
+          if [ "$H" = "05" ]; then SLOT=morning; elif [ "$H" = "09" ]; then SLOT=afternoon; else SLOT=night; fi
+          if [ -n "${{ github.event.inputs.topic }}" ]; then :; fi
+          echo "slot=$SLOT" >> "$GITHUB_OUTPUT"
+          echo "Resolved slot: $SLOT (UTC hour $H)"
+
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
           cache: "pip"
 
-      - name: Install System FFmpeg
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install FFmpeg + Chromium + fonts
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y ffmpeg fonts-liberation espeak-ng
+          python -m pip install --upgrade pip
+
+      - name: Install Node dependencies
+        run: npm ci || npm install
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Execute Autonomous Video Publishing Pipeline
-        timeout-minutes: 20
+      - name: Install Playwright Chromium (HyperFrames only)
+        run: python -m playwright install chromium --with-deps || python -m playwright install chromium || true
+
+      - name: Run 60s autonomous Reel slot
+        timeout-minutes: 45
         run: |
-          if [ -z "${PEXELS_API_KEY}" ]; then
-            echo "PEXELS_API_KEY repo secret is empty — cloud render needs a free key from pexels.com/api. Failing with guidance."
-            exit 1
-          fi
-          DEST="${{ github.event.inputs.destination || 'all' }}"
-          TOPIC="${{ github.event.inputs.topic || '' }}"
-          PILLAR="${{ github.event.inputs.pillar || 'AI Tool Breakdown' }}"
-
-          FLAG="--video"
-          if [ "$DEST" = "reels" ]; then
-            FLAG="--reel"
-          elif [ "$DEST" = "shorts" ]; then
-            FLAG="--shorts"
-          fi
-
-          CMD_ARGS=("$FLAG" "--run-all")
-
-          if [ -n "$TOPIC" ]; then
-            CMD_ARGS+=("--topic" "$TOPIC")
-          fi
-          if [ -n "$PILLAR" ]; then
-            CMD_ARGS+=("--pillar" "$PILLAR")
-          fi
-
-          echo "Running LIVE video production command: python orchestrator.py ${CMD_ARGS[*]}"
-          if [ -n "${IG_ACCESS_TOKEN}" ]; then
-            python orchestrator.py "${CMD_ARGS[@]}"
-          else
-            echo "GitHub IG_ACCESS_TOKEN secret not detected. Falling back to Render cloud backend..."
-            ENDPOINT="video"
-            if [ "$DEST" = "reels" ]; then
-              ENDPOINT="reel"
-            elif [ "$DEST" = "shorts" ]; then
-              ENDPOINT="shorts"
-            fi
-            HTTP_STATUS=$(curl -s -o video_response.json -w "%{http_code}" \
-              --max-time 60 \
-              -X POST "https://autogram-dashboard.onrender.com/api/publish/$ENDPOINT" \
-              -H "Content-Type: application/json" \
-              -H "Authorization: Bearer ${AUTOGRAM_OWNER_KEY}" \
-              -d "{\"topic\": \"$TOPIC\", \"pillar\": \"$PILLAR\", \"mode\": \"live\"}" || echo "000")
-            echo "Render video response (HTTP $HTTP_STATUS):"
-            cat video_response.json 2>/dev/null || true
-            if [ "$HTTP_STATUS" != "200" ] && [ "$HTTP_STATUS" != "201" ]; then
-              echo "Error: Render live video publish fallback failed with HTTP $HTTP_STATUS"
-              exit 1
-            fi
-          fi
+          ARGS="--slot ${{ steps.slot.outputs.slot }}"
+          if [ -n "${{ github.event.inputs.topic }}" ]; then ARGS="$ARGS --topic ${{ github.event.inputs.topic }}"; fi
+          if [ -n "${{ github.event.inputs.pillar }}" ]; then ARGS="$ARGS --pillar ${{ github.event.inputs.pillar }}"; fi
+          if [ -n "${{ github.event.inputs.force_template }}" ]; then ARGS="$ARGS --force-template ${{ github.event.inputs.force_template }}"; fi
+          if [ "${{ github.event.inputs.dry_run || 'false' }}" = "true" ] && [ "${{ github.event_name }}" = "workflow_dispatch" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ github.event.inputs.publish_reel }}" = "false" ]; then ARGS="$ARGS --no-publish-reel"; fi
+          if [ "${{ github.event.inputs.publish_story }}" = "false" ]; then ARGS="$ARGS --no-publish-story"; fi
+          echo "python scripts/run_60s_reel.py $ARGS"
+          python scripts/run_60s_reel.py $ARGS
         env:
-          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GITHUB_COPILOT_TOKEN: ${{ secrets.GH_COPILOT_TOKEN || secrets.COPILOT_TOKEN || secrets.GITHUB_TOKEN }}
-          GH_COPILOT_TOKEN: ${{ secrets.GH_COPILOT_TOKEN || secrets.COPILOT_TOKEN }}
-          COPILOT_TOKEN: ${{ secrets.COPILOT_TOKEN || secrets.GH_COPILOT_TOKEN }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
-          META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
-          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
-          PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE || 'https://autogram-dashboard.onrender.com' }}
-          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY || 'f0ee2a304a71d5b2da983153c2284b73' }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          DRY_RUN: 'false'
+          META_API_VERSION: ${{ secrets.META_API_VERSION }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          META_GRAPH_ACCESS_TOKEN: ${{ secrets.META_GRAPH_ACCESS_TOKEN }}
+          PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+          FREEIMAGE_API_KEY: ${{ secrets.FREEIMAGE_API_KEY }}
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY }}
+          REELS_VOICE: ${{ secrets.REELS_VOICE }}
+          SLOT_HINT: ${{ steps.slot.outputs.slot }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          ENABLE_HYPERFRAMES: "true"
 
-      - name: Commit Content Memory State
+      - name: Commit content memory (idempotency keys)
+        if: always()
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase origin main || true
-          git add data/content-memory.json autopilot.db data/dm_automation_state.json || true
-          git diff --cached --quiet || git commit -m "chore(memory): record published video drop [skip ci]"
-          git push origin main || echo "Push skipped or not permitted"
+          git add data/content-memory.json output/ || true
+          git diff --cached --quiet || git commit -m "chore(memory): 60s reel ${{ steps.slot.outputs.slot }} [skip ci]"
+          git push origin main || echo "Push skipped"
 
-      - name: Upload Generated Video Artifacts
+      - name: Upload slot artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: daily-video-artifacts
-          path: output/
+          name: reel60-${{ steps.slot.outputs.slot }}-${{ github.run_number }}
+          path: |
+            output/
+            workspace/
           retention-days: 14

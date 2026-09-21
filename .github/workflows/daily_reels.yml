@@ -1,127 +1,26 @@
-name: Daily Instagram Reels Autopilot — Signhify Studio Promotion (3x Daily)
+name: Daily Instagram Reels Autopilot (DEPRECATED)
 
-# Autonomous Instagram Reels engine promoting Signhify Studio & the AI 3D Website Builder
-# Live Website: https://signhify.dpdns.org | Brand: @signhify.studio
+# DEPRECATED: daily-video.yml is the single authoritative 3x-daily publisher
+# (10:30 / 14:30 / 20:30 IST). This workflow is parked with NO schedule and NO
+# repository_dispatch triggers so duplicate publishing is impossible.
+# Kept for manual inspection only.
 
 on:
-  schedule:
-    - cron: '0 5 * * *'  # 10:30 AM IST (05:00 UTC) — Morning Signhify Viral Reel
-    - cron: '0 9 * * *'  # 02:30 PM IST (09:00 UTC) — Afternoon Signhify Viral Reel
-    - cron: '0 15 * * *' # 08:30 PM IST (15:00 UTC) — Night Signhify Viral Reel
   workflow_dispatch:
     inputs:
       topic:
-        description: "Custom Reel Topic (e.g. 'How Signhify builds Apple-grade 3D sites from 1 prompt' or leave empty for auto-rotation of Signhify topics)"
+        description: "Deprecated — use daily-video.yml instead"
         required: false
         default: ""
-  repository_dispatch:
-    types: [publish-reel, daily-reel]
 
 concurrency:
-  group: daily-reels-publish
+  group: deprecated-daily-reels
   cancel-in-progress: false
 
 jobs:
-  build-and-publish:
+  deprecated:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    permissions:
-      contents: write
-    env:
-      DRY_RUN: 'false'
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install FFmpeg with Libass
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg libass-dev fonts-liberation
-
-      - name: Setup Node.js 22 (for HyperFrames Engine)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install Node Dependencies
-        run: |
-          npm install
-
-      - name: Install Python Dependencies
-        run: |
-          pip install -r requirements.txt
-
-      - name: Run Reels Generation Pipeline
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          ENABLE_HYPERFRAMES: 'true'
-          # Optional pins (leave secrets unset for auto-rotation every run):
-          # REELS_VOICE = one edge-tts voice, REELS_TEMPLATE = one HyperFrames template
-          REELS_VOICE: ${{ secrets.REELS_VOICE }}
-          REELS_TEMPLATE: ${{ secrets.REELS_TEMPLATE }}
-          TOPIC_INPUT: ${{ github.event.inputs.topic || '' }}
-        run: |
-          python -c "
-          import os, json
-          from scripts.pipeline_reels import execute_reels_pipeline
-          topic = os.getenv('TOPIC_INPUT', '').strip() or None
-          res = execute_reels_pipeline(topic)
-          with open('metadata.json', 'w') as f:
-              json.dump(res, f)
-          print(f'Successfully compiled Reel: {res[\"video_path\"]}')
-          print(f'Topic: {res[\"topic\"]}')
-          print(f'Voice: {res[\"voice\"]} | Visual style: {res[\"template\"]} | Provider: {res[\"video_provider\"]}')
-          print(f'Script: {res[\"script\"]}')
-          "
-
-      - name: Upload Video to Public CDN and Publish to Instagram
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID || secrets.IG_USER_ID }}
-          META_GRAPH_ACCESS_TOKEN: ${{ secrets.META_GRAPH_ACCESS_TOKEN || secrets.IG_ACCESS_TOKEN }}
-          IG_USER_ID: ${{ secrets.IG_USER_ID || secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
-          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN || secrets.META_GRAPH_ACCESS_TOKEN }}
-          META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
-        run: |
-          python -c "
-          import json
-          from scripts.storage_helper import upload_to_supabase
-          from scripts.publish_instagram import publish_reel_to_instagram
-
-          with open('metadata.json') as f:
-              data = json.load(f)
-
-          public_url = upload_to_supabase(data['video_path'])
-          print(f'Hosted public URL: {public_url}')
-          publish_reel_to_instagram(public_url, data['caption'])
-          "
-
-      - name: Commit Content Memory State (Zero Repetition)
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main || true
-          git add data/content-memory.json autopilot.db || true
-          git diff --cached --quiet || git commit -m "chore(memory): record published viral reel [skip ci]"
-          git push origin main || echo "Push skipped or not permitted"
-
-      - name: Upload Reel Artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reel-${{ github.run_number }}
-          path: |
-            workspace/final_reel.mp4
-            metadata.json
-          retention-days: 14
+      - run: |
+          echo "DEPRECATED: use .github/workflows/daily-video.yml (authoritative 60s pipeline)."
+          echo "This workflow performs no rendering or publishing."

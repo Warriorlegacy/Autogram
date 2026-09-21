@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ topic }}</title>
-  <style>
+  <style>{{ theme_css|default('') }}
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
 
     * {
@@ -841,10 +841,10 @@
         <div id="scene-proof" class="scene glass-card clip" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}" data-track-index="1">
           <div class="stat-grid">
             <div class="stat-card">
-              <div class="stat-num">+320%</div>
+              <div class="stat-num">{{ proof_metric|default('3D') }}</div>
               <div class="stat-meta">
-                <div class="stat-label">Higher Conversion</div>
-                <div class="stat-sub">Compared to flat 2D landing pages</div>
+                <div class="stat-label">Interactive Depth</div>
+                <div class="stat-sub">Spatial scroll vs flat 2D pages</div>
               </div>
             </div>
             <div class="stat-card">
