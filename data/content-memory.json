@@ -3,6 +3,13 @@
     {
       "date": "2026-09-21",
       "pillar": "Developer Power Tools & CLI",
+      "topic": "[Story] Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
+      "hook": "Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Developer Power Tools & CLI",
       "topic": "[Story] The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
       "hook": "The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
       "score": 95.0
@@ -412,13 +419,6 @@
       "topic": "[Story] Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
       "hook": "Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
       "score": 95.0
-    },
-    {
-      "date": "2026-09-17",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
-      "hook": "Ditch Adobe Acrobat Pro for $240/year. This 100% local open-source PDF suite gives you control and saves you money.",
-      "score": 100
     }
   ],
   "winning_patterns": [
