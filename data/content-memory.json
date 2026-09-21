@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-09-21",
+      "slot_key": "2026-09-21-night",
+      "slot": "night",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Reel60] The AppSec Red-Team Megaprompt: Scanning Pull Requests for 0-Day Flaws and SQLi in 10 Seconds",
+      "hook": "From zero\u2011day to fixed in 10 seconds: the megaprompt scans, exploits, and patches\u2014turning your PR into a fortress instantly.",
+      "template": "C",
+      "script_hash": "c4557d730097dd3a",
+      "video_hash": "cc2a57c1f0068d47",
+      "reel_media_id": "18027245390857235",
+      "story_media_id": "17909364654537299",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
       "pillar": "Developer Power Tools & CLI",
       "topic": "[Story] LazyGit: Simple Terminal UI for Git Commands",
       "hook": "LazyGit: Simple Terminal UI for Git Commands",
