@@ -110,6 +110,9 @@ jobs:
           echo "python scripts/run_60s_reel.py $ARGS"
           python scripts/run_60s_reel.py $ARGS
         env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OPENCODE_BASE_URL: ${{ secrets.OPENCODE_BASE_URL }}
+          OPENCODE_MODELS: ${{ secrets.OPENCODE_MODELS }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}

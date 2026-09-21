@@ -205,9 +205,64 @@
     }
 
     .hook-title .gradient-text {
-      background: linear-gradient(135deg, #A7F3D0 0%, #00E599 100%);
+      background: linear-gradient(135deg, #A7F3D0 0%, #00E599 40%, #38BDF8 70%, #A7F3D0 100%);
+      background-size: 220% auto;
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: sheen 6s linear infinite;
+    }
+
+    @keyframes sheen {
+      to { background-position: 220% center; }
+    }
+
+    /* Premium 3D extruded glowing type (JS splits .hook-title into .ch spans) */
+    .hook-title {
+      transform-style: preserve-3d;
+      perspective: 700px;
+    }
+
+    .hook-title .ch {
+      display: inline-block;
+      transform-style: preserve-3d;
+      text-shadow:
+        0 1px 0 #06382a,
+        0 2px 0 #052e23,
+        0 3px 0 #04241c,
+        0 4px 0 #031a14,
+        0 6px 14px rgba(0, 0, 0, 0.85),
+        0 0 24px rgba(0, 229, 153, 0.45),
+        0 0 70px rgba(6, 182, 212, 0.28);
+    }
+
+    /* Gradient letters keep the sheen fill with glow-only shadow (extrusion
+       would bleed through the transparent fill) */
+    .hook-title .ch.g {
+      background: linear-gradient(135deg, #A7F3D0 0%, #00E599 40%, #38BDF8 70%, #A7F3D0 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: sheen 6s linear infinite;
+      text-shadow: 0 0 26px rgba(0, 229, 153, 0.35);
+    }
+
+    /* Drifting particle starfield (pure CSS, zero-cost depth) */
+    .particles {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 12% 22%, rgba(0, 229, 153, 0.9), transparent),
+        radial-gradient(2px 2px at 68% 12%, rgba(56, 189, 248, 0.8), transparent),
+        radial-gradient(1.5px 1.5px at 84% 42%, rgba(167, 243, 208, 0.8), transparent),
+        radial-gradient(2px 2px at 32% 66%, rgba(167, 139, 250, 0.7), transparent),
+        radial-gradient(1.5px 1.5px at 52% 84%, rgba(0, 229, 153, 0.7), transparent),
+        radial-gradient(2px 2px at 90% 74%, rgba(56, 189, 248, 0.7), transparent),
+        radial-gradient(1.5px 1.5px at 44% 44%, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(2px 2px at 22% 88%, rgba(0, 229, 153, 0.6), transparent);
     }
 
     .hook-sub {
@@ -721,6 +776,7 @@
     <div class="glow-orb-1" id="orb-1"></div>
     <div class="glow-orb-2" id="orb-2"></div>
     <div class="tech-grid" id="bg-grid"></div>
+    <div class="particles" id="stars"></div>
 
     <!-- Instagram Safe Zone Wrapper -->
     <div class="safe-zone">
@@ -957,6 +1013,25 @@
     const orb1 = document.getElementById('orb-1');
     const orb2 = document.getElementById('orb-2');
     const bgGrid = document.getElementById('bg-grid');
+    const stars = document.getElementById('stars');
+
+    // Premium 3D kinetic type: split hook headline into per-letter spans,
+    // preserving the gradient-text child span
+    document.querySelectorAll('.hook-title').forEach((el) => {
+      el.setAttribute('aria-label', el.textContent);
+      const nodes = [...el.childNodes];
+      el.innerHTML = '';
+      nodes.forEach((node) => {
+        const grad = node.nodeType === 1 && node.classList && node.classList.contains('gradient-text');
+        [...node.textContent].forEach((c) => {
+          const s = document.createElement('span');
+          s.className = 'ch' + (grad ? ' g' : '');
+          s.innerHTML = c === ' ' ? '&nbsp;' : c;
+          el.appendChild(s);
+        });
+      });
+    });
+    if (stars) gsap.to(stars, { y: -60, duration: {{ total_duration }}, ease: 'none' });
 
     const tl = gsap.timeline({ paused: true });
 
@@ -993,6 +1068,14 @@
         tl.to(orb1, { x: 50, y: 100, scale: 1.2, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
         tl.to(orb2, { x: -60, y: -80, scale: 1.1, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
         tl.from(scene.querySelector('.hook-title'), { y: 25, opacity: 0, duration: dur * 0.25 }, cumulativeTime + dur * 0.05);
+        const hookChars = scene.querySelectorAll('.hook-title .ch');
+        if (hookChars.length) {
+          tl.from(hookChars, {
+            y: 46, rotationX: -75, opacity: 0,
+            stagger: Math.min(0.05, (dur * 0.3) / hookChars.length),
+            duration: dur * 0.22, ease: 'back.out(1.6)'
+          }, cumulativeTime + dur * 0.05);
+        }
         const promptTerm = scene.querySelector('.prompt-terminal');
         if (promptTerm) tl.from(promptTerm, { scale: 0.92, opacity: 0, duration: dur * 0.25 }, cumulativeTime + dur * 0.12);
       } else if (idx === 1) {

@@ -113,7 +113,34 @@ def discover_topic(pillar: str | None = None, override: str | None = None) -> di
 
 
 def _llm_json(system: str, user: str) -> dict | None:
-    """OpenRouter -> Gemini -> Groq. Returns parsed dict or None."""
+    """OpenCode -> OpenRouter -> Gemini -> Groq. Returns parsed dict or None."""
+    # 0. OpenCode free models (env-configured endpoint, OpenAI-compatible shape).
+    #    Needs OPENCODE_API_KEY + OPENCODE_BASE_URL (+ optional OPENCODE_MODELS csv)
+    #    as secrets; skipped silently when unconfigured, fails soft otherwise.
+    okey, obase = os.getenv("OPENCODE_API_KEY", ""), os.getenv("OPENCODE_BASE_URL", "").rstrip("/")
+    omodels = [m.strip() for m in os.getenv("OPENCODE_MODELS", "").split(",") if m.strip()]
+    if okey and obase and omodels:
+        try:
+            import requests
+            for model in omodels:
+                try:
+                    r = requests.post(
+                        f"{obase}/chat/completions",
+                        headers={"Authorization": f"Bearer {okey}", "Content-Type": "application/json"},
+                        json={"model": model, "messages": [
+                            {"role": "system", "content": system + " Reply ONLY with valid JSON."},
+                            {"role": "user", "content": user}],
+                            "response_format": {"type": "json_object"}, "temperature": 0.8},
+                        timeout=30)
+                    if r.status_code == 200:
+                        txt = r.json()["choices"][0]["message"]["content"]
+                        return json.loads(txt[txt.find("{"):txt.rfind("}") + 1])
+                    logger.warning(f"opencode {model}: HTTP {r.status_code}")
+                except Exception as e:
+                    logger.warning(f"opencode {model}: {e}")
+                    continue
+        except Exception as e:
+            logger.warning(f"opencode unavailable: {e}")
     # 1. OpenRouter
     key = os.getenv("OPENROUTER_API_KEY", "")
     if key:

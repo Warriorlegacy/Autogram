@@ -78,6 +78,18 @@ def test_workflow_deterministic_install_and_commit_order():
     assert 0 <= add_pos < pull_pos
 
 
+def test_llm_chain_skips_cleanly_without_keys(monkeypatch):
+    for k in ("OPENCODE_API_KEY", "OPENCODE_BASE_URL", "OPENCODE_MODELS",
+              "OPENROUTER_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY"):
+        monkeypatch.delenv(k, raising=False)
+    assert script60._llm_json("sys", "user") is None
+
+
+def test_template_premium_3d_type():
+    html = Path("renderer/templates/reels/marketing_promo.html.jinja2").read_text(encoding="utf-8")
+    assert ".hook-title .ch" in html and 'id="stars"' in html and "rotationX" in html
+
+
 def test_no_hardcoded_secrets():
     up = Path("src/storage/uploader.py").read_text(encoding="utf-8")
     assert "6d207e02198a847aa98d0a2a901485a5" not in up
