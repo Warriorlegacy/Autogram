@@ -3,6 +3,13 @@
     {
       "date": "2026-09-21",
       "pillar": "FOSS SaaS Alternatives",
+      "topic": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
+      "hook": "Stop paying $200/mo for Vercel. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "FOSS SaaS Alternatives",
       "topic": "[Story] Authentik: Open Source Identity Provider & SSO Replacing Auth0",
       "hook": "Authentik: Open Source Identity Provider & SSO Replacing Auth0",
       "score": 95.0
@@ -412,13 +419,6 @@
       "topic": "Show HN: Free GitHub Action that scans PR diffs for malicious code, not quality",
       "hook": "Stop paying $50-$200/month for PR code scans. Here's the free GitHub Action you own forever.",
       "score": 100
-    },
-    {
-      "date": "2026-09-18",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "[Story] LazyGit: Simple Terminal UI for Git Commands",
-      "hook": "LazyGit: Simple Terminal UI for Git Commands",
-      "score": 95.0
     }
   ],
   "winning_patterns": [
