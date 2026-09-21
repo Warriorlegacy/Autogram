@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-21",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "The Zero-Hallucination SQL Generator: Prompt Code That Never Invents Column Names",
+      "hook": "Stop paying $50-$200/month for broken SQL. This 100% open source architecture runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-21",
       "pillar": "Trending GitHub Spotlight",
       "topic": "[Story] LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
       "hook": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
@@ -411,13 +418,6 @@
       "pillar": "FOSS SaaS Alternatives",
       "topic": "Authentik: Open Source Identity Provider & SSO Replacing Auth0",
       "hook": "Stop paying for Auth0. This 100% open source repo runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-17",
-      "pillar": "Self-Hosted Architecture",
-      "topic": "SearXNG: Private Self-Hosted Metasearch Without Google Tracking",
-      "hook": "Stop letting Google track your searches. Self-host private metasearch for $0.",
       "score": 100
     }
   ],
