@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-21",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Story] Authentik: Open Source Identity Provider & SSO Replacing Auth0",
+      "hook": "Authentik: Open Source Identity Provider & SSO Replacing Auth0",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
       "pillar": "Self-Hosted Architecture",
       "topic": "SearXNG: Private Self-Hosted Metasearch Without Google Tracking",
       "hook": "Stop paying for Google tracking. This 100% open source repo runs on your own hardware.",
@@ -412,13 +419,6 @@
       "topic": "[Story] LazyGit: Simple Terminal UI for Git Commands",
       "hook": "LazyGit: Simple Terminal UI for Git Commands",
       "score": 95.0
-    },
-    {
-      "date": "2026-09-18",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
-      "hook": "Stop paying $200/month for cloud LLM APIs. Self-host vLLM.",
-      "score": 100
     }
   ],
   "winning_patterns": [
