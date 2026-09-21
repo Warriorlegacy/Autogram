@@ -3,6 +3,13 @@
     {
       "date": "2026-09-21",
       "pillar": "Local AI & Edge Compute",
+      "topic": "[Story] Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
+      "hook": "Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Local AI & Edge Compute",
       "topic": "The Chain-of-Density Prompt: Condense 10,000-Word Docs into 5 Dense Insights",
       "hook": "Stop paying for proprietary summarization. This open-source prompt architecture runs on your own LLM.",
       "score": 100
@@ -412,13 +419,6 @@
       "topic": "[Hindi Reel] Instant 3D Portfolio for Creators",
       "hook": "Arre bhai, bas ek prompt do, aur Signhify tumhe 60 FPS cinem",
       "score": 95.0
-    },
-    {
-      "date": "2026-09-17",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
-      "hook": "Stop paying for Datadog. This 100% open source repo runs on your own hardware.",
-      "score": 100
     }
   ],
   "winning_patterns": [
