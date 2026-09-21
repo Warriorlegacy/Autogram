@@ -89,7 +89,7 @@ jobs:
           python -m pip install --upgrade pip
 
       - name: Install Node dependencies
-        run: npm ci || npm install
+        run: npm ci
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
@@ -132,12 +132,26 @@ jobs:
       - name: Commit content memory (idempotency keys)
         if: always()
         run: |
+          set -e
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main || true
-          git add data/content-memory.json output/ || true
-          git diff --cached --quiet || git commit -m "chore(memory): 60s reel ${{ steps.slot.outputs.slot }} [skip ci]"
-          git push origin main || echo "Push skipped"
+
+          git add data/content-memory.json
+
+          if git diff --cached --quiet; then
+            echo "No content-memory changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore(memory): 60s reel ${{ steps.slot.outputs.slot }} [skip ci]"
+
+          # output/ is gitignored by design — shipped as workflow artifacts only.
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && break
+            echo "Push attempt $attempt failed, retrying..."
+            sleep 10
+          done
 
       - name: Upload slot artifacts
         if: always()

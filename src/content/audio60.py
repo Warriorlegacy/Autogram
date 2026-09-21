@@ -54,6 +54,20 @@ def probe_duration(path: str) -> float:
         return 0.0
 
 
+def _ffmpeg(cmd: list[str], timeout: int) -> None:
+    """Run FFmpeg with stderr surfaced on failure (container/codec mismatches hide in silence otherwise)."""
+    try:
+        subprocess.run(cmd, check=True, timeout=timeout, capture_output=True, text=True)
+    except subprocess.CalledProcessError as exc:
+        logger.error("FFmpeg failed (cmd: %s):\n%s", " ".join(cmd), exc.stderr)
+        raise
+
+
+# MP3 container requires an MP3 codec — AAC belongs in .m4a. All voice_60s.mp3
+# writers below use libmp3lame; .m4a writers keep aac.
+MP3_CODEC = ["-c:a", "libmp3lame"]
+
+
 async def _edge_tts(text: str, out: Path, voice: str) -> bool:
     try:
         import edge_tts
@@ -72,8 +86,8 @@ def _espeak(text: str, out: Path) -> bool:
         subprocess.run([shutil.which("espeak-ng") or "espeak", "-v", "en", "-s", "165",
                         "-w", str(wav), text], check=True, timeout=120,
                        capture_output=True)
-        subprocess.run(["ffmpeg", "-y", "-i", str(wav), "-c:a", "aac", "-b:a", "160k",
-                        str(out)], check=True, timeout=60, capture_output=True)
+        _ffmpeg(["ffmpeg", "-y", "-i", str(wav), *MP3_CODEC, "-b:a", "160k",
+                 str(out)], timeout=60)
         return out.exists()
     except Exception as e:
         logger.warning(f"espeak fallback failed ({e})")
@@ -101,8 +115,8 @@ def _offline_bed(text: str, out: Path, duration: float = 60.0) -> bool:
                 pulse = 0.5 + 0.5 * math.sin(2 * math.pi * words * t / duration)
                 v = int(1200 * pulse * math.sin(2 * math.pi * 196 * t) * math.exp(-0.02 * (t % 3)))
                 w.writeframes(struct.pack("<h", v))
-        subprocess.run(["ffmpeg", "-y", "-i", str(wav), "-c:a", "aac", "-b:a", "128k",
-                        str(out)], check=True, timeout=60, capture_output=True)
+        _ffmpeg(["ffmpeg", "-y", "-i", str(wav), *MP3_CODEC, "-b:a", "128k",
+                 str(out)], timeout=60)
         return True
     except Exception as e:
         logger.warning(f"offline bed failed ({e})")
@@ -133,9 +147,8 @@ def stretch_to_60(voice_path: str, target: float = 60.0) -> tuple[str, float]:
     if not dur or dur <= 0:
         # Silent 60s so downstream never breaks
         out = str(Path(voice_path).with_name("voice_60s.mp3"))
-        subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
-                        "-t", str(target), "-c:a", "aac", "-b:a", "128k", out],
-                       check=True, timeout=60, capture_output=True)
+        _ffmpeg(["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
+                 "-t", str(target), *MP3_CODEC, "-b:a", "128k", out], timeout=60)
         return out, target
     out = str(Path(voice_path).with_name("voice_60s.mp3"))
     if abs(dur - target) < 0.4:
@@ -153,20 +166,17 @@ def stretch_to_60(voice_path: str, target: float = 60.0) -> tuple[str, float]:
             filters.append("atempo=0.5")
             r /= 0.5
         filters.append(f"atempo={r:.4f}")
-        subprocess.run(["ffmpeg", "-y", "-i", voice_path, "-filter:a", ",".join(filters),
-                        "-c:a", "aac", "-b:a", "160k", out],
-                       check=True, timeout=90, capture_output=True)
+        _ffmpeg(["ffmpeg", "-y", "-i", voice_path, "-filter:a", ",".join(filters),
+                 *MP3_CODEC, "-b:a", "160k", "-ar", "44100", out], timeout=90)
     elif dur < 30:  # pad with low room tone to reach 60
-        subprocess.run(["ffmpeg", "-y", "-i", voice_path, "-f", "lavfi", "-i",
-                        "anoisesrc=d=60:c=brown:r=44100:a=0.015",
-                        "-filter_complex", "[1:a]volume=0.15[bed];[0:a][bed]amix=inputs=2:duration=first,"
-                        f"apad=whole_dur={target}[a]", "-map", "[a]", "-t", str(target),
-                        "-c:a", "aac", "-b:a", "128k", out],
-                       check=True, timeout=90, capture_output=True)
+        _ffmpeg(["ffmpeg", "-y", "-i", voice_path, "-f", "lavfi", "-i",
+                 "anoisesrc=d=60:c=brown:r=44100:a=0.015",
+                 "-filter_complex", "[1:a]volume=0.15[bed];[0:a][bed]amix=inputs=2:duration=first,"
+                 f"apad=whole_dur={target}[a]", "-map", "[a]", "-t", str(target),
+                 *MP3_CODEC, "-b:a", "128k", out], timeout=90)
     else:  # trim long tail
-        subprocess.run(["ffmpeg", "-y", "-i", voice_path, "-t", str(target),
-                        "-c:a", "aac", "-b:a", "160k", out],
-                       check=True, timeout=90, capture_output=True)
+        _ffmpeg(["ffmpeg", "-y", "-i", voice_path, "-t", str(target),
+                 *MP3_CODEC, "-b:a", "160k", out], timeout=90)
     return out, target
 
 
@@ -203,7 +213,7 @@ def procedural_music(out_path: str, duration: float = 60.0) -> str:
     """Royalty-safe ambient bed: layered filtered noise + sub pulse. No scraping."""
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(
+    _ffmpeg(
         ["ffmpeg", "-y",
          "-f", "lavfi", "-i", f"anoisesrc=d={duration}:c=brown:r=44100:a=0.5",
          "-f", "lavfi", "-i", f"sine=frequency=55:d={duration}:beep_factor=0",
@@ -211,16 +221,16 @@ def procedural_music(out_path: str, duration: float = 60.0) -> str:
          "[0:a]lowpass=f=420,volume=0.35[pad];[1:a]volume=0.06[sub];"
          "[pad][sub]amix=inputs=2:duration=first,afftdn=nf=-25,aformat=sample_rates=44100:channel_layouts=stereo[m]",
          "-map", "[m]", "-t", str(duration), "-c:a", "aac", "-b:a", "96k", str(out)],
-        check=True, timeout=90, capture_output=True)
+        timeout=90)
     return str(out)
 
 
 def mix_voice_music(voice60: str, music: str, out_path: str) -> str:
     """Duck music under speech (~-18 LUFS relative), normalize for Reels."""
-    subprocess.run(
+    _ffmpeg(
         ["ffmpeg", "-y", "-i", voice60, "-i", music, "-filter_complex",
          "[1:a]volume=0.18[bed];[0:a][bed]amix=inputs=2:duration=first:dropout_transition=2,"
          "loudnorm=I=-16:TP=-1.5:LRA=11[mix]",
          "-map", "[mix]", "-c:a", "aac", "-b:a", "160k", "-ar", "44100", out_path],
-        check=True, timeout=120, capture_output=True)
+        timeout=120)
     return out_path

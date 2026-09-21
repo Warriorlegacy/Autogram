@@ -61,6 +61,23 @@ def test_hyperframes_60_compiles(tmp_path):
     assert "320%" not in html  # no fabricated engagement stat
 
 
+def test_mp3_outputs_use_mp3_codec():
+    """All .mp3 writers must encode libmp3lame; AAC is allowed only for .m4a."""
+    src = Path("src/content/audio60.py").read_text(encoding="utf-8")
+    assert src.count("*MP3_CODEC") == 6  # espeak, offline, silent, atempo, pad, trim
+    assert src.count('"-c:a", "aac"') == 2  # procedural_music + mix_voice_music (.m4a)
+
+
+def test_workflow_deterministic_install_and_commit_order():
+    """npm ci must be bare; memory must be staged before pull --rebase."""
+    yml = Path(".github/workflows/daily-video.yml").read_text(encoding="utf-8")
+    assert "npm ci || npm install" not in yml
+    assert "\n        run: npm ci\n" in yml
+    add_pos = yml.find("git add data/content-memory.json")
+    pull_pos = yml.find("git pull --rebase")
+    assert 0 <= add_pos < pull_pos
+
+
 def test_no_hardcoded_secrets():
     up = Path("src/storage/uploader.py").read_text(encoding="utf-8")
     assert "6d207e02198a847aa98d0a2a901485a5" not in up
