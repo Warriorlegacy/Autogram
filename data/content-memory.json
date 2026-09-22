@@ -1,6 +1,13 @@
 {
   "recent_posts": [
     {
+      "date": "2026-09-22",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "score": 95.0
+    },
+    {
       "date": "2026-09-21",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] AI 3D Website Builder",
@@ -427,34 +434,6 @@
       "pillar": "Local AI & Edge Compute",
       "topic": "The Deep-Research Autonomous Agent Prompt: Turning ChatGPT into a 24/7 Market Intelligence Bot",
       "hook": "Stop paying for cloud AI research. This open source prompt delivers 24/7 market intelligence.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-18",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "Autonomous Deep Research Agent: Replace Market Intelligence SaaS",
-      "hook": "Stop paying for market intelligence SaaS. This 100% open source prompt framework runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-18",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "[Story] Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
-      "hook": "Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-18",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-powered 3D scroll websites",
-      "hook": "Arrey bhai, dekho kitna asaan hai \u2013 ek prompt do, aur Signhi",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-18",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
-      "hook": "Stop paying $499/month for LLM proxies. LiteLLM is your $0 gateway.",
       "score": 100
     }
   ],
