@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-09-22",
+      "slot_key": "2026-09-22-night",
+      "slot": "night",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] RustDesk: Open Source Remote Desktop Replacing TeamViewer and AnyDesk",
+      "hook": "Tired of $50 per seat monthly fees and random disconnects? RustDesk gives you free, peer\u2011to\u2011peer encrypted remote desktop on your own relay\u2014no subscription, no mid\u2011session cuts.",
+      "template": "D",
+      "script_hash": "852dd16b599f2b5a",
+      "video_hash": "5f790dc86d02adca",
+      "reel_media_id": "17998625000812153",
+      "story_media_id": "18369611830213983",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-22",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] AI 3D Website Builder",
       "hook": "Arrey bhai, dekho yeh naya AI 3D Website Builder \u2014 ek prompt",
