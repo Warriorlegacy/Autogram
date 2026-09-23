@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-09-23",
+      "slot_key": "2026-09-23-night",
+      "slot": "night",
+      "pillar": "Trending GitHub Spotlight",
+      "topic": "[Reel60] Immich: Self-Hosted High-Performance Photo Backup Replacing Google Photos",
+      "hook": "Replace Google Photos\u2019 $120/yr bill with a one\u2011time $80 Raspberry\u202fPi 4 setup that delivers facial recognition, AI tagging, and instant mobile backup.",
+      "template": "D",
+      "script_hash": "9a9137404bf76ab6",
+      "video_hash": "49156aa3153d1a92",
+      "reel_media_id": "18238506934316184",
+      "story_media_id": "18112991876024126",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-23",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] AI Agents Meet 3D Websites",
       "hook": "AI agents ab kaam sambhalenge, par brand ka experience aapko",
