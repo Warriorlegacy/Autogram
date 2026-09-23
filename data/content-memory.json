@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-09-23",
+      "slot_key": "2026-09-23-afternoon",
+      "slot": "afternoon",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "[Reel60] Skeleton-of-Thought (SoT): The Secret Prompt Framework That Accelerates LLMs by 4x",
+      "hook": "What if you could make any LLM think in outline mode first\u2014then fill in the details in parallel? UC Berkeley\u2019s Skeleton\u2011of\u2011Thought does exactly that.",
+      "template": "B",
+      "script_hash": "8cb8cd5c7f21a617",
+      "video_hash": "627306feeb19c729",
+      "reel_media_id": "18346991062267785",
+      "story_media_id": "18072967088732135",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-23",
       "pillar": "Trending GitHub Spotlight",
       "topic": "[Story] Open-WebUI: The User-Friendly Self-Hosted AI Interface",
       "hook": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
