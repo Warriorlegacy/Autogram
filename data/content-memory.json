@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-09-24",
+      "slot_key": "2026-09-24-afternoon",
+      "slot": "afternoon",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] Plane: Open Source Project Management Tool Replacing Jira and Linear",
+      "hook": "Looking for a Jira\u2011alternative that doesn\u2019t require a credit card? Plane delivers enterprise\u2011grade tracking, sprint cycles and roadmaps you can deploy on your own infrastructure today.",
+      "template": "B",
+      "script_hash": "4be82f17f642df42",
+      "video_hash": "3b2bf2126a68a9c5",
+      "reel_media_id": "18100050635151104",
+      "story_media_id": "18210070432364197",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-24",
       "pillar": "Self-Hosted Architecture",
       "topic": "[Story] PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
       "hook": "PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
