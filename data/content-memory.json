@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-24",
+      "pillar": "Hindi Promo",
+      "topic": "[Hindi Reel] AI 3D Website Builder Promo",
+      "hook": "Hey yaar, kya soch rahe ho? Ek hi prompt se signify kardo ap",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-24",
       "pillar": "Local AI & Edge Compute",
       "topic": "[Story] vLLM: High-Throughput and Memory-Efficient LLM Serving",
       "hook": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
