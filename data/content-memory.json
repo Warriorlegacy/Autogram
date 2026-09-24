@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-09-24",
+      "slot_key": "2026-09-24-night",
+      "slot": "night",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] AppFlowy: Open Source Notion Alternative with Local Data Privacy",
+      "hook": "Your team's wiki shouldn't require an internet connection. AppFlowy lets you edit, sync via LAN or USB, and stay GDPR-compliant by design.",
+      "template": "D",
+      "script_hash": "3e307dc19f5b5423",
+      "video_hash": "c7ade6b33dec04ee",
+      "reel_media_id": "18348359872284482",
+      "story_media_id": "18143837713602482",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-24",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] Zero-Code AI 3D Website Builder",
       "hook": "Arrey bhai, bas ek prompt de, aur hum tumhare liye cinema\u2011le",
