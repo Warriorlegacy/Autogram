@@ -3,6 +3,13 @@
     {
       "date": "2026-09-25",
       "pillar": "FOSS SaaS Alternatives",
+      "topic": "Penpot: Open Source Design & Prototyping Platform Replacing Figma",
+      "hook": "Stop paying for Figma. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-25",
+      "pillar": "FOSS SaaS Alternatives",
       "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
       "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
       "score": 95.0
@@ -484,13 +491,6 @@
       "topic": "Affine: Open Source Next-Gen Collaborative Workspace Unifying Docs and Whiteboards",
       "hook": "Stop paying for cloud workspaces. This open source repo runs on your own hardware.",
       "score": 100
-    },
-    {
-      "date": "2026-09-20",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "[Story] The Deep-Research Autonomous Agent Prompt: Turning ChatGPT into a 24/7 Market Intelligence Bot",
-      "hook": "The Deep-Research Autonomous Agent Prompt: Turning ChatGPT into a 24/7 Market Intelligence Bot",
-      "score": 95.0
     }
   ],
   "winning_patterns": [
