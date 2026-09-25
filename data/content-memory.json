@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-25",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-25",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] Prompt-to-3D Website Builder",
       "hook": "Arre bhai, bas ek prompt do aur Signhify tumhe 60 FPS cinema",
@@ -483,20 +490,6 @@
       "pillar": "Local AI & Edge Compute",
       "topic": "[Story] The Deep-Research Autonomous Agent Prompt: Turning ChatGPT into a 24/7 Market Intelligence Bot",
       "hook": "The Deep-Research Autonomous Agent Prompt: Turning ChatGPT into a 24/7 Market Intelligence Bot",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-19",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] Spatial AI Websites",
-      "hook": "AI websites ab boring landing pages nahi rahengi\u2014ab trend ha",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-19",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "[Story] LazyGit: Simple Terminal UI for Git Commands",
-      "hook": "LazyGit: Simple Terminal UI for Git Commands",
       "score": 95.0
     }
   ],
