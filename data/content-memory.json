@@ -2,6 +2,13 @@
   "recent_posts": [
     {
       "date": "2026-09-26",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Story] Documenso: The Open Source DocuSign Alternative",
+      "hook": "Documenso: The Open Source DocuSign Alternative",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-26",
       "slot_key": "2026-09-26-night",
       "slot": "night",
       "pillar": "Developer Power Tools & CLI",
@@ -499,27 +506,6 @@
       "pillar": "Self-Hosted Architecture",
       "topic": "[Story] PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
       "hook": "PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-20",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "n8n: Open Source Workflow Automation Replacing Zapier",
-      "hook": "Stop paying for Zapier. This 100% open source repo runs on your own hardware.",
-      "score": 100
-    },
-    {
-      "date": "2026-09-20",
-      "pillar": "Self-Hosted Architecture",
-      "topic": "[Story] Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
-      "hook": "Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
-      "score": 95.0
-    },
-    {
-      "date": "2026-09-20",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "[Story] Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
-      "hook": "Ripgrep: Ultra-Fast Text Search Outperforming GNU Grep",
       "score": 95.0
     }
   ],
