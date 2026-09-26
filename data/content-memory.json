@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-09-26",
+      "slot_key": "2026-09-26-night",
+      "slot": "night",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Reel60] Meilisearch: Lightning Fast Open Source Search Engine Outperforming Algolia",
+      "hook": "What if you could get typo\u2011tolerant, sub\u201150ms search\u2011as\u2011you\u2011type with zero config\u2014no credit card required?",
+      "template": "D",
+      "script_hash": "b00ded7d8ca8039c",
+      "video_hash": "58766ac6d7f7a908",
+      "reel_media_id": "18103678307198428",
+      "story_media_id": "18267412063307074",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-26",
       "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] AI-Powered 3D Websites",
       "hook": "Arrey dost, kya aap bhi sochte ho ki website banana tough ha",
