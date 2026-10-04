@@ -1,0 +1,51 @@
+name: Verify Social Credentials (IG)
+
+# One-shot diagnostic: proves the Instagram Graph API token stored as a repo
+# secret actually works and the target account is reachable, WITHOUT posting
+# anything and without ever printing the token. Run manually:
+#   gh workflow run verify-social-creds -R Warriorlegacy/Autogram
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  verify-ig:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check IG secrets are set (names only)
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION }}
+        run: |
+          echo "IG_ACCESS_TOKEN set: $([ -n "$IG_ACCESS_TOKEN" ] && echo YES || echo NO)"
+          echo "IG_USER_ID set: $([ -n "$IG_USER_ID" ] && echo YES || echo NO)"
+          echo "INSTAGRAM_BUSINESS_ACCOUNT_ID set: $([ -n "$INSTAGRAM_BUSINESS_ACCOUNT_ID" ] && echo YES || echo NO)"
+          echo "META_API_VERSION: ${META_API_VERSION:-v22.0}"
+
+      - name: Verify token against Instagram Graph API (read-only)
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION }}
+        run: |
+          VER=${META_API_VERSION:-v22.0}
+          IG_ID="${INSTAGRAM_BUSINESS_ACCOUNT_ID:-$IG_USER_ID}"
+          echo "Target IG account id: ${IG_ID}"
+          # Read-only: fetch the account's own profile fields (no post, no media write)
+          CODE=$(curl -s -o /tmp/ig_resp.json -w "%{http_code}" \
+            "https://graph.facebook.com/${VER}/${IG_ID}?fields=id,username,name,media_count&access_token=${IG_ACCESS_TOKEN}")
+          echo "Graph API status: $CODE"
+          cat /tmp/ig_resp.json
+          echo
+          if [ "$CODE" = "200" ]; then
+            echo "IG_TOKEN_VALID=YES"
+            grep -o '"username":"[^"]*"' /tmp/ig_resp.json || true
+          else
+            echo "IG_TOKEN_VALID=NO"
+            exit 1
+          fi
