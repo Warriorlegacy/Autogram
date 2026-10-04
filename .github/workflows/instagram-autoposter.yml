@@ -1,0 +1,60 @@
+name: Live Instagram Auto-Poster (uses Autogram IG token)
+
+# Posts one image to Instagram daily using the IG_ACCESS_TOKEN secret that
+# already exists on this repo. Read the caption from a committed daily file
+# (content/ig-today.txt) or a repo variable; image from picsum (free, no key).
+# Dry-run by default — set repo variable IG_DRY_RUN=0 to go live.
+
+on:
+  schedule:
+    - cron: '30 4 * * *'   # 10:00 IST daily
+  workflow_dispatch:
+    inputs:
+      image_url:
+        description: 'Image URL to post (default picsum seeded)'
+        required: false
+        default: ''
+      caption:
+        description: 'Caption (default from content/ig-today.txt)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (no publish)'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+
+concurrency:
+  group: ig-poster
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build caption
+        id: caption
+        run: |
+          CAP="${{ github.event.inputs.caption }}"
+          if [ -z "$CAP" ] && [ -f content/ig-today.txt ]; then
+            CAP="$(cat content/ig-today.txt)"
+          fi
+          if [ -z "$CAP" ]; then CAP="🚀 New demo shipped today by the AI agency — built, deployed and live in hours. #AI #WebDev #Automation #Signhify"; fi
+          echo "caption=$CAP" >> "$GITHUB_OUTPUT"
+      - name: Post to Instagram
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION }}
+          IG_DRY_RUN: ${{ github.event.inputs.dry_run || vars.IG_DRY_RUN || '1' }}
+          IG_IMAGE_URL: ${{ github.event.inputs.image_url || 'https://picsum.photos/seed/autogtm1080/1080/1080' }}
+          IG_CAPTION: ${{ steps.caption.outputs.caption }}
+        run: python3 scripts/instagram_autoposter.py
