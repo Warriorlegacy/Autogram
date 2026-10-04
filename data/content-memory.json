@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-10-04",
+      "slot_key": "2026-10-04-night",
+      "slot": "night",
+      "pillar": "Open Source Economics & Contrarian",
+      "topic": "[Reel60] The Open Source Bait-and-Switch: Why Startups Relicense from MIT to BSL",
+      "hook": "From permissive to protective: why Redis, Terraform and Elastic ditched MIT for the Business Source License.",
+      "template": "C",
+      "script_hash": "1426f6d274405294",
+      "video_hash": "1698de0f2c8736ac",
+      "reel_media_id": "18151189948530687",
+      "story_media_id": "17875977675574143",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-04",
       "pillar": "Local AI & Edge Compute",
       "topic": "[Story] Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
       "hook": "Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
