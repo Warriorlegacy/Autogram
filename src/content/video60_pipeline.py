@@ -129,17 +129,15 @@ def qa_final(path: str) -> tuple[bool, str, dict]:
 def _ffmpeg_fallback(hf_mp4: str, voice_mix: str, srt: str, out: str, logo: str = "") -> str:
     """Deterministic FFmpeg fallback when Remotion CLI is unavailable.
 
-    HyperFrames video (loop/trim to 60) + mixed audio + burned captions + watermark.
+    HyperFrames video (loop/trim to 60) + mixed audio + watermark.
+    The HyperFrames composition already renders the SINGLE time-synced caption
+    layer inside the video, so captions.srt is NOT burned here — burning it
+    produced doubled captions in the final MP4. `srt` is kept as an artifact.
     """
     vf = ("scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,"
           "eq=contrast=1.06:saturation=1.12")
-    # burn captions if srt exists
-    filt = vf
     inputs = ["-stream_loop", "-1", "-i", hf_mp4, "-i", voice_mix]
-    if Path(srt).exists():
-        esc = srt.replace("\\", "/").replace(":", "\\:")
-        filt += f",subtitles='{esc}':force_style='FontSize=22,PrimaryColour=&HFFFFFF,OutlineColour=&H80000000,BorderStyle=1,Outline=2,Shadow=1,MarginV=380,Alignment=2'"
-    cmd = ["ffmpeg", "-y", *inputs, "-filter_complex", f"[0:v]{filt}[v]",
+    cmd = ["ffmpeg", "-y", *inputs, "-filter_complex", f"[0:v]{vf}[v]",
            "-map", "[v]", "-map", "1:a", "-t", "60",
            "-c:v", "libx264", "-preset", "medium", "-crf", "19",
            "-c:a", "aac", "-b:a", "160k", "-pix_fmt", "yuv420p",
@@ -148,9 +146,7 @@ def _ffmpeg_fallback(hf_mp4: str, voice_mix: str, srt: str, out: str, logo: str 
         # subtle watermark overlay instead of complex logo burn
         cmd = ["ffmpeg", "-y", "-stream_loop", "-1", "-i", hf_mp4, "-i", voice_mix,
                "-i", logo, "-filter_complex",
-               f"[0:v]{vf}[base];[2:v]scale=120:120[wm];[base][wm]overlay=880:180:format=auto,"
-               f"subtitles='{srt.replace(chr(92), '/').replace(':', chr(92)+':')}'[v]" if Path(srt).exists()
-               else f"[0:v]{vf}[base];[2:v]scale=120:120[wm];[base][wm]overlay=880:180[v]",
+               "[0:v]" + vf + "[base];[2:v]scale=120:120[wm];[base][wm]overlay=880:180:format=auto[v]",
                "-map", "[v]", "-map", "1:a", "-t", "60",
                "-c:v", "libx264", "-preset", "medium", "-crf", "19",
                "-c:a", "aac", "-b:a", "160k", "-pix_fmt", "yuv420p",
@@ -184,6 +180,121 @@ def try_remotion(hf_mp4: str, voice_mix: str, plan: dict, hook: str, theme: str,
     except Exception as e:
         logger.warning(f"remotion attempt failed: {e}")
         return False, f"remotion-error:{e}"
+
+
+def _post_production(final: str, outdir: Path, report: dict, front: dict,
+                     theme: str, mixed_audio: str) -> dict:
+    """Fail-soft post-production: extended QC, preview, thumbnails, spec files.
+
+    Runs AFTER qa_final passes and BEFORE publish. Every step is wrapped so a
+    failure never breaks the slot — it just logs and records status in the
+    report (report['thumbnail'], report['preview'], report['qc_extended']).
+    """
+    from src.content import qc60
+    from src.content import thumbnail60
+
+    # 1. Extended QC (black frames, placeholders, timing, audio clip)
+    qc: dict = {}
+    try:
+        captions = ""
+        srt_file = outdir / "captions.srt"
+        if srt_file.exists():
+            captions = srt_file.read_text(encoding="utf-8", errors="replace")
+        qc = qc60.run_extended_qc(
+            final=final,
+            script_text=front.get("script", ""),
+            captions_text=captions,
+            scene_plan=front.get("scene_plan", {}),
+            audio_path=mixed_audio or str(outdir / "mixed_audio.m4a"),
+        )
+        report["qc_extended"] = qc
+    except Exception as e:
+        report["qc_extended"] = {"status": "error", "detail": str(e)}
+        logger.warning(f"qc_extended failed: {e}")
+
+    # 2. Low-res preview (540x960, crf 28, 60s, same audio, fast preset)
+    try:
+        preview = str(outdir / "preview.mp4")
+        subprocess.run(
+            ["ffmpeg", "-y", "-i", final, "-vf", "scale=540:960:force_original_aspect_ratio=decrease",
+             "-c:v", "libx264", "-preset", "fast", "-crf", "28",
+             "-c:a", "aac", "-b:a", "128k", "-t", "60", "-movflags", "+faststart", preview],
+            check=True, timeout=600, capture_output=True)
+        report["preview"] = "ok" if Path(preview).exists() else "failed:no-output"
+    except Exception as e:
+        report["preview"] = f"failed:{e}"
+        logger.warning(f"preview render failed: {e}")
+
+    # 3. Thumbnails (9:16 + 1:1)
+    try:
+        thumb = thumbnail60.generate_thumbnail(front.get("hook", ""), front.get("topic", ""),
+                                               outdir, theme=theme, square=False)
+        thumb1 = thumbnail60.generate_thumbnail(front.get("hook", ""), front.get("topic", ""),
+                                                outdir, theme=theme, square=True)
+        report["thumbnail"] = "ok" if thumb else "failed:render"
+        report["thumbnail_1x1"] = "ok" if thumb1 else "failed:render"
+    except Exception as e:
+        report["thumbnail"] = f"failed:{e}"
+        report["thumbnail_1x1"] = f"failed:{e}"
+        logger.warning(f"thumbnail generation failed: {e}")
+
+    # 4. Spec artifacts: metadata.json (report dict) + metadata_spec.json +
+    #    generation-report.json (both spec-compliant, additive; report dict kept)
+    try:
+        assets = [
+            {"kind": "video", "path": "final_reel.mp4", "bytes": report.get("video_bytes")},
+            {"kind": "hyperframes", "path": "hyperframes_scenes.mp4"},
+            {"kind": "audio", "path": "mixed_audio.m4a"},
+            {"kind": "captions", "path": "captions.srt"},
+            {"kind": "thumbnail", "path": "thumbnail.png"},
+            {"kind": "preview", "path": "preview.mp4"},
+        ]
+        spec_meta = qc60.build_metadata(
+            report=report,
+            topic=front.get("topic", ""),
+            hook=front.get("hook", ""),
+            script=front.get("script", ""),
+            scene_plan=front.get("scene_plan", {}),
+            duration=report.get("final_duration") or 60.0,
+            style=f"theme-{theme}",
+            assets=assets,
+            voice=report.get("voice_provider", ""),
+            music="procedural",
+            virality_score=report.get("virality_score"),
+        )
+        (outdir / "metadata_spec.json").write_text(json.dumps(spec_meta, indent=2), encoding="utf-8")
+
+        stages = [
+            {"name": "script", "status": "ok", "elapsed_s": report.get("elapsed_s", 0.0),
+             "detail": f"{front.get('words', 0)} words, llm={report.get('llm_provider')}"},
+            {"name": "tts", "status": "ok", "elapsed_s": 0.0,
+             "detail": report.get("voice_provider", "")},
+            {"name": "captions", "status": "ok", "elapsed_s": 0.0,
+             "detail": str(outdir / "captions.srt")},
+            {"name": "music", "status": "ok", "elapsed_s": 0.0, "detail": "procedural"},
+            {"name": "hyperframes", "status": report.get("hyperframes_status", "unknown"),
+             "elapsed_s": 0.0, "detail": report.get("hyperframes_mp4", "")},
+            {"name": "remotion", "status": report.get("remotion_status", "unknown"),
+             "elapsed_s": 0.0, "detail": ""},
+            {"name": "qa", "status": report.get("qa", "unknown"), "elapsed_s": 0.0,
+             "detail": str(report.get("qa_checks", {}))},
+            {"name": "qc_extended", "status": qc.get("status", "unknown") if isinstance(qc, dict) else "unknown",
+             "elapsed_s": qc.get("elapsed_s", 0.0) if isinstance(qc, dict) else 0.0,
+             "detail": json.dumps(qc.get("checks", {})) if isinstance(qc, dict) else ""},
+            {"name": "preview", "status": report.get("preview", "unknown"), "elapsed_s": 0.0, "detail": ""},
+            {"name": "thumbnail", "status": report.get("thumbnail", "unknown"), "elapsed_s": 0.0, "detail": ""},
+        ]
+        final_block = {k: report.get(k) for k in (
+            "run_id", "slot_key", "topic", "hook", "theme", "status",
+            "final_duration", "video_bytes", "video_hash", "qa",
+            "reel_media_id", "story_status", "public_url")}
+        gen_report = qc60.build_generation_report(stages, final=final_block)
+        (outdir / "generation-report.json").write_text(json.dumps(gen_report, indent=2), encoding="utf-8")
+        report["post_production"] = "ok"
+    except Exception as e:
+        report["post_production"] = f"failed:{e}"
+        logger.warning(f"metadata/generation-report write failed: {e}")
+    return report
 
 
 def run_60s_slot(topic_override: str = "", pillar: str | None = None, dry_run: bool = False,
@@ -223,7 +334,12 @@ def run_60s_slot(topic_override: str = "", pillar: str | None = None, dry_run: b
     report["theme"] = theme
 
     # 1-8. Topic/hooks/script/scene/caption
-    front = select_topic_script(pillar, topic_override or None)
+    # VIRALITY_GATE=true enables the >=75/100 concept gate: concepts below the
+    # threshold rotate to a fresh topic (spec §28). Off by default.
+    _vgate = os.getenv("VIRALITY_GATE", "").strip().lower() == "true"
+    _min_score = 75.0 if _vgate else 0.0
+    front = select_topic_script(pillar, topic_override or None, min_score=_min_score)
+    report["virality_gate"] = _vgate
     report.update({k: front[k] for k in ("topic", "pillar", "hook", "words", "llm_provider", "script_hash")})
     (outdir / "topic.json").write_text(json.dumps({k: front[k] for k in
         ("topic", "pillar", "angle", "source", "hook", "hooks")}, indent=2), encoding="utf-8")
@@ -241,17 +357,37 @@ def run_60s_slot(topic_override: str = "", pillar: str | None = None, dry_run: b
     # 12. Captions (phrase-level, synced to scene_plan)
     srt = audio60.phrase_captions(front["scene_plan"], str(outdir / "captions.srt"))
 
-    # 13. Music (procedural, royalty-safe) + mix under speech
-    music = audio60.procedural_music(str(outdir / "music_bed.m4a"))
-    mixed = audio60.mix_voice_music(voice60, music, str(outdir / "mixed_audio.m4a"))
+    # 13. Music (procedural, royalty-safe) + mix under speech.
+    #     music60 engine with graceful fallback to the classic procedural bed.
+    from src.content import music60 as _music60
+    music_provider = "audio60-procedural"
+    try:
+        _seed = int(hashlib.sha256(key.encode("utf-8")).hexdigest()[:8], 16)
+        music = _music60.build_music(front["topic"], style="futuristic_electronic",
+                                     out_path=str(outdir / "music_bed.m4a"), seed=_seed)
+        sfx_plan = _music60.sfx_library(str(outdir / "sfx"), seed=_seed)
+        mixed = _music60.mix_full(voice60, music, sfx_plan,
+                                  str(outdir / "mixed_audio.m4a"), front["scene_plan"])
+        music_provider = "music60"
+    except Exception as e:
+        logger.warning("music60 failed (%s); falling back to procedural bed", e)
+        music = audio60.procedural_music(str(outdir / "music_bed.m4a"))
+        mixed = audio60.mix_voice_music(voice60, music, str(outdir / "mixed_audio.m4a"))
+    report["music_provider"] = music_provider
 
     # 11/14. HyperFrames 60s composition (mandatory render path)
     hf_dir = outdir / "hyperframes"
     eng = HyperFramesEngine(workspace_dir=hf_dir)
+    # Per-script visual seed: derived from the script hash so every new script
+    # renders a DIFFERENT animated visual mix (never the same scene layout),
+    # while each scene still matches its own narration keywords.
+    _vseed = int((front.get("script_hash") or key)[:8], 16) % 97
     comp_dir, plan60 = eng.compile_composition_60(
         topic=front["topic"], script_text=front["script"],
         scene_plan=[dict(s) for s in front["scene_plan"]["scenes"]],
-        audio_path=mixed, duration=TARGET_DURATION, target_dir=hf_dir, theme=theme)
+        audio_path=mixed, duration=TARGET_DURATION, target_dir=hf_dir, theme=theme,
+        visual_seed=_vseed)
+    report["visual_seed"] = _vseed
     hf_mp4 = str(outdir / "hyperframes_scenes.mp4")
     hf_res = eng.render_reel(topic=front["topic"], script_text=front["script"],
                              audio_path=mixed, output_path=hf_mp4,
@@ -282,6 +418,10 @@ def run_60s_slot(topic_override: str = "", pillar: str | None = None, dry_run: b
 
     video_hash = hashlib.sha256(Path(final).read_bytes()[:1_000_000]).hexdigest()[:16]
     report["video_hash"] = video_hash
+
+    # Post-production: extended QC, preview, thumbnails, spec artifacts.
+    # Fail-soft — never breaks the slot; status recorded in the report.
+    _post_production(final, outdir, report, front, theme, mixed)
 
     # 19-22. Hosting + Reel + Story (same MP4)
     reel_id, story_id, story_status, public_url = None, None, "SKIPPED", ""

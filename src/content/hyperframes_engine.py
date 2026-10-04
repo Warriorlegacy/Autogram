@@ -40,7 +40,65 @@ TEMPLATE_FILES = {
     "C": "avatar_presenter.html.jinja2",
     "D": "marketing_promo.html.jinja2",
     "E": "avatar_presenter.html.jinja2",
+    # Premium 3D/animated scene templates (F-J): reachable through the same
+    # theme -> template lookup; A-E defaults are untouched (backward compat).
+    "F": "neural_network.html.jinja2",
+    "G": "data_flow.html.jinja2",
+    "H": "terminal_code.html.jinja2",
+    "I": "comparison.html.jinja2",
+    "J": "growth_chart.html.jinja2",
 }
+
+# visual_type -> template file. build_scene_plan_60 assigns content-aware
+# visual types; this dict resolves one to a concrete HyperFrames template
+# (consumed by template_for_visual and the template tests).
+VISUAL_TEMPLATE_MAP = {
+    "3d_hook": "marketing_promo.html.jinja2",
+    "3d_compare": "comparison.html.jinja2",
+    "3d_showcase": "marketing_promo.html.jinja2",
+    "3d_terminal": "terminal_code.html.jinja2",
+    "3d_neural": "neural_network.html.jinja2",
+    "3d_dataflow": "data_flow.html.jinja2",
+    "3d_chart": "growth_chart.html.jinja2",
+    "3d_cta": "marketing_promo.html.jinja2",
+    # Legacy kinds kept for backward compatibility.
+    "3d_dashboard": "marketing_promo.html.jinja2",
+    "3d_metrics": "growth_chart.html.jinja2",
+    "3d_reveal": "marketing_promo.html.jinja2",
+}
+
+# Content-aware visual kind scoring: keyword regex -> scene kind. Highest
+# match count wins; ties break by list order (deterministic rotation).
+_VISUAL_KEYWORDS = [
+    ("3d_terminal", re.compile(
+        r"terminal|code|deploy|command|cli|repo|console|shell|developer|github|commit|push|build", re.I)),
+    ("3d_neural", re.compile(
+        r"neural|network|model|agent|llm|brain|node|nodes|synapse|neuron|neurons|weights|layers|intelligence", re.I)),
+    ("3d_dataflow", re.compile(
+        r"data|pipeline|workflow|automate|automation|flow|process|processing|input|output|trigger|decision|execution|result|stage|packet", re.I)),
+    ("3d_compare", re.compile(
+        r"before|after|\bold\b|\bnew\b|\bvs\b|replace|instead|compare|comparison|versus|outdated|legacy|traditional|manual", re.I)),
+    ("3d_chart", re.compile(
+        r"grow|growth|scale|scaling|million|thousand|percent|%|\d+k|10x|100x|revenue|users|customers|metric|metrics|numbers|counter|views|followers", re.I)),
+]
+
+
+def _score_visual(narration: str, seed: int = 0) -> str:
+    """Content-aware visual kind for a narration: highest keyword score wins;
+    near-ties (within 1 point) rotate deterministically by `seed` so different
+    scripts render different animated visuals while each scene still matches
+    its narration; '3d_showcase' is the no-match fallback."""
+    text = narration or ""
+    best, near = -1, []
+    for kind, rx in _VISUAL_KEYWORDS:
+        score = len(rx.findall(text))
+        if score > best:
+            best, near = score, [kind]
+        elif score >= best - 1:
+            near.append(kind)
+    if best <= 0:
+        return "3d_showcase"
+    return near[seed % len(near)]
 
 
 class HyperFramesEngine:
@@ -191,12 +249,94 @@ class HyperFramesEngine:
             f"#stage{{background:radial-gradient(circle at 50% 12%,{t['accent']}33 0%,{t['bg']} 80%);}}"
         )
 
+    @staticmethod
+    def template_for_visual(visual_type: str) -> str:
+        """Resolve a scene visual_type to a concrete HyperFrames template."""
+        return VISUAL_TEMPLATE_MAP.get(visual_type, "marketing_promo.html.jinja2")
+
+    def _render_context(self, *, topic, total_duration, audio_file, logo_file,
+                        hook_alert, hook_title, proof_metric, theme,
+                        scene_narrations, scene_starts, scene_durations) -> dict:
+        """Build the standard render context shared by both compile methods.
+        Adds the kinetic-type shared assets (read from renderer/reels_shared/)
+        so templates can use data-kinetic markup via _kinetic_head partial."""
+        shared_dir = REPO_ROOT / "renderer" / "reels_shared"
+        read_kinetic_css = (shared_dir / "kinetic_type.css").read_text(encoding="utf-8") if (shared_dir / "kinetic_type.css").exists() else ""
+        read_kinetic_js = (shared_dir / "kinetic_type.js").read_text(encoding="utf-8") if (shared_dir / "kinetic_type.js").exists() else ""
+        ctx = {
+            "topic": topic,
+            "total_duration": total_duration,
+            "audio_file": audio_file,
+            "logo_file": logo_file,
+            "hook_alert": hook_alert,
+            "hook_title": hook_title,
+            "theme_css": self.theme_css(theme),
+            "proof_metric": proof_metric,
+            "read_kinetic_css": read_kinetic_css,
+            "read_kinetic_js": read_kinetic_js,
+        }
+        for i in range(1, 6):
+            ctx[f"scene{i}_narration"] = scene_narrations[f"s{i}_narration"]
+            # Short headline for the scene body; narration lives in the sub-bar.
+            ctx[f"scene{i}_headline"] = self._scene_headline(
+                scene_narrations[f"s{i}_narration"], i - 1, 5)
+            ctx[f"scene{i}_start"] = scene_starts[i - 1]
+            ctx[f"scene{i}_duration"] = scene_durations[i - 1]
+        return ctx
+
+    # Content-aware visual selection: see module-level _score_visual/_scene_headline.
+
+    def _scene_visual(self, narration: str, index: int, n: int, visual_seed: int = 0) -> str:
+        """Content-aware visual kind: hook first, cta last, middle scenes
+        scored by keyword regex against the narration (rotation tie-break by
+        scene index + a per-script visual_seed so different scripts produce
+        different visual mixes while each scene still matches its narration)."""
+        if index == 0:
+            return "3d_hook"
+        if index == n - 1:
+            return "3d_cta"
+        return _score_visual(narration, seed=index + visual_seed)
+
+    def _scene_headline(self, narration: str, index: int, n: int) -> str:
+        """Short ≤6-word keyword-style headline for the scene body (the sub-bar
+        shows the full narration — never duplicate it in the body).
+
+        Deterministic frequency heuristic: pick the most frequent content words
+        (non-stopwords), ties broken by first occurrence; falls back to the
+        leading words when too few significant tokens remain.
+        """
+        low = narration.strip()
+        if not low:
+            return ""
+        _stopwords = frozenset(
+            """a an the and or but for with from your you it is are of to in on at by as
+            that this these those not no so we our their they can will just get gets be
+            been being do does did have has had more most than then there here what which
+            who how all any about into over up down out off if while when where why because
+            between both each few some such only own same too very don't won't can't it's
+            that's you're we're i'm you've we've let's""".split()
+        )
+        words = re.findall(r"[A-Za-z0-9%.,'’!?-]+", low)
+        sig = [w for w in words if w.lower() not in _stopwords and len(w) > 1]
+        if len(sig) >= 2:
+            seen: dict[str, list] = {}
+            for w in sig:
+                seen.setdefault(w.lower(), []).append(w)
+            ranked = sorted(seen.values(), key=lambda lst: (-len(lst), words.index(lst[0])))
+            return " ".join(lst[0] for lst in ranked[:6])
+        return " ".join(words[:6]).rstrip(",;:") + "."
+
     def build_scene_plan_60(
-        self, script_text: str, topic: str, duration: float = TARGET_DURATION, n: int = 9
+        self, script_text: str, topic: str, duration: float = TARGET_DURATION, n: int = 9,
+        visual_seed: int = 0
     ) -> list[dict]:
         """Split narration into n timed scenes proportional to word count.
 
         Timing is derived from actual narration weight, not arbitrary chunks.
+        Each scene carries a content-aware visual_type (rotated by a per-script
+        visual_seed so consecutive scripts differ) and a short headline so the
+        on-screen graphic and text match the narration; the full narration is
+        only shown in the single synced caption (sub-bar) layer.
         """
         clean = re.sub(r"\s+", " ", (script_text or "").strip())
         sentences = [p.strip() for p in re.split(r"(?<=[.!?])\s+", clean) if p.strip()]
@@ -220,12 +360,12 @@ class HyperFramesEngine:
                 chunk = sentences[idx : idx + take]
                 idx += take
             narration = " ".join(chunk) if chunk else sentences[-1]
-            visual = ["3d_hook", "3d_compare", "3d_showcase", "3d_terminal", "3d_dashboard",
-                      "3d_neural", "3d_metrics", "3d_reveal", "3d_cta"][i % 9]
+            visual = self._scene_visual(narration, i, n, visual_seed)
             scenes.append({
                 "index": i, "start": start, "end": end,
                 "duration": round(end - start, 2),
                 "narration": narration,
+                "headline": self._scene_headline(narration, i, n),
                 "on_screen_text": narration[:90],
                 "visual_type": visual,
                 "motion": "push-in" if i % 2 == 0 else "pull-out",
@@ -289,31 +429,15 @@ class HyperFramesEngine:
             if v == template_name:
                 theme = k
                 break
-        rendered_html = template.render(
-            topic=topic,
-            total_duration=total_dur,
-            audio_file=audio_dest_name,
-            logo_file=logo_dest_name,
-            hook_alert="NEW 3D ENGINE",
-            hook_title=hook_title[:60],
-            theme_css=self.theme_css(theme),
-            proof_metric="3D",
-            scene1_narration=segments["s1_narration"],
-            scene2_narration=segments["s2_narration"],
-            scene3_narration=segments["s3_narration"],
-            scene4_narration=segments["s4_narration"],
-            scene5_narration=segments["s5_narration"],
-            scene1_start=0.0,
-            scene1_duration=s1,
-            scene2_start=round(s1, 2),
-            scene2_duration=s2,
-            scene3_start=round(s1 + s2, 2),
-            scene3_duration=s3,
-            scene4_start=round(s1 + s2 + s3, 2),
-            scene4_duration=s4,
-            scene5_start=round(s1 + s2 + s3 + s4, 2),
-            scene5_duration=s5,
+        starts = [0.0, round(s1, 2), round(s1 + s2, 2), round(s1 + s2 + s3, 2), round(s1 + s2 + s3 + s4, 2)]
+        ctx = self._render_context(
+            topic=topic, total_duration=total_dur, audio_file=audio_dest_name,
+            logo_file=logo_dest_name, hook_alert="NEW 3D ENGINE",
+            hook_title=hook_title[:60], proof_metric="3D", theme=theme,
+            scene_narrations=segments, scene_starts=starts,
+            scene_durations=[s1, s2, s3, s4, s5],
         )
+        rendered_html = template.render(**ctx)
 
         index_path = work_dir / "index.html"
         index_path.write_text(rendered_html, encoding="utf-8")
@@ -330,16 +454,21 @@ class HyperFramesEngine:
         target_dir: Optional[Path] = None,
         template_name: Optional[str] = None,
         theme: str = "A",
+        visual_seed: int = 0,
     ) -> tuple[Path, list[dict]]:
         """60s production entrypoint: generalized N-scene timeline mapped onto the
         5-act HTML template (acts stretch to cover the 60s scene_plan).
+
+        `visual_seed` rotates the per-scene visual palette so consecutive
+        scripts render different animated visuals while each scene still
+        matches its narration.
 
         Returns (work_dir, scene_plan) with exact 60s coverage.
         """
         work_dir = target_dir or self.workspace
         work_dir.mkdir(parents=True, exist_ok=True)
         if scene_plan is None:
-            scene_plan = self.build_scene_plan_60(script_text, topic, duration)
+            scene_plan = self.build_scene_plan_60(script_text, topic, duration, visual_seed=visual_seed)
         # Normalize to exact duration
         total = sum(s["duration"] for s in scene_plan) or duration
         scale = duration / total if total else 1.0
@@ -368,25 +497,31 @@ class HyperFramesEngine:
             shutil.copyfile(logo_src, work_dir / "logo.jpeg")
             logo_dest_name = "logo.jpeg"
         hook_title = topic.split(":", 1)[0].strip()[:60] if ":" in topic else topic[:60]
+        # Content-aware template selection: pick the template matching the
+        # dominant scene visual so the whole reel's aesthetic matches its
+        # strongest scene; fall back to the theme mapping when none applies.
+        if not template_name:
+            dominant = max(
+                (s.get("visual_type", "3d_showcase") for s in scene_plan),
+                key=lambda v: sum(1 for s in scene_plan if s.get("visual_type") == v),
+            )
+            template_name = (
+                VISUAL_TEMPLATE_MAP.get(dominant)
+                or TEMPLATE_FILES.get(theme, "marketing_promo.html.jinja2")
+            )
         tmpl = template_name or TEMPLATE_FILES.get(theme, "marketing_promo.html.jinja2")
         template = self.env.get_template(tmpl)
         s_durs = [round(hi - lo, 2) for lo, hi in bounds]
         starts = [bounds[0][0]]
         for d in s_durs[:-1]:
             starts.append(round(starts[-1] + d, 2))
-        rendered_html = template.render(
+        ctx = self._render_context(
             topic=topic, total_duration=duration, audio_file=audio_dest_name,
             logo_file=logo_dest_name, hook_alert="TECH + AI • 60S",
-            hook_title=hook_title, theme_css=self.theme_css(theme), proof_metric="3D",
-            scene1_narration=seg["s1_narration"], scene2_narration=seg["s2_narration"],
-            scene3_narration=seg["s3_narration"], scene4_narration=seg["s4_narration"],
-            scene5_narration=seg["s5_narration"],
-            scene1_start=starts[0], scene1_duration=s_durs[0],
-            scene2_start=starts[1], scene2_duration=s_durs[1],
-            scene3_start=starts[2], scene3_duration=s_durs[2],
-            scene4_start=starts[3], scene4_duration=s_durs[3],
-            scene5_start=starts[4], scene5_duration=s_durs[4],
+            hook_title=hook_title, proof_metric="3D", theme=theme,
+            scene_narrations=seg, scene_starts=starts, scene_durations=s_durs,
         )
+        rendered_html = template.render(**ctx)
         (work_dir / "index.html").write_text(rendered_html, encoding="utf-8")
         (work_dir / "scene_plan.json").write_text(
             __import__("json").dumps({"duration": duration, "theme": theme,
@@ -415,13 +550,15 @@ class HyperFramesEngine:
         out_file = Path(output_path) if output_path else (self.workspace / "hyperframes_reel.mp4")
         out_file.parent.mkdir(parents=True, exist_ok=True)
 
-        comp_dir = self.compile_composition(
+        comp_dir = self.compile_composition_60(
             topic=topic,
             script_text=script_text,
+            scene_plan=[dict(s) for s in self.build_scene_plan_60(script_text, topic, duration or TARGET_DURATION)],
             audio_path=audio_path,
-            duration=duration,
+            duration=duration or TARGET_DURATION,
             template_name=template_name,
-        )
+            visual_seed=0,
+        )[0]
 
         logger.info(f"Rendering HyperFrames video from directory {comp_dir} -> {out_file}...")
 

@@ -677,15 +677,15 @@
 
         <!-- SCENE 1: HOOK -->
         <div id="scene-hook" class="scene glass-card active clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="1">
-          {{ presenter('SIGNHIFY AI HOST', scene1_narration) }}
+          {{ presenter('SIGNHIFY AI HOST', hook_title|default(topic)) }}
           <div class="hook-alert">⚡ {{ hook_alert|default('CRITICAL NOTICE') }}</div>
           <h1 class="hook-title"><span class="gradient-text">{{ hook_title }}</span></h1>
-          <p class="hook-sub">{{ scene1_narration }}</p>
+          <p class="hook-sub">{{ scene1_headline|default(scene1_narration) }}</p>
         </div>
 
         <!-- SCENE 2: COMPARISON -->
         <div id="scene-compare" class="scene glass-card clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="1">
-          {{ presenter('SIGNHIFY AI HOST', scene2_narration) }}
+          {{ presenter('SIGNHIFY AI HOST', scene2_headline|default(scene2_narration)) }}
           <div class="compare-grid">
             <div class="compare-row compare-old">
               <div class="compare-label">✕ Traditional Agencies</div>
@@ -695,14 +695,14 @@
             <div class="compare-row compare-new">
               <div class="compare-label">✓ Signhify AI Engine</div>
               <div class="compare-main">1 Prompt &amp; 10 Minutes</div>
-              <div class="compare-desc">{{ scene2_narration }}</div>
+              <div class="compare-desc">{{ scene2_headline|default(scene2_narration) }}</div>
             </div>
           </div>
         </div>
 
         <!-- SCENE 3: SHOWCASE -->
         <div id="scene-showcase" class="scene glass-card clip" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}" data-track-index="1">
-          {{ presenter('SIGNHIFY AI HOST', scene3_narration) }}
+          {{ presenter('SIGNHIFY AI HOST', scene3_headline|default(scene3_narration)) }}
           <div class="feature-pill-row">
             <div class="feature-pill">Three.js</div>
             <div class="feature-pill">WebGL Shaders</div>
@@ -710,12 +710,12 @@
             <div class="feature-pill">Clean ZIP</div>
           </div>
           <h2 class="feature-title">Native 60 FPS 3D Canvas</h2>
-          <p class="compare-desc" style="font-size: 24px; color: #E2E8F0; margin-top: 12px;">{{ scene3_narration }}</p>
+          <p class="compare-desc" style="font-size: 24px; color: #E2E8F0; margin-top: 12px;">{{ scene3_headline|default(scene3_narration) }}</p>
         </div>
 
         <!-- SCENE 4: PROOF -->
         <div id="scene-proof" class="scene glass-card clip" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}" data-track-index="1">
-          {{ presenter('SIGNHIFY AI HOST', scene4_narration) }}
+          {{ presenter('SIGNHIFY AI HOST', scene4_headline|default(scene4_narration)) }}
           <div class="stat-grid">
             <div class="stat-card">
               <div class="stat-num">+320%</div>

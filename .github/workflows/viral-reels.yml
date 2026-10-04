@@ -1,0 +1,177 @@
+name: Signhify Viral Reels — Visual Variety + Virality Gate
+
+# NEW AUTHORITATIVE pipeline for the enhanced 60s reel engine:
+#   - virality gate (>=75/100) before rendering — concepts below the gate are
+#     rotated to a fresh topic automatically
+#   - per-script visual_seed: every new script renders a DIFFERENT animated
+#     visual mix (neural/dataflow/terminal/comparison/chart/dashboard), so no
+#     two scripts look the same while each scene still matches its narration
+#   - content-aware scene templates + reusable 3D kinetic-type text system
+#   - procedural music (build to payoff) + SFX + narration ducking
+#   - post-production: thumbnail, preview.mp4, extended QC, metadata + report
+# Slots (Asia/Kolkata): 11:30 / 17:30 IST = 06:00 / 12:00 UTC (complements
+# daily-video.yml's 10:30/14:30/20:30 slots).
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Custom topic (empty = autonomous + virality gate)"
+        required: false
+        default: ""
+      pillar:
+        description: "Content pillar"
+        required: false
+        default: ""
+      dry_run:
+        description: "Render + QA without publishing"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      force_template:
+        description: "Visual theme A-E (empty = rotation)"
+        required: false
+        default: ""
+      publish_reel:
+        description: "Publish Reel"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      publish_story:
+        description: "Repost same MP4 to Story"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+  repository_dispatch:
+    types: [publish-viral-reel, publish-reel-v2]
+
+concurrency:
+  # Slot-key idempotency prevents double-publish on retries.
+  group: signhify-viral-${{ github.workflow }}-${{ github.run_id }}-${{ github.event.schedule || github.event.inputs.topic || 'slot' }}
+  cancel-in-progress: false
+
+jobs:
+  viral-reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve publishing slot (IST)
+        id: slot
+        run: |
+          H=$(date -u +%H)
+          if [ "$H" = "06" ]; then SLOT=midday; elif [ "$H" = "12" ]; then SLOT=evening; else SLOT=adhoc; fi
+          if [ -n "${{ github.event.inputs.topic }}" ]; then SLOT="adhoc"; fi
+          echo "slot=$SLOT" >> "$GITHUB_OUTPUT"
+          echo "Resolved slot: $SLOT (UTC hour $H)"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install FFmpeg + Chromium + fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-liberation espeak-ng
+          python -m pip install --upgrade pip
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright Chromium (HyperFrames only)
+        run: python -m playwright install chromium --with-deps || python -m playwright install chromium || true
+
+      - name: Run enhanced 60s autonomous Reel slot (virality-gated, visual variety)
+        timeout-minutes: 45
+        run: |
+          ARGS="--slot ${{ steps.slot.outputs.slot }}"
+          if [ -n "${{ github.event.inputs.topic }}" ]; then ARGS="$ARGS --topic ${{ github.event.inputs.topic }}"; fi
+          if [ -n "${{ github.event.inputs.pillar }}" ]; then ARGS="$ARGS --pillar ${{ github.event.inputs.pillar }}"; fi
+          if [ -n "${{ github.event.inputs.force_template }}" ]; then ARGS="$ARGS --force-template ${{ github.event.inputs.force_template }}"; fi
+          if [ "${{ github.event.inputs.dry_run || 'false' }}" = "true" ] && [ "${{ github.event_name }}" = "workflow_dispatch" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ github.event.inputs.publish_reel }}" = "false" ]; then ARGS="$ARGS --no-publish-reel"; fi
+          if [ "${{ github.event.inputs.publish_story }}" = "false" ]; then ARGS="$ARGS --no-publish-story"; fi
+          echo "python scripts/run_60s_reel.py $ARGS"
+          python scripts/run_60s_reel.py $ARGS
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OPENCODE_BASE_URL: ${{ secrets.OPENCODE_BASE_URL }}
+          OPENCODE_MODELS: ${{ secrets.OPENCODE_MODELS }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          META_API_VERSION: ${{ secrets.META_API_VERSION }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          META_GRAPH_ACCESS_TOKEN: ${{ secrets.META_GRAPH_ACCESS_TOKEN }}
+          PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+          FREEIMAGE_API_KEY: ${{ secrets.FREEIMAGE_API_KEY }}
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY }}
+          REELS_VOICE: ${{ secrets.REELS_VOICE }}
+          SLOT_HINT: ${{ steps.slot.outputs.slot }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          ENABLE_HYPERFRAMES: "true"
+          # New engine flags: virality gate on, music/SFX on, visual variety on.
+          VIRALITY_GATE: "true"
+          MUSIC60: "true"
+
+      - name: Commit content memory (idempotency keys)
+        if: always()
+        run: |
+          set -e
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/content-memory.json
+
+          if git diff --cached --quiet; then
+            echo "No content-memory changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore(memory): viral reel ${{ steps.slot.outputs.slot }} [skip ci]"
+
+          # output/ is gitignored by design — shipped as workflow artifacts only.
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && break
+            echo "Push attempt $attempt failed, retrying..."
+            sleep 10
+          done
+
+      - name: Upload slot artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viral-reel-${{ steps.slot.outputs.slot }}-${{ github.run_number }}
+          path: |
+            output/
+            workspace/
+          retention-days: 14

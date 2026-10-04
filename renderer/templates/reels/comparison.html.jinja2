@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ topic }} — Before vs After</title>
+  {% include '_kinetic_head.html.jinja2' %}
+  <style>{{ theme_css|default('') }}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #020617;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #stage {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      background: radial-gradient(circle at 50% 12%, #2a0a0a 0%, #14061a 38%, #020617 82%);
+      overflow: hidden;
+    }
+
+    .glow-orb-1 {
+      position: absolute;
+      width: 880px;
+      height: 880px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0) 70%);
+      top: -160px;
+      right: -220px;
+      filter: blur(80px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .glow-orb-2 {
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.22) 0%, rgba(0, 229, 153, 0) 70%);
+      bottom: 100px;
+      left: -240px;
+      filter: blur(90px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .tech-grid {
+      position: absolute;
+      inset: 0;
+      background-size: 60px 60px;
+      background-image:
+        linear-gradient(to right, rgba(239, 68, 68, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(239, 68, 68, 0.04) 1px, transparent 1px);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .particles {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 12% 22%, rgba(239, 68, 68, 0.6), transparent),
+        radial-gradient(2px 2px at 68% 12%, rgba(56, 189, 248, 0.8), transparent),
+        radial-gradient(1.5px 1.5px at 84% 42%, rgba(167, 243, 208, 0.8), transparent),
+        radial-gradient(2px 2px at 32% 66%, rgba(0, 229, 153, 0.7), transparent),
+        radial-gradient(1.5px 1.5px at 52% 84%, rgba(167, 139, 250, 0.6), transparent);
+    }
+
+    .safe-zone {
+      position: absolute;
+      top: 130px;
+      left: 60px;
+      right: 140px;
+      bottom: 330px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 24px 8px 10px;
+      background: rgba(30, 27, 75, 0.55);
+      border: 1.5px solid rgba(0, 229, 153, 0.7);
+      border-radius: 999px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #FFFFFF;
+      box-shadow: 0 0 24px rgba(0, 229, 153, 0.35);
+    }
+
+    .brand-header-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1.5px solid rgba(0, 229, 153, 0.9);
+      box-shadow: 0 0 16px rgba(0, 229, 153, 0.6);
+    }
+
+    .header-dot {
+      width: 14px;
+      height: 14px;
+      background: #00E599;
+      border-radius: 50%;
+      box-shadow: 0 0 14px #00E599;
+    }
+
+    .live-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 800;
+      color: #00E599;
+      background: rgba(0, 229, 153, 0.12);
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 229, 153, 0.4);
+      letter-spacing: 1px;
+    }
+
+    .scene-viewport {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(30px) scale(0.98);
+      transition: opacity 0.35s ease;
+    }
+
+    .scene.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .glass-card {
+      background: rgba(10, 20, 30, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1.5px solid rgba(0, 229, 153, 0.32);
+      border-radius: 36px;
+      padding: 44px 40px;
+      box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .hook-alert {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #F87171;
+      margin-bottom: 22px;
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      padding: 8px 20px;
+      border-radius: 12px;
+      width: fit-content;
+    }
+
+    .hook-sub {
+      font-size: 31px;
+      font-weight: 600;
+      color: #E2E8F0;
+      line-height: 1.45;
+      margin-top: 20px;
+    }
+
+    /* Split-screen comparison */
+    .vs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .vs-col {
+      border-radius: 26px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vs-col.vs-old {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1.5px solid rgba(239, 68, 68, 0.5);
+      box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.12);
+    }
+
+    .vs-col.vs-new {
+      background: rgba(0, 229, 153, 0.12);
+      border: 1.5px solid rgba(0, 229, 153, 0.7);
+      box-shadow: inset 0 0 40px rgba(0, 229, 153, 0.12), 0 0 30px rgba(0, 229, 153, 0.18);
+    }
+
+    .vs-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .vs-old .vs-tag {
+      background: rgba(239, 68, 68, 0.25);
+      color: #F87171;
+    }
+
+    .vs-new .vs-tag {
+      background: rgba(0, 229, 153, 0.25);
+      color: #00E599;
+    }
+
+    .vs-title {
+      font-size: 34px;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .vs-desc {
+      font-size: 22px;
+      color: #CBD5E1;
+      line-height: 1.4;
+    }
+
+    .vs-meter {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .vs-meter .vs-meter-fill {
+      height: 100%;
+      width: 0%;
+    }
+
+    .vs-old .vs-meter-fill { background: #EF4444; box-shadow: 0 0 12px #EF4444; }
+    .vs-new .vs-meter-fill { background: #00E599; box-shadow: 0 0 12px #00E599; }
+
+    /* Scene body headline */
+    .scene-headline {
+      margin-bottom: 22px;
+    }
+
+    /* Subtitle track */
+    .sub-container {
+      position: relative;
+      height: 95px;
+      width: 100%;
+    }
+
+    .sub-bar {
+      position: absolute;
+      inset: 0;
+      padding: 16px 28px;
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(0, 229, 153, 0.45);
+      border-radius: 20px;
+      font-size: 26px;
+      font-weight: 800;
+      text-align: center;
+      color: #FFFFFF;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .sub-bar.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Stat rows (proof) */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .stat-card {
+      background: rgba(11, 22, 34, 0.9);
+      border: 1.5px solid rgba(0, 229, 153, 0.4);
+      border-radius: 26px;
+      padding: 30px 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-num {
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #00E599, #38BDF8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .stat-meta { text-align: right; }
+
+    .stat-meta .stat-label {
+      font-size: 29px;
+      font-weight: 900;
+      color: #FFFFFF;
+    }
+
+    .stat-meta .stat-sub {
+      font-size: 21px;
+      color: #94A3B8;
+      margin-top: 4px;
+    }
+
+    /* CTA */
+    .cta-container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cta-super {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 900;
+      color: #00E599;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(0, 229, 153, 0.5);
+    }
+
+    .cta-headline {
+      font-size: 54px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: #FFFFFF;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    }
+
+    .cta-box {
+      width: 100%;
+      background: linear-gradient(135deg, #00E599 0%, #38BDF8 100%);
+      padding: 30px 38px;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 229, 153, 0.45);
+      margin: 6px 0;
+    }
+
+    .cta-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 42px;
+      font-weight: 900;
+      color: #020617;
+      letter-spacing: 0.5px;
+    }
+
+    .cta-comment-sticker {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px dashed rgba(0, 229, 153, 0.7);
+      border-radius: 20px;
+      padding: 18px 34px;
+      font-size: 29px;
+      font-weight: 800;
+      color: #F8FAFC;
+    }
+
+    .cta-comment-sticker .key-word {
+      background: #00E599;
+      color: #020617;
+      padding: 8px 22px;
+      border-radius: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .cta-follow {
+      font-size: 25px;
+      color: #CBD5E1;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage" data-composition-id="comparison_reel" data-start="0" data-width="1080" data-height="1920" data-fps="25">
+    <div class="glow-orb-1" id="orb-1"></div>
+    <div class="glow-orb-2" id="orb-2"></div>
+    <div class="tech-grid" id="bg-grid"></div>
+    <div class="particles" id="stars"></div>
+
+    <div class="safe-zone">
+
+      <div class="brand-header">
+        <div class="brand-badge">
+          {% if logo_file %}
+          <img src="{{ logo_file }}" class="brand-header-logo" alt="Signhify Logo" />
+          {% else %}
+          <div class="header-dot"></div>
+          {% endif %}
+          <span>Signhify Studio</span>
+        </div>
+        <div class="live-tag">OLD VS AI • LIVE</div>
+      </div>
+
+      <div class="scene-viewport">
+
+        <!-- SCENE 1: HOOK -->
+        <div id="scene-hook" class="scene active clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="1">
+          <div class="glass-card">
+            <div class="hook-alert">⚡ {{ hook_alert|default('STOP THE OLD WAY') }}</div>
+            <h1 class="kinetic-text kt-3d kt-size-xl scene-headline" data-kinetic="letters" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}">{{ hook_title }}</h1>
+            <p class="hook-sub">{{ scene1_headline|default('') }}</p>
+          </div>
+        </div>
+
+        <!-- SCENE 2: SPLIT COMPARISON -->
+        <div id="scene-compare" class="scene clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="1">
+          <div class="glass-card">
+            <h2 class="kinetic-text kt-3d kt-size-md scene-headline" data-kinetic="letters" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}">{{ scene2_headline|default('') }}</h2>
+            <div class="vs-grid">
+              <div class="vs-col vs-old" id="vs-old">
+                <div class="vs-tag">✕ OLD WAY</div>
+                <div class="vs-title">$5,000 &amp; 4 Weeks</div>
+                <div class="vs-desc">Manual agencies, slow revisions, no ownership.</div>
+                <div class="vs-meter"><div class="vs-meter-fill" id="meter-old"></div></div>
+              </div>
+              <div class="vs-col vs-new" id="vs-new">
+                <div class="vs-tag">✓ AI WAY</div>
+                <div class="vs-title">1 Prompt &amp; 10 Minutes</div>
+                <div class="vs-desc">Instant 3D scroll, code you own, deploy anywhere.</div>
+                <div class="vs-meter"><div class="vs-meter-fill" id="meter-new"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCENE 3: SHOWCASE -->
+        <div id="scene-showcase" class="scene clip" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}" data-track-index="1">
+          <div class="glass-card">
+            <h2 class="kinetic-text kt-3d kt-size-md scene-headline" data-kinetic="letters" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}">{{ scene3_headline|default('') }}</h2>
+            <div class="vs-grid">
+              <div class="vs-col vs-old">
+                <div class="vs-tag">✕ Before</div>
+                <div class="vs-title">Manual &amp; Fragile</div>
+                <div class="vs-desc">Copy-paste boilerplate, broken builds, slow handoffs.</div>
+              </div>
+              <div class="vs-col vs-new">
+                <div class="vs-tag">✓ After</div>
+                <div class="vs-title">Automated &amp; Reliable</div>
+                <div class="vs-desc">One command generates, tests, and ships your site.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCENE 4: PROOF -->
+        <div id="scene-proof" class="scene clip" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}" data-track-index="1">
+          <div class="glass-card">
+            <h2 class="kinetic-text kt-3d kt-size-md scene-headline" data-kinetic="letters" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}">{{ scene4_headline|default('') }}</h2>
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">{{ proof_metric|default('20×') }}</div>
+                <div class="stat-meta">
+                  <div class="stat-label">Faster</div>
+                  <div class="stat-sub">Weeks -> minutes</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">$4,900</div>
+                <div class="stat-meta">
+                  <div class="stat-label">Saved</div>
+                  <div class="stat-sub">vs traditional agencies</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">100%</div>
+                <div class="stat-meta">
+                  <div class="stat-label">Code Ownership</div>
+                  <div class="stat-sub">MIT license, host anywhere</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCENE 5: CTA -->
+        <div id="scene-cta" class="scene clip" data-start="{{ scene5_start }}" data-duration="{{ scene5_duration }}" data-track-index="1">
+          <div class="glass-card">
+            <div class="cta-container">
+              <div class="cta-super">SIGNHIFY STUDIO</div>
+              <h2 class="kinetic-text kt-3d kt-size-md cta-headline" data-kinetic="letters" data-start="{{ scene5_start }}" data-duration="{{ scene5_duration }}">{{ scene5_headline|default('') }}</h2>
+              <div class="cta-box">
+                <div class="cta-url">signhify.dpdns.org</div>
+              </div>
+              <div class="cta-comment-sticker">
+                <span>Comment <strong class="key-word">SWITCH</strong> for direct link</span>
+              </div>
+              <div class="cta-follow">Follow @signhify.studio for daily AI workflows</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Spoken Caption Track (single narration layer, synced per scene) -->
+      <div class="sub-container">
+        <div id="sub-1" class="sub-bar clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene1_narration }}"</span>
+        </div>
+        <div id="sub-2" class="sub-bar clip" data-start="{{ scene2_start }}" data-duration="{{ scene2_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene2_narration }}"</span>
+        </div>
+        <div id="sub-3" class="sub-bar clip" data-start="{{ scene3_start }}" data-duration="{{ scene3_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene3_narration }}"</span>
+        </div>
+        <div id="sub-4" class="sub-bar clip" data-start="{{ scene4_start }}" data-duration="{{ scene4_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene4_narration }}"</span>
+        </div>
+        <div id="sub-5" class="sub-bar clip" data-start="{{ scene5_start }}" data-duration="{{ scene5_duration }}" data-track-index="2">
+          <span class="sub-text">"{{ scene5_narration }}"</span>
+        </div>
+      </div>
+
+    </div>
+
+    {% if audio_file %}
+    <audio
+      data-start="0"
+      data-duration="{{ total_duration }}"
+      data-track-index="0"
+      data-volume="1.0"
+      src="{{ audio_file }}"
+    ></audio>
+    {% endif %}
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const sceneDurations = [
+      {{ scene1_duration }},
+      {{ scene2_duration }},
+      {{ scene3_duration }},
+      {{ scene4_duration }},
+      {{ scene5_duration }}
+    ];
+
+    const scenes = [
+      document.getElementById('scene-hook'),
+      document.getElementById('scene-compare'),
+      document.getElementById('scene-showcase'),
+      document.getElementById('scene-proof'),
+      document.getElementById('scene-cta')
+    ];
+
+    const subtitles = [
+      document.getElementById('sub-1'),
+      document.getElementById('sub-2'),
+      document.getElementById('sub-3'),
+      document.getElementById('sub-4'),
+      document.getElementById('sub-5')
+    ];
+
+    const orb1 = document.getElementById('orb-1');
+    const orb2 = document.getElementById('orb-2');
+    const stars = document.getElementById('stars');
+    if (stars) gsap.to(stars, { y: -60, duration: {{ total_duration }}, ease: 'none' });
+
+    const tl = gsap.timeline({ paused: true });
+
+    let cumulativeTime = 0;
+    scenes.forEach((scene, idx) => {
+      const dur = sceneDurations[idx];
+      const sub = subtitles[idx];
+
+      tl.to(scene, {
+        opacity: 1,
+        visibility: 'visible',
+        y: 0,
+        scale: 1,
+        duration: 0.35,
+        ease: 'power3.out'
+      }, cumulativeTime);
+
+      if (sub) {
+        tl.to(sub, {
+          opacity: 1,
+          visibility: 'visible',
+          duration: 0.28,
+          ease: 'power2.out'
+        }, cumulativeTime);
+      }
+
+      // Shared kinetic-type entrance for this scene's headline(s)
+      window.KineticText.applyKineticText(scene, tl);
+
+      if (idx === 0) {
+        tl.to(orb1, { x: -60, y: 90, scale: 1.2, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.to(orb2, { x: 60, y: -70, scale: 1.1, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+      } else if (idx === 1) {
+        // Animated weight: OLD meter stays low, AI meter fills to 100%
+        const oldFill = document.getElementById('meter-old');
+        const newFill = document.getElementById('meter-new');
+        if (oldFill) tl.to(oldFill, { width: '18%', duration: dur * 0.6, ease: 'power1.out' }, cumulativeTime + dur * 0.2);
+        if (newFill) tl.to(newFill, { width: '100%', duration: dur * 0.7, ease: 'power2.out' }, cumulativeTime + dur * 0.25);
+        tl.from(scene.querySelectorAll('.vs-col'), { y: 24, opacity: 0, stagger: dur * 0.1, duration: dur * 0.3 }, cumulativeTime + dur * 0.1);
+        tl.to(orb1, { x: 80, y: 160, scale: 1.3, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.to(orb2, { x: -90, y: 40, scale: 1.3, duration: dur, ease: 'power2.out' }, cumulativeTime);
+      } else if (idx === 2) {
+        tl.from(scene.querySelectorAll('.vs-col'), { y: 20, opacity: 0, stagger: dur * 0.1, duration: dur * 0.3 }, cumulativeTime + dur * 0.1);
+        tl.to(orb1, { x: -110, y: -40, scale: 1.4, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+        tl.to(orb2, { x: 100, y: 140, scale: 1.1, duration: dur, ease: 'sine.inOut' }, cumulativeTime);
+      } else if (idx === 3) {
+        tl.from(scene.querySelectorAll('.stat-card'), { x: -25, opacity: 0, stagger: dur * 0.08, duration: dur * 0.25 }, cumulativeTime + dur * 0.06);
+        tl.to(orb1, { x: 40, y: -90, scale: 1.25, duration: dur, ease: 'power2.out' }, cumulativeTime);
+        tl.to(orb2, { x: -80, y: 60, scale: 1.35, duration: dur, ease: 'power2.out' }, cumulativeTime);
+      } else if (idx === 4) {
+        tl.to(orb1, { x: 0, y: 0, scale: 1.5, duration: dur, ease: 'sine.out' }, cumulativeTime);
+        tl.to(orb2, { x: 0, y: 0, scale: 1.5, duration: dur, ease: 'sine.out' }, cumulativeTime);
+        tl.from(scene.querySelector('.cta-box'), { scale: 0.9, opacity: 0, duration: dur * 0.2, ease: 'back.out(1.5)' }, cumulativeTime + dur * 0.16);
+        tl.from(scene.querySelector('.cta-comment-sticker'), { y: 15, opacity: 0, duration: dur * 0.2 }, cumulativeTime + dur * 0.22);
+      }
+
+      if (idx < scenes.length - 1) {
+        const outTime = cumulativeTime + dur - 0.25;
+        tl.to(scene, {
+          opacity: 0,
+          y: -20,
+          scale: 0.98,
+          duration: 0.25,
+          ease: 'power2.in'
+        }, outTime);
+        if (sub) {
+          tl.to(sub, {
+            opacity: 0,
+            duration: 0.22,
+            ease: 'power2.in'
+          }, outTime);
+        }
+      }
+
+      cumulativeTime += dur;
+    });
+
+    // Register seekable timeline for HyperFrames deterministic engine
+    window.__timelines = window.__timelines || {};
+    window.__timelines.comparison_reel = tl;
+  </script>
+</body>
+</html>

@@ -1,21 +1,18 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Img, Sequence, Video, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Video, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {ReelProps} from './types';
 
 const ACCENTS: Record<string, string> = {A: '#00E599', B: '#38BDF8', C: '#A78BFA', D: '#22D3EE', E: '#FBBF24'};
 
-const Caption: React.FC<{text: string; start: number; end: number}> = ({text, start, end}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const s = start * fps;
-  const e = end * fps;
-  if (frame < s || frame > e) return null;
-  const scale = spring({frame: frame - s, fps, config: {damping: 18, stiffness: 220}});
-  const opacity = interpolate(frame, [s, s + 6, e - 6, e], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  return (
-    <div style={{position: 'absolute', left: 60, right: 60, bottom: 420, opacity, transform: `scale(${0.94 + 0.06 * scale})`, background: 'rgba(2,6,23,0.88)', border: '2px solid rgba(255,255,255,0.25)', borderRadius: 24, padding: '22px 30px', textAlign: 'center', color: '#fff', fontSize: 40, fontWeight: 800, fontFamily: 'Inter, system-ui, sans-serif', lineHeight: 1.3}}>{text}</div>
-  );
-};
+/**
+ * Remotion composition layer for the Signhify 60s reel.
+ *
+ * The HyperFrames engine already renders the SINGLE time-synced caption layer
+ * (per-scene sub-bar) inside the video itself, so this layer must NOT draw its
+ * own full-narration caption boxes — that produced doubled captions. It only
+ * adds the premium overlay: slow cinematic push-in, brand watermark, hook line
+ * and the end-card CTA. FFmpeg fallback likewise must not burn captions.srt.
+ */
 
 export const SignhifyReel: React.FC<ReelProps> = ({scenes, hyperframesVideo, voiceover, theme, hook, cta}) => {
   const frame = useCurrentFrame();
@@ -37,11 +34,6 @@ export const SignhifyReel: React.FC<ReelProps> = ({scenes, hyperframesVideo, voi
       {frame <= (60 - 8) * fps && (
         <div style={{position: 'absolute', left: 60, right: 140, top: 260, color: '#fff', fontSize: 34, fontWeight: 700, textShadow: '0 4px 20px rgba(0,0,0,0.9)'}}>{hook.slice(0, 110)}</div>
       )}
-      {scenes.map((s) => (
-        <Sequence key={s.index} from={Math.round(s.start * fps)} durationInFrames={Math.max(1, Math.round((s.end - s.start) * fps))}>
-          <Caption text={s.on_screen_text} start={0} end={s.end - s.start} />
-        </Sequence>
-      ))}
       <Audio src={voiceover} />
     </AbsoluteFill>
   );

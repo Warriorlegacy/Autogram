@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kinetic Type Demo — Signhify.studio</title>
+  {% include '_kinetic_head.html.jinja2' %}
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #020617; color: #F8FAFC; overflow: hidden;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    #stage {
+      position: relative; width: 1080px; height: 1920px;
+      background: radial-gradient(circle at 50% 12%, #064e3b 0%, #06261f 35%, #020617 80%);
+      overflow: hidden;
+    }
+    .glow { position: absolute; width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,153,0.22) 0%, transparent 70%);
+      filter: blur(80px); pointer-events: none; }
+    .glow-2 { background: radial-gradient(circle, rgba(56,189,248,0.18) 0%, transparent 70%); top: 30%; right: -180px; }
+    .scene {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 40px; text-align: center;
+      opacity: 0; visibility: hidden; transition: opacity 0.3s ease;
+    }
+    .scene.active { opacity: 1; visibility: visible; }
+    .brand { position: absolute; top: 130px; left: 60px; font-family: 'JetBrains Mono', monospace;
+      font-size: 22px; font-weight: 800; letter-spacing: 2px; color: #00E599;
+      background: rgba(2,6,23,0.6); border: 1.5px solid rgba(0,229,153,0.4);
+      padding: 10px 24px; border-radius: 999px; }
+    .sub-bar { position: absolute; bottom: 300px; left: 60px; right: 140px;
+      background: rgba(2,6,23,0.92); border: 1.5px solid rgba(0,229,153,0.45);
+      border-radius: 20px; padding: 18px 28px; font-size: 28px; font-weight: 800;
+      text-align: center; color: #fff; line-height: 1.35;
+      opacity: 0; visibility: hidden; transition: opacity 0.28s ease; }
+    .sub-bar.active { opacity: 1; visibility: visible; }
+  </style>
+</head>
+<body>
+  <div id="stage" data-composition-id="kinetic_demo" data-start="0" data-width="1080" data-height="1920" data-fps="25">
+    <div class="glow" style="top:-120px; right:-160px;"></div>
+    <div class="glow glow-2"></div>
+    <div class="brand">● SIGNHIFY STUDIO</div>
+
+    <!-- SCENE 1: LETTER-LEVEL 3D EXTRUSION (HOUSE STYLE) -->
+    <div id="s1" class="scene active" data-start="0" data-duration="3.3">
+      <h1 class="kinetic-text kt-3d kt-size-xl kt-accent" data-kinetic="letters" data-start="0.1" data-duration="2.6">AI IS CHANGING</h1>
+      <p class="kinetic-text kt-word kt-size-md" data-kinetic="words" data-start="0.9" data-duration="2" data-pop-words="0,2">everything you build.</p>
+      <div id="sub1" class="sub-bar active" data-start="0" data-duration="3.3">AI is changing everything you build.</div>
+    </div>
+
+    <!-- SCENE 2: WORD-LEVEL EMPHASIS -->
+    <div id="s2" class="scene" data-start="3.3" data-duration="3.4">
+      <h2 class="kinetic-text kt-word kt-size-lg" data-kinetic="words" data-start="3.5" data-duration="2.8" data-pop-words="1,2">Automate your ENTIRE workflow</h2>
+      <div id="sub2" class="sub-bar" data-start="3.3" data-duration="3.4">Automate your entire workflow with agents.</div>
+    </div>
+
+    <!-- SCENE 3: LAYERED DEPTH STACK -->
+    <div id="s3" class="scene" data-start="6.7" data-duration="3.3">
+      <h2 class="kinetic-text kt-layer kt-size-xl kt-accent2" data-kinetic="layers" data-start="6.8" data-duration="2.8">THE FUTURE OF WORK</h2>
+      <div id="sub3" class="sub-bar" data-start="6.7" data-duration="3.3">The future of work is automated.</div>
+    </div>
+
+    <audio data-start="0" data-duration="10" data-track-index="0" data-volume="1.0" src="{{ audio_file|default('') }}"></audio>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const stage = document.getElementById('stage');
+    const scenes = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3')];
+    const subs = [document.getElementById('sub1'), document.getElementById('sub2'), document.getElementById('sub3')];
+    const durations = [3.3, 3.4, 3.3];
+
+    const tl = gsap.timeline({ paused: true });
+    let t = 0;
+    scenes.forEach((scene, i) => {
+      tl.to(scene, { opacity: 1, visibility: 'visible', duration: 0.3, ease: 'power2.out' }, t);
+      tl.to(subs[i], { opacity: 1, visibility: 'visible', duration: 0.28, ease: 'power2.out' }, t);
+      if (i < scenes.length - 1) {
+        tl.to(scene, { opacity: 0, y: -18, duration: 0.28, ease: 'power2.in' }, t + durations[i] - 0.3);
+        tl.to(subs[i], { opacity: 0, y: 10, duration: 0.24, ease: 'power2.in' }, t + durations[i] - 0.26);
+      }
+      t += durations[i];
+    });
+
+    // Kinetic text scans [data-kinetic] and places tweens on this timeline
+    window.KineticText.applyKineticText(stage, tl);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines.kinetic_demo = tl;
+  </script>
+</body>
+</html>

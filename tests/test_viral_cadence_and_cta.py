@@ -115,9 +115,12 @@ def test_workflow_cadence_configurations():
     post_yml = (root / ".github" / "workflows" / "daily-post.yml").read_text(encoding="utf-8")
     video_yml = (root / ".github" / "workflows" / "daily-video.yml").read_text(encoding="utf-8")
 
-    # 3 Viral Reels daily
+    # 3 Viral Reels daily — the authoritative publisher is daily-video.yml
+    # (daily_reels.yml is parked/deprecated and intentionally has NO crons).
+    video_crons = re.findall(r"-\s*cron:\s*['\"]([^'\"]+)['\"]", video_yml)
+    assert len(video_crons) == 3, f"Expected 3 cron triggers in daily-video.yml, got {video_crons}"
     reels_crons = re.findall(r"-\s*cron:\s*['\"]([^'\"]+)['\"]", reels_yml)
-    assert len(reels_crons) == 3, f"Expected 3 cron triggers in daily_reels.yml, got {reels_crons}"
+    assert len(reels_crons) == 0, f"Parked daily_reels.yml must not schedule crons, got {reels_crons}"
 
     # 2 Stories daily
     story_crons = re.findall(r"-\s*cron:\s*['\"]([^'\"]+)['\"]", story_yml)
@@ -127,5 +130,4 @@ def test_workflow_cadence_configurations():
     post_crons = re.findall(r"-\s*cron:\s*['\"]([^'\"]+)['\"]", post_yml)
     assert len(post_crons) == 2, f"Expected 2 cron triggers in daily-post.yml, got {post_crons}"
 
-    # daily-video.yml schedule parked
-    assert "# schedule:" in video_yml or "Parked" in video_yml
+    # daily-video.yml is the authoritative 3x-daily Reels publisher (active crons above)

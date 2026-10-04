@@ -1,0 +1,14 @@
+{# ============================================================================
+   SIGNHIFY.STUDIO — KINETIC TYPE HEAD PARTIAL  (renderer/templates/reels/)
+   Include inside any HyperFrames reel template's <head>:
+       {% include '_kinetic_head.html.jinja2' %}
+   Inlines the shared kinetic-type CSS + JS and the brand font import, so
+   templates can use data-kinetic markup with zero duplication.
+   ============================================================================ #}
+<style>
+{{ read_kinetic_css|default('') }}
+</style>
+<script>
+{{ read_kinetic_js|default('') }}
+</script>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');

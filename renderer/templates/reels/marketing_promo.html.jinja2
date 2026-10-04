@@ -801,7 +801,7 @@
         <div id="scene-hook" class="scene glass-card active clip" data-start="{{ scene1_start }}" data-duration="{{ scene1_duration }}" data-track-index="1">
           <div class="hook-alert">⚡ {{ hook_alert|default('CRITICAL NOTICE') }}</div>
           <h1 class="hook-title"><span class="gradient-text">{{ hook_title }}</span></h1>
-          <p class="hook-sub">{{ scene1_narration }}</p>
+          <p class="hook-sub">{{ scene1_headline|default(scene1_narration) }}</p>
           
           <div class="prompt-terminal">
             <div class="terminal-header">
@@ -814,7 +814,7 @@
               <span>v2.4 READY</span>
             </div>
             <div class="terminal-body">
-              <span class="prompt-tag">&gt; </span>"{{ scene1_narration }}"
+              <span class="prompt-tag">&gt; </span>signhify init --auto --3d
             </div>
           </div>
         </div>
@@ -830,7 +830,7 @@
             <div class="compare-row compare-new">
               <div class="compare-label">✓ Signhify AI Engine</div>
               <div class="compare-main">1 Prompt & 10 Minutes</div>
-              <div class="compare-desc">{{ scene2_narration }}</div>
+              <div class="compare-desc">{{ scene2_headline|default(scene2_narration) }}</div>
             </div>
           </div>
         </div>
@@ -888,7 +888,7 @@
                 <div class="feature-pill">Clean ZIP</div>
               </div>
               <h2 class="feature-title">Native 60 FPS 3D Canvas</h2>
-              <p class="compare-desc" style="font-size: 24px; color: #E2E8F0; margin-top: 4px;">{{ scene3_narration }}</p>
+              <p class="compare-desc" style="font-size: 24px; color: #E2E8F0; margin-top: 4px;">{{ scene3_headline|default(scene3_narration) }}</p>
             </div>
           </div>
         </div>

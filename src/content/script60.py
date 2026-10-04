@@ -310,8 +310,14 @@ def build_caption(topic: dict, hook: str) -> tuple[str, list[str]]:
     return caption, tags
 
 
-def select_topic_script(pillar: str | None = None, override: str | None = None) -> dict:
-    """Full front-half: topic -> hooks -> script -> fact gate -> scene plan + caption."""
+def select_topic_script(pillar: str | None = None, override: str | None = None,
+                        min_score: float = 0.0) -> dict:
+    """Full front-half: topic -> hooks -> script -> fact gate -> scene plan + caption.
+
+    When ``min_score > 0``, the generated concept is scored with virality_engine
+    and the topic is rotated to a fresh fallback when the score is below the
+    gate (mirrors the fact_gate rotation below). Default 0.0 = current behavior.
+    """
     topic = discover_topic(pillar, override)
     hooks = generate_hooks(topic)
     hook = hooks[0]["text"]
@@ -323,12 +329,29 @@ def select_topic_script(pillar: str | None = None, override: str | None = None) 
         hooks = generate_hooks(topic)
         hook = hooks[0]["text"]
         s = generate_60s_script(topic, hook)
+    if min_score > 0.0:  # virality gate -> rotate when below threshold
+        from src.content import virality_engine as ve
+        score = ve.score_concept(ve.concept_from_hook_script(topic, hooks[0], s["script"]))
+        if not ve.gate_concept(score["total"])[0]:
+            logger.warning(
+                f"virality gate rejected ({score['total']}/100 < {min_score}); rotating topic")
+            fb = _fresh([t for t in FALLBACK_TOPICS if t["topic"] != topic["topic"]] or FALLBACK_TOPICS)
+            topic = {**fb, "source": "virality_gate_rotation"}
+            hooks = generate_hooks(topic)
+            hook = hooks[0]["text"]
+            s = generate_60s_script(topic, hook)
+            score = ve.score_concept(ve.concept_from_hook_script(topic, hooks[0], s["script"]))
+        virality = {"total": score["total"], "passed": score["passed"],
+                    "breakdown": score["breakdown"]}
+    else:
+        virality = None
     plan = build_scene_plan(s["script"], hook)
     caption, tags = build_caption(topic, hook)
     return {"topic": topic["topic"], "pillar": topic.get("pillar", "Tech Explainer"),
             "angle": topic.get("angle", ""), "source": topic.get("source", ""),
             "hook": hook, "hooks": hooks, "script": s["script"],
             "words": s["words"], "llm_provider": s["provider"],
+            "virality": virality,
             "scene_plan": plan, "caption": caption, "hashtags": tags,
             "script_hash": hashlib.sha256(s["script"].encode()).hexdigest()[:16],
             "created_at": datetime.now().isoformat()}

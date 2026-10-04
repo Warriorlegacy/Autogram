@@ -1,0 +1,142 @@
+/* ============================================================================
+ * SIGNHIFY.STUDIO — REUSABLE 3D KINETIC TYPE SYSTEM  (renderer/reels_shared/)
+ * House style preserved from marketing_promo.html.jinja2 hook-title:
+ *   per-letter .ch spans + stacked text-shadow extrusion + gradient sheen +
+ *   preserve-3d. This file adds word-level (.kt-word) and layered (.kt-layer)
+ *   premium treatments on the same design discipline.
+ * Brand palette: #020617 bg | #00E599 emerald | #38BDF8 cyan | #A78BFA violet.
+ * ========================================================================== */
+
+/* ---- Base: any kinetic text element -------------------------------- */
+.kinetic-text {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- LETTER-LEVEL 3D EXTRUSION (HOUSE STYLE, DEFAULT) ---------------- */
+.kt-3d {
+  perspective: 700px;
+  transform-style: preserve-3d;
+}
+.kt-3d .ch {
+  display: inline-block;
+  transform-style: preserve-3d;
+  white-space: pre;
+  text-shadow:
+    0 1px 0 #06382a,
+    0 2px 0 #052e23,
+    0 3px 0 #04241c,
+    0 4px 0 #031a14,
+    0 6px 14px rgba(0, 0, 0, 0.85),
+    0 0 24px rgba(0, 229, 153, 0.45),
+    0 0 70px rgba(6, 182, 212, 0.28);
+}
+/* Gradient-sheen letters keep the transparent fill (extrusion would bleed) */
+.kt-3d .ch.g {
+  background: linear-gradient(135deg, #a7f3d0 0%, #00e599 40%, #38bdf8 70%, #a7f3d0 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 26px rgba(0, 229, 153, 0.35);
+}
+
+/* ---- WORD-LEVEL EMPHASIS -------------------------------------------- */
+.kt-word {
+  perspective: 700px;
+  transform-style: preserve-3d;
+}
+.kt-word .word {
+  display: inline-block;
+  transform-style: preserve-3d;
+  margin-right: 0.16em;
+  will-change: transform;
+}
+.kt-word .word:last-child { margin-right: 0; }
+/* A word with .pop gets an aggressive expand + glow (kinetic emphasis) */
+.kt-word .word.pop {
+  color: #fff;
+  text-shadow: 0 0 24px rgba(0, 229, 153, 0.75), 0 0 60px rgba(56, 189, 248, 0.45);
+}
+.kt-word .word.pop.grad {
+  background: linear-gradient(135deg, #00e599, #38bdf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- LAYERED DEPTH STACK -------------------------------------------- */
+.kt-layer {
+  position: relative;
+  transform-style: preserve-3d;
+}
+.kt-layer .layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.kt-layer .layer-back {
+  color: rgba(0, 229, 153, 0.14);
+  filter: blur(18px);
+  transform: translateZ(-120px) scale(1.02);
+}
+.kt-layer .layer-mid {
+  color: rgba(255, 255, 255, 0.28);
+  filter: blur(4px);
+  transform: translateZ(-40px) scale(1.008);
+}
+.kt-layer .layer-front {
+  color: #fff;
+  z-index: 3;
+}
+
+/* ---- Accent fills ---------------------------------------------------- */
+.kt-accent {
+  background: linear-gradient(135deg, #a7f3d0 0%, #00e599 40%, #38bdf8 70%, #a7f3d0 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.kt-accent2 {
+  background: linear-gradient(135deg, #a78bfa 0%, #38bdf8 50%, #22d3ee 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- Sizes ----------------------------------------------------------- */
+.kt-size-xl { font-size: 96px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.05; }
+.kt-size-lg { font-size: 72px; font-weight: 900; letter-spacing: -1px;  line-height: 1.1; }
+.kt-size-md { font-size: 52px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.15; }
+
+/* ---- Glow helpers ---------------------------------------------------- */
+.kt-glow-strong { text-shadow: 0 0 30px rgba(0, 229, 153, 0.8), 0 0 90px rgba(56, 189, 248, 0.45); }
+.kt-glow-soft   { text-shadow: 0 0 18px rgba(0, 229, 153, 0.4), 0 0 50px rgba(56, 189, 248, 0.22); }
+
+/* ---- Shine sweep (subtle light pass over gradient text) -------------- */
+.kt-shine {
+  position: relative;
+  overflow: hidden;
+}
+.kt-shine::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: 34%;
+  left: -50%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: skewX(-18deg);
+  animation: ktShine 5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes ktShine {
+  0%   { left: -50%; }
+  55%  { left: 120%; }
+  100% { left: 120%; }
+}

@@ -159,5 +159,283 @@
         "32-40s: 'Disagree? Tell me why in the comments'"
       ]
     }
+  ],
+  "reel_content_templates": [
+    {
+      "id": "ai_tool_you_should_know",
+      "name": "AI Tool You Should Know",
+      "narrative_structure": [
+        "0-5s: pattern interrupt naming the tool",
+        "5-15s: what it does and why it matters",
+        "15-45s: how it works with a concrete example",
+        "45-52s: gotchas and honest caveats",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "tool logo / UI close-up in the first frame",
+        "terminal or interface screencast for the how-it-works segment",
+        "on-screen labels for every feature mentioned",
+        "end card with the repo or URL"
+      ],
+      "hook_patterns": [
+        "The AI tool nobody is talking about: {tool}",
+        "{tool} does {task} for free.",
+        "I tested {tool} so you don't have to."
+      ],
+      "cta_hints": "Follow Signhify.studio for more tool breakdowns like this."
+    },
+    {
+      "id": "ai_is_replacing_this_workflow",
+      "name": "AI Is Replacing This Workflow",
+      "narrative_structure": [
+        "0-5s: name the workflow being replaced",
+        "5-20s: how the manual workflow works today (the pain)",
+        "20-45s: the AI replacement, step by step",
+        "45-52s: what still needs a human",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "split-screen before vs after",
+        "timelapse or b-roll of the manual workflow",
+        "arrow / morph transition at the switch-over moment",
+        "checklist overlay of what the AI now handles"
+      ],
+      "hook_patterns": [
+        "Stop doing {workflow} by hand.",
+        "AI just replaced this {workflow}.",
+        "This {workflow} is dead. Here's the replacement."
+      ],
+      "cta_hints": "Follow Signhify.studio to catch the next workflow that changes."
+    },
+    {
+      "id": "future_of_technology",
+      "name": "Future of Technology",
+      "narrative_structure": [
+        "0-5s: hook with the near-term shift",
+        "5-20s: where the tech is today",
+        "20-45s: where it goes next and the evidence",
+        "45-52s: what viewers should prepare for",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "kinetic typography with future-dated timestamps",
+        "progression graphics: today -> next 12 months",
+        "real product clips, not renders, for credibility",
+        "timeline bar animation across the lower third"
+      ],
+      "hook_patterns": [
+        "In 12 months, {topic} will look completely different.",
+        "The next wave of {topic} is already here.",
+        "What {topic} looks like in 2027."
+      ],
+      "cta_hints": "Follow Signhify.studio to stay ahead of the curve."
+    },
+    {
+      "id": "3_ai_tools",
+      "name": "3 AI Tools",
+      "narrative_structure": [
+        "0-5s: '3 tools that...' pattern interrupt",
+        "5-25s: tool 1 + what it replaces",
+        "25-40s: tool 2 + quick demo",
+        "40-52s: tool 3 + the strongest use case",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "numbered card per tool with a logo",
+        "3-second screencast per tool",
+        "cost / free badge animation",
+        "summary grid recap in the last 5 seconds"
+      ],
+      "hook_patterns": [
+        "3 AI tools that save you hours this week.",
+        "These 3 free AI tools are all you need.",
+        "3 AI tools nobody showed you yet."
+      ],
+      "cta_hints": "Follow Signhify.studio for the next 3 tools."
+    },
+    {
+      "id": "before_vs_after_ai",
+      "name": "Before vs After AI",
+      "narrative_structure": [
+        "0-5s: split-screen reveal hook",
+        "5-20s: the before: time, cost, effort",
+        "20-45s: the after: same task with AI",
+        "45-52s: the real cost of switching",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "hard split-screen or wipe transition",
+        "stopwatch / hour-counter animation",
+        "before shown in grayscale, after in color",
+        "metric chips for time and cost on each side"
+      ],
+      "hook_patterns": [
+        "Same task. Before AI vs after AI.",
+        "This took 4 hours. With AI it took 4 minutes.",
+        "Watch what AI does to this workflow."
+      ],
+      "cta_hints": "Follow Signhify.studio for more before/after breakdowns."
+    },
+    {
+      "id": "how_this_technology_works",
+      "name": "How This Technology Works",
+      "narrative_structure": [
+        "0-5s: the 'how does it actually work' hook",
+        "5-20s: the mental model in plain language",
+        "20-45s: the mechanism, step by step",
+        "45-52s: why it matters for the viewer",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "diagram-driven animation (arrows, nodes, flow)",
+        "plain-language labels over technical terms",
+        "one concept per scene with big type",
+        "analogy visual paired with the real mechanism"
+      ],
+      "hook_patterns": [
+        "How {tech} actually works in 60 seconds.",
+        "Nobody explains {tech} like this.",
+        "The simple way {tech} works."
+      ],
+      "cta_hints": "Follow Signhify.studio to understand tech, not just use it."
+    },
+    {
+      "id": "ai_myth_vs_reality",
+      "name": "AI Myth vs Reality",
+      "narrative_structure": [
+        "0-5s: state the myth",
+        "5-20s: why the myth spread",
+        "20-45s: the reality with evidence",
+        "45-52s: what the truth means practically",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "MYTH in red / REALITY in green label system",
+        "redact or strike-through animation on the myth",
+        "source chips for every factual claim",
+        "side-by-side myth vs reality panels"
+      ],
+      "hook_patterns": [
+        "Everything you heard about {topic} is wrong.",
+        "The {topic} myth that refuses to die.",
+        "Reality check: {topic}."
+      ],
+      "cta_hints": "Follow Signhify.studio for myth-busting tech breakdowns."
+    },
+    {
+      "id": "1_minute_breakdown",
+      "name": "1-Minute Breakdown",
+      "narrative_structure": [
+        "0-5s: hook with the headline takeaway",
+        "5-20s: the core idea",
+        "20-45s: the breakdown: parts, steps, or layers",
+        "45-52s: the one-liner takeaway",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "chapter number callouts (1/3, 2/3, 3/3)",
+        "kinetic captions on every spoken phrase",
+        "single strong visual per section",
+        "takeaway card with big text at 45-52s"
+      ],
+      "hook_patterns": [
+        "{topic}, broken down in 60 seconds.",
+        "The complete {topic} breakdown.",
+        "Everything you need to know about {topic}."
+      ],
+      "cta_hints": "Follow Signhify.studio for daily 60-second breakdowns."
+    },
+    {
+      "id": "developer_secret",
+      "name": "Developer Secret",
+      "narrative_structure": [
+        "0-5s: the secret hook",
+        "5-15s: the setup most devs miss",
+        "15-45s: the secret, with working code",
+        "45-52s: where it breaks",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "terminal-first visuals with real commands",
+        "syntax-highlighted code blocks",
+        "cursor / typing animation on the key line",
+        "before-error -> after-fix contrast"
+      ],
+      "hook_patterns": [
+        "The developer secret nobody puts in the README.",
+        "This config flag saves devs hours.",
+        "Senior devs know this {tool} trick."
+      ],
+      "cta_hints": "Follow Signhify.studio for developer secrets every week."
+    },
+    {
+      "id": "marketing_automation",
+      "name": "Marketing Automation",
+      "narrative_structure": [
+        "0-5s: the automation payoff hook",
+        "5-20s: the manual marketing task",
+        "20-45s: the automated pipeline",
+        "45-52s: results without fake numbers",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "pipeline flow animation: trigger -> action -> result",
+        "dashboard / analytics mock-up with animated counters",
+        "calendar or schedule visualization",
+        "'hours saved' counter without fabricated percentages"
+      ],
+      "hook_patterns": [
+        "This marketing task automates itself now.",
+        "Automate your {channel} posting in 60 seconds.",
+        "The marketing workflow AI killed."
+      ],
+      "cta_hints": "Follow Signhify.studio for automation that actually works."
+    },
+    {
+      "id": "build_something_with_ai",
+      "name": "Build Something With AI",
+      "narrative_structure": [
+        "0-5s: the 'we built X' hook",
+        "5-20s: the idea and the stack",
+        "20-45s: the build, step by step",
+        "45-52s: what to build next",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "hands-on build footage / screencast",
+        "file-tree or commit animation",
+        "before and after of the running app",
+        "'you can build this' end card"
+      ],
+      "hook_patterns": [
+        "We built {thing} with AI in one day.",
+        "Build {thing} with AI, even if you can't code.",
+        "This AI build took one evening."
+      ],
+      "cta_hints": "Follow Signhify.studio to see the next build."
+    },
+    {
+      "id": "tech_industry_shift",
+      "name": "Tech Industry Shift",
+      "narrative_structure": [
+        "0-5s: the shift hook",
+        "5-20s: the old model",
+        "20-45s: the new model and what drives it",
+        "45-52s: who wins and who loses",
+        "52-60s: CTA"
+      ],
+      "visual_grammar": [
+        "before -> after industry diagram",
+        "market / adoption curve animation",
+        "logo wall with winners vs losers columns",
+        "news-style headline cards for evidence"
+      ],
+      "hook_patterns": [
+        "The tech industry just shifted underneath you.",
+        "Why {company} is changing the industry.",
+        "The old {industry} model is breaking."
+      ],
+      "cta_hints": "Follow Signhify.studio to keep up with industry shifts."
+    }
   ]
 }
