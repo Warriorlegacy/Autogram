@@ -44,7 +44,14 @@ def _dry() -> bool:
 
 
 def _req(method: str, path: str, params: dict) -> dict:
+    # Instagram Graph API accepts the token as a form field AND as a query
+    # param; including it in both avoids OAuthException code 104 on some
+    # endpoints. The token never appears in logs (only in this request).
+    tok = params.pop("access_token", "")
+    qs = urllib.parse.urlencode({"access_token": tok}) if tok else ""
     url = f"{GRAPH}/{_ver()}/{path}"
+    if qs:
+        url = f"{url}?{qs}" if "?" not in url else f"{url}&{qs}"
     data = urllib.parse.urlencode(params).encode()
     req = urllib.request.Request(url, data=data, method=method)
     try:
