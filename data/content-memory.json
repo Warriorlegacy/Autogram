@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-10-05",
+      "slot_key": "2026-10-05-afternoon",
+      "slot": "afternoon",
+      "pillar": "Trending GitHub Spotlight",
+      "topic": "[Reel60] Pipecat: open-source voice pipeline framework for realtime AI agents",
+      "hook": "Imagine a voice agent that can interrupt mid-sentence and still respond instantly. Pipecat's frame preemption lets the LLM cancel and restart on new STT input without dropping frames.",
+      "template": "A",
+      "script_hash": "15f6b3109f7ed8d3",
+      "video_hash": "facc1c2b44d3ca85",
+      "reel_media_id": "18380152177224693",
+      "story_media_id": "18121795069981030",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-05",
       "slot_key": "2026-10-05-night",
       "slot": "night",
       "pillar": "FOSS SaaS Alternatives",
