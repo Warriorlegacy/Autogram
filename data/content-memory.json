@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-10-05",
+      "slot_key": "2026-10-05-night",
+      "slot": "night",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] Cal.com: Open Source Scheduling Infrastructure Replacing Calendly",
+      "hook": "Developers: fork Cal.com, add AI\u2011powered slot suggestions, and push to your own domain\u2014no $16/month per seat.",
+      "template": "A",
+      "script_hash": "d3cbd173553285a6",
+      "video_hash": "fd26a1d571001246",
+      "reel_media_id": "18097332206640618",
+      "story_media_id": "18354792016171863",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-05",
       "pillar": "FOSS SaaS Alternatives",
       "topic": "[Story] Coolify: The Self-Hosted Vercel and Heroku Alternative",
       "hook": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
