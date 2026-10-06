@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-10-06",
+      "slot_key": "2026-10-06-night",
+      "slot": "night",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] Penpot: Open Source Design & Prototyping Platform Replacing Figma",
+      "hook": "What if your design tool spoke the same language as the web? Penpot edits SVG, CSS Grid & Flexbox directly, so prototypes become production\u2011ready code.",
+      "template": "C",
+      "script_hash": "c7a01401af89c34e",
+      "video_hash": "be4323d52b2262bf",
+      "reel_media_id": "17952338457293602",
+      "story_media_id": "17976834105136912",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-06",
       "pillar": "FOSS SaaS Alternatives",
       "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
       "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
