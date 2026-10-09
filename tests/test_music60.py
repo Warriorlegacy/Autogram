@@ -1,6 +1,7 @@
 """Offline, deterministic tests for the procedural music + SFX engine (src/content/music60.py)."""
 import hashlib
 import os
+import re
 import subprocess
 import wave
 from pathlib import Path
@@ -43,6 +44,36 @@ def test_build_music_deterministic_and_seed_dependent(tmp_path):
         hashlib.sha256(Path(b).read_bytes()).digest()
     assert hashlib.sha256(Path(a).read_bytes()).digest() != \
         hashlib.sha256(Path(c).read_bytes()).digest()
+
+
+def test_build_music_filtergraph_defines_every_label():
+    """Regression: [tN] labels must be DEFINED before the amix that consumes them.
+
+    ffmpeg 8 auto-creates missing labels (so this passed locally by luck); ffmpeg 6 on
+    the GH runner hard-fails with "Invalid stream specifier: t0". Assert every label
+    referenced in the filtergraph is also produced by one.
+    """
+    p = music60._style_params("futuristic_electronic", music60._seed_rng(1))
+    n = len(p["tone_freqs"])
+    fc = music60._build_filtergraph(p, music60._t_expr(60.0))
+
+    # Every segment's LAST label is the one it produces; earlier ones are its inputs.
+    produced, referenced = set(), set()
+    for seg in fc.split(";"):
+        labels = [m for m in re.findall(r"\[([^\]]+)\]", seg) if not m.endswith(":a")]
+        if not labels:
+            continue
+        produced.add(labels[-1])
+        referenced.update(labels)
+    missing = referenced - produced
+    assert not missing, f"filtergraph references undefined labels: {sorted(missing)}"
+
+
+def test_t_expr_scales_to_duration():
+    """A bed shorter than the 60s payoff window must still reach full gain."""
+    expr = music60._t_expr(3.0)
+    assert "40" not in expr.split("min(1,1-")[0], "payoff must scale with duration"
+    assert music60._t_expr(60.0) != expr
 
 
 def test_build_music_all_styles(tmp_path):

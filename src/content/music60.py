@@ -58,10 +58,17 @@ def _t_expr(duration: float) -> str:
     Ramp from INTRO_FADE to PAYOFF_START, hold at 1.0 through PAYOFF_END, then decay to
     zero across TAIL_FADE. `max(0,...)` keeps pre-intro samples silent instead of
     phase-inverted; `min(1,...)` guards overshoot before the peak.
+
+    The payoff window is a fraction of the clip, not fixed seconds — otherwise a bed
+    shorter than PAYOFF_START never reaches full gain and renders near-silent.
     """
+    k = duration / 60.0
+    intro, tail = INTRO_FADE * k, TAIL_FADE * k
+    p_start, p_end = PAYOFF_START * k, PAYOFF_END * k
+    ramp = max(p_start - intro, 1e-6)
     return (
-        f"max(0,min(1,(t-{INTRO_FADE})/{PAYOFF_START}))"
-        f"*min(1,1-max(0,(t-{PAYOFF_END})/{TAIL_FADE}))"
+        f"max(0,min(1,(t-{intro})/{ramp:g}))"
+        f"*min(1,1-max(0,(t-{p_end})/{tail:g}))"
     )
 
 
@@ -113,6 +120,33 @@ def _style_params(style: str, rng: random.Random) -> dict:
     return p
 
 
+def _build_filtergraph(p: dict, t_expr: str) -> str:
+    """Assemble the -filter_complex string for build_music().
+
+    Split out so tests can assert every [label] is defined before it is used.
+    """
+    n = len(p["tone_freqs"])
+    # eval=frame is required: the envelope reads `t`, which is only defined per-frame.
+    # Without it ffmpeg evaluates once at init and gets NaN.
+    parts = [
+        f"[{i}:a]tremolo=f={p['tremolo_f']}:d={p['tremolo']},"
+        f"volume='{p['tone_vols'][i]}*{t_expr}':eval=frame[t{i}]"
+        for i in range(n)
+    ]
+    join = "".join(f"[t{i}]" for i in range(n))
+    return (
+        ";".join(parts) + ";"
+        + f"{join}amix=inputs={n}:normalize=0[tones];"
+        f"[{n}:a]volume={p['pulse_vol']}[pulse];"
+        f"[{n + 1}:a]lowpass=f={p['noise_high']},highpass=f={p['noise_low']},"
+        f"volume={p['noise_vol']}[noise];"
+        f"[tones][pulse]amix=inputs=2:normalize=0[bed1];"
+        f"[bed1][noise]amix=inputs=2:normalize=0[bed2];"
+        f"[bed2]aecho=0.8:0.9:{p['echo_d']}:{p['echo']},"
+        f"aformat=sample_rates={SR}:channel_layouts=stereo[mix]"
+    )
+
+
 def build_music(topic: str, style: str = "futuristic_electronic", duration: float = 60.0,
                 out_path: str = "", seed: int | None = None) -> str:
     """Procedural royalty-safe music bed with a payoff energy envelope.
@@ -133,29 +167,15 @@ def build_music(topic: str, style: str = "futuristic_electronic", duration: floa
     t_expr = _t_expr(duration)
 
     inputs: list[str] = []
-    n = len(p["tone_freqs"])
-    parts: list[str] = []
-    for i, f in enumerate(p["tone_freqs"]):
+    for f in p["tone_freqs"]:
         # Triangle wave via aevalsrc (this FFmpeg build has no triangle source filter).
         inputs += ["-f", "lavfi", "-i",
                    f"aevalsrc=exprs='(2/PI)*asin(sin(2*PI*{f}*t))':s={SR}:d={duration}"]
-        parts.append(f"[{i}:a]tremolo=f={p['tremolo_f']}:d={p['tremolo']},"
-                     f"volume='{p['tone_vols'][i]}*{t_expr}'[t{i}]")
     # sub pulse + pink-noise bed; the noise gets a fixed seed derived from the RNG
     inputs += ["-f", "lavfi", "-i", f"sine=frequency={p['pulse_freq']}:sample_rate={SR}",
                "-f", "lavfi", "-i",
                f"anoisesrc=d={duration}:c=pink:r={SR}:a=0.5:seed={rng.randrange(1, 2 ** 31)}"]
-    join = "".join(f"[t{i}]" for i in range(n))
-    fc = (
-        f"{join}amix=inputs={n}:normalize=0[tones];"
-        f"[{n}:a]volume={p['pulse_vol']}[pulse];"
-        f"[{n + 1}:a]lowpass=f={p['noise_high']},highpass=f={p['noise_low']},"
-        f"volume={p['noise_vol']}[noise];"
-        f"[tones][pulse]amix=inputs=2:normalize=0[bed1];"
-        f"[bed1][noise]amix=inputs=2:normalize=0[bed2];"
-        f"[bed2]aecho=0.8:0.9:{p['echo_d']}:{p['echo']},"
-        f"aformat=sample_rates={SR}:channel_layouts=stereo[mix]"
-    )
+    fc = _build_filtergraph(p, t_expr)
     cmd = ["ffmpeg", "-y", *inputs, "-filter_complex", fc, "-map", "[mix]",
            "-t", str(duration), "-c:a", "aac", "-b:a", "96k", "-ar", str(SR), str(out)]
     audio60._ffmpeg(cmd, timeout=120)
