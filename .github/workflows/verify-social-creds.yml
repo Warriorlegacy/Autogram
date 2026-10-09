@@ -47,5 +47,17 @@ jobs:
             grep -o '"username":"[^"]*"' /tmp/ig_resp.json || true
           else
             echo "IG_TOKEN_VALID=NO"
+            # Distinguish "dead token" from "wrong account id" — different fixes.
+            ERRCODE=$(grep -o '"code":[0-9]*' /tmp/ig_resp.json | head -1 | cut -d: -f2)
+            echo "Meta error code: $ERRCODE"
+            if [ "$ERRCODE" = "190" ] || [ "$ERRCODE" = "463" ]; then
+              echo "DIAGNOSIS=token revoked or expired (password change / security revocation)."
+              echo "FIX: mint a new token - see AUTOGRAM_CONFIGURATION_GUIDE.md section 4 -"
+              echo "     then set IG_ACCESS_TOKEN and META_GRAPH_ACCESS_TOKEN as repo secrets."
+            elif [ "$ERRCODE" = "100" ] || [ "$ERRCODE" = "803" ]; then
+              echo "DIAGNOSIS=bad IG_USER_ID, or the token lacks a required permission."
+            else
+              echo "DIAGNOSIS=see the raw response above."
+            fi
             exit 1
           fi

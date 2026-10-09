@@ -116,13 +116,16 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID || secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN || secrets.META_GRAPH_ACCESS_TOKEN }}
           META_API_VERSION: ${{ secrets.META_API_VERSION }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
-          META_GRAPH_ACCESS_TOKEN: ${{ secrets.META_GRAPH_ACCESS_TOKEN }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID || secrets.IG_USER_ID }}
+          META_GRAPH_ACCESS_TOKEN: ${{ secrets.META_GRAPH_ACCESS_TOKEN || secrets.IG_ACCESS_TOKEN }}
+          # Lets token_manager.ensure_valid() extend the 60-day token in place.
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          META_APP_SECRET: ${{ secrets.META_APP_SECRET }}
           PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE }}
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
           FREEIMAGE_API_KEY: ${{ secrets.FREEIMAGE_API_KEY }}

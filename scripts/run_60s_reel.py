@@ -20,6 +20,11 @@ def main() -> None:
     a = p.parse_args()
 
     from src.content.video60_pipeline import run_60s_slot
+    # Extend the token before the publisher snapshots it, so a token that is one
+    # day from expiry keeps the slot publishing instead of failing at the end.
+    if a.publish_reel and not a.dry_run:
+        from src.instagram.token_manager import token_manager
+        token_manager.ensure_valid()
     rep = run_60s_slot(topic_override=a.topic, pillar=a.pillar or None,
                        dry_run=a.dry_run, force_template=a.force_template,
                        publish_reel=a.publish_reel, publish_story=a.publish_story,

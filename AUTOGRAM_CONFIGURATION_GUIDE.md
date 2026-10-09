@@ -224,18 +224,33 @@ client_secret=YOUR_META_APP_SECRET&\
 fb_exchange_token=YOUR_SHORT_LIVED_TOKEN"
 ```
 
-Copy the returned `access_token` and paste it into `.env` as `META_ACCESS_TOKEN`.
+Copy the returned `access_token`. This is the 60-day token Autogram uses — set it as **both** GitHub secrets (`IG_ACCESS_TOKEN` and `META_GRAPH_ACCESS_TOKEN`) and, for local runs, as `IG_ACCESS_TOKEN` in `.env`.
+
+> **Note:** there is no `META_ACCESS_TOKEN` variable — `src/config.py` reads `IG_ACCESS_TOKEN`. Older
+> revisions of this guide named it `META_ACCESS_TOKEN`, which was silently ignored.
 
 ### 4.5 Finding Your Instagram Account ID
 Run:
 ```bash
-curl -X GET "https://graph.facebook.com/v23.0/me/accounts?access_token=YOUR_META_ACCESS_TOKEN"
+curl -X GET "https://graph.facebook.com/v23.0/me/accounts?fields=id,name,instagram_business_account&access_token=YOUR_IG_ACCESS_TOKEN"
 ```
 Find your page, take its `id`, then query:
 ```bash
-curl -X GET "https://graph.facebook.com/v23.0/PAGE_ID?fields=instagram_business_account&access_token=YOUR_META_ACCESS_TOKEN"
+curl -X GET "https://graph.facebook.com/v23.0/PAGE_ID?fields=instagram_business_account&access_token=YOUR_IG_ACCESS_TOKEN"
 ```
-The numeric ID returned under `instagram_business_account.id` is your `INSTAGRAM_ACCOUNT_ID`.
+The numeric ID returned under `instagram_business_account.id` is your `INSTAGRAM_BUSINESS_ACCOUNT_ID`.
+Set it as a repo secret; the reel/story workflows fall back to `IG_USER_ID` if it is absent.
+
+### 4.6 When the token expires (~every 60 days)
+
+A revoked or expired token surfaces as `OAuthException 190` / `error_subcode 460`. Confirm with:
+```bash
+gh workflow run "Verify Social Credentials (IG)" -R Warriorlegacy/Autogram
+```
+To refresh, redo §4.3-§4.4 and re-push `IG_ACCESS_TOKEN` + `META_GRAPH_ACCESS_TOKEN`. Scheduled
+reels call `token_manager.ensure_valid()` first, which extends the token in place when it can —
+that path needs `META_APP_ID` and `META_APP_SECRET` present as repo secrets, which the workflows
+inject into every reel/story job.
 
 ---
 

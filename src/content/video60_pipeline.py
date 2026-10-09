@@ -433,11 +433,24 @@ def run_60s_slot(topic_override: str = "", pillar: str | None = None, dry_run: b
         from src.instagram.publisher import publisher
         public_url = upload_to_supabase(final)
         report["public_url"] = public_url
+        refreshed = False
         for attempt in range(3):  # exponential backoff
             try:
                 reel_id = publisher.publish_reel(public_url, front["caption"])
                 break
             except Exception as e:
+                # A revoked/expired token will never succeed on retry. Refresh once,
+                # rebuild the publisher (it snapshots settings at __init__), retry.
+                from src.instagram.token_manager import is_revoked_error, token_manager
+                if is_revoked_error(e) and not refreshed:
+                    refreshed = True
+                    try:
+                        token_manager.ensure_valid()
+                        from src.instagram.publisher import InstagramPublisher
+                        publisher = InstagramPublisher()
+                        continue
+                    except Exception as re:
+                        logger.error(f"token refresh during publish failed: {re}")
                 logger.warning(f"reel publish attempt {attempt+1} failed: {e}")
                 time.sleep(2 ** attempt * 10)
         if not reel_id:
