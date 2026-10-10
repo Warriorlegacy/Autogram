@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-10-10",
+      "slot_key": "2026-10-10-afternoon",
+      "slot": "afternoon",
+      "pillar": "Tech Explainer",
+      "topic": "[Reel60] vLLM paged attention: high-throughput local LLM serving",
+      "hook": "Want to serve multiple LoRA adapters without rebuilding the KV cache each time? Paged attention lets vLLM share the base cache and page\u2011in adapter\u2011specific keys/values on the fly.",
+      "template": "C",
+      "script_hash": "9db3143371d2377b",
+      "video_hash": "427952d5cffccae5",
+      "reel_media_id": "17928095127182783",
+      "story_media_id": "18339952705257611",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-10",
       "slot_key": "2026-10-10-night",
       "slot": "night",
       "pillar": "Local AI & Edge Compute",
