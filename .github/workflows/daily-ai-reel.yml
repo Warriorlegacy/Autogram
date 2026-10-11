@@ -155,8 +155,13 @@ jobs:
 
       - name: Upload Reel to a public host Meta can fetch
         id: upload
+        env:
+          REEL_SLUG: ${{ steps.brief.outputs.slug }}
         run: |
-          slug="${{ steps.brief.outputs.slug }}"
+          set -euo pipefail
+          slug="$REEL_SLUG"
+          test -f "video_studio/output/$slug/reel.mp4" || {
+            echo "::error::reel.mp4 missing for $slug"; ls -la "video_studio/output/$slug/" || true; exit 1; }
           python - <<'PY'
           import os, sys
           from pathlib import Path
