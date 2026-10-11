@@ -1,5 +1,6 @@
 [
   "frame-extraction-parallax",
   "zip-deploy-fullstack",
-  "mit-source-ownership"
+  "mit-source-ownership",
+  "no-webgl-native-scroll"
 ]
