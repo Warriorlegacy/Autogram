@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-10-11",
+      "slot_key": "2026-10-11-night",
+      "slot": "night",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "[Reel60] vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "hook": "Builders, want to serve 70B models on a single A100? vLLM makes it possible with efficient PagedAttention.",
+      "template": "C",
+      "script_hash": "1d79cff349e2152b",
+      "video_hash": "0608959e37bb0876",
+      "reel_media_id": "17950270926053948",
+      "story_media_id": "18133917139675652",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-11",
       "pillar": "Developer Power Tools & CLI",
       "topic": "[Story] LazyGit: Simple Terminal UI for Git Commands",
       "hook": "LazyGit: Simple Terminal UI for Git Commands",
