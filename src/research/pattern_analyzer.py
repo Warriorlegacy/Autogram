@@ -11,6 +11,7 @@ from typing import Optional
 from openai import OpenAI
 
 from src.config import settings
+from src.content import llm_models
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +89,7 @@ class PatternAnalyzer:
                 base_url="https://openrouter.ai/api/v1" if "openrouter" in getattr(settings, "llm_provider", "auto") else "https://api.groq.com/openai/v1",
                 api_key=self.api_key,
             )
-            model = "z-ai/glm-5.3-flash:free" if "openrouter" in getattr(settings, "llm_provider", "auto") else "llama-3.3-70b-versatile"
+            model = "z-ai/glm-5.3-flash:free" if "openrouter" in getattr(settings, "llm_provider", "auto") else llm_models.GROQ_DEFAULT_MODEL
 
             response = client.chat.completions.create(
                 model=model,

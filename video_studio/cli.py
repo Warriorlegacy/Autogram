@@ -22,6 +22,22 @@ from .render import RenderError, check_project, mux_audio, render_project
 from .storyboard import WORK_DIR, compile_storyboard, write_project
 
 OUT_DIR = Path(__file__).parent / "output"
+ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+
+
+def _load_env_file() -> None:
+    """Load .env into os.environ, overriding inherited values.
+
+    The CI workflow writes .env from secrets and then invokes the CLI bare, so
+    the CLI owns loading it. override=True so a stale exported variable cannot
+    shadow the file — that exact bug produced a confusing 401 locally.
+    """
+    try:
+        from dotenv import load_dotenv
+        if ENV_PATH.exists():
+            load_dotenv(ENV_PATH, override=True)
+    except Exception:
+        pass
 
 
 def _load(args) -> Brief:
@@ -287,6 +303,7 @@ def cmd_token_check(args) -> int:
 
 
 def main(argv=None) -> int:
+    _load_env_file()
     p = argparse.ArgumentParser(prog="video_studio")
     sub = p.add_subparsers(dest="cmd", required=True)
     for name in ("build", "render", "package"):

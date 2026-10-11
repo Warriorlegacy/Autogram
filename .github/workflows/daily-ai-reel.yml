@@ -112,7 +112,12 @@ jobs:
           done
           echo "META_API_VERSION=v26.0" >> .env
           echo "DRY_RUN=false" >> .env
-          echo "wrote .env with $(grep -c '=' .env) keys"
+          n=$(grep -c '=' .env)
+          echo "wrote .env with $n keys"
+          if [ "$n" -lt 5 ]; then
+            echo "::error::only $n keys written to .env — check the repository secrets exist"
+            exit 1
+          fi
 
       - name: Verify publishing credentials before spending a render
         run: python -m video_studio token-check

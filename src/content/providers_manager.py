@@ -11,6 +11,8 @@ import requests
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
+from src.content import llm_models
+
 logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -62,8 +64,8 @@ DEFAULT_PROVIDERS = {
             "base_url": "https://api.groq.com/openai/v1",
             "auth_header": "Authorization",
             "auth_prefix": "Bearer ",
-            "default_model": "llama-3.3-70b-versatile",
-            "models": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768", "gemma2-9b-it"]
+            "default_model": llm_models.GROQ_DEFAULT_MODEL,
+            "models": list(llm_models.GROQ_MODELS)
         },
         "deepseek": {
             "name": "DeepSeek",

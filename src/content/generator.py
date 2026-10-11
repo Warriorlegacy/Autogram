@@ -17,6 +17,7 @@ import requests
 
 from src.config import settings
 from src.content.free_knowledge_engine import get_rich_synthesized_carousel
+from src.content import llm_models
 
 logger = logging.getLogger(__name__)
 
@@ -162,13 +163,7 @@ Return ONLY valid JSON.
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
-        models = [
-            "openai/gpt-oss-120b",
-            "qwen/qwen3.6-27b",
-            "openai/gpt-oss-20b",
-            "llama-3.3-70b-versatile",
-            "llama-3.1-8b-instant"
-        ]
+        models = list(llm_models.GROQ_MODELS)
         last_err = None
         for model in models:
             payload = {
@@ -431,9 +426,12 @@ Return ONLY valid JSON.
                 {"role": "system", "content": f"{self.system_prompt}\n\n{self.architect_prompt}"},
                 {"role": "user", "content": self._build_user_prompt(topic, sources)}
             ],
-            "response_format": {"type": "json_object"},
-            "temperature": 0.7
-        }
+                "response_format": {"type": "json_object"},
+                "temperature": 0.7,
+                # gpt-oss emits reasoning tokens before content; without headroom
+                # max_tokens the content field comes back empty.
+                "max_tokens": 4096,
+            }
         resp = requests.post(url, headers=headers, json=payload, timeout=60)
         resp.raise_for_status()
         raw_text = resp.json()["choices"][0]["message"]["content"]
@@ -805,13 +803,14 @@ Return ONLY valid JSON.
                     "https://api.groq.com/openai/v1/chat/completions",
                     headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
                     json={
-                        "model": "llama-3.1-8b-instant",
+                        "model": llm_models.GROQ_FAST_MODEL,
                         "messages": [
                             {"role": "system", "content": "Return ONLY valid JSON."},
                             {"role": "user", "content": prompt},
                         ],
                         "response_format": {"type": "json_object"},
                         "temperature": 0.7,
+                        "max_tokens": llm_models.GROQ_MAX_TOKENS,
                     },
                     timeout=30,
                 )

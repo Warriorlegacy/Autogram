@@ -15,6 +15,8 @@ import re
 from datetime import datetime
 from pathlib import Path
 
+from src.content import llm_models
+
 logger = logging.getLogger(__name__)
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 MEM_FILE = REPO_ROOT / "data" / "content-memory.json"
@@ -190,10 +192,11 @@ def _llm_json(system: str, user: str) -> dict | None:
             r = requests.post(
                 "https://api.groq.com/openai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {qkey}", "Content-Type": "application/json"},
-                json={"model": "llama-3.1-8b-instant", "messages": [
+                json={"model": llm_models.GROQ_FAST_MODEL, "messages": [
                     {"role": "system", "content": system + " Reply ONLY with valid JSON."},
                     {"role": "user", "content": user}],
-                    "response_format": {"type": "json_object"}, "temperature": 0.8},
+                    "response_format": {"type": "json_object"}, "temperature": 0.8,
+                    "max_tokens": llm_models.GROQ_MAX_TOKENS},
                 timeout=30)
             if r.status_code == 200:
                 txt = r.json()["choices"][0]["message"]["content"]

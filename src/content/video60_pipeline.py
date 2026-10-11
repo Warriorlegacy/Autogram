@@ -9,6 +9,7 @@ import hashlib
 import json
 import logging
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -155,19 +156,53 @@ def _ffmpeg_fallback(hf_mp4: str, voice_mix: str, srt: str, out: str, logo: str 
     return out
 
 
+# 1800 frames at 1080x1920 measures ~1.0 fps on an 8-core/16GB box (~30 min for
+# the whole composition, bundling included). The old 1500s killed the render
+# mid-flight, so every slot fell back to FFmpeg. Must stay under the CI step
+# budget (~40 min for the whole slot after TTS + HyperFrames).
+REMOTION_TIMEOUT_S = 2100
+
+
+def _stage_public(src_path: str, public: Path) -> str:
+    """Copy a media file into public/ and return its basename ("" if missing).
+
+    Remotion's dev server only serves files under public/. An absolute host path
+    resolves to http://localhost:3000/home/runner/... and 404s, which surfaces as
+    MEDIA_ELEMENT_ERROR "Format error". The basename is what staticFile() wants.
+    """
+    p = Path(src_path)
+    if not p.exists():
+        return ""
+    dst = public / p.name
+    if not dst.exists() or dst.stat().st_size != p.stat().st_size:
+        shutil.copy2(p, dst)
+    return p.name
+
+
 def try_remotion(hf_mp4: str, voice_mix: str, plan: dict, hook: str, theme: str, out: str) -> tuple[bool, str]:
     """Attempt `npx remotion render`; return (ok, status). Never raises."""
+    public = REPO_ROOT / "public"
+    staged: dict[str, str] = {}
     try:
-        props = {"scenes": plan["scenes"][:12], "hyperframesVideo": str(Path(hf_mp4).resolve()),
-                 "voiceover": str(Path(voice_mix).resolve()), "theme": theme,
+        public.mkdir(parents=True, exist_ok=True)
+        for key, src_path in (("video", hf_mp4), ("voice", voice_mix)):
+            staged[key] = _stage_public(src_path, public)
+        if not staged["video"]:
+            # Nothing to composite; rendering would just burn 30 min on black frames.
+            return False, "remotion-no-video"
+
+        props = {"scenes": plan["scenes"][:12], "hyperframesVideo": staged["video"],
+                 "voiceover": staged["voice"], "theme": theme,
                  "hook": hook, "cta": "Follow Signhify.studio for more."}
         prop_file = Path(out).parent / "remotion_props.json"
         prop_file.write_text(json.dumps(props), encoding="utf-8")
+        # H.264 output: Chrome only has to DECODE the staged input; Remotion
+        # encodes with its own bundled ffmpeg. --duration-in-frames was a Remotion
+        # 3 flag, silently ignored in v4 — Root.tsx owns durationInFrames.
         cmd = ["npx", "--yes", "remotion", "render", "src/video/index.ts", "SignhifyReel",
                out, "--props", str(prop_file), "--codec", "h264", "--crf", "19",
-               "--width", "1080", "--height", "1920", "--fps", "30",
-               "--duration-in-frames", "1800"]
-        r = subprocess.run(cmd, cwd=str(REPO_ROOT), timeout=1500,
+               "--width", "1080", "--height", "1920", "--fps", "30"]
+        r = subprocess.run(cmd, cwd=str(REPO_ROOT), timeout=REMOTION_TIMEOUT_S,
                            capture_output=True, text=True)
         if r.returncode == 0 and Path(out).exists() and Path(out).stat().st_size > 200_000:
             return True, "remotion-cli"
@@ -180,6 +215,15 @@ def try_remotion(hf_mp4: str, voice_mix: str, plan: dict, hook: str, theme: str,
     except Exception as e:
         logger.warning(f"remotion attempt failed: {e}")
         return False, f"remotion-error:{e}"
+    finally:
+        # public/ is a staging area for this render only; leftovers would be
+        # ~23 MB per slot per day.
+        for name in staged.values():
+            if name:
+                try:
+                    (public / name).unlink(missing_ok=True)
+                except OSError:
+                    pass
 
 
 def _post_production(final: str, outdir: Path, report: dict, front: dict,

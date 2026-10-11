@@ -2,337 +2,31 @@
   "recent_posts": [
     {
       "date": "2026-10-11",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-Powered 3D No-Code Web Builder",
-      "hook": "Arrey bhai, dekho yeh naya AI 3D website builder \u2013 ek prompt",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-11",
-      "slot_key": "2026-10-11-afternoon",
-      "slot": "afternoon",
-      "pillar": "Open Source Economics & Contrarian",
-      "topic": "[Reel60] The Hidden Costs of Self-Hosting: When Paying for SaaS Actually Makes Sense",
-      "hook": "Why a $20/mo SaaS can save you 15\u202fhrs/week of security audits for your micro\u2011services.",
-      "template": "C",
-      "script_hash": "ccceab6479b43e2b",
-      "video_hash": "d41475f9e36420f9",
-      "reel_media_id": "18026644907867584",
-      "story_media_id": "18092491583674518",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-11",
-      "slot_key": "2026-10-11-night",
-      "slot": "night",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "[Reel60] vLLM: High-Throughput and Memory-Efficient LLM Serving",
-      "hook": "Builders, want to serve 70B models on a single A100? vLLM makes it possible with efficient PagedAttention.",
-      "template": "C",
-      "script_hash": "1d79cff349e2152b",
-      "video_hash": "0608959e37bb0876",
-      "reel_media_id": "17950270926053948",
-      "story_media_id": "18133917139675652",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-11",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "[Story] LazyGit: Simple Terminal UI for Git Commands",
-      "hook": "LazyGit: Simple Terminal UI for Git Commands",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-10",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-powered No-Code 3D Website Builder",
-      "hook": "Arrey bhai, dekho signhify ka AI 3D website builder \u2014 ek pro",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-10",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "[Story] LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
-      "hook": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-10",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-Powered 3D Websites",
-      "hook": "Arre bhai, dekho signhify ka AI 3D builder \u2014 ek prompt dete ",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-10",
-      "slot_key": "2026-10-10-afternoon",
-      "slot": "afternoon",
-      "pillar": "Tech Explainer",
-      "topic": "[Reel60] vLLM paged attention: high-throughput local LLM serving",
-      "hook": "Want to serve multiple LoRA adapters without rebuilding the KV cache each time? Paged attention lets vLLM share the base cache and page\u2011in adapter\u2011specific keys/values on the fly.",
-      "template": "C",
-      "script_hash": "9db3143371d2377b",
-      "video_hash": "427952d5cffccae5",
-      "reel_media_id": "17928095127182783",
-      "story_media_id": "18339952705257611",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-10",
-      "slot_key": "2026-10-10-night",
-      "slot": "night",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "[Reel60] The Chain-of-Density Prompt: How to Condense 10,000-Word Docs into 5 Dense Insights",
-      "hook": "Watch a live demo: feed a 10,000\u2011word technical spec into the Chain\u2011of\u2011Density prompt and get five actionable takeaways.",
-      "template": "C",
-      "script_hash": "7b3739848b4af391",
-      "video_hash": "9736b06e3743686e",
-      "reel_media_id": "18096959927420519",
-      "story_media_id": "17962802274237239",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-10",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "[Story] Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
-      "hook": "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-09",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI 3D Websites",
-      "hook": "Arre bhai, dekho kitna asan ho gaya \u2014 ek prompt dey aur Sign",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-09",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "[Story] Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "hook": "Open-WebUI: The User-Friendly Self-Hosted AI Interface",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-09",
-      "slot_key": "2026-10-09-night",
-      "slot": "night",
-      "pillar": "Tech Explainer",
-      "topic": "[Reel60] RAG with reranking: why retrieval order matters more than model size",
-      "hook": "Watch a coding agent pull the right function from a 10M\u2011line repo in seconds\u2014just by tweaking retrieval ranking, not model size.",
-      "template": "E",
-      "script_hash": "4cc17b086ebe7876",
-      "video_hash": "519eb3fa16223693",
-      "reel_media_id": "17960269239221292",
-      "story_media_id": "17898563574605797",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-09",
-      "slot_key": "2026-10-09-night",
-      "slot": "night",
-      "pillar": "Developer Power Tools & CLI",
-      "topic": "[Reel60] The Reverse-Engineering System Prompt: Extracting Code, Architecture & API Contracts from Any URL",
-      "hook": "What if you could feed a screenshot\u2019s DevTools trace into an LLM and get a complete backend blueprint? Here\u2019s the 40\u2011line prompt that makes it real.",
-      "template": "D",
-      "script_hash": "4faf4265ffb8c383",
-      "video_hash": "3b808a52f305d06e",
-      "reel_media_id": null,
-      "story_media_id": null,
-      "status": "DRY_RUN_OK",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-09",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-generated 3D Websites",
-      "hook": "Arrey bhai, dekho yeh naya AI 3D website builder \u2013 ek prompt",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-08",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-Powered 3D Scroll Website Builder",
-      "hook": "Arrey dost, dekho AI ka jadu: ek hi prompt se Signhify banat",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-08",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI 3D Website Builder",
-      "hook": "Hey yaar, soch rahe ho website banaane mein time waste karna",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-07",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] Zero-Code 3D Web Builder",
-      "hook": "Arre bhai, ek prompt diya aur Signhify 60 FPS 3D scroll webs",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-07",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-generated 3D Websites",
-      "hook": "Har startup ko abhi yeh jagah chahiye \u2014 tez load, eye\u2011catchi",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-06",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] Signhify Studio: Bas Itna Hi Kaam Hai",
-      "hook": "WebGL seekhne mein 3 saal lagte hain. Ek Three.js developer ",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-06",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "[Story] Documenso: The Open Source DocuSign Alternative",
-      "hook": "Documenso: The Open Source DocuSign Alternative",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-06",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI-powered 3D no-code website builder",
-      "hook": "Arre bhai, dekho kitna asaan ho gaya \u2013 ek prompt dete hi Sig",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-06",
-      "slot_key": "2026-10-06-afternoon",
-      "slot": "afternoon",
-      "pillar": "Local AI & Edge Compute",
-      "topic": "[Reel60] Ollama: run Llama 3 and Mistral locally in one command",
-      "hook": "One line in your terminal, and you have both Llama 3 and Mistral answering prompts side\u2011by\u2011side\u2014perfect for quick benchmarking.",
-      "template": "C",
-      "script_hash": "5bad8724adad0581",
-      "video_hash": "4a55b8896819b189",
-      "reel_media_id": "18072774794569861",
-      "story_media_id": "17882545983526542",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-06",
-      "slot_key": "2026-10-06-night",
-      "slot": "night",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "[Reel60] Penpot: Open Source Design & Prototyping Platform Replacing Figma",
-      "hook": "What if your design tool spoke the same language as the web? Penpot edits SVG, CSS Grid & Flexbox directly, so prototypes become production\u2011ready code.",
-      "template": "C",
-      "script_hash": "c7a01401af89c34e",
-      "video_hash": "be4323d52b2262bf",
-      "reel_media_id": "17952338457293602",
-      "story_media_id": "17976834105136912",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-06",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "[Story] n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
-      "hook": "n8n: Self-Hosted Fair-Code Workflow Automation Replacing Zapier",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-05",
-      "pillar": "Hindi Promo",
-      "topic": "[Hindi Reel] AI 3D Website Builder",
-      "hook": "Arrey bhai, ek prompt dedo, aur hum tumhare liye cinematic 6",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-05",
-      "slot_key": "2026-10-05-afternoon",
-      "slot": "afternoon",
-      "pillar": "Trending GitHub Spotlight",
-      "topic": "[Reel60] Pipecat: open-source voice pipeline framework for realtime AI agents",
-      "hook": "Imagine a voice agent that can interrupt mid-sentence and still respond instantly. Pipecat's frame preemption lets the LLM cancel and restart on new STT input without dropping frames.",
-      "template": "A",
-      "script_hash": "15f6b3109f7ed8d3",
-      "video_hash": "facc1c2b44d3ca85",
-      "reel_media_id": "18380152177224693",
-      "story_media_id": "18121795069981030",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-05",
-      "slot_key": "2026-10-05-night",
-      "slot": "night",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "[Reel60] Cal.com: Open Source Scheduling Infrastructure Replacing Calendly",
-      "hook": "Developers: fork Cal.com, add AI\u2011powered slot suggestions, and push to your own domain\u2014no $16/month per seat.",
-      "template": "A",
-      "script_hash": "d3cbd173553285a6",
-      "video_hash": "fd26a1d571001246",
-      "reel_media_id": "18097332206640618",
-      "story_media_id": "18354792016171863",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-05",
-      "pillar": "FOSS SaaS Alternatives",
-      "topic": "[Story] Coolify: The Self-Hosted Vercel and Heroku Alternative",
-      "hook": "Coolify: The Self-Hosted Vercel and Heroku Alternative",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-05",
-      "slot_key": "2026-10-05-morning",
-      "slot": "morning",
-      "pillar": "Open Source Economics & Contrarian",
-      "topic": "[Reel60] The Open Source Bait-and-Switch: Why Startups Relicense from MIT to BSL",
-      "hook": "How Elastic\u2019s license shift forced AWS to build a fork\u2014and why developers are split.",
-      "template": "B",
-      "script_hash": "5651b5558bec924b",
-      "video_hash": "7d6e0d8e5b12464b",
-      "reel_media_id": "18022319192712876",
-      "story_media_id": "18131548162738763",
-      "status": "PUBLISHED",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-05",
-      "slot_key": "2026-10-05-morning",
-      "slot": "morning",
-      "pillar": "Tech Explainer",
-      "topic": "[Reel60] AI agents are changing software development",
-      "hook": "Everyone is using AI wrong. Here's what they're missing.",
-      "template": "B",
-      "script_hash": "67c474c061455778",
-      "video_hash": "f60afa6b34f6bfb6",
-      "reel_media_id": null,
-      "story_media_id": null,
-      "status": "DRY_RUN_OK",
-      "score": 95.0
-    },
-    {
-      "date": "2026-10-05",
       "pillar": "AI Tool Breakdown",
       "topic": "[Story] Unit Test Story Publishing Topic",
       "hook": "Unit Test Story Publishing Topic",
       "score": 95.0
     },
     {
-      "date": "2026-10-05",
+      "date": "2026-10-11",
       "pillar": "AI Tool Breakdown",
       "topic": "[Story] Quota Headroom Topic",
       "hook": "Quota Headroom Topic",
       "score": 95.0
     },
     {
-      "date": "2026-10-05",
+      "date": "2026-10-11",
       "pillar": "AI Tool Breakdown",
       "topic": "[Reel] Unit Test Reel Publishing Topic",
       "hook": "Stop paying $5,000 to web design agencies. With Signhify Stu",
       "score": 95.0
+    },
+    {
+      "date": "2026-10-11",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "Cal.com: Open Source Scheduling Infrastructure Replacing Calendly",
+      "hook": "Ditch Calendly's $50-$200/month SaaS subscription and switch to Cal.com: 100% open source, $0 software license.",
+      "score": 100
     },
     {
       "date": "2026-10-05",
@@ -608,6 +302,153 @@
       "topic": "SearXNG: Private Self-Hosted Metasearch Without Google Tracking",
       "hook": "Stop paying for Google tracking. This 100% open source repo runs on your own hardware.",
       "score": 100
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "[Story] vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "hook": "vLLM: High-Throughput and Memory-Efficient LLM Serving",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "The Zero-Hallucination SQL Generator: Prompt Code That Never Invents Column Names",
+      "hook": "Stop paying $50-$200/month for broken SQL. This 100% open source architecture runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Trending GitHub Spotlight",
+      "topic": "[Story] LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
+      "hook": "LiteLLM: 100+ LLMs Behind a Single OpenAI-Compatible Proxy",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Open Source Economics & Contrarian",
+      "topic": "The Hidden Costs of Self-Hosting: When Paying for SaaS Actually Makes Sense",
+      "hook": "Paying for SaaS? You might be surprised when the hidden costs of self-hosting add up.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Story] Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
+      "hook": "Uptime Kuma: High-Performance Self-Hosted Monitoring Replacing Datadog",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Story] The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
+      "hook": "The Tree-of-Thoughts Megaprompt: Eliminating Code Bugs and Logic Flaws with 3 Autonomous Personas",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Hindi Promo",
+      "topic": "[Hindi Reel] The Spatial Web",
+      "hook": "Agla internet flat pages ka nahi, spatial web ka hai\u2014jahan b",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "[Story] Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
+      "hook": "Ollama: Run DeepSeek, Llama 3, and Mistral Locally in 1 Command",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-21",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "The Chain-of-Density Prompt: Condense 10,000-Word Docs into 5 Dense Insights",
+      "hook": "Stop paying for proprietary summarization. This open-source prompt architecture runs on your own LLM.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-20",
+      "pillar": "Hindi Promo",
+      "topic": "[Hindi Reel] Zero\u2011Code 3D Website Builder",
+      "hook": "Arrey dost, kya tumhe pata hai ki ek single prompt se tum ek",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-20",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "rahilp/second-brain-cloudflare: Open Source AI Memory Layer",
+      "hook": "Stop paying for proprietary AI memory. This 100% open source repo runs on your own hardware.",
+      "score": 100
+    },
+    {
+      "date": "2026-09-20",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Story] The Reverse-Engineering System Prompt: Extracting Code, Architecture & API Contracts from Any URL",
+      "hook": "The Reverse-Engineering System Prompt: Extracting Code, Architecture & API Contracts from Any URL",
+      "score": 95.0
+    },
+    {
+      "date": "2026-09-20",
+      "pillar": "Trending GitHub Spotlight",
+      "topic": "[Story] Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "hook": "Stirling-PDF: 100% Local Powerful PDF Manipulation Suite",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-04",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-10-04",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-10-04",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-10-04",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-10-11",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-10-11",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-10-11",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
+    },
+    {
+      "date": "2026-10-11",
+      "topic": "[Promo Carousel] Signhify Studio 3D Launch",
+      "pillar": "Autonomous 3D Web Engine",
+      "media_id": "mock_carousel_123",
+      "type": "carousel"
     }
   ],
   "winning_patterns": [
