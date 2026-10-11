@@ -9,19 +9,17 @@ name: daily-ai-reel
 # Reels are never published to a draft PC path — this runs entirely in CI.
 
 on:
-  # SCHEDULE PAUSED during the manual validation run. Uncomment to resume the
-  # seven daily slots. While paused, workflow_dispatch still works.
-  # schedule:
-  #   # 09:00 / 11:30 / 14:00 / 16:30 / 19:00 / 21:30 / 23:30 IST (UTC+5:30).
-  #   # GitHub cron is UTC. Minutes are deliberately :30, never :00 — GitHub
-  #   # queues the top of the hour and can delay or drop those jobs.
-  #   - cron: "30 3 * * *"    # 09:00 IST
-  #   - cron: "0 6 * * *"     # 11:30 IST
-  #   - cron: "30 8 * * *"    # 14:00 IST
-  #   - cron: "0 11 * * *"    # 16:30 IST
-  #   - cron: "30 13 * * *"   # 19:00 IST
-  #   - cron: "0 16 * * *"    # 21:30 IST
-  #   - cron: "30 18 * * *"   # 23:30 IST
+  schedule:
+    # 09:00 / 11:30 / 14:00 / 16:30 / 19:00 / 21:30 / 23:30 IST (UTC+5:30).
+    # GitHub cron is UTC. Minutes are deliberately :30, never :00 — GitHub
+    # queues the top of the hour and can delay or drop those jobs.
+    - cron: "30 3 * * *"    # 09:00 IST
+    - cron: "0 6 * * *"     # 11:30 IST
+    - cron: "30 8 * * *"    # 14:00 IST
+    - cron: "0 11 * * *"    # 16:30 IST
+    - cron: "30 13 * * *"   # 19:00 IST
+    - cron: "0 16 * * *"    # 21:30 IST
+    - cron: "30 18 * * *"   # 23:30 IST
   workflow_dispatch:
     inputs:
       topic:
