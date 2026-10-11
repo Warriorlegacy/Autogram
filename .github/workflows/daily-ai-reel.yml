@@ -120,7 +120,40 @@ jobs:
           fi
 
       - name: Verify publishing credentials before spending a render
-        run: python -m video_studio token-check
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set +e
+          python -m video_studio token-check
+          rc=$?
+          set -e
+          if [ $rc -ne 0 ]; then
+            echo "::error::Instagram credentials unhealthy (exit $rc) — no post will be made"
+            python - <<'PY'
+          import os, requests, pathlib, sys
+          sys.path.insert(0, ".")
+          from video_studio.instagram import token_health
+          h = token_health()
+          tok, chat = os.environ.get("TELEGRAM_BOT_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+          if not (tok and chat):
+              sys.exit(0)
+          kind = h.get("token_kind") or "none"
+          expiry = ("never" if h.get("never_expires") else
+                    (f"{h['days_left']}d" if h.get("days_left") is not None else "unknown"))
+          msg = (f"\U0001F6A8 Instagram token unhealthy\n"
+                 f"kind: {kind}\nexpiry: {expiry}\n"
+                 f"account: @{h.get('username') or '?'}\n"
+                 f"quota: {h.get('quota_used')}/{h.get('quota_total')}\n"
+                 f"error: {str(h.get('error'))[:220]}\n\n"
+                 f"Autogram will not publish until this is fixed.")
+          r = requests.post(f"https://api.telegram.org/bot{tok}/sendMessage",
+                            json={"chat_id": chat, "text": msg,
+                                  "disable_web_page_preview": True}, timeout=20)
+          print("telegram:", r.status_code)
+          PY
+            exit $rc
+          fi
 
       - name: Generate the content brief
         id: brief
@@ -176,9 +209,12 @@ jobs:
           echo "url=$(cat reel_url.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Publish to Instagram
+        id: publish
         if: ${{ !inputs.dry_run }}
+        env:
+          REEL_SLUG: ${{ steps.brief.outputs.slug }}
         run: |
-          slug="${{ steps.brief.outputs.slug }}"
+          slug="$REEL_SLUG"
           python - <<'PY'
           import os, sys
           from pathlib import Path
@@ -187,10 +223,50 @@ jobs:
           url = Path("reel_url.txt").read_text(encoding="utf-8").strip()
           caption = Path(f"video_studio/output/{slug}/caption.txt").read_text(encoding="utf-8")
           res = publish_reel(slug, url, caption, dry_run=False)
+          Path("media_id.txt").write_text(str(res.get("media_id") or ""), encoding="utf-8")
           print("PUBLISHED", res.get("media_id"))
           PY
+          echo "media_id=$(cat media_id.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Notify (Telegram)
+        if: always()
+        continue-on-error: true
         env:
-          REEL_SLUG: ${{ steps.brief.outputs.slug }}
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STATUS: ${{ job.status }}
+          SLUG: ${{ steps.brief.outputs.slug }}
+          MEDIA_ID: ${{ steps.publish.outputs.media_id }}
+          DRY: ${{ inputs.dry_run }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ] && { echo "no telegram secrets; skipping"; exit 0; }
+          python - <<'PY'
+          import os, requests
+          tok, chat = os.environ["TG_TOKEN"], os.environ["TG_CHAT"]
+          ok = os.environ.get("STATUS") == "success"
+          slug = os.environ.get("SLUG") or "unknown"
+          media = os.environ.get("MEDIA_ID") or ""
+          dry = os.environ.get("DRY") == "true"
+          run = os.environ.get("RUN_URL", "")
+
+          if ok and media:
+              head, body = "\u2705 Reel published", f"{slug}\nmedia_id {media}"
+          elif ok and dry:
+              head, body = "\u2139\ufe0f Dry run complete", slug
+          elif ok:
+              head, body = "\u2139\ufe0f Ran clean, not published", slug
+          else:
+              head, body = "\u274c Reel run FAILED", (
+                  f"slug: {slug}\nstage: {os.environ.get('STATUS')}\n"
+                  f"Nothing was published. Check logs:\n{run}")
+
+          text = f"{head}\n\n{body}\n\n{run}"
+          r = requests.post(f"https://api.telegram.org/bot{tok}/sendMessage",
+                            json={"chat_id": chat, "text": text,
+                                  "disable_web_page_preview": True}, timeout=20)
+          print("telegram:", r.status_code, r.text[:160])
+          PY
 
       - name: Upload artifacts
         if: always()
