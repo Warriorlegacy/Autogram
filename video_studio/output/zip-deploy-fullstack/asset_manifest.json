@@ -1,0 +1,18 @@
+{
+  "slug": "zip-deploy-fullstack",
+  "generated": "2026-10-11",
+  "video": "D:\\Autogram\\video_studio\\output\\zip-deploy-fullstack\\reel.mp4",
+  "spec": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 37.5,
+    "aspect": "9:16",
+    "codec": "h264"
+  },
+  "publishing": {
+    "enabled": false,
+    "reason": "opt-in via --publish; never default"
+  },
+  "assets": []
+}

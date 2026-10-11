@@ -1,0 +1,122 @@
+{
+  "slug": "signhify-prompt-to-3d-site",
+  "title": "One Prompt. A 3D Website.",
+  "pillar": "product",
+  "hook": "I typed one sentence. A website built itself.",
+  "cta": "Follow @signhify.studio for more",
+  "accent": "#E05A36",
+  "notes": "Every claim below is quoted from signhify.dpdns.org. No invented metrics, customers, or results.",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "target_duration": 44.0,
+  "narration_enabled": true,
+  "sources": [
+    "https://signhify.dpdns.org/",
+    "https://signhify.dpdns.org/pricing",
+    "data/brand.json"
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "visual": "hook",
+      "duration": 4.0,
+      "narration": "I typed one sentence. A website built itself.",
+      "headline": "I typed one sentence.",
+      "subtext": "A website built itself.",
+      "eyebrow": "prompt to site",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "problem",
+      "visual": "statement",
+      "duration": 4.5,
+      "narration": "Scroll driven sites usually mean WebGL, shaders, and a whole team.",
+      "headline": "Scroll sites are expensive to build.",
+      "subtext": "WebGL, shaders, a whole team. Most of it is skipped.",
+      "eyebrow": "the gap",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "mechanism",
+      "visual": "feature_card",
+      "duration": 8.5,
+      "narration": "Signhify generates an eight second video, extracts the frames, and lets native browser scroll replay them as parallax.",
+      "headline": "Three moves.",
+      "subtext": "",
+      "eyebrow": "the method",
+      "bullets": [
+        "Generate an eight second cinematic video",
+        "Extract the frames into a scroll sequence",
+        "Native browser scroll replays it as parallax"
+      ],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "no-webgl",
+      "visual": "statement",
+      "duration": 5.0,
+      "narration": "No WebGL. No Three.js. Just native scroll with frame interpolation.",
+      "headline": "No WebGL. No Three.js.",
+      "subtext": "Just native scroll with frame interpolation.",
+      "eyebrow": "the result",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "proof",
+      "visual": "metrics",
+      "duration": 8.5,
+      "narration": "Over four hundred frames per site, adjustable between ten and forty frames per second, from an eight second source video.",
+      "headline": "What you ship",
+      "subtext": "",
+      "eyebrow": "published specs",
+      "bullets": [],
+      "metrics": [
+        {
+          "v": "400+",
+          "k": "frames per site"
+        },
+        {
+          "v": "10-40",
+          "k": "adjustable fps"
+        },
+        {
+          "v": "8s",
+          "k": "source video"
+        }
+      ],
+      "source_url": ""
+    },
+    {
+      "id": "export",
+      "visual": "browser",
+      "duration": 5.5,
+      "narration": "You export a ZIP with the frontend and a backend starter, under an MIT license.",
+      "headline": "You get the code.",
+      "subtext": "A ZIP with the frontend, plus a backend starter.",
+      "eyebrow": "you own it",
+      "bullets": [],
+      "metrics": [],
+      "source_url": "signhify.dpdns.org"
+    },
+    {
+      "id": "price",
+      "visual": "statement",
+      "duration": 5.0,
+      "narration": "Plans start at five dollars a month, with full source code ownership.",
+      "headline": "Plans start at five dollars a month.",
+      "subtext": "Five credits. Full source ownership.",
+      "eyebrow": "entry point",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    }
+  ]
+}

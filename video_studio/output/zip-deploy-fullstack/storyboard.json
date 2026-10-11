@@ -1,0 +1,179 @@
+{
+  "slug": "zip-deploy-fullstack",
+  "total": 37.5,
+  "endcard_at": 33.0,
+  "scenes": [
+    {
+      "id": "hook",
+      "visual": "hook",
+      "start": 0.0,
+      "duration": 4.5,
+      "start_plus_dur": 4.15,
+      "narration": "Signhify can export a complete project as a ZIP file.",
+      "headline": "ZIP Export",
+      "subtext": "One prompt, two layers",
+      "eyebrow": "full stack",
+      "bullets": [],
+      "metrics": [],
+      "source_url": "",
+      "head_class": ""
+    },
+    {
+      "id": "frontend",
+      "visual": "statement",
+      "start": 4.5,
+      "duration": 5.5,
+      "start_plus_dur": 9.65,
+      "narration": "The frontend includes all HTML, CSS, and JavaScript ready to serve.",
+      "headline": "Ready HTML, CSS, JS",
+      "subtext": "",
+      "eyebrow": "frontend",
+      "bullets": [],
+      "metrics": [],
+      "source_url": "",
+      "head_class": ""
+    },
+    {
+      "id": "backend",
+      "visual": "statement",
+      "start": 10.0,
+      "duration": 4.5,
+      "start_plus_dur": 14.15,
+      "narration": "It also bundles an Express API starter for backend logic.",
+      "headline": "Express API starter",
+      "subtext": "",
+      "eyebrow": "backend",
+      "bullets": [],
+      "metrics": [],
+      "source_url": "",
+      "head_class": ""
+    },
+    {
+      "id": "full-stack-feature",
+      "visual": "feature_card",
+      "start": 14.5,
+      "duration": 6.5,
+      "start_plus_dur": 20.65,
+      "narration": "One prompt generates a scroll-reactive site and a deployable ZIP with both layers.",
+      "headline": "Full stack export",
+      "subtext": "",
+      "eyebrow": "features",
+      "bullets": [
+        "HTML, CSS, JS",
+        "Express starter",
+        "Adjustable FPS",
+        "Multi\u2011video continuation",
+        "Product injection"
+      ],
+      "metrics": [],
+      "source_url": "",
+      "head_class": "sm"
+    },
+    {
+      "id": "demo-terminal",
+      "visual": "terminal",
+      "start": 21.0,
+      "duration": 5.5,
+      "start_plus_dur": 26.15,
+      "narration": "Unzip, npm install, then npm start to run the full stack locally.",
+      "headline": "Run locally",
+      "subtext": "",
+      "eyebrow": "demo",
+      "bullets": [
+        "npm install",
+        "npm start",
+        "local dev server"
+      ],
+      "metrics": [],
+      "source_url": "",
+      "head_class": "sm"
+    },
+    {
+      "id": "live-browser",
+      "visual": "browser",
+      "start": 26.5,
+      "duration": 6.5,
+      "start_plus_dur": 32.65,
+      "narration": "Deploy the ZIP to any host, and the site runs with native scroll parallax instantly.",
+      "headline": "Deploy in minutes",
+      "subtext": "",
+      "eyebrow": "live",
+      "bullets": [],
+      "metrics": [],
+      "source_url": "https://signhify.dpdns.org",
+      "head_class": "sm"
+    }
+  ],
+  "captions": [
+    {
+      "id": "cap-hook-0",
+      "text": "Signhify can export a complete project as a ZIP file.",
+      "start": 0.0,
+      "end": 4.48,
+      "dur": 4.48
+    },
+    {
+      "id": "cap-frontend-0",
+      "text": "The frontend includes all HTML,",
+      "start": 4.5,
+      "end": 7.083,
+      "dur": 2.583
+    },
+    {
+      "id": "cap-frontend-1",
+      "text": "CSS, and JavaScript ready to serve.",
+      "start": 7.083,
+      "end": 9.98,
+      "dur": 2.897
+    },
+    {
+      "id": "cap-backend-0",
+      "text": "It also bundles an Express API starter for backend logic.",
+      "start": 10.0,
+      "end": 14.48,
+      "dur": 4.48
+    },
+    {
+      "id": "cap-full-stack-feature-0",
+      "text": "One prompt generates a scroll-reactive site",
+      "start": 14.5,
+      "end": 17.951,
+      "dur": 3.451
+    },
+    {
+      "id": "cap-full-stack-feature-1",
+      "text": "and a deployable ZIP with both layers.",
+      "start": 17.951,
+      "end": 20.98,
+      "dur": 3.029
+    },
+    {
+      "id": "cap-demo-terminal-0",
+      "text": "Unzip, npm install, then npm start",
+      "start": 21.0,
+      "end": 23.922,
+      "dur": 2.922
+    },
+    {
+      "id": "cap-demo-terminal-1",
+      "text": "to run the full stack locally.",
+      "start": 23.922,
+      "end": 26.48,
+      "dur": 2.558
+    },
+    {
+      "id": "cap-live-browser-0",
+      "text": "Deploy the ZIP to any host, and",
+      "start": 26.5,
+      "end": 28.928,
+      "dur": 2.428
+    },
+    {
+      "id": "cap-live-browser-1",
+      "text": "the site runs with native scroll parallax instantly.",
+      "start": 28.928,
+      "end": 32.98,
+      "dur": 4.052
+    }
+  ]
+}

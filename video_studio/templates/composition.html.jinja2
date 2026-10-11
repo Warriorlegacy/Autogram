@@ -1,0 +1,234 @@
+{#- ============================================================================
+   SIGNHIFY MOTION SYSTEM - reusable vertical video composition.
+
+   Tokens are read from data/brand.json (authoritative): warm off-white #F8F6F0,
+   near-black #111111, burnt-orange accent #E05A36, green highlight #16A34A.
+
+   Timing contract (HyperFrames):
+     data-start / data-duration are SECONDS.
+     class="clip" marks a timed element.
+     GSAP timelines are paused and registered on window.__timelines[id].
+     The 3rd gsap argument is ABSOLUTE time in seconds.
+   Paint order and overlap are controlled by CSS z-index, NOT data-track-index.
+   ============================================================================ -#}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width={{ width }}, height={{ height }}" />
+<title>{{ brief.title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+{# Local copies of the three brand fonts (OFL 1.1). Loaded first so an offline
+   render keeps the real typefaces; the CDN link stays as a fallback. #}
+<link href="assets/fonts/fonts.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root{
+    --bg:#F8F6F0; --card:#FFFFFF; --ink:#111111; --accent:{{ accent }};
+    --accent-ink:#CC4C29; --green:#16A34A; --muted:#666666;
+    --line:rgba(0,0,0,.08); --head:'Plus Jakarta Sans',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:{{ width }}px;height:{{ height }}px;overflow:hidden;background:var(--bg);
+    font-family:var(--body);color:var(--ink);-webkit-font-smoothing:antialiased}
+  #root{position:relative;width:100%;height:100%;overflow:hidden}
+
+  /* Faint blueprint grid — the established Signhify substrate */
+  #grid{position:absolute;inset:0;z-index:0;
+    background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px);
+    background-size:64px 64px}
+
+  /* Persistent monospace chrome — matches the 9-slide carousel system */
+  .chrome{position:absolute;font-family:var(--mono);font-size:26px;color:var(--muted);
+    letter-spacing:.08em;z-index:90;text-transform:uppercase}
+  .chrome.tl{top:56px;left:64px}
+  .chrome.tc{top:56px;left:50%;transform:translateX(-50%);color:var(--ink);font-weight:500}
+  .chrome.tr{top:56px;right:64px}
+  .chrome.counters{position:absolute;top:56px;right:64px;z-index:90}
+  .chrome.cnt{position:absolute;right:0;top:0;opacity:0;white-space:nowrap}
+  .accentbar{position:absolute;top:0;left:0;right:0;height:10px;background:var(--accent);z-index:95}
+
+  /* Scene layer — absolute, z-ordered, opacity driven by GSAP */
+  .scene{position:absolute;inset:0;z-index:10;opacity:0;display:flex;flex-direction:column;
+    justify-content:center;padding:200px 80px 320px}
+  .scene.inner{padding:200px 80px 260px}
+
+  .eyebrow{font-family:var(--mono);font-size:30px;color:var(--accent);letter-spacing:.12em;
+    text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:14px}
+  .headline{font-family:var(--head);font-weight:800;font-size:104px;line-height:1.02;
+    letter-spacing:-.035em;color:var(--ink);max-width:960px}
+  .headline.sm{font-size:84px}
+  .headline.xs{font-size:68px}
+  .subtext{font-size:42px;line-height:1.34;color:var(--muted);margin-top:32px;max-width:900px;
+    font-weight:500}
+  .rule{width:120px;height:8px;background:var(--accent);margin:36px 0 0;border-radius:4px}
+
+  .card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:44px 48px;
+    box-shadow:0 18px 44px rgba(17,17,17,.07)}
+  .cards{display:flex;flex-direction:column;gap:26px;margin-top:44px}
+  .card h3{font-family:var(--head);font-size:46px;font-weight:700;letter-spacing:-.02em;
+    display:flex;align-items:center;gap:18px}
+  .card p{font-size:34px;line-height:1.38;color:var(--muted);margin-top:14px;font-weight:500}
+  .dot{width:18px;height:18px;border-radius:50%;background:var(--accent);flex:none}
+  .dot.green{background:var(--green)}
+
+  .metricrow{display:flex;gap:28px;margin-top:48px;align-items:stretch}
+  .metric{flex:1;background:var(--card);border:2px solid var(--line);border-radius:26px;
+    padding:38px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+  .metric .v{font-family:var(--head);font-size:82px;font-weight:800;color:var(--accent);
+    letter-spacing:-.04em;line-height:1;white-space:nowrap}
+  .metric .k{font-family:var(--mono);font-size:24px;color:var(--muted);margin-top:16px;
+    text-transform:uppercase;letter-spacing:.06em}
+
+  .terminal{background:#0B0B0C;border-radius:28px;padding:40px 44px;margin-top:44px;
+    font-family:var(--mono);font-size:32px;line-height:1.62;color:#E8E8E8;overflow:hidden;
+    border:2px solid rgba(0,0,0,.1)}
+  .terminal .g{color:#4ADE80}.terminal .o{color:var(--accent)}.terminal .c{color:#8A8A8A}
+  .browser{margin-top:44px;background:var(--card);border:2px solid var(--line);border-radius:28px;
+    overflow:hidden;box-shadow:0 22px 60px rgba(17,17,17,.10)}
+  .browser .bar{display:flex;align-items:center;gap:12px;padding:22px 26px;
+    border-bottom:2px solid var(--line)}
+  .browser .bar i{width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.14)}
+  .browser .url{flex:1;margin-left:12px;height:34px;border-radius:10px;background:var(--bg);
+    font-family:var(--mono);font-size:22px;color:var(--muted);display:flex;align-items:center;
+    padding:0 16px}
+  .browser .body{padding:52px 44px;min-height:340px;display:flex;flex-direction:column;
+    justify-content:center;gap:20px}
+  .browser .ph{height:26px;border-radius:8px;background:rgba(0,0,0,.07)}
+  .browser .ph.w1{width:82%}.browser .ph.w2{width:64%}
+  .browser .ph.w3{width:44%;background:var(--accent);height:32px}
+
+  /* Caption lane — mobile-first, high contrast, above the IG UI zone */
+  #captions{position:absolute;left:70px;right:70px;bottom:300px;z-index:120;
+    display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none}
+  .cap{background:rgba(17,17,17,.90);color:#fff;font-size:42px;font-weight:700;line-height:1.24;
+    padding:18px 30px;border-radius:16px;text-align:center;max-width:100%;opacity:0;
+    letter-spacing:-.01em}
+
+  #endcard{position:absolute;inset:0;z-index:130;background:var(--bg);display:none;
+    flex-direction:column;align-items:center;justify-content:center;padding:120px 80px;text-align:center}
+  #endcard .logo{width:150px;height:150px;border-radius:34px;overflow:hidden;margin-bottom:44px;
+    border:3px solid var(--green)}
+  #endcard h2{font-family:var(--head);font-size:88px;font-weight:800;letter-spacing:-.035em}
+  #endcard p{font-size:38px;color:var(--muted);margin-top:26px;font-weight:500}
+  #endcard .cta{background:var(--accent);color:#fff;font-family:var(--head);font-weight:800;
+    font-size:38px;padding:30px 46px;border-radius:20px;margin-top:56px;letter-spacing:-.01em}
+  #endcard .site{font-family:var(--mono);font-size:30px;color:var(--muted);margin-top:44px;
+    letter-spacing:.1em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="root" data-start="0" data-duration="{{ total }}" data-width="{{ width }}" data-height="{{ height }}">
+  <div id="grid"></div>
+  <div class="accentbar"></div>
+  <div class="chrome tl">© 2026</div>
+  <div class="chrome tc">@signhify.studio</div>
+  <div class="chrome counters">
+  {% for sc in scenes %}<span class="chrome tr cnt" id="cnt-{{ sc.id }}" data-start="{{ sc.start }}" data-duration="{{ sc.duration }}">{{ loop.index }} / {{ scenes|length }}</span>{% endfor %}
+  </div>
+
+{% for sc in scenes %}
+  <div class="scene{% if sc.visual in ('feature_card','terminal','browser','metrics') %} inner{% endif %}"
+       id="{{ sc.id }}" data-start="{{ sc.start }}" data-duration="{{ sc.duration }}"
+       data-track-index="{{ loop.index0 }}" data-scene="{{ sc.visual }}">
+    {% if sc.eyebrow %}<div class="eyebrow">{{ sc.eyebrow }}</div>{% endif %}
+    {% if sc.headline %}<div class="headline {{ sc.head_class }}">{{ sc.headline }}</div>{% endif %}
+    {% if sc.subtext %}<div class="subtext">{{ sc.subtext }}</div>{% endif %}
+    {% if sc.visual == 'feature_card' %}
+      <div class="cards">
+      {% for b in sc.bullets %}
+        <div class="card"><h3><span class="dot{% if loop.index0 % 2 %} green{% endif %}"></span>{{ b }}</h3></div>
+      {% endfor %}
+      </div>
+      {% if sc.bullets %}{% for b in sc.bullets %}{% endfor %}{% endif %}
+    {% elif sc.visual == 'metrics' %}
+      <div class="metricrow">
+      {% for m in sc.metrics %}
+        <div class="metric"><div class="v">{{ m.v }}</div><div class="k">{{ m.k }}</div></div>
+      {% endfor %}
+      </div>
+    {% elif sc.visual == 'terminal' %}
+      <div class="terminal">{% for line in sc.bullets %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</div>
+    {% elif sc.visual == 'browser' %}
+      <div class="browser">
+        <div class="bar"><i></i><i></i><i></i><div class="url">{{ sc.source_url or 'signhify.dpdns.org' }}</div></div>
+        <div class="body"><div class="ph w1"></div><div class="ph w2"></div><div class="ph w3"></div></div>
+      </div>
+    {% endif %}
+  </div>
+{% endfor %}
+
+  <div id="captions">
+  {% for c in captions %}<div class="cap" id="{{ c.id }}" data-start="{{ c.start }}" data-duration="{{ c.dur }}">{{ c.text }}</div>{% endfor %}
+  </div>
+
+  <div id="endcard" data-layout-allow-occlusion>
+    {% if logo %}<div class="logo"><img src="{{ logo }}" alt="" style="width:100%;height:100%;object-fit:cover"/></div>{% endif %}
+    <h2>{{ endcard_head }}</h2>
+    <p>{{ endcard_sub }}</p>
+    <div class="cta">{{ brief.cta }}</div>
+    <div class="site">signhify.dpdns.org</div>
+  </div>
+</div>
+
+<script>
+const TOTAL = {{ total }};
+const ENDCARD_AT = {{ endcard_at }};
+
+function sceneEls(id){
+  return Array.from(document.querySelectorAll('#' + CSS.escape(id)));
+}
+
+const tl = gsap.timeline({paused:true});
+
+// Every scene: fade in, hold, fade out. Absolute seconds, no relative chaining.
+{% for sc in scenes %}
+  (function(){
+    const els = sceneEls('{{ sc.id }}');
+    if(!els.length) return;
+    gsap.set(els, {opacity:0, y:0});
+    tl.to(els, {opacity:1, duration:0.42}, {{ sc.start }});
+    tl.fromTo(els, {y:46}, {y:0, duration:0.55, ease:'power2.out'}, {{ sc.start }});
+    tl.to(els, {opacity:0, duration:0.38}, {{ sc.start_plus_dur }});
+    // Scene counter tracks the active scene only.
+    const cnt = document.getElementById('cnt-{{ sc.id }}');
+    if(cnt){ tl.set(cnt,{opacity:1}, {{ sc.start }}); tl.set(cnt,{opacity:0}, {{ sc.start_plus_dur }}); }
+    // Inner content rises slightly after the frame lands — keeps a focal point.
+    const kids = els[0].children;
+    for(let i=0;i<kids.length;i++){
+      tl.fromTo(kids[i], {y:26, opacity:0}, {y:0, opacity:1, duration:0.45, ease:'power2.out'},
+                {{ sc.start }} + 0.12 + i * 0.07);
+    }
+  })();
+{% endfor %}
+
+// Captions: hard-cut on, hard-cut off (no fade — burned captions must read instantly).
+{% for c in captions %}
+  (function(){
+    const el = document.getElementById('{{ c.id }}');
+    if(!el) return;
+    tl.set(el, {opacity:0}, {{ c.start }});
+    tl.set(el, {opacity:1}, {{ c.start }} + 0.04);
+    tl.set(el, {opacity:0}, {{ c.end }});
+  })();
+{% endfor %}
+
+// End card
+const ec = document.getElementById('endcard');
+tl.set(ec, {display:'flex', opacity:0}, ENDCARD_AT);
+tl.to(ec, {opacity:1, duration:0.5}, ENDCARD_AT);
+tl.fromTo(ec.querySelector('h2'), {y:34, opacity:0}, {y:0, opacity:1, duration:0.55, ease:'power2.out'}, ENDCARD_AT + 0.15);
+tl.fromTo(ec.querySelector('.cta'), {y:28, opacity:0}, {y:0, opacity:1, duration:0.5, ease:'power2.out'}, ENDCARD_AT + 0.4);
+tl.fromTo(ec.querySelector('.logo'), {scale:0.86, opacity:0}, {scale:1, opacity:1, duration:0.5, ease:'back.out(1.7)'}, ENDCARD_AT + 0.05);
+// Hold the end card to the final frame so the last frame is never empty.
+tl.set(ec, {opacity:1}, TOTAL - 0.02);
+
+window.__timelines["root"] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>

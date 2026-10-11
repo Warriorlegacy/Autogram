@@ -1,0 +1,84 @@
+{
+  "slug": "mit-source-ownership",
+  "title": "Own Your Generated Code",
+  "pillar": "product",
+  "hook": "Signhify code is 100% MIT licensed. You own the output.",
+  "cta": "Follow @signhify.studio for more",
+  "accent": "",
+  "notes": "",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "target_duration": 40.0,
+  "narration_enabled": true,
+  "sources": [
+    "https://signhify.dpdns.org"
+  ],
+  "scenes": [
+    {
+      "id": "open-source-ownership",
+      "visual": "hook",
+      "duration": 6.4,
+      "narration": "Signhify generates sites under an MIT license, giving you full ownership of every line.",
+      "headline": "You own the code",
+      "subtext": "",
+      "eyebrow": "open source",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "no-lockin",
+      "visual": "statement",
+      "duration": 8.4,
+      "narration": "You receive a ZIP containing the full front‑end and a starter Express API, all under MIT, ready to host anywhere.",
+      "headline": "No vendor lock, you keep the code",
+      "subtext": "",
+      "eyebrow": "no lock-in",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "full-control",
+      "visual": "feature_card",
+      "duration": 8.4,
+      "narration": "Iterative chat editing lets you refine the prompt, then you export a ready‑to‑run ZIP, keeping the source under MIT.",
+      "headline": "Export, edit, and deploy yourself",
+      "subtext": "",
+      "eyebrow": "full control",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "technical-depth",
+      "visual": "metrics",
+      "duration": 7.4,
+      "narration": "Each site compiles over 400 frames from an eight‑second video, delivering rich parallax without WebGL.",
+      "headline": "400+ frames per site",
+      "subtext": "",
+      "eyebrow": "technical depth",
+      "bullets": [],
+      "metrics": [
+        {
+          "v": "400+",
+          "k": "frames per site"
+        }
+      ],
+      "source_url": ""
+    },
+    {
+      "id": "license",
+      "visual": "terminal",
+      "duration": 8.4,
+      "narration": "The generated repository includes an MIT license file, so you can reuse, modify, and distribute the code freely.",
+      "headline": "MIT – you keep it",
+      "subtext": "",
+      "eyebrow": "license",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    }
+  ]
+}

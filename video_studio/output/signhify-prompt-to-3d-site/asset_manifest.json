@@ -1,0 +1,22 @@
+{
+  "slug": "signhify-prompt-to-3d-site",
+  "generated": "2026-10-11",
+  "video": "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\reel.mp4",
+  "spec": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 45.5,
+    "aspect": "9:16",
+    "codec": "h264"
+  },
+  "publishing": {
+    "enabled": true,
+    "reason": "published via --publish",
+    "slug": "signhify-prompt-to-3d-site",
+    "media_id": "18118923136986095",
+    "published_at": null,
+    "video_url": "https://n.uguu.se/zZeNhAON.mp4"
+  },
+  "assets": []
+}

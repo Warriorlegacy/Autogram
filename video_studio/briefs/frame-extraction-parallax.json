@@ -1,0 +1,105 @@
+{
+  "slug": "frame-extraction-parallax",
+  "title": "Scrolling Without WebGL",
+  "pillar": "product",
+  "hook": "We stop using Three.js and start using 400 static frames",
+  "cta": "Follow @signhify.studio for more",
+  "accent": "",
+  "notes": "",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "target_duration": 40.0,
+  "narration_enabled": true,
+  "sources": [
+    "https://signhify.dpdns.org"
+  ],
+  "scenes": [
+    {
+      "id": "hook-frames",
+      "visual": "hook",
+      "duration": 4.5,
+      "narration": "We stop using Three.js and start using 400 static frames.",
+      "headline": "From Three.js to static frames",
+      "subtext": "",
+      "eyebrow": "quick shift",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "statement-extraction",
+      "visual": "statement",
+      "duration": 5.5,
+      "narration": "The builder takes an eight‑second video and extracts every frame.",
+      "headline": "Eight‑second video yields all frames",
+      "subtext": "",
+      "eyebrow": "video source",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "feature-parallax",
+      "visual": "feature_card",
+      "duration": 5.5,
+      "narration": "Frames replay on native scroll creating a 3‑D parallax without WebGL.",
+      "headline": "Scroll drives 3‑D parallax",
+      "subtext": "No WebGL, no code",
+      "eyebrow": "native scroll",
+      "bullets": [
+        "400+ frames",
+        "10‑40 FPS",
+        "adjustable",
+        "ZIP export"
+      ],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "metrics-frames",
+      "visual": "metrics",
+      "duration": 5.5,
+      "narration": "Each site uses over 400 frames extracted from a single eight‑second video.",
+      "headline": "Over 400 frames per site",
+      "subtext": "",
+      "eyebrow": "frame count",
+      "bullets": [],
+      "metrics": [
+        {
+          "v": "400+",
+          "k": "frames per site"
+        }
+      ],
+      "source_url": ""
+    },
+    {
+      "id": "terminal-cli",
+      "visual": "terminal",
+      "duration": 6.5,
+      "narration": "Run signhify build with your prompt; the system returns a ZIP ready to deploy.",
+      "headline": "One command builds the site",
+      "subtext": "",
+      "eyebrow": "command line",
+      "bullets": [
+        "signhify build",
+        "enter prompt",
+        "receive ZIP"
+      ],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "browser-demo",
+      "visual": "browser",
+      "duration": 5.5,
+      "narration": "Scroll the page; the browser interpolates frames for smooth motion.",
+      "headline": "Smooth scroll interpolation",
+      "subtext": "Native browser handling",
+      "eyebrow": "scroll demo",
+      "bullets": [],
+      "metrics": [],
+      "source_url": "https://signhify.dpdns.org"
+    }
+  ]
+}

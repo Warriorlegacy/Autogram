@@ -1,0 +1,7 @@
+Signhify exports a ZIP containing frontend and an Express API starter.
+
+One Prompt, Full Stack Export — built from a single prompt.
+
+#signhifystudio #vibecoding #ai3d #webdev #buildinpublic #startupindia
+
+Follow @signhify.studio for more

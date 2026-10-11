@@ -1,0 +1,75 @@
+{
+  "file": "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\reel.mp4",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30.0,
+  "duration": 45.5,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "size_bytes": 3294981,
+  "frames_extracted": [
+    "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\qa_frames\\frame_00_t6.50s.jpg",
+    "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\qa_frames\\frame_01_t13.00s.jpg",
+    "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\qa_frames\\frame_02_t19.50s.jpg",
+    "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\qa_frames\\frame_03_t26.00s.jpg",
+    "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\qa_frames\\frame_04_t32.50s.jpg",
+    "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\qa_frames\\frame_05_t39.00s.jpg",
+    "D:\\Autogram\\video_studio\\output\\signhify-prompt-to-3d-site\\qa_frames\\frame_06_t45.42s.jpg"
+  ],
+  "checks": [
+    {
+      "check": "container_valid",
+      "pass": true,
+      "detail": "h264"
+    },
+    {
+      "check": "dimensions",
+      "pass": true,
+      "detail": "1080x1920 (need vertical >= 540x960)"
+    },
+    {
+      "check": "aspect_9_16",
+      "pass": true,
+      "detail": "ratio 0.5625"
+    },
+    {
+      "check": "fps_supported",
+      "pass": true,
+      "detail": "30.0 fps"
+    },
+    {
+      "check": "duration_in_range",
+      "pass": true,
+      "detail": "45.5s"
+    },
+    {
+      "check": "duration_matches_plan",
+      "pass": true,
+      "detail": "got 45.5s, planned 45.5s"
+    },
+    {
+      "check": "video_codec_h264",
+      "pass": true,
+      "detail": "h264"
+    },
+    {
+      "check": "audio_present",
+      "pass": true,
+      "detail": "audio codec aac"
+    },
+    {
+      "check": "nonzero_size",
+      "pass": true,
+      "detail": "3294981 bytes"
+    },
+    {
+      "check": "frames_extractable",
+      "pass": true,
+      "detail": "7 frames extracted"
+    }
+  ],
+  "defects": [],
+  "verdict": "PASS",
+  "hyperframes_gate": true,
+  "slug": "signhify-prompt-to-3d-site"
+}

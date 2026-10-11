@@ -1,0 +1,63 @@
+1
+00:00:00,000 --> 00:00:01,909
+I typed one sentence.
+
+2
+00:00:01,909 --> 00:00:03,950
+A website built itself.
+
+3
+00:00:04,000 --> 00:00:06,215
+Scroll driven sites usually mean
+
+4
+00:00:06,215 --> 00:00:08,450
+WebGL, shaders, and a whole team.
+
+5
+00:00:08,500 --> 00:00:13,004
+Signhify generates an eight second video, extracts the frames,
+
+6
+00:00:13,004 --> 00:00:16,950
+and lets native browser scroll replay them as parallax.
+
+7
+00:00:17,000 --> 00:00:17,692
+No WebGL.
+
+8
+00:00:17,692 --> 00:00:18,615
+No Three.js.
+
+9
+00:00:18,615 --> 00:00:21,950
+Just native scroll with frame interpolation.
+
+10
+00:00:22,000 --> 00:00:26,357
+Over four hundred frames per site, adjustable between ten and
+
+11
+00:00:26,357 --> 00:00:30,071
+forty frames per second, from an eight second source
+
+12
+00:00:30,071 --> 00:00:30,450
+video.
+
+13
+00:00:30,500 --> 00:00:32,897
+You export a ZIP with the frontend
+
+14
+00:00:32,897 --> 00:00:35,950
+and a backend starter, under an MIT license.
+
+15
+00:00:36,000 --> 00:00:38,132
+Plans start at five dollars a
+
+16
+00:00:38,132 --> 00:00:40,950
+month, with full source code ownership.

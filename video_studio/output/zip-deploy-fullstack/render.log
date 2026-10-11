@@ -1,0 +1,169 @@
+[audio] provider=kokoro scenes=6 narration=28.778s
+
+$ C:\Program Files\nodejs\npx.CMD --yes hyperframes check
+[exit=0 28.3s]
+video_studio\work\zip-deploy-fullstack\index.html #cap-full-stack-feature-0 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-full-stack-feature-1"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #cap-full-stack-feature-1 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-demo-terminal-0"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #cap-demo-terminal-0 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-demo-terminal-1"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #cap-demo-terminal-1 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-live-browser-0"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #cap-live-browser-0 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-live-browser-1"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #cap-live-browser-1 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ nested_structure_needs_subcomposition: <div id="hook"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #hook t=0s
+    Fix: Move <div id="hook"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="frontend"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #frontend t=0s
+    Fix: Move <div id="frontend"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="backend"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #backend t=0s
+    Fix: Move <div id="backend"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="full-stack-feature"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #full-stack-feature t=0s
+    Fix: Move <div id="full-stack-feature"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="demo-terminal"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #demo-terminal t=0s
+    Fix: Move <div id="demo-terminal"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="live-browser"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\zip-deploy-fullstack\index.html #live-browser t=0s
+    Fix: Move <div id="live-browser"> and its contents into a sub-composition file and mount it with data-composition-src.
+  0 error(s), 29 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ℹ t=35.42s text_occluded div.chrome.tl inside #endcard "© 2026" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=35.42s text_occluded div.chrome.tc inside #endcard "@signhify.studio" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  0 error(s), 0 warning(s), 2 info(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 37/37 text checks pass WCAG AA
+
+Snapshots
+  ◇ disabled
+
+◇  Check passed
+
+
+$ C:\Program Files\nodejs\npx.CMD --yes hyperframes render -f 30 -q draft -o D:\Autogram\video_studio\output\zip-deploy-fullstack\reel.mp4
+[exit=0 42.7s]
+33/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1034/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1035/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1036/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1037/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1038/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1039/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1040/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1041/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1042/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1043/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1044/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1045/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1046/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1047/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1048/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1049/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1050/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1051/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1052/1125
+  ███████████████████░░░░░░  76%  Streaming frame 1053/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1054/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1055/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1056/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1057/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1058/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1059/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1060/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1061/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1062/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1063/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1064/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1065/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1066/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1067/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1068/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1069/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1070/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1071/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1072/1125
+  ███████████████████░░░░░░  77%  Streaming frame 1073/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1074/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1075/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1076/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1077/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1078/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1079/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1080/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1081/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1082/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1083/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1084/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1085/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1086/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1087/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1088/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1089/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1090/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1091/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1092/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1093/1125
+  ███████████████████░░░░░░  78%  Streaming frame 1094/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1095/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1096/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1097/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1098/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1099/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1100/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1101/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1102/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1103/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1104/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1105/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1106/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1107/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1108/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1109/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1110/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1111/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1112/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1113/1125
+  ███████████████████░░░░░░  79%  Streaming frame 1114/1125
+  ████████████████████░░░░░  80%  Streaming frame 1115/1125
+  ████████████████████░░░░░  80%  Streaming frame 1116/1125
+  ████████████████████░░░░░  80%  Streaming frame 1117/1125
+  ████████████████████░░░░░  80%  Streaming frame 1118/1125
+  ████████████████████░░░░░  80%  Streaming frame 1119/1125
+  ████████████████████░░░░░  80%  Streaming frame 1120/1125
+  ████████████████████░░░░░  80%  Streaming frame 1121/1125
+  ████████████████████░░░░░  80%  Streaming frame 1122/1125
+  ████████████████████░░░░░  80%  Streaming frame 1123/1125
+  ████████████████████░░░░░  80%  Streaming frame 1124/1125
+  ████████████████████░░░░░  80%  Streaming frame 1125/1125
+[static-dedup] reused 861/1986 frame(s) (43%), est. ~3444ms saved (avg 4ms/frame)
+  ██████████████████████░░░  90%  Assembling final video
+  █████████████████████████  100%  Render complete
+
+◇  D:\Autogram\video_studio\output\zip-deploy-fullstack\reel.mp4
+   1.5 MB · 37.5s video · rendered in 36.4s
+   drawelement capture · hardware gpu · compile 11.0s · extract 0.0s · audio 0.0s · probe 0.3s · setup 1.0s · capture 24.1s · encode (during capture) 24.1s · assemble 0.1s
+
+
+$ ffmpeg -y -hide_banner -nostats -i D:\Autogram\video_studio\output\zip-deploy-fullstack\reel.mp4 -i D:\Autogram\video_studio\output\zip-deploy-fullstack\audio\narration.wav -c:v copy -c:a aac -b:a 192k -ar 48000 -af loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=-22.52:measured_TP=-4.02:measured_LRA=1.40:measured_thresh=-32.88:offset=0.35:linear=true,apad -shortest -movflags +faststart D:\Autogram\video_studio\output\zip-deploy-fullstack\reel_mux.mp4
+[exit=0 1.3s]

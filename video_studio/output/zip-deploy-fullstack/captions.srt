@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:04,480
+Signhify can export a complete project as a ZIP file.
+
+2
+00:00:04,500 --> 00:00:07,083
+The frontend includes all HTML,
+
+3
+00:00:07,083 --> 00:00:09,980
+CSS, and JavaScript ready to serve.
+
+4
+00:00:10,000 --> 00:00:14,480
+It also bundles an Express API starter for backend logic.
+
+5
+00:00:14,500 --> 00:00:17,951
+One prompt generates a scroll-reactive site
+
+6
+00:00:17,951 --> 00:00:20,980
+and a deployable ZIP with both layers.
+
+7
+00:00:21,000 --> 00:00:23,922
+Unzip, npm install, then npm start
+
+8
+00:00:23,922 --> 00:00:26,480
+to run the full stack locally.
+
+9
+00:00:26,500 --> 00:00:28,928
+Deploy the ZIP to any host, and
+
+10
+00:00:28,928 --> 00:00:32,980
+the site runs with native scroll parallax instantly.

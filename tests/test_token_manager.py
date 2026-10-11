@@ -49,7 +49,16 @@ def test_validate_token_false_on_error_and_never_raises():
         assert manager.validate_token("bad") is False
     with patch.object(tm.requests, "get", side_effect=requests.RequestException("net")):
         assert manager.validate_token("bad") is False
-    assert manager.validate_token(None) is False
+    # No token at all must be False. Clear every source the property reads: this
+    # used to pass only because the ambient .env token happened to be dead, so it
+    # broke the moment a real working token was configured.
+    env = {k: os.environ.pop(k) for k in ("IG_ACCESS_TOKEN", "META_GRAPH_ACCESS_TOKEN")
+           if k in os.environ}
+    try:
+        with patch.object(tm.settings, "ig_access_token", ""):
+            assert manager.validate_token(None) is False
+    finally:
+        os.environ.update(env)
 
 
 def test_refresh_requires_app_credentials(monkeypatch):

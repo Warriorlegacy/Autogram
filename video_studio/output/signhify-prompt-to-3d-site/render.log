@@ -1,0 +1,169 @@
+[audio] provider=kokoro scenes=7 narration=36.78s
+
+$ C:\Program Files\nodejs\npx.CMD --yes hyperframes check
+[exit=0 106.5s]
+dio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #cap-proof-2 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-export-0"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #cap-export-0 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-export-1"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #cap-export-1 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-price-0"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #cap-price-0 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ timed_element_missing_clip_class: <div id="cap-price-1"> has timing attributes but no class="clip". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #cap-price-1 t=0s
+    Fix: Add class="clip" to the element so Studio and the linter can recognise it as a clip.
+  ⚠ nested_structure_needs_subcomposition: <div id="hook"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #hook t=0s
+    Fix: Move <div id="hook"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="problem"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #problem t=0s
+    Fix: Move <div id="problem"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="mechanism"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #mechanism t=0s
+    Fix: Move <div id="mechanism"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="no-webgl"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #no-webgl t=0s
+    Fix: Move <div id="no-webgl"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="proof"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #proof t=0s
+    Fix: Move <div id="proof"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="export"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #export t=0s
+    Fix: Move <div id="export"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <div id="price"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    D:\Autogram\video_studio\work\signhify-prompt-to-3d-site\index.html #price t=0s
+    Fix: Move <div id="price"> and its contents into a sub-composition file and mount it with data-composition-src.
+  0 error(s), 38 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ℹ t=42.97s text_occluded div.chrome.tl inside #endcard "© 2026" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  ℹ t=42.97s text_occluded div.chrome.tc inside #endcard "@signhify.studio" — Text is hidden beneath an opaque element.
+        Fix: Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.
+  0 error(s), 0 warning(s), 2 info(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 42/42 text checks pass WCAG AA
+
+Snapshots
+  ◇ disabled
+
+◇  Check passed
+
+
+$ C:\Program Files\nodejs\npx.CMD --yes hyperframes render -f 30 -q standard -o D:\Autogram\video_studio\output\signhify-prompt-to-3d-site\reel.mp4
+[exit=0 107.4s]
+██████████████░░░░░░  76%  Streaming frame 1274/1365
+  ███████████████████░░░░░░  76%  Streaming frame 1275/1365
+  ███████████████████░░░░░░  76%  Streaming frame 1276/1365
+  ███████████████████░░░░░░  76%  Streaming frame 1277/1365
+  ███████████████████░░░░░░  76%  Streaming frame 1278/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1279/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1280/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1281/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1282/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1283/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1284/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1285/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1286/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1287/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1288/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1289/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1290/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1291/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1292/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1293/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1294/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1295/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1296/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1297/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1298/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1299/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1300/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1301/1365
+  ███████████████████░░░░░░  77%  Streaming frame 1302/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1303/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1304/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1305/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1306/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1307/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1308/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1309/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1310/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1311/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1312/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1313/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1314/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1315/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1316/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1317/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1318/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1319/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1320/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1321/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1322/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1323/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1324/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1325/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1326/1365
+  ███████████████████░░░░░░  78%  Streaming frame 1327/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1328/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1329/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1330/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1331/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1332/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1333/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1334/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1335/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1336/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1337/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1338/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1339/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1340/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1341/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1342/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1343/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1344/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1345/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1346/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1347/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1348/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1349/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1350/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1351/1365
+  ███████████████████░░░░░░  79%  Streaming frame 1352/1365
+  ████████████████████░░░░░  80%  Streaming frame 1353/1365
+  ████████████████████░░░░░  80%  Streaming frame 1354/1365
+  ████████████████████░░░░░  80%  Streaming frame 1355/1365
+  ████████████████████░░░░░  80%  Streaming frame 1356/1365
+  ████████████████████░░░░░  80%  Streaming frame 1357/1365
+  ████████████████████░░░░░  80%  Streaming frame 1358/1365
+  ████████████████████░░░░░  80%  Streaming frame 1359/1365
+  ████████████████████░░░░░  80%  Streaming frame 1360/1365
+  ████████████████████░░░░░  80%  Streaming frame 1361/1365
+  ████████████████████░░░░░  80%  Streaming frame 1362/1365
+  ████████████████████░░░░░  80%  Streaming frame 1363/1365
+  ████████████████████░░░░░  80%  Streaming frame 1364/1365
+  ████████████████████░░░░░  80%  Streaming frame 1365/1365
+[static-dedup] reused 1037/2402 frame(s) (43%), est. ~6222ms saved (avg 6ms/frame)
+  ██████████████████████░░░  90%  Assembling final video
+  █████████████████████████  100%  Render complete
+
+◇  D:\Autogram\video_studio\output\signhify-prompt-to-3d-site\reel.mp4
+   2.3 MB · 45.5s video · rendered in 1m 24.0s
+   drawelement capture · hardware gpu · compile 6.1s · extract 0.0s · audio 0.0s · probe 1.7s · setup 2.8s · capture 1m 14.5s · encode (during capture) 1m 14.4s · assemble 0.2s
+
+
+$ ffmpeg -y -hide_banner -nostats -i D:\Autogram\video_studio\output\signhify-prompt-to-3d-site\reel.mp4 -i D:\Autogram\video_studio\output\signhify-prompt-to-3d-site\audio\narration.wav -c:v copy -c:a aac -b:a 192k -ar 48000 -af loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=-22.52:measured_TP=0.33:measured_LRA=2.30:measured_thresh=-32.90:offset=0.40:linear=true,apad -shortest -movflags +faststart D:\Autogram\video_studio\output\signhify-prompt-to-3d-site\reel_mux.mp4
+[exit=0 3.9s]

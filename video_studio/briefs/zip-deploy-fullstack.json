@@ -1,0 +1,101 @@
+{
+  "slug": "zip-deploy-fullstack",
+  "title": "One Prompt, Full Stack Export",
+  "pillar": "product",
+  "hook": "Signhify exports a ZIP containing frontend and an Express API starter.",
+  "cta": "Follow @signhify.studio for more",
+  "accent": "",
+  "notes": "",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "target_duration": 40.0,
+  "narration_enabled": true,
+  "sources": [
+    "https://signhify.dpdns.org"
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "visual": "hook",
+      "duration": 4.5,
+      "narration": "Signhify can export a complete project as a ZIP file.",
+      "headline": "ZIP Export",
+      "subtext": "One prompt, two layers",
+      "eyebrow": "full stack",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "frontend",
+      "visual": "statement",
+      "duration": 5.5,
+      "narration": "The frontend includes all HTML, CSS, and JavaScript ready to serve.",
+      "headline": "Ready HTML, CSS, JS",
+      "subtext": "",
+      "eyebrow": "frontend",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "backend",
+      "visual": "statement",
+      "duration": 4.5,
+      "narration": "It also bundles an Express API starter for backend logic.",
+      "headline": "Express API starter",
+      "subtext": "",
+      "eyebrow": "backend",
+      "bullets": [],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "full-stack-feature",
+      "visual": "feature_card",
+      "duration": 6.5,
+      "narration": "One prompt generates a scroll-reactive site and a deployable ZIP with both layers.",
+      "headline": "Full stack export",
+      "subtext": "",
+      "eyebrow": "features",
+      "bullets": [
+        "HTML, CSS, JS",
+        "Express starter",
+        "Adjustable FPS",
+        "Multi‑video continuation",
+        "Product injection"
+      ],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "demo-terminal",
+      "visual": "terminal",
+      "duration": 5.5,
+      "narration": "Unzip, npm install, then npm start to run the full stack locally.",
+      "headline": "Run locally",
+      "subtext": "",
+      "eyebrow": "demo",
+      "bullets": [
+        "npm install",
+        "npm start",
+        "local dev server"
+      ],
+      "metrics": [],
+      "source_url": ""
+    },
+    {
+      "id": "live-browser",
+      "visual": "browser",
+      "duration": 6.5,
+      "narration": "Deploy the ZIP to any host, and the site runs with native scroll parallax instantly.",
+      "headline": "Deploy in minutes",
+      "subtext": "",
+      "eyebrow": "live",
+      "bullets": [],
+      "metrics": [],
+      "source_url": "https://signhify.dpdns.org"
+    }
+  ]
+}
