@@ -4,5 +4,6 @@
   "mit-source-ownership",
   "no-webgl-native-scroll",
   "signhify-iterative-chat-editing",
-  "signhify-fps-interpolation"
+  "signhify-fps-interpolation",
+  "multi-video-continuation"
 ]
