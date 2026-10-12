@@ -8,5 +8,6 @@
   "multi-video-continuation",
   "express-api-zip-export",
   "signhify-prompt-to-site",
-  "frame-extraction-math"
+  "frame-extraction-math",
+  "signhify-product-injection"
 ]
