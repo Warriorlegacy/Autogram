@@ -3,5 +3,6 @@
   "zip-deploy-fullstack",
   "mit-source-ownership",
   "no-webgl-native-scroll",
-  "signhify-iterative-chat-editing"
+  "signhify-iterative-chat-editing",
+  "signhify-fps-interpolation"
 ]
