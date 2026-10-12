@@ -7,5 +7,6 @@
   "signhify-fps-interpolation",
   "multi-video-continuation",
   "express-api-zip-export",
-  "signhify-prompt-to-site"
+  "signhify-prompt-to-site",
+  "frame-extraction-math"
 ]
