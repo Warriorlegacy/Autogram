@@ -6,5 +6,6 @@
   "signhify-iterative-chat-editing",
   "signhify-fps-interpolation",
   "multi-video-continuation",
-  "express-api-zip-export"
+  "express-api-zip-export",
+  "signhify-prompt-to-site"
 ]
