@@ -10,5 +10,6 @@
   "signhify-prompt-to-site",
   "frame-extraction-math",
   "signhify-product-injection",
-  "signhify-prompt-to-parallax"
+  "signhify-prompt-to-parallax",
+  "signhify-frame-interpolation-math"
 ]
