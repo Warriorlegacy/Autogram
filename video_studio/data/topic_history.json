@@ -9,5 +9,6 @@
   "express-api-zip-export",
   "signhify-prompt-to-site",
   "frame-extraction-math",
-  "signhify-product-injection"
+  "signhify-product-injection",
+  "signhify-prompt-to-parallax"
 ]
