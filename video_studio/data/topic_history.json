@@ -12,5 +12,6 @@
   "signhify-product-injection",
   "signhify-prompt-to-parallax",
   "signhify-frame-interpolation-math",
-  "signhify-8s-video-source"
+  "signhify-8s-video-source",
+  "signhify-single-prompt-architecture"
 ]
