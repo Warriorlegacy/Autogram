@@ -11,5 +11,6 @@
   "frame-extraction-math",
   "signhify-product-injection",
   "signhify-prompt-to-parallax",
-  "signhify-frame-interpolation-math"
+  "signhify-frame-interpolation-math",
+  "signhify-8s-video-source"
 ]
