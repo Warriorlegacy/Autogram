@@ -22,5 +22,6 @@
   "signhify-architectural-overview",
   "signhify-zip-deploy-pipeline",
   "signhify-scroll-physics",
-  "signhify-400-frame-buffer"
+  "signhify-400-frame-buffer",
+  "signhify-cinematic-parallax-engine"
 ]
