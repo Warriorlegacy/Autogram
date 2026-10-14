@@ -19,5 +19,6 @@
   "scroll-frame-math",
   "signhify-site-builder-mechanism",
   "signhify-start-vs-studio-tier",
-  "signhify-architectural-overview"
+  "signhify-architectural-overview",
+  "signhify-zip-deploy-pipeline"
 ]
