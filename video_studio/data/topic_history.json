@@ -24,5 +24,6 @@
   "signhify-scroll-physics",
   "signhify-400-frame-buffer",
   "signhify-cinematic-parallax-engine",
-  "local-ai-edge-parallax"
+  "local-ai-edge-parallax",
+  "signhify-frame-buffer-memory"
 ]
