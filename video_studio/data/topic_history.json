@@ -29,5 +29,6 @@
   "signhify-edge-compute-frame-pipeline",
   "signhify-edge-rendering-pipeline",
   "signhify-frontend-export",
-  "signhify-backend-starter"
+  "signhify-backend-starter",
+  "signhify-credits-cost-model"
 ]
