@@ -25,5 +25,6 @@
   "signhify-400-frame-buffer",
   "signhify-cinematic-parallax-engine",
   "local-ai-edge-parallax",
-  "signhify-frame-buffer-memory"
+  "signhify-frame-buffer-memory",
+  "signhify-edge-compute-frame-pipeline"
 ]
