@@ -28,5 +28,6 @@
   "signhify-frame-buffer-memory",
   "signhify-edge-compute-frame-pipeline",
   "signhify-edge-rendering-pipeline",
-  "signhify-frontend-export"
+  "signhify-frontend-export",
+  "signhify-backend-starter"
 ]
