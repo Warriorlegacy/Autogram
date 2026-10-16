@@ -36,5 +36,6 @@
   "signhify-credit-math",
   "signhify-frame-sequence-logic",
   "signhify-native-scroll-3d-parallax",
-  "signhify-frame-buffer-lifecycle"
+  "signhify-frame-buffer-lifecycle",
+  "signhify-frame-buffer-memory"
 ]
