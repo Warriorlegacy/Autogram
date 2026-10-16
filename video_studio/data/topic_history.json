@@ -31,5 +31,6 @@
   "signhify-frontend-export",
   "signhify-backend-starter",
   "signhify-credits-cost-model",
-  "signhify-annual-discount-strategy"
+  "signhify-annual-discount-strategy",
+  "signhify-prompt-to-live-url"
 ]
