@@ -34,5 +34,6 @@
   "signhify-annual-discount-strategy",
   "signhify-prompt-to-live-url",
   "signhify-credit-math",
-  "signhify-frame-sequence-logic"
+  "signhify-frame-sequence-logic",
+  "signhify-native-scroll-3d-parallax"
 ]
