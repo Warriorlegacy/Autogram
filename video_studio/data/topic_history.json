@@ -37,5 +37,6 @@
   "signhify-frame-sequence-logic",
   "signhify-native-scroll-3d-parallax",
   "signhify-frame-buffer-lifecycle",
-  "signhify-frame-buffer-memory"
+  "signhify-frame-buffer-memory",
+  "signhify-full-stack-zip-export"
 ]
