@@ -39,5 +39,6 @@
   "signhify-frame-buffer-lifecycle",
   "signhify-frame-buffer-memory",
   "signhify-full-stack-zip-export",
-  "signhify-frame-extraction-latency"
+  "signhify-frame-extraction-latency",
+  "signhify-prompt-to-parallax-engine"
 ]
