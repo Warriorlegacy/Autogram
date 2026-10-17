@@ -38,5 +38,6 @@
   "signhify-native-scroll-3d-parallax",
   "signhify-frame-buffer-lifecycle",
   "signhify-frame-buffer-memory",
-  "signhify-full-stack-zip-export"
+  "signhify-full-stack-zip-export",
+  "signhify-frame-extraction-latency"
 ]
