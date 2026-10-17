@@ -41,5 +41,6 @@
   "signhify-full-stack-zip-export",
   "signhify-frame-extraction-latency",
   "signhify-prompt-to-parallax-engine",
-  "signhify-frame-extraction-overhead"
+  "signhify-frame-extraction-overhead",
+  "signhify-mit-license-ownership"
 ]
