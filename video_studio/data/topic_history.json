@@ -42,5 +42,6 @@
   "signhify-frame-extraction-latency",
   "signhify-prompt-to-parallax-engine",
   "signhify-frame-extraction-overhead",
-  "signhify-mit-license-ownership"
+  "signhify-mit-license-ownership",
+  "signhify-nodejs-starter-structure"
 ]
