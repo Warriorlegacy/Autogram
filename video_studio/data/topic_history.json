@@ -40,5 +40,6 @@
   "signhify-frame-buffer-memory",
   "signhify-full-stack-zip-export",
   "signhify-frame-extraction-latency",
-  "signhify-prompt-to-parallax-engine"
+  "signhify-prompt-to-parallax-engine",
+  "signhify-frame-extraction-overhead"
 ]
