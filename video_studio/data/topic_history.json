@@ -48,5 +48,6 @@
   "signhify-adjustable-fps-tuning",
   "no-webgl-scroll-architecture",
   "signhify-iterative-editing",
-  "signhify-express-api-export"
+  "signhify-express-api-export",
+  "signhify-frame-extraction-density"
 ]
