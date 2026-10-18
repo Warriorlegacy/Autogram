@@ -49,5 +49,6 @@
   "no-webgl-scroll-architecture",
   "signhify-iterative-editing",
   "signhify-express-api-export",
-  "signhify-frame-extraction-density"
+  "signhify-frame-extraction-density",
+  "signify-native-scroll-parallax"
 ]
