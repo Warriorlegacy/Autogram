@@ -50,5 +50,6 @@
   "signhify-iterative-editing",
   "signhify-express-api-export",
   "signhify-frame-extraction-density",
-  "signify-native-scroll-parallax"
+  "signify-native-scroll-parallax",
+  "signhify-multi-video-stitching"
 ]
