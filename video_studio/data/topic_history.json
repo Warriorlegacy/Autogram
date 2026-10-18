@@ -47,5 +47,6 @@
   "signhify-mit-code-ownership",
   "signhify-adjustable-fps-tuning",
   "no-webgl-scroll-architecture",
-  "signhify-iterative-editing"
+  "signhify-iterative-editing",
+  "signhify-express-api-export"
 ]
