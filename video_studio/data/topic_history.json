@@ -44,5 +44,6 @@
   "signhify-frame-extraction-overhead",
   "signhify-mit-license-ownership",
   "signhify-nodejs-starter-structure",
-  "signhify-mit-code-ownership"
+  "signhify-mit-code-ownership",
+  "signhify-adjustable-fps-tuning"
 ]
