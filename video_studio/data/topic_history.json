@@ -51,5 +51,6 @@
   "signhify-express-api-export",
   "signhify-frame-extraction-density",
   "signify-native-scroll-parallax",
-  "signhify-multi-video-stitching"
+  "signhify-multi-video-stitching",
+  "signhify-zip-deploy-artifact"
 ]
