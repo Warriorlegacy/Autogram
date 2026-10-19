@@ -56,5 +56,6 @@
   "signhify-product-injection-mechanics",
   "signhify-8s-video-to-400-frames",
   "signhify-8s-video-source-constraint",
-  "signhify-frame-interpolation-math"
+  "signhify-frame-interpolation-math",
+  "signhify-native-scroll-math"
 ]
