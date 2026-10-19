@@ -53,5 +53,6 @@
   "signify-native-scroll-parallax",
   "signhify-multi-video-stitching",
   "signhify-zip-deploy-artifact",
-  "signhify-product-injection-mechanics"
+  "signhify-product-injection-mechanics",
+  "signhify-8s-video-to-400-frames"
 ]
