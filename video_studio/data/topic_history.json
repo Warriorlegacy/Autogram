@@ -52,5 +52,6 @@
   "signhify-frame-extraction-density",
   "signify-native-scroll-parallax",
   "signhify-multi-video-stitching",
-  "signhify-zip-deploy-artifact"
+  "signhify-zip-deploy-artifact",
+  "signhify-product-injection-mechanics"
 ]
