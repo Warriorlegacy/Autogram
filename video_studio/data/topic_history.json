@@ -60,5 +60,6 @@
   "signhify-native-scroll-math",
   "signhify-100fps-scroll-limit",
   "signhify-native-scroll-engine",
-  "signhify-scroll-event-loop"
+  "signhify-scroll-event-loop",
+  "signhify-no-webgl-dependency"
 ]
