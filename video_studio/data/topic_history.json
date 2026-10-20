@@ -62,5 +62,6 @@
   "signhify-native-scroll-engine",
   "signhify-scroll-event-loop",
   "signhify-no-webgl-dependency",
-  "signhify-scroll-event-loop-optimization"
+  "signhify-scroll-event-loop-optimization",
+  "signhify-scroll-parallax-math"
 ]
