@@ -3,6 +3,13 @@
     {
       "date": "2026-10-20",
       "pillar": "Hindi Promo",
+      "topic": "[Hindi Reel] Signhify Studio: Secret Weapon",
+      "hook": "Pata hai Apple un insane 3D scroll websites kaise banata hai",
+      "score": 95.0
+    },
+    {
+      "date": "2026-10-20",
+      "pillar": "Hindi Promo",
       "topic": "[Hindi Reel] Signhify Studio: Ye Toh Sach Hai",
       "hook": "Ek baat sach mein. Ek watch preview ne store checkout conver",
       "score": 95.0
@@ -565,5 +572,5 @@
     "Generic 'AI will replace jobs' commentary",
     "Listicle of 10 random AI tools with no in-depth use case"
   ],
-  "hindi_script_index": 3
+  "hindi_script_index": 4
 }
