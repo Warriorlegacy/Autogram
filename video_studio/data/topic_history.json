@@ -63,5 +63,6 @@
   "signhify-scroll-event-loop",
   "signhify-no-webgl-dependency",
   "signhify-scroll-event-loop-optimization",
-  "signhify-scroll-parallax-math"
+  "signhify-scroll-parallax-math",
+  "signhify-scroll-event-decoupling"
 ]
