@@ -68,5 +68,6 @@
   "signhify-product-injection-pipeline",
   "signhify-8s-video-constraint",
   "signhify-video-to-frame-continuity",
-  "signhify-multi-video-continuation"
+  "signhify-multi-video-continuation",
+  "signhify-frame-extraction-pipeline"
 ]
