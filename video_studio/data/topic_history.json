@@ -69,5 +69,6 @@
   "signhify-8s-video-constraint",
   "signhify-video-to-frame-continuity",
   "signhify-multi-video-continuation",
-  "signhify-frame-extraction-pipeline"
+  "signhify-frame-extraction-pipeline",
+  "signhify-video-source-constraint"
 ]
