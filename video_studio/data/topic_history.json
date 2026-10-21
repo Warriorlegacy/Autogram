@@ -70,5 +70,6 @@
   "signhify-video-to-frame-continuity",
   "signhify-multi-video-continuation",
   "signhify-frame-extraction-pipeline",
-  "signhify-video-source-constraint"
+  "signhify-video-source-constraint",
+  "signhify-credit-unit-cost"
 ]
