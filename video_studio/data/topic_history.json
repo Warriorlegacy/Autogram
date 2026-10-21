@@ -65,5 +65,6 @@
   "signhify-scroll-event-loop-optimization",
   "signhify-scroll-parallax-math",
   "signhify-scroll-event-decoupling",
-  "signhify-product-injection-pipeline"
+  "signhify-product-injection-pipeline",
+  "signhify-8s-video-constraint"
 ]
