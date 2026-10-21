@@ -67,5 +67,6 @@
   "signhify-scroll-event-decoupling",
   "signhify-product-injection-pipeline",
   "signhify-8s-video-constraint",
-  "signhify-video-to-frame-continuity"
+  "signhify-video-to-frame-continuity",
+  "signhify-multi-video-continuation"
 ]
