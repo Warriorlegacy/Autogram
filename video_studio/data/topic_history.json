@@ -66,5 +66,6 @@
   "signhify-scroll-parallax-math",
   "signhify-scroll-event-decoupling",
   "signhify-product-injection-pipeline",
-  "signhify-8s-video-constraint"
+  "signhify-8s-video-constraint",
+  "signhify-video-to-frame-continuity"
 ]
