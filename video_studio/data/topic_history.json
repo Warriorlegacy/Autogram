@@ -76,5 +76,6 @@
   "signhify-express-backend-scaffold",
   "signhify-browser-thread-safety",
   "signhify-zip-deploy-artifact",
-  "signhify-iterative-editing-workflow"
+  "signhify-iterative-editing-workflow",
+  "signhify-source-code-ownership-details"
 ]
