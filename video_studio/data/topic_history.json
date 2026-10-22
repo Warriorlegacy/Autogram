@@ -71,5 +71,6 @@
   "signhify-multi-video-continuation",
   "signhify-frame-extraction-pipeline",
   "signhify-video-source-constraint",
-  "signhify-credit-unit-cost"
+  "signhify-credit-unit-cost",
+  "scroll-engine-memory-footprint"
 ]
