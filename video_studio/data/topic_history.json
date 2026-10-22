@@ -72,5 +72,6 @@
   "signhify-frame-extraction-pipeline",
   "signhify-video-source-constraint",
   "signhify-credit-unit-cost",
-  "scroll-engine-memory-footprint"
+  "scroll-engine-memory-footprint",
+  "signhify-express-backend-scaffold"
 ]
