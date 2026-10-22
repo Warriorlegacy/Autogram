@@ -74,5 +74,6 @@
   "signhify-credit-unit-cost",
   "scroll-engine-memory-footprint",
   "signhify-express-backend-scaffold",
-  "signhify-browser-thread-safety"
+  "signhify-browser-thread-safety",
+  "signhify-zip-deploy-artifact"
 ]
