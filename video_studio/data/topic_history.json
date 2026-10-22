@@ -75,5 +75,6 @@
   "scroll-engine-memory-footprint",
   "signhify-express-backend-scaffold",
   "signhify-browser-thread-safety",
-  "signhify-zip-deploy-artifact"
+  "signhify-zip-deploy-artifact",
+  "signhify-iterative-editing-workflow"
 ]
