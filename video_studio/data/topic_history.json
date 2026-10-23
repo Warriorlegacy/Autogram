@@ -81,5 +81,6 @@
   "signhify-zip-deploy-architecture",
   "signhify-frame-density-tradeoff",
   "signhify-camera-motion-vs-javascript",
-  "signhify-express-scaffold-utility"
+  "signhify-express-scaffold-utility",
+  "signhify-prompt-to-frame-pipeline"
 ]
