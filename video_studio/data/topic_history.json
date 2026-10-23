@@ -82,5 +82,6 @@
   "signhify-frame-density-tradeoff",
   "signhify-camera-motion-vs-javascript",
   "signhify-express-scaffold-utility",
-  "signhify-prompt-to-frame-pipeline"
+  "signhify-prompt-to-frame-pipeline",
+  "signhify-startier-tier-breakdown"
 ]
