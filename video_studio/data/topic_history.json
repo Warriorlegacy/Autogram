@@ -84,5 +84,6 @@
   "signhify-express-scaffold-utility",
   "signhify-prompt-to-frame-pipeline",
   "signhify-startier-tier-breakdown",
-  "signhify-prompt-to-frame-pipeline"
+  "signhify-prompt-to-frame-pipeline",
+  "signhify-mit-license-ownership"
 ]
