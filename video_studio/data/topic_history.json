@@ -78,5 +78,6 @@
   "signhify-zip-deploy-artifact",
   "signhify-iterative-editing-workflow",
   "signhify-source-code-ownership-details",
-  "signhify-zip-deploy-architecture"
+  "signhify-zip-deploy-architecture",
+  "signhify-frame-density-tradeoff"
 ]
