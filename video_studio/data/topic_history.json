@@ -80,5 +80,6 @@
   "signhify-source-code-ownership-details",
   "signhify-zip-deploy-architecture",
   "signhify-frame-density-tradeoff",
-  "signhify-camera-motion-vs-javascript"
+  "signhify-camera-motion-vs-javascript",
+  "signhify-express-scaffold-utility"
 ]
