@@ -87,5 +87,6 @@
   "signhify-prompt-to-frame-pipeline",
   "signhify-mit-license-ownership",
   "signhify-fps-adjustment-cost",
-  "signhify-prompt-to-site-workflow"
+  "signhify-prompt-to-site-workflow",
+  "signhify-fps-adjustable-range"
 ]
