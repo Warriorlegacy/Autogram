@@ -90,5 +90,6 @@
   "signhify-prompt-to-site-workflow",
   "signhify-fps-adjustable-range",
   "signhify-fullstack-zip-contention",
-  "signhify-frame-density-budget"
+  "signhify-frame-density-budget",
+  "signhify-frame-extraction-budget"
 ]
