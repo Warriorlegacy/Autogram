@@ -93,5 +93,6 @@
   "signhify-frame-density-budget",
   "signhify-frame-extraction-budget",
   "signhify-buttery-smooth-interpolation",
-  "signhify-prompt-to-url-latency"
+  "signhify-prompt-to-url-latency",
+  "signhify-backend-express-scaffold"
 ]
