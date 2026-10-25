@@ -92,5 +92,6 @@
   "signhify-fullstack-zip-contention",
   "signhify-frame-density-budget",
   "signhify-frame-extraction-budget",
-  "signhify-buttery-smooth-interpolation"
+  "signhify-buttery-smooth-interpolation",
+  "signhify-prompt-to-url-latency"
 ]
