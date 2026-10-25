@@ -91,5 +91,6 @@
   "signhify-fps-adjustable-range",
   "signhify-fullstack-zip-contention",
   "signhify-frame-density-budget",
-  "signhify-frame-extraction-budget"
+  "signhify-frame-extraction-budget",
+  "signhify-buttery-smooth-interpolation"
 ]
