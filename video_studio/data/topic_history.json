@@ -97,5 +97,6 @@
   "signhify-backend-express-scaffold",
   "signhify-frame-extraction-cost",
   "signhify-prompt-to-live-url-in-minutes",
-  "signhify-native-scroll-decode"
+  "signhify-native-scroll-decode",
+  "signhify-8s-video-constraint"
 ]
