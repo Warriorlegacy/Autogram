@@ -101,5 +101,6 @@
   "signhify-8s-video-constraint",
   "signhify-frame-sequence-artifact",
   "signhify-native-scroll-decode-cost",
-  "signhify-browser-compositor-chain"
+  "signhify-browser-compositor-chain",
+  "signhify-native-scroll-animation-tech"
 ]
