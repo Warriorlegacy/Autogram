@@ -102,5 +102,6 @@
   "signhify-frame-sequence-artifact",
   "signhify-native-scroll-decode-cost",
   "signhify-browser-compositor-chain",
-  "signhify-native-scroll-animation-tech"
+  "signhify-native-scroll-animation-tech",
+  "signhify-no-webgl-render-path"
 ]
