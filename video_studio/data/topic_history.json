@@ -104,5 +104,6 @@
   "signhify-browser-compositor-chain",
   "signhify-native-scroll-animation-tech",
   "signhify-no-webgl-render-path",
-  "signhify-frame-interpolation-math"
+  "signhify-frame-interpolation-math",
+  "signhify-webgl-elimination-logic"
 ]
