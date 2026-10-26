@@ -98,5 +98,6 @@
   "signhify-frame-extraction-cost",
   "signhify-prompt-to-live-url-in-minutes",
   "signhify-native-scroll-decode",
-  "signhify-8s-video-constraint"
+  "signhify-8s-video-constraint",
+  "signhify-frame-sequence-artifact"
 ]
