@@ -106,5 +106,6 @@
   "signhify-no-webgl-render-path",
   "signhify-frame-interpolation-math",
   "signhify-webgl-elimination-logic",
-  "signhify-fullstack-export-miss"
+  "signhify-fullstack-export-miss",
+  "signhify-browser-parallax-engine"
 ]
