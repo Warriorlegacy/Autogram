@@ -110,5 +110,6 @@
   "signhify-browser-parallax-engine",
   "signhify-product-injection-feature",
   "signhify-multi-video-continuity",
-  "signhify-zip-artifact-anatomy"
+  "signhify-zip-artifact-anatomy",
+  "signhify-prompt-to-live-url-mechanism"
 ]
