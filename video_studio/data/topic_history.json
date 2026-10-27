@@ -107,5 +107,6 @@
   "signhify-frame-interpolation-math",
   "signhify-webgl-elimination-logic",
   "signhify-fullstack-export-miss",
-  "signhify-browser-parallax-engine"
+  "signhify-browser-parallax-engine",
+  "signhify-product-injection-feature"
 ]
