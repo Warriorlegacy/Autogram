@@ -113,5 +113,6 @@
   "signhify-zip-artifact-anatomy",
   "signhify-prompt-to-live-url-mechanism",
   "signhify-native-scroll-vs-webgl",
-  "signhify-frame-to-scroll-mapping"
+  "signhify-frame-to-scroll-mapping",
+  "signhify-frame-deployment-pipeline"
 ]
