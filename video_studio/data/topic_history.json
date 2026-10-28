@@ -116,5 +116,6 @@
   "signhify-frame-to-scroll-mapping",
   "signhify-frame-deployment-pipeline",
   "signhify-video-source-constraint",
-  "signhify-sora-frame-extraction-pipeline"
+  "signhify-sora-frame-extraction-pipeline",
+  "signhify-frame-extraction-density"
 ]
