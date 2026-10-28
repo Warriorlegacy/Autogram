@@ -118,5 +118,6 @@
   "signhify-video-source-constraint",
   "signhify-sora-frame-extraction-pipeline",
   "signhify-frame-extraction-density",
-  "signhify-iterative-chat-editing"
+  "signhify-iterative-chat-editing",
+  "signhify-credit-to-frame-yield"
 ]
