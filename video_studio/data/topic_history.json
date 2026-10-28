@@ -115,5 +115,6 @@
   "signhify-native-scroll-vs-webgl",
   "signhify-frame-to-scroll-mapping",
   "signhify-frame-deployment-pipeline",
-  "signhify-video-source-constraint"
+  "signhify-video-source-constraint",
+  "signhify-sora-frame-extraction-pipeline"
 ]
