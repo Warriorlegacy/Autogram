@@ -112,5 +112,6 @@
   "signhify-multi-video-continuity",
   "signhify-zip-artifact-anatomy",
   "signhify-prompt-to-live-url-mechanism",
-  "signhify-native-scroll-vs-webgl"
+  "signhify-native-scroll-vs-webgl",
+  "signhify-frame-to-scroll-mapping"
 ]
