@@ -125,5 +125,6 @@
   "signhify-frame-to-scroll-mapping",
   "signhify-iterative-chat-diff",
   "signhify-express-scaffold-internals",
-  "signhify-edge-cache-strategy"
+  "signhify-edge-cache-strategy",
+  "signhify-product-injection"
 ]
