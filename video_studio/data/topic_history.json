@@ -120,5 +120,6 @@
   "signhify-frame-extraction-density",
   "signhify-iterative-chat-editing",
   "signhify-credit-to-frame-yield",
-  "signhify-mit-license-ownership"
+  "signhify-mit-license-ownership",
+  "signhify-frame-density-constraint"
 ]
