@@ -119,5 +119,6 @@
   "signhify-sora-frame-extraction-pipeline",
   "signhify-frame-extraction-density",
   "signhify-iterative-chat-editing",
-  "signhify-credit-to-frame-yield"
+  "signhify-credit-to-frame-yield",
+  "signhify-mit-license-ownership"
 ]
