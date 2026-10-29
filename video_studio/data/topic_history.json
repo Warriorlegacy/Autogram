@@ -122,5 +122,6 @@
   "signhify-credit-to-frame-yield",
   "signhify-mit-license-ownership",
   "signhify-frame-density-constraint",
-  "signhify-frame-to-scroll-mapping"
+  "signhify-frame-to-scroll-mapping",
+  "signhify-iterative-chat-diff"
 ]
