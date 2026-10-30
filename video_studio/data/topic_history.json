@@ -130,5 +130,6 @@
   "signhify-sora-frame-extraction-pipeline",
   "signhify-mit-license-distribution",
   "signhify-100fps-scroll-math",
-  "signhify-zip-deploy-payload"
+  "signhify-zip-deploy-payload",
+  "signhify-fps-interpolation-tuning"
 ]
