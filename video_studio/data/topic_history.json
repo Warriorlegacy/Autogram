@@ -127,5 +127,6 @@
   "signhify-express-scaffold-internals",
   "signhify-edge-cache-strategy",
   "signhify-product-injection",
-  "signhify-sora-frame-extraction-pipeline"
+  "signhify-sora-frame-extraction-pipeline",
+  "signhify-mit-license-distribution"
 ]
