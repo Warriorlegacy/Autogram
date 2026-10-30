@@ -128,5 +128,6 @@
   "signhify-edge-cache-strategy",
   "signhify-product-injection",
   "signhify-sora-frame-extraction-pipeline",
-  "signhify-mit-license-distribution"
+  "signhify-mit-license-distribution",
+  "signhify-100fps-scroll-math"
 ]
