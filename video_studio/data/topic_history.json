@@ -131,5 +131,6 @@
   "signhify-mit-license-distribution",
   "signhify-100fps-scroll-math",
   "signhify-zip-deploy-payload",
-  "signhify-fps-interpolation-tuning"
+  "signhify-fps-interpolation-tuning",
+  "signhify-fullstack-zip-export"
 ]
