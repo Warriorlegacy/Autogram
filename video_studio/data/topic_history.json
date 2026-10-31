@@ -134,5 +134,6 @@
   "signhify-fps-interpolation-tuning",
   "signhify-fullstack-zip-export",
   "signhify-adjacent-foss",
-  "signhify-scroll-compositor-chain"
+  "signhify-scroll-compositor-chain",
+  "signhify-fullstack-zip-deployment"
 ]
