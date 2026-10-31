@@ -139,5 +139,6 @@
   "signhify-express-scaffold-structure",
   "signhify-browser-compositor-load",
   "signhify-express-api-scaffold",
-  "signhify-scrollytelling-prompt-constraint"
+  "signhify-scrollytelling-prompt-constraint",
+  "signhify-prompt-to-live-site-workflow"
 ]
