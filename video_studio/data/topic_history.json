@@ -138,5 +138,6 @@
   "signhify-fullstack-zip-deployment",
   "signhify-express-scaffold-structure",
   "signhify-browser-compositor-load",
-  "signhify-express-api-scaffold"
+  "signhify-express-api-scaffold",
+  "signhify-scrollytelling-prompt-constraint"
 ]
