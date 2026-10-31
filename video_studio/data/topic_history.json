@@ -137,5 +137,6 @@
   "signhify-scroll-compositor-chain",
   "signhify-fullstack-zip-deployment",
   "signhify-express-scaffold-structure",
-  "signhify-browser-compositor-load"
+  "signhify-browser-compositor-load",
+  "signhify-express-api-scaffold"
 ]
