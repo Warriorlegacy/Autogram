@@ -135,5 +135,6 @@
   "signhify-fullstack-zip-export",
   "signhify-adjacent-foss",
   "signhify-scroll-compositor-chain",
-  "signhify-fullstack-zip-deployment"
+  "signhify-fullstack-zip-deployment",
+  "signhify-express-scaffold-structure"
 ]
