@@ -146,5 +146,6 @@
   "signhify-fps-adjustment-mechanics",
   "signhify-400-frame-payload-cost",
   "signhify-sora-api-latency",
-  "signhify-fullstack-zip-structure"
+  "signhify-fullstack-zip-structure",
+  "signhify-fullstack-zip-deploy"
 ]
