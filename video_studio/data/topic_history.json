@@ -145,5 +145,6 @@
   "signhify-8s-video-source",
   "signhify-fps-adjustment-mechanics",
   "signhify-400-frame-payload-cost",
-  "signhify-sora-api-latency"
+  "signhify-sora-api-latency",
+  "signhify-fullstack-zip-structure"
 ]
