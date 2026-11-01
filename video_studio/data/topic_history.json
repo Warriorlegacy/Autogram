@@ -142,5 +142,6 @@
   "signhify-scrollytelling-prompt-constraint",
   "signhify-prompt-to-live-site-workflow",
   "signhify-8s-video-source-constraint",
-  "signhify-8s-video-source"
+  "signhify-8s-video-source",
+  "signhify-fps-adjustment-mechanics"
 ]
