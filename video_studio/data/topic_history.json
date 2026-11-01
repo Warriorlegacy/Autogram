@@ -144,5 +144,6 @@
   "signhify-8s-video-source-constraint",
   "signhify-8s-video-source",
   "signhify-fps-adjustment-mechanics",
-  "signhify-400-frame-payload-cost"
+  "signhify-400-frame-payload-cost",
+  "signhify-sora-api-latency"
 ]
