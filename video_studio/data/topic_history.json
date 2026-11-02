@@ -148,5 +148,6 @@
   "signhify-sora-api-latency",
   "signhify-fullstack-zip-structure",
   "signhify-fullstack-zip-deploy",
-  "signhify-browser-compositor-load"
+  "signhify-browser-compositor-load",
+  "signhify-scroll-interpolation-math"
 ]
