@@ -150,5 +150,6 @@
   "signhify-fullstack-zip-deploy",
   "signhify-browser-compositor-load",
   "signhify-scroll-interpolation-math",
-  "signhify-browser-compositor-load"
+  "signhify-browser-compositor-load",
+  "signhify-scroll-reactive-mechanism"
 ]
