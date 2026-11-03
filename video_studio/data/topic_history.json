@@ -154,5 +154,6 @@
   "signhify-scroll-reactive-mechanism",
   "signhify-no-webgl-parallax-math",
   "signhify-mit-source-ownership",
-  "signhify-native-scroll-parallax"
+  "signhify-native-scroll-parallax",
+  "signhify-native-scroll-parallax-math"
 ]
