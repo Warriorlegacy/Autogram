@@ -157,5 +157,6 @@
   "signhify-native-scroll-parallax",
   "signhify-native-scroll-parallax-math",
   "signhify-mit-code-ownership",
-  "signhify-prompt-to-zip-pipeline"
+  "signhify-prompt-to-zip-pipeline",
+  "signhify-native-scroll-compositor"
 ]
