@@ -159,5 +159,6 @@
   "signhify-mit-code-ownership",
   "signhify-prompt-to-zip-pipeline",
   "signhify-native-scroll-compositor",
-  "signhify-frame-extraction-cost"
+  "signhify-frame-extraction-cost",
+  "signhify-start-tier-credit-math"
 ]
