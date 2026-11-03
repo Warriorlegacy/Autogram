@@ -152,5 +152,6 @@
   "signhify-scroll-interpolation-math",
   "signhify-browser-compositor-load",
   "signhify-scroll-reactive-mechanism",
-  "signhify-no-webgl-parallax-math"
+  "signhify-no-webgl-parallax-math",
+  "signhify-mit-source-ownership"
 ]
