@@ -155,5 +155,6 @@
   "signhify-no-webgl-parallax-math",
   "signhify-mit-source-ownership",
   "signhify-native-scroll-parallax",
-  "signhify-native-scroll-parallax-math"
+  "signhify-native-scroll-parallax-math",
+  "signhify-mit-code-ownership"
 ]
