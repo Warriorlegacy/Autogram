@@ -153,5 +153,6 @@
   "signhify-browser-compositor-load",
   "signhify-scroll-reactive-mechanism",
   "signhify-no-webgl-parallax-math",
-  "signhify-mit-source-ownership"
+  "signhify-mit-source-ownership",
+  "signhify-native-scroll-parallax"
 ]
