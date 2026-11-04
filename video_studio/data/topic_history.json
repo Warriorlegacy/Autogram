@@ -165,5 +165,6 @@
   "signhify-credit-economics-pro-tier",
   "signhify-prompt-to-site-architecture",
   "signhify-frame-to-scroll-pipeline",
-  "signhify-video-to-frame-pipeline"
+  "signhify-video-to-frame-pipeline",
+  "signhify-iterative-chat-editing-loop"
 ]
