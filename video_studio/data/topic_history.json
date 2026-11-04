@@ -161,5 +161,6 @@
   "signhify-native-scroll-compositor",
   "signhify-frame-extraction-cost",
   "signhify-start-tier-credit-math",
-  "signhify-multi-video-continuity"
+  "signhify-multi-video-continuity",
+  "signhify-credit-economics-pro-tier"
 ]
