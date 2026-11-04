@@ -164,5 +164,6 @@
   "signhify-multi-video-continuity",
   "signhify-credit-economics-pro-tier",
   "signhify-prompt-to-site-architecture",
-  "signhify-frame-to-scroll-pipeline"
+  "signhify-frame-to-scroll-pipeline",
+  "signhify-video-to-frame-pipeline"
 ]
