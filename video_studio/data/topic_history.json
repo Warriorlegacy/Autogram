@@ -160,5 +160,6 @@
   "signhify-prompt-to-zip-pipeline",
   "signhify-native-scroll-compositor",
   "signhify-frame-extraction-cost",
-  "signhify-start-tier-credit-math"
+  "signhify-start-tier-credit-math",
+  "signhify-multi-video-continuity"
 ]
