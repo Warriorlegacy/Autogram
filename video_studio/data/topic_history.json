@@ -171,5 +171,6 @@
   "signhify-product-injection-mechanism",
   "signhify-frame-density-tradeoff",
   "signhify-frame-extraction-density",
-  "signhify-frame-extraction-math"
+  "signhify-frame-extraction-math",
+  "signhify-fullstack-zip-export-details"
 ]
