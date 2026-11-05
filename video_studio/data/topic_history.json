@@ -168,5 +168,6 @@
   "signhify-video-to-frame-pipeline",
   "signhify-iterative-chat-editing-loop",
   "signhify-frontend-backend-starter",
-  "signhify-product-injection-mechanism"
+  "signhify-product-injection-mechanism",
+  "signhify-frame-density-tradeoff"
 ]
