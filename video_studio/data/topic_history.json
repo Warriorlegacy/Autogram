@@ -167,5 +167,6 @@
   "signhify-frame-to-scroll-pipeline",
   "signhify-video-to-frame-pipeline",
   "signhify-iterative-chat-editing-loop",
-  "signhify-frontend-backend-starter"
+  "signhify-frontend-backend-starter",
+  "signhify-product-injection-mechanism"
 ]
