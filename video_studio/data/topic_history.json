@@ -173,5 +173,6 @@
   "signhify-frame-extraction-density",
   "signhify-frame-extraction-math",
   "signhify-fullstack-zip-export-details",
-  "signhify-zip-single-file-deploy"
+  "signhify-zip-single-file-deploy",
+  "signhify-clip-continuity-logic"
 ]
