@@ -176,5 +176,6 @@
   "signhify-zip-single-file-deploy",
   "signhify-clip-continuity-logic",
   "signhify-fps-adjustment-mechanics",
-  "signhify-zip-artifact-mechanics"
+  "signhify-zip-artifact-mechanics",
+  "signhify-native-browser-scroll-mechanics"
 ]
