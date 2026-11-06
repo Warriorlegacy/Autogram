@@ -179,5 +179,6 @@
   "signhify-zip-artifact-mechanics",
   "signhify-native-browser-scroll-mechanics",
   "signhify-multi-video-continuity-logic",
-  "signhify-credit-to-artifact-math"
+  "signhify-credit-to-artifact-math",
+  "signhify-express-api-inclusion"
 ]
