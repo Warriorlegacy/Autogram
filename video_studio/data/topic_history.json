@@ -178,5 +178,6 @@
   "signhify-fps-adjustment-mechanics",
   "signhify-zip-artifact-mechanics",
   "signhify-native-browser-scroll-mechanics",
-  "signhify-multi-video-continuity-logic"
+  "signhify-multi-video-continuity-logic",
+  "signhify-credit-to-artifact-math"
 ]
