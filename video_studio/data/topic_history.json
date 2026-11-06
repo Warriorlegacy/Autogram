@@ -175,5 +175,6 @@
   "signhify-fullstack-zip-export-details",
   "signhify-zip-single-file-deploy",
   "signhify-clip-continuity-logic",
-  "signhify-fps-adjustment-mechanics"
+  "signhify-fps-adjustment-mechanics",
+  "signhify-zip-artifact-mechanics"
 ]
