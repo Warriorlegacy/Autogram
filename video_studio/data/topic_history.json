@@ -186,5 +186,6 @@
   "signhify-frame-extraction-pipeline",
   "signhify-frame-interpolation-latency",
   "signhify-frame-rate-tuning",
-  "signhify-8s-source-constraint"
+  "signhify-8s-source-constraint",
+  "signhify-fps-latency-tradeoff"
 ]
