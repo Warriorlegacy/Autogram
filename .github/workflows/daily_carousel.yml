@@ -61,7 +61,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
-          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY }}
           TOPIC_INPUT: ${{ github.event.inputs.topic || '' }}
         run: |
           python -c "
