@@ -181,5 +181,6 @@
   "signhify-multi-video-continuity-logic",
   "signhify-credit-to-artifact-math",
   "signhify-express-api-inclusion",
-  "signhify-express-backend-starter"
+  "signhify-express-backend-starter",
+  "signhify-express-api-starter"
 ]
