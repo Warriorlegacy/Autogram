@@ -185,5 +185,6 @@
   "signhify-express-api-starter",
   "signhify-frame-extraction-pipeline",
   "signhify-frame-interpolation-latency",
-  "signhify-frame-rate-tuning"
+  "signhify-frame-rate-tuning",
+  "signhify-8s-source-constraint"
 ]
