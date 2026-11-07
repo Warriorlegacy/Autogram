@@ -183,5 +183,6 @@
   "signhify-express-api-inclusion",
   "signhify-express-backend-starter",
   "signhify-express-api-starter",
-  "signhify-frame-extraction-pipeline"
+  "signhify-frame-extraction-pipeline",
+  "signhify-frame-interpolation-latency"
 ]
