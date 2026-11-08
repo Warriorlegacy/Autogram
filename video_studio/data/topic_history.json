@@ -188,5 +188,6 @@
   "signhify-frame-rate-tuning",
   "signhify-8s-source-constraint",
   "signhify-fps-latency-tradeoff",
-  "signhify-8s-video-source-constraint"
+  "signhify-8s-video-source-constraint",
+  "signhify-8s-video-source-density"
 ]
