@@ -190,5 +190,6 @@
   "signhify-fps-latency-tradeoff",
   "signhify-8s-video-source-constraint",
   "signhify-8s-video-source-density",
-  "signhify-zip-deploy-pipeline"
+  "signhify-zip-deploy-pipeline",
+  "signhify-100fps-frame-buffer"
 ]
