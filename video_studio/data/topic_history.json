@@ -192,5 +192,6 @@
   "signhify-8s-video-source-density",
   "signhify-zip-deploy-pipeline",
   "signhify-100fps-frame-buffer",
-  "signhify-fullstack-zip-export"
+  "signhify-fullstack-zip-export",
+  "signhify-8s-video-to-400-frames"
 ]
