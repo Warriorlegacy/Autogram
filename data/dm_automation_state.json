@@ -2351,6 +2351,54 @@
       "public_reply_id": "18148610425541478",
       "dm_status": "GATE_PENDING",
       "timestamp": 1794146373.2070456
+    },
+    "sim_c_8308_foss": {
+      "media_id": "mock_media_12345",
+      "username": "builder_alex",
+      "keyword": "FOSS",
+      "public_reply_id": "mock_reply_88309",
+      "dm_status": "DM_SENT",
+      "timestamp": 1794254388.3607748
+    },
+    "sim_c_8308_web": {
+      "media_id": "mock_media_12345",
+      "username": "web_dev_pro",
+      "keyword": "WEB",
+      "public_reply_id": "mock_reply_88362",
+      "dm_status": "DM_SENT",
+      "timestamp": 1794254388.4138622
+    },
+    "sim_c_8308_music": {
+      "media_id": "mock_media_12345",
+      "username": "beat_maker",
+      "keyword": "MUSIC",
+      "public_reply_id": "mock_reply_88415",
+      "dm_status": "DM_SENT",
+      "timestamp": 1794254388.4669545
+    },
+    "sim_c_8308_swarm": {
+      "media_id": "mock_media_12345",
+      "username": "growth_hacker",
+      "keyword": "SWARM",
+      "public_reply_id": "mock_reply_88468",
+      "dm_status": "DM_SENT",
+      "timestamp": 1794254388.519863
+    },
+    "sim_c_8308_prompt": {
+      "media_id": "mock_media_12345",
+      "username": "prompt_engineer_99",
+      "keyword": "PROMPT",
+      "public_reply_id": "mock_reply_88521",
+      "dm_status": "DM_SENT",
+      "timestamp": 1794254388.5725148
+    },
+    "18013495439966970": {
+      "media_id": "17880411291633635",
+      "username": "signhify.studio",
+      "keyword": "FOSS",
+      "public_reply_id": "18091712630701903",
+      "dm_status": "DM_SENT",
+      "timestamp": 1794254395.3081126
     }
   }
 }
