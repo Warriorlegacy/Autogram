@@ -194,5 +194,6 @@
   "signhify-100fps-frame-buffer",
   "signhify-fullstack-zip-export",
   "signhify-8s-video-to-400-frames",
-  "signhify-no-webgl-parallax"
+  "signhify-no-webgl-parallax",
+  "signhify-prompt-to-scroll-site"
 ]
