@@ -219,6 +219,35 @@ class InstagramPublisher:
         media_id = self.publish_media(carousel_id)
         return media_id
 
+    def create_single_image_container(self, image_url: str, caption: str = "") -> str:
+        """Creates a single photo post media container for feed."""
+        if self.dry_run:
+            simulated_id = f"mock_single_cntr_{int(time.time()*1000) % 1000000}"
+            logger.info(f"[DRY-RUN] Created single image container: {simulated_id}")
+            return simulated_id
+
+        if not (image_url.startswith("http://") or image_url.startswith("https://")):
+            raise ValueError(f"Invalid image_url '{image_url}': Meta Graph API strictly requires an absolute public HTTP/HTTPS URL.")
+
+        url = f"{self.base_url}/{self.user_id}/media"
+        data = {
+            "image_url": image_url,
+            "caption": caption,
+            "access_token": self.token
+        }
+        resp = requests.post(url, data=data, timeout=30)
+        resp.raise_for_status()
+        return resp.json()["id"]
+
+    def publish_single_image(self, image_url: str, caption: str = "") -> str:
+        """End-to-end single image feed post (container -> wait -> publish)."""
+        logger.info(f"Starting single image feed publish sequence for {image_url}...")
+        container_id = self.create_single_image_container(image_url, caption)
+        self.wait_until_ready(container_id)
+        media_id = self.publish_media(container_id)
+        logger.info(f"Published single image feed post successfully! Media ID: {media_id}")
+        return media_id
+
     def create_story_container(self, image_url: str) -> str:
         """Creates an Instagram Story media container (supports 9:16 JPG/PNG image or MP4 video with music)."""
         if self.dry_run:

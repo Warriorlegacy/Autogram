@@ -1,0 +1,140 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - Happy Diwali Open-Source Master Vault (Follow-Gated)",
+  "description": "Triggered by comment 'DIWALI' on the Happy Diwali 2026 Developer Reel. Strictly requires user to follow @signhify.studio before unlocking the master open-source AI video and multi-agent production vault.",
+  "triggers": [
+    {
+      "type": "instagram_comment",
+      "rule": "contains_any_words",
+      "keywords": [
+        "DIWALI",
+        "diwali",
+        "Diwali",
+        "festive",
+        "lakshmi",
+        "gift",
+        "vault"
+      ],
+      "post_scope": "any_post_or_reel",
+      "public_auto_replies": [
+        "Happy Diwali! 🪔 Sent you a DM! Follow @signhify.studio to unlock the master vault ⚡",
+        "Dropped the Diwali Open-Source Vault in your DMs! Follow @signhify.studio & tap verify 🔥",
+        "Check your inbox! 🪔 Make sure you follow @signhify.studio to unlock all repos 🔒",
+        "Sent over the festive repo bundle! May your latency stay under 40ms 🚀",
+        "DMs sent! Zero token bills and happy coding this Diwali 🪔⚡"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_00_check_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_01_gate_unfollower"
+      }
+    },
+    {
+      "id": "node_01_gate_unfollower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Happy Diwali {{first_name}}! 🪔✨ I've got your **Diwali Open-Source Production Vault & Master Starter Pack** ready!\n\n🔒 **One quick step to unlock it:**\nThis production vault is reserved exclusively for our engineering community. You must follow **@signhify.studio** to unlock the GitHub repository links and blueprints.\n\n1️⃣ Tap [@signhify.studio](https://instagram.com/signhify.studio) and hit **Follow**\n2️⃣ Tap the button below once you're following to unlock your vault instantly! 👇",
+        "quick_replies": [
+          {
+            "title": "I'm Following! 🪔",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_02_verify_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_02_follow_retry"
+      }
+    },
+    {
+      "id": "node_02_follow_retry",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Almost there! 🔍 It looks like you haven't followed [@signhify.studio](https://instagram.com/signhify.studio) yet.\n\nHit **Follow** on our profile, then tap below to grab your open-source vault! 🪔",
+        "quick_replies": [
+          {
+            "title": "Done Following! ⚡",
+            "payload": "VERIFY_FOLLOW_RETRY"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW_RETRY": "node_01_welcome_follower"
+      }
+    },
+    {
+      "id": "node_01_welcome_follower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Happy Diwali & welcome to the inner circle! 🪔✨\n\nMay your inference latency stay under 40ms, your GPUs never hit out of memory, and your token bills drop to $0!\n\nHere is your complete **Diwali Open-Source Production Vault**:\n\n📦 **1. Remotion Video-as-Code**\nhttps://github.com/remotion-dev/remotion\n\n⚡ **2. Kokoro-82M Local Voice Engine**\nhttps://github.com/hexgrad/kokoro\n\n🎬 **3. HyperFrames 60fps Code Motion**\nhttps://github.com/heygen-com/hyperframes\n\n🤖 **4. AutoGTM 4-Agent Lead Swarm**\nhttps://github.com/Warriorlegacy/AutoGTM\n\n✂️ **5. OpenMontage AI Video Cutter**\nhttps://github.com/calesthio/OpenMontage\n\n📜 **6. Master System Architecture Blueprint**\nhttps://signhify.dpdns.org/architecture\n\nTap below to open the complete curated GitHub star list 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "🪔 Open GitHub Vault",
+            "url": "https://github.com/stars/signhify/lists/production-vault"
+          },
+          {
+            "type": "url",
+            "title": "📜 Architecture Blueprint",
+            "url": "https://signhify.dpdns.org/architecture"
+          }
+        ]
+      },
+      "next": "node_03_delay"
+    },
+    {
+      "id": "node_03_delay",
+      "type": "smart_delay",
+      "delay_seconds": 120,
+      "next": "node_04_qualification"
+    },
+    {
+      "id": "node_04_qualification",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Quick question {{first_name}} — what are you building this festive season? Are you automating video workflows for your personal brand or deploying multi-agent pipelines for clients?",
+        "quick_replies": [
+          {
+            "title": "Personal Brand 🎯",
+            "payload": "TYPE_PERSONAL_BRAND"
+          },
+          {
+            "title": "Agency / Clients 🏢",
+            "payload": "TYPE_AGENCY"
+          },
+          {
+            "title": "AI Engineering 🤖",
+            "payload": "TYPE_DEV"
+          }
+        ]
+      }
+    }
+  ]
+}
+

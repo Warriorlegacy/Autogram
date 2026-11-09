@@ -1,0 +1,7 @@
+This Diwali, do not just light firecrackers outside. Light up your terminal.
+While your family is cleaning the house, you are running docker system prune and deleting 300GB of cache.
+Instead of burning cash on sky shots, we are burning GPU cycles fine-tuning local models at 40 tokens/sec for $0.
+May Goddess Lakshmi deliver 10x ARR to your codebase, zero 500 errors in your cloud logs, and clients who pay on time.
+From all of us at Signhify Studio, happy Diwali to every builder shipping in silence.
+Drop the word FESTIVE below to unlock our free open-source production stack in your DMs.
+

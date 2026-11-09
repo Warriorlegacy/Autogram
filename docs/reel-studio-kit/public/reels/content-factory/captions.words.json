@@ -1,0 +1,307 @@
+[
+  {
+    "word": "Stop",
+    "start": 0.0,
+    "end": 0.26
+  },
+  {
+    "word": "paying",
+    "start": 0.26,
+    "end": 0.56
+  },
+  {
+    "word": "200",
+    "start": 0.56,
+    "end": 1.48
+  },
+  {
+    "word": "dollars",
+    "start": 1.48,
+    "end": 1.5
+  },
+  {
+    "word": "a",
+    "start": 1.5,
+    "end": 1.52
+  },
+  {
+    "word": "month",
+    "start": 1.52,
+    "end": 1.66
+  },
+  {
+    "word": "for",
+    "start": 1.66,
+    "end": 2.28
+  },
+  {
+    "word": "AI",
+    "start": 2.28,
+    "end": 2.366
+  },
+  {
+    "word": "video",
+    "start": 2.366,
+    "end": 2.58
+  },
+  {
+    "word": "tools.",
+    "start": 2.58,
+    "end": 3.0
+  },
+  {
+    "word": "We",
+    "start": 3.36,
+    "end": 3.54
+  },
+  {
+    "word": "automated",
+    "start": 3.54,
+    "end": 3.84
+  },
+  {
+    "word": "our",
+    "start": 3.84,
+    "end": 4.12
+  },
+  {
+    "word": "entire",
+    "start": 4.12,
+    "end": 4.48
+  },
+  {
+    "word": "studio",
+    "start": 4.48,
+    "end": 4.8
+  },
+  {
+    "word": "using",
+    "start": 4.8,
+    "end": 5.18
+  },
+  {
+    "word": "12",
+    "start": 5.18,
+    "end": 5.5
+  },
+  {
+    "word": "open",
+    "start": 5.5,
+    "end": 5.9
+  },
+  {
+    "word": "source",
+    "start": 5.9,
+    "end": 6.2
+  },
+  {
+    "word": "GitHub",
+    "start": 6.2,
+    "end": 6.54
+  },
+  {
+    "word": "repositories.",
+    "start": 6.54,
+    "end": 7.42
+  },
+  {
+    "word": "Local",
+    "start": 7.94,
+    "end": 8.12
+  },
+  {
+    "word": "deep",
+    "start": 8.12,
+    "end": 8.46
+  },
+  {
+    "word": "research",
+    "start": 8.46,
+    "end": 8.76
+  },
+  {
+    "word": "finds",
+    "start": 8.76,
+    "end": 9.1
+  },
+  {
+    "word": "the",
+    "start": 9.1,
+    "end": 9.32
+  },
+  {
+    "word": "viral",
+    "start": 9.32,
+    "end": 9.58
+  },
+  {
+    "word": "angles,",
+    "start": 9.58,
+    "end": 10.06
+  },
+  {
+    "word": "and",
+    "start": 10.42,
+    "end": 10.56
+  },
+  {
+    "word": "local",
+    "start": 10.56,
+    "end": 10.8
+  },
+  {
+    "word": "voice",
+    "start": 10.8,
+    "end": 11.12
+  },
+  {
+    "word": "cloning",
+    "start": 11.12,
+    "end": 11.44
+  },
+  {
+    "word": "records",
+    "start": 11.44,
+    "end": 11.82
+  },
+  {
+    "word": "our",
+    "start": 11.82,
+    "end": 12.12
+  },
+  {
+    "word": "audio",
+    "start": 12.12,
+    "end": 12.38
+  },
+  {
+    "word": "completely",
+    "start": 12.38,
+    "end": 12.8
+  },
+  {
+    "word": "free.",
+    "start": 12.8,
+    "end": 13.48
+  },
+  {
+    "word": "Code",
+    "start": 13.78,
+    "end": 14.04
+  },
+  {
+    "word": "drawn",
+    "start": 14.04,
+    "end": 14.36
+  },
+  {
+    "word": "animations",
+    "start": 14.36,
+    "end": 14.82
+  },
+  {
+    "word": "build",
+    "start": 14.82,
+    "end": 15.24
+  },
+  {
+    "word": "the",
+    "start": 15.24,
+    "end": 15.44
+  },
+  {
+    "word": "video",
+    "start": 15.44,
+    "end": 15.7
+  },
+  {
+    "word": "in",
+    "start": 15.7,
+    "end": 15.94
+  },
+  {
+    "word": "seconds",
+    "start": 15.94,
+    "end": 16.22
+  },
+  {
+    "word": "with",
+    "start": 16.22,
+    "end": 16.48
+  },
+  {
+    "word": "zero",
+    "start": 16.48,
+    "end": 16.86
+  },
+  {
+    "word": "render",
+    "start": 16.86,
+    "end": 17.18
+  },
+  {
+    "word": "limits.",
+    "start": 17.18,
+    "end": 17.6
+  },
+  {
+    "word": "Comment",
+    "start": 18.12,
+    "end": 18.32
+  },
+  {
+    "word": "FACTORY",
+    "start": 18.32,
+    "end": 18.74
+  },
+  {
+    "word": "and",
+    "start": 19.06,
+    "end": 19.3
+  },
+  {
+    "word": "I",
+    "start": 19.3,
+    "end": 19.34
+  },
+  {
+    "word": "will",
+    "start": 19.34,
+    "end": 19.5
+  },
+  {
+    "word": "send",
+    "start": 19.5,
+    "end": 19.68
+  },
+  {
+    "word": "you",
+    "start": 19.68,
+    "end": 19.82
+  },
+  {
+    "word": "the",
+    "start": 19.82,
+    "end": 20.0
+  },
+  {
+    "word": "complete",
+    "start": 20.0,
+    "end": 20.26
+  },
+  {
+    "word": "12",
+    "start": 20.26,
+    "end": 20.62
+  },
+  {
+    "word": "repo",
+    "start": 20.62,
+    "end": 20.94
+  },
+  {
+    "word": "system.",
+    "start": 20.94,
+    "end": 21.22
+  }
+]

@@ -1,0 +1,500 @@
+[
+  {
+    "word": "If",
+    "start": 0.0,
+    "end": 0.1,
+    "confidence": 0.927
+  },
+  {
+    "word": "you",
+    "start": 0.1,
+    "end": 0.2,
+    "confidence": 0.999
+  },
+  {
+    "word": "are",
+    "start": 0.2,
+    "end": 0.3,
+    "confidence": 0.973
+  },
+  {
+    "word": "paying",
+    "start": 0.3,
+    "end": 0.52,
+    "confidence": 0.997
+  },
+  {
+    "word": "monthly",
+    "start": 0.52,
+    "end": 0.86,
+    "confidence": 0.996
+  },
+  {
+    "word": "subscriptions",
+    "start": 0.86,
+    "end": 1.42,
+    "confidence": 0.99
+  },
+  {
+    "word": "for",
+    "start": 1.42,
+    "end": 1.78,
+    "confidence": 0.998
+  },
+  {
+    "word": "AI",
+    "start": 1.78,
+    "end": 2.04,
+    "confidence": 0.9
+  },
+  {
+    "word": "voice",
+    "start": 2.04,
+    "end": 2.38,
+    "confidence": 0.793
+  },
+  {
+    "word": "clones",
+    "start": 2.38,
+    "end": 2.68,
+    "confidence": 0.989
+  },
+  {
+    "word": "in",
+    "start": 2.68,
+    "end": 2.96,
+    "confidence": 0.996
+  },
+  {
+    "word": "2026,",
+    "start": 2.96,
+    "end": 4.08,
+    "confidence": 0.971
+  },
+  {
+    "word": "stop",
+    "start": 4.52,
+    "end": 4.78,
+    "confidence": 0.618
+  },
+  {
+    "word": "a",
+    "start": 4.78,
+    "end": 5.26,
+    "confidence": 0.077
+  },
+  {
+    "word": "single",
+    "start": 5.26,
+    "end": 5.52,
+    "confidence": 0.987
+  },
+  {
+    "word": "open",
+    "start": 5.52,
+    "end": 5.88,
+    "confidence": 0.9
+  },
+  {
+    "word": "source",
+    "start": 5.88,
+    "end": 6.22,
+    "confidence": 0.538
+  },
+  {
+    "word": "repository",
+    "start": 6.22,
+    "end": 6.94,
+    "confidence": 0.989
+  },
+  {
+    "word": "gives",
+    "start": 7.34,
+    "end": 7.66,
+    "confidence": 0.453
+  },
+  {
+    "word": "you",
+    "start": 7.66,
+    "end": 7.82,
+    "confidence": 0.997
+  },
+  {
+    "word": "unlimited",
+    "start": 7.82,
+    "end": 8.22,
+    "confidence": 0.988
+  },
+  {
+    "word": "studio",
+    "start": 8.22,
+    "end": 8.72,
+    "confidence": 0.867
+  },
+  {
+    "word": "grade",
+    "start": 8.72,
+    "end": 9.1,
+    "confidence": 0.81
+  },
+  {
+    "word": "voice",
+    "start": 9.1,
+    "end": 9.44,
+    "confidence": 0.997
+  },
+  {
+    "word": "clones",
+    "start": 9.44,
+    "end": 9.8,
+    "confidence": 0.995
+  },
+  {
+    "word": "running",
+    "start": 9.8,
+    "end": 10.24,
+    "confidence": 0.932
+  },
+  {
+    "word": "entirely",
+    "start": 10.24,
+    "end": 10.78,
+    "confidence": 0.998
+  },
+  {
+    "word": "on",
+    "start": 10.78,
+    "end": 11.12,
+    "confidence": 0.999
+  },
+  {
+    "word": "your",
+    "start": 11.12,
+    "end": 11.22,
+    "confidence": 0.999
+  },
+  {
+    "word": "local",
+    "start": 11.22,
+    "end": 11.44,
+    "confidence": 0.995
+  },
+  {
+    "word": "machine.",
+    "start": 11.44,
+    "end": 11.86,
+    "confidence": 0.995
+  },
+  {
+    "word": "It",
+    "start": 12.22,
+    "end": 12.28,
+    "confidence": 0.994
+  },
+  {
+    "word": "is",
+    "start": 12.28,
+    "end": 12.4,
+    "confidence": 0.99
+  },
+  {
+    "word": "called",
+    "start": 12.4,
+    "end": 12.66,
+    "confidence": 0.998
+  },
+  {
+    "word": "Voice",
+    "start": 12.66,
+    "end": 12.96,
+    "confidence": 0.533
+  },
+  {
+    "word": "Studio,",
+    "start": 12.96,
+    "end": 13.36,
+    "confidence": 0.924
+  },
+  {
+    "word": "zero",
+    "start": 13.7,
+    "end": 13.94,
+    "confidence": 0.86
+  },
+  {
+    "word": "API",
+    "start": 13.94,
+    "end": 14.4,
+    "confidence": 0.931
+  },
+  {
+    "word": "bills,",
+    "start": 14.4,
+    "end": 14.98,
+    "confidence": 0.89
+  },
+  {
+    "word": "no",
+    "start": 15.42,
+    "end": 15.58,
+    "confidence": 0.992
+  },
+  {
+    "word": "character",
+    "start": 15.58,
+    "end": 15.88,
+    "confidence": 0.992
+  },
+  {
+    "word": "limits,",
+    "start": 15.88,
+    "end": 16.34,
+    "confidence": 0.998
+  },
+  {
+    "word": "and",
+    "start": 16.68,
+    "end": 16.88,
+    "confidence": 0.998
+  },
+  {
+    "word": "it",
+    "start": 16.88,
+    "end": 17.0,
+    "confidence": 0.999
+  },
+  {
+    "word": "plugs",
+    "start": 17.0,
+    "end": 17.22,
+    "confidence": 0.997
+  },
+  {
+    "word": "directly",
+    "start": 17.22,
+    "end": 17.72,
+    "confidence": 0.999
+  },
+  {
+    "word": "into",
+    "start": 17.72,
+    "end": 17.9,
+    "confidence": 0.995
+  },
+  {
+    "word": "Claude",
+    "start": 17.9,
+    "end": 18.28,
+    "confidence": 0.709
+  },
+  {
+    "word": "code",
+    "start": 18.28,
+    "end": 18.58,
+    "confidence": 0.807
+  },
+  {
+    "word": "so",
+    "start": 18.58,
+    "end": 18.8,
+    "confidence": 0.75
+  },
+  {
+    "word": "your",
+    "start": 18.8,
+    "end": 18.94,
+    "confidence": 0.969
+  },
+  {
+    "word": "automated",
+    "start": 18.94,
+    "end": 19.42,
+    "confidence": 0.994
+  },
+  {
+    "word": "video",
+    "start": 19.42,
+    "end": 19.72,
+    "confidence": 0.992
+  },
+  {
+    "word": "scripts",
+    "start": 19.72,
+    "end": 20.08,
+    "confidence": 0.992
+  },
+  {
+    "word": "get",
+    "start": 20.08,
+    "end": 20.38,
+    "confidence": 0.997
+  },
+  {
+    "word": "voiced",
+    "start": 20.38,
+    "end": 20.7,
+    "confidence": 0.994
+  },
+  {
+    "word": "instantly.",
+    "start": 20.7,
+    "end": 21.2,
+    "confidence": 0.997
+  },
+  {
+    "word": "You",
+    "start": 21.54,
+    "end": 21.62,
+    "confidence": 0.997
+  },
+  {
+    "word": "can",
+    "start": 21.62,
+    "end": 21.74,
+    "confidence": 0.999
+  },
+  {
+    "word": "run",
+    "start": 21.74,
+    "end": 21.94,
+    "confidence": 0.995
+  },
+  {
+    "word": "Kakaro",
+    "start": 21.94,
+    "end": 22.38,
+    "confidence": 0.647
+  },
+  {
+    "word": "for",
+    "start": 22.38,
+    "end": 22.64,
+    "confidence": 0.994
+  },
+  {
+    "word": "real",
+    "start": 22.64,
+    "end": 22.88,
+    "confidence": 0.982
+  },
+  {
+    "word": "time",
+    "start": 22.88,
+    "end": 23.14,
+    "confidence": 0.749
+  },
+  {
+    "word": "speed",
+    "start": 23.14,
+    "end": 23.58,
+    "confidence": 0.944
+  },
+  {
+    "word": "or",
+    "start": 23.58,
+    "end": 24.14,
+    "confidence": 0.84
+  },
+  {
+    "word": "full",
+    "start": 24.14,
+    "end": 24.38,
+    "confidence": 0.989
+  },
+  {
+    "word": "neural",
+    "start": 24.38,
+    "end": 24.64,
+    "confidence": 0.923
+  },
+  {
+    "word": "cloning",
+    "start": 24.64,
+    "end": 25.08,
+    "confidence": 0.998
+  },
+  {
+    "word": "for",
+    "start": 25.08,
+    "end": 25.32,
+    "confidence": 0.996
+  },
+  {
+    "word": "studio",
+    "start": 25.32,
+    "end": 25.64,
+    "confidence": 0.942
+  },
+  {
+    "word": "quality.",
+    "start": 25.64,
+    "end": 26.14,
+    "confidence": 0.997
+  },
+  {
+    "word": "Comment",
+    "start": 26.14,
+    "end": 26.58,
+    "confidence": 0.179
+  },
+  {
+    "word": "voice",
+    "start": 26.58,
+    "end": 26.92,
+    "confidence": 0.389
+  },
+  {
+    "word": "and",
+    "start": 26.92,
+    "end": 27.3,
+    "confidence": 0.501
+  },
+  {
+    "word": "I",
+    "start": 27.3,
+    "end": 27.46,
+    "confidence": 0.966
+  },
+  {
+    "word": "will",
+    "start": 27.46,
+    "end": 27.62,
+    "confidence": 0.988
+  },
+  {
+    "word": "DM",
+    "start": 27.62,
+    "end": 27.94,
+    "confidence": 0.94
+  },
+  {
+    "word": "you",
+    "start": 27.94,
+    "end": 28.26,
+    "confidence": 0.873
+  },
+  {
+    "word": "the",
+    "start": 28.26,
+    "end": 28.38,
+    "confidence": 0.983
+  },
+  {
+    "word": "local",
+    "start": 28.38,
+    "end": 28.62,
+    "confidence": 0.913
+  },
+  {
+    "word": "install",
+    "start": 28.62,
+    "end": 29.1,
+    "confidence": 0.857
+  },
+  {
+    "word": "command.",
+    "start": 29.1,
+    "end": 29.46,
+    "confidence": 0.996
+  }
+]

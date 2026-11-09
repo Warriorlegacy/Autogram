@@ -1,0 +1,133 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - Autonomous Video System Architecture Lead Engine",
+  "description": "Triggered by story reply or comment 'PIPELINE' or 'SYSTEM'. Delivers the full technical architecture PDF, open-source API schematics, and qualifies high-ticket agency/enterprise client buildouts.",
+  "triggers": [
+    {
+      "type": "instagram_comment_or_story_reply",
+      "rule": "contains_any_words",
+      "keywords": [
+        "PIPELINE",
+        "pipeline",
+        "SYSTEM",
+        "system",
+        "automate",
+        "architecture",
+        "stack"
+      ],
+      "post_scope": "any_post_or_story",
+      "public_auto_replies": [
+        "Sent you the full autonomous video architecture schematic! Check your DMs 🚀",
+        "Dropped the complete pipeline blueprint in your inbox! 🔥",
+        "Check your DMs! The API integration guide and boilerplate are waiting for you 🛠️",
+        "Sent over the zero-editing video architecture! Check message requests 📬",
+        "DMs sent! Get ready to inspect the full automated video stack ⚡"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_01_welcome",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Hey {{first_name}}! ⚡ Here is the complete breakdown of our **Autonomous Video Production Architecture**:\n\n📐 **The 4-Layer Autonomous Stack:**\n1. **Ingestion:** YouTube Data API (viral outlier detection) + Perplexity (fact-check)\n2. **Synthesis:** Fable 5.1 (script) + ElevenLabs V4 (broadcast audio) + Suno (soundtrack)\n3. **Motion Engine:** HyperFrames CLI (code-rendered HTML/GSAP scenes) + Pixabay/Pexels fallback\n4. **Packaging:** FFmpeg (hardware 60fps mux) + GPT Image 2.5 (thumbnails) + Zernio API (auto-publishing)\n\nTap below to download our full architecture PDF and inspect the open-source repository list 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "⚡ Download Blueprint PDF",
+            "url": "https://signhify.dpdns.org/system-architecture"
+          },
+          {
+            "type": "url",
+            "title": "🛠️ Open-Source Repos",
+            "url": "https://github.com/stars/signhify/lists/autonomous-video"
+          }
+        ]
+      },
+      "next": "node_02_delay"
+    },
+    {
+      "id": "node_02_delay",
+      "type": "smart_delay",
+      "delay_seconds": 120,
+      "next": "node_03_qualification"
+    },
+    {
+      "id": "node_03_qualification",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Quick question {{first_name}} — are you looking to implement an autonomous video engine for your own business/agency, or are you a developer building client systems?",
+        "quick_replies": [
+          {
+            "title": "For My Business / Agency 🏢",
+            "payload": "TYPE_CLIENT_ENTERPRISE"
+          },
+          {
+            "title": "Developer / Creator 💻",
+            "payload": "TYPE_DEV_CREATOR"
+          },
+          {
+            "title": "Just Exploring 💡",
+            "payload": "TYPE_CURIOUS"
+          }
+        ]
+      },
+      "branches": {
+        "TYPE_CLIENT_ENTERPRISE": "node_04_client_offer",
+        "TYPE_DEV_CREATOR": "node_05_dev_offer",
+        "TYPE_CURIOUS": "node_06_nurture"
+      }
+    },
+    {
+      "id": "node_04_client_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_enterprise_pipeline_buildout"
+        }
+      ],
+      "content": {
+        "text": "Fantastic. At **Signhify Studio** (https://signhify.dpdns.org), we build and deploy custom autonomous video engines for agencies and content companies — completely turnkey with API key isolation, brand styling, and dedicated rendering servers.\n\nLet's jump on a quick 15-minute technical discovery call to see if our system fits your production volume:",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "📅 Book Pipeline Walkthrough",
+            "url": "https://cal.com/signhify/15min"
+          }
+        ]
+      }
+    },
+    {
+      "id": "node_05_dev_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_developer"
+        }
+      ],
+      "content": {
+        "text": "Awesome! The HyperFrames + Remotion + FFmpeg combination is pure magic once you wire up headless Chrome. Feel free to shoot me a DM here if you ever want to jam on pipeline architecture! 🚀"
+      }
+    },
+    {
+      "id": "node_06_nurture",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_curious"
+        }
+      ],
+      "content": {
+        "text": "Enjoy exploring! We are dropping 28 more open-source systems and code-rendered video blueprints this month. Make sure to turn on notifications so you don't miss them! 🔥"
+      }
+    }
+  ]
+}

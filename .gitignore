@@ -24,6 +24,11 @@ scratch/
 runs/
 assets/download/
 
+# Crash & JVM logs
+hs_err_*.log
+replay_*.log
+*.log
+
 # Node
 node_modules/
 npm-debug.log
@@ -72,3 +77,26 @@ daily-carousel-artifacts/
 .codebase-memory/
 .kilo/
 .kilocode/
+
+# --- YouTube / OAuth credentials. NEVER commit these. ---
+# Desktop YouTube Data API client + the resulting user token. Uploading either
+# to git hands a stranger the ability to publish to the channel.
+client_secrets.json
+youtube_token.json
+*_token.json
+oauth_token.json
+*client_secret*.json
+
+# --- Documentary render artifacts (large, regenerable) ---
+.render_cache/
+projects/*/render/
+projects/*/master.mp4
+projects/*/narration/
+projects/*/music/
+projects/*/art/
+projects/*/delivery/
+projects/*/narration.json
+projects/*/narration_full.wav
+projects/*/score_full.wav
+projects/*/*.log
+scratch/docwork/

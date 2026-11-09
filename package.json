@@ -17,9 +17,11 @@
   "dependencies": {
     "@remotion/cli": "^4.0.400",
     "@remotion/renderer": "^4.0.400",
-    "remotion": "^4.0.400",
+    "p5.brush": "2.2.3",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.400",
+    "three": "0.186.1"
   },
   "keywords": [
     "instagram",

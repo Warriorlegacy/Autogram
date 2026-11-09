@@ -1,0 +1,133 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - Claude vs Premiere HyperFrames Stack",
+  "description": "Triggered by comment 'HYPER' on the Day 02 Contrarian Reel ('Claude > Premiere Pro?'). Delivers the open-source HyperFrames repo, Claude video generation prompt, and qualifies leads for autonomous video engine development.",
+  "triggers": [
+    {
+      "type": "instagram_comment",
+      "rule": "contains_any_words",
+      "keywords": [
+        "HYPER",
+        "hyper",
+        "Hyper",
+        "code",
+        "premiere",
+        "hyperframes",
+        "video"
+      ],
+      "post_scope": "any_post_or_reel",
+      "public_auto_replies": [
+        "Sent you the HyperFrames repo and Claude setup prompt! Check your DMs 🚀",
+        "Dropped the code-to-video workflow in your inbox! 🔥",
+        "Check your DMs! The GitHub repo and HTML video starter kit are waiting for you 🎬",
+        "Sent over the zero-editing video pipeline! Check your message requests 📬",
+        "DMs sent! Get ready to render videos directly from Claude in 45 seconds ⚡"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_01_welcome",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Hey {{first_name}}! 🎬 Here is the open-source **HyperFrames + Claude Video Generation Stack** from my reel:\n\n📦 **Core Repository:** `github.com/heygen-com/hyperframes`\n\n⚡ **The 1-Line Terminal Render:**\n```bash\nnpx --yes hyperframes render --project ./my-reel --output reel.mp4\n```\n\n🤖 **Claude Setup Prompt:**\n_\"Act as a motion designer. Write an index.html file utilizing GSAP 3.12 and Tailwind CSS adhering strictly to a 1080x1920 vertical canvas. Divide into 4 sequential scene blocks timed to a 30s voiceover track.\"_\n\nTap below to open the official repo and grab our production boilerplate 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "⚡ Open HyperFrames Repo",
+            "url": "https://github.com/heygen-com/hyperframes"
+          },
+          {
+            "type": "url",
+            "title": "📂 Video Boilerplate Guide",
+            "url": "https://signhify.dpdns.org/hyperframes-guide"
+          }
+        ]
+      },
+      "next": "node_02_delay"
+    },
+    {
+      "id": "node_02_delay",
+      "type": "smart_delay",
+      "delay_seconds": 120,
+      "next": "node_03_qualification"
+    },
+    {
+      "id": "node_03_qualification",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Quick question {{first_name}} — are you looking to automate high-volume video production for a brand or agency, or just experimenting for your personal channel?",
+        "quick_replies": [
+          {
+            "title": "Agency / Brand Scale 🚀",
+            "payload": "TYPE_AGENCY_SCALE"
+          },
+          {
+            "title": "Personal Creator 💻",
+            "payload": "TYPE_SOLO_CREATOR"
+          },
+          {
+            "title": "Just Exploring 💡",
+            "payload": "TYPE_CURIOUS"
+          }
+        ]
+      },
+      "branches": {
+        "TYPE_AGENCY_SCALE": "node_04_agency_offer",
+        "TYPE_SOLO_CREATOR": "node_05_creator_offer",
+        "TYPE_CURIOUS": "node_06_nurture"
+      }
+    },
+    {
+      "id": "node_04_agency_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_agency_video_automation"
+        }
+      ],
+      "content": {
+        "text": "Awesome. At **Signhify Studio** (https://signhify.dpdns.org), we build end-to-end automated video infrastructure — connecting LLM research, voice cloning, code-rendered graphics, and auto-publishing so teams can publish 60+ vertical videos a month with zero manual editing.\n\nLet's schedule a 15-minute technical demo to see our full pipeline live:",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "📅 Book Pipeline Demo",
+            "url": "https://cal.com/signhify/15min"
+          }
+        ]
+      }
+    },
+    {
+      "id": "node_05_creator_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_solo_creator"
+        }
+      ],
+      "content": {
+        "text": "Love that! Code-rendered video saves countless hours compared to dragging clips around in Premiere. If you get stuck on GSAP timings or FFmpeg muxing, shoot me a DM here anytime! 🚀"
+      }
+    },
+    {
+      "id": "node_06_nurture",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_curious"
+        }
+      ],
+      "content": {
+        "text": "Enjoy exploring! We're releasing 28 more open-source AI content architectures this month. Make sure to turn on post notifications so you don't miss them! 🔥"
+      }
+    }
+  ]
+}

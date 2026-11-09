@@ -1,0 +1,226 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - Claude Deleted Production Restore Script (Follow-Gated)",
+  "description": "Triggered by comment 'RESTORE' on the Day 01 Dev Panic Reel. Strictly gates the terminal recovery script and Claude PR-diff migration guide behind an Instagram follow verification check, then qualifies engineering leads for CI/CD audit & deployment.",
+  "triggers": [
+    {
+      "type": "instagram_comment",
+      "rule": "contains_any_words",
+      "keywords": [
+        "RESTORE",
+        "restore",
+        "Restore",
+        "script",
+        "database",
+        "production",
+        "rollback"
+      ],
+      "post_scope": "any_post_or_reel",
+      "public_auto_replies": [
+        "Sent you a DM! Follow @signhify.studio to unlock the terminal script 🚀",
+        "Dropped the Claude PR-diff restore link in your DM! Make sure you're following to unlock 🔥",
+        "Check your DMs! Follow @signhify.studio and tap verify to get the rollback guide 📬",
+        "Sent over the recovery script! Follow @signhify.studio to download 🛠️",
+        "Check your inbox! Follow our page and your database restore script is unlocked 📂"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_00_check_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_01_gate_unfollower"
+      }
+    },
+    {
+      "id": "node_01_gate_unfollower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Hey {{first_name}}! 🚨 I've got your **Terminal Database Recovery Script & Claude Skill** ready!\n\n🔒 **One quick step to unlock it:**\nThis production script is reserved exclusively for our engineering community. You must follow **@signhify.studio** to unlock the repository link.\n\n1️⃣ Tap [@signhify.studio](https://instagram.com/signhify.studio) and hit **Follow**\n2️⃣ Tap the button below once you're following to verify and unlock your script instantly! 👇",
+        "quick_replies": [
+          {
+            "title": "I'm Following! ✅",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_02_verify_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_new_follower",
+        "false": "node_03_reprompt_follow"
+      }
+    },
+    {
+      "id": "node_03_reprompt_follow",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Almost there {{first_name}}! 😅 Our system shows you haven't followed [@signhify.studio](https://instagram.com/signhify.studio) yet.\n\n👉 Tap [@signhify.studio](https://instagram.com/signhify.studio), click **Follow**, and press verify below to unlock your script immediately:",
+        "quick_replies": [
+          {
+            "title": "Verify Again 🔄",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_01_welcome_follower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "follower_verified"
+        }
+      ],
+      "content": {
+        "text": "Hey {{first_name}}! 🚨 Thank you for being part of the @signhify.studio community! Here is the exact **Terminal Database Recovery Script & Claude Skill** from my reel:\n\n```bash\n# 1. Diff migration cache against last 40 merged PRs\ngit log --merges -n 40 --name-only --oneline | grep -E 'migrations/|prisma/|schema.sql'\n\n# 2. Run Claude Code autonomous schema reconstructor\nclaude \"Audit git diff for schema regressions, reconstruct lost tables from migration cache, and output dry-run SQL rollback\"\n```\n\nTap below to copy the full terminal instructions and clone the GitHub repo 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "🛠️ Open GitHub Repo",
+            "url": "https://github.com/stars/signhify/lists/production-recovery"
+          },
+          {
+            "type": "url",
+            "title": "📜 Full Rollback Guide",
+            "url": "https://signhify.dpdns.org/restore-guide"
+          }
+        ]
+      },
+      "next": "node_04_delay"
+    },
+    {
+      "id": "node_01_welcome_new_follower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "follower_converted"
+        }
+      ],
+      "content": {
+        "text": "Boom! Verified 🎉 Welcome to the community, {{first_name}}! Here is your unlocked **Terminal Database Recovery Script & Claude Skill**:\n\n```bash\n# 1. Diff migration cache against last 40 merged PRs\ngit log --merges -n 40 --name-only --oneline | grep -E 'migrations/|prisma/|schema.sql'\n\n# 2. Run Claude Code autonomous schema reconstructor\nclaude \"Audit git diff for schema regressions, reconstruct lost tables from migration cache, and output dry-run SQL rollback\"\n```\n\nTap below to copy the full terminal instructions and clone the GitHub repo 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "🛠️ Open GitHub Repo",
+            "url": "https://github.com/stars/signhify/lists/production-recovery"
+          },
+          {
+            "type": "url",
+            "title": "📜 Full Rollback Guide",
+            "url": "https://signhify.dpdns.org/restore-guide"
+          }
+        ]
+      },
+      "next": "node_04_delay"
+    },
+    {
+      "id": "node_04_delay",
+      "type": "smart_delay",
+      "delay_seconds": 120,
+      "next": "node_05_qualification"
+    },
+    {
+      "id": "node_05_qualification",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Quick question {{first_name}} — are you looking to bulletproof your company's dev pipeline, or just keeping this in your personal dev toolkit?",
+        "quick_replies": [
+          {
+            "title": "Company / Team Pipeline 🏢",
+            "payload": "TYPE_TEAM_DEVOPS"
+          },
+          {
+            "title": "Personal Toolkit 💻",
+            "payload": "TYPE_PERSONAL_DEV"
+          },
+          {
+            "title": "Just Curious 💡",
+            "payload": "TYPE_CURIOUS"
+          }
+        ]
+      },
+      "branches": {
+        "TYPE_TEAM_DEVOPS": "node_06_team_offer",
+        "TYPE_PERSONAL_DEV": "node_07_personal_offer",
+        "TYPE_CURIOUS": "node_08_nurture"
+      }
+    },
+    {
+      "id": "node_06_team_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_team_devops_audit"
+        }
+      ],
+      "content": {
+        "text": "Smart move. At **Signhify Studio** (https://signhify.dpdns.org), we help engineering teams implement autonomous CI/CD gates, fail-closed rollbacks, and self-healing agent pipelines so fatal drops never hit staging or prod.\n\nLet's grab a quick 15-min architectural walkthrough:",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "📅 Book 15-Min Tech Call",
+            "url": "https://cal.com/signhify/15min"
+          }
+        ]
+      }
+    },
+    {
+      "id": "node_07_personal_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_solo_developer"
+        }
+      ],
+      "content": {
+        "text": "Awesome! Bookmark that script and keep it in your `~/.bashrc` or zsh aliases. It has saved my team multiple times.\n\nFeel free to DM me here anytime if you ever want to jam on agent tooling or developer workflows! 🚀"
+      }
+    },
+    {
+      "id": "node_08_nurture",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_curious"
+        }
+      ],
+      "content": {
+        "text": "Haha hope you never have to use it in real life! 😅 Stay tuned — dropping more open-source developer toolkits this week. Happy building! 🛠️"
+      }
+    }
+  ]
+}

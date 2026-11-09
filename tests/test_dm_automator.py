@@ -25,6 +25,28 @@ def test_keyword_matching(automator):
     assert automator.match_keyword("What is the secret prompt?") == "PROMPT"
     assert automator.match_keyword("megaprompt please") == "PROMPT"
     assert automator.match_keyword("chatgpt code link") == "PROMPT"
+    assert automator.match_keyword("AI film prompt") == "PROMPT"
+    assert automator.match_keyword("video prompt pack") == "PROMPT"
+
+    # WEB triggers
+    assert automator.match_keyword("Can you send the 3D website template?") == "WEB"
+    assert automator.match_keyword("Love this site") == "WEB"
+    assert automator.match_keyword("Check out the 3d model") == "WEB"
+    assert automator.match_keyword("modern web build") == "WEB"
+
+    # MUSIC triggers
+    assert automator.match_keyword("Send the Suno music AI guide!") == "MUSIC"
+    assert automator.match_keyword("acestep 1.5 local") == "MUSIC"
+    assert automator.match_keyword("ace sound generation") == "MUSIC"
+    assert automator.match_keyword("generate song") == "MUSIC"
+
+    # SWARM / SEND triggers
+    assert automator.match_keyword("SWARM please! Need the outbound agents") == "SWARM"
+    assert automator.match_keyword("send") == "SWARM"
+    assert automator.match_keyword("swarm architecture") == "SWARM"
+    assert automator.match_keyword("outbound lead gen") == "SWARM"
+    assert automator.match_keyword("deploy agents") == "SWARM"
+    assert automator.match_keyword("autonomous gtm pipeline") == "SWARM"
 
     # Non-triggers
     assert automator.match_keyword("Looks great!") is None
@@ -57,6 +79,42 @@ def test_process_comment_prompt(automator):
     assert result is not None
     assert result["comment_id"] == "comment_prompt_202"
     assert result["keyword"] == "PROMPT"
+    assert result["dm_status"] == "DM_SENT"
+
+def test_process_comment_web(automator):
+    comment = {
+        "id": "comment_web_203",
+        "text": "Can you send the 3D website template?",
+        "username": "web_builder"
+    }
+    result = automator.process_comment(comment, media_id="media_123")
+    assert result is not None
+    assert result["comment_id"] == "comment_web_203"
+    assert result["keyword"] == "WEB"
+    assert result["dm_status"] == "DM_SENT"
+
+def test_process_comment_music(automator):
+    comment = {
+        "id": "comment_music_204",
+        "text": "Send the Suno music AI guide!",
+        "username": "music_producer"
+    }
+    result = automator.process_comment(comment, media_id="media_123")
+    assert result is not None
+    assert result["comment_id"] == "comment_music_204"
+    assert result["keyword"] == "MUSIC"
+    assert result["dm_status"] == "DM_SENT"
+
+def test_process_comment_swarm(automator):
+    comment = {
+        "id": "comment_swarm_205",
+        "text": "SWARM please! Need the outbound agents",
+        "username": "outbound_lead"
+    }
+    result = automator.process_comment(comment, media_id="media_123")
+    assert result is not None
+    assert result["comment_id"] == "comment_swarm_205"
+    assert result["keyword"] == "SWARM"
     assert result["dm_status"] == "DM_SENT"
 
 def test_deduplication_skips_processed(automator):

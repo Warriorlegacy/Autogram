@@ -1,0 +1,2 @@
+Claude... I think I just dropped the production database. The client's CEO is calling my phone. My hands are shaking. And there are two branches: production, and production DO NOT TOUCH. Instead of panicking, I ran one open-source Claude skill. It diffed our last forty merged PRs, recovered the schema state, and restored every table in three minutes. Stop stressing over fatal terminal errors. Comment RESTORE and I'll DM you the exact script.
+

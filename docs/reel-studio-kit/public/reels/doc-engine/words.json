@@ -1,0 +1,470 @@
+[
+  {
+    "word": "Most",
+    "start": 0.0,
+    "end": 0.22,
+    "confidence": 0.929
+  },
+  {
+    "word": "creators",
+    "start": 0.22,
+    "end": 0.64,
+    "confidence": 0.979
+  },
+  {
+    "word": "take",
+    "start": 0.64,
+    "end": 1.0,
+    "confidence": 0.996
+  },
+  {
+    "word": "two",
+    "start": 1.0,
+    "end": 1.22,
+    "confidence": 0.76
+  },
+  {
+    "word": "weeks",
+    "start": 1.22,
+    "end": 1.44,
+    "confidence": 0.998
+  },
+  {
+    "word": "to",
+    "start": 1.44,
+    "end": 1.62,
+    "confidence": 0.999
+  },
+  {
+    "word": "research",
+    "start": 1.62,
+    "end": 1.92,
+    "confidence": 0.994
+  },
+  {
+    "word": "and",
+    "start": 1.92,
+    "end": 2.18,
+    "confidence": 0.992
+  },
+  {
+    "word": "edit",
+    "start": 2.18,
+    "end": 2.42,
+    "confidence": 0.999
+  },
+  {
+    "word": "a",
+    "start": 2.42,
+    "end": 2.58,
+    "confidence": 0.998
+  },
+  {
+    "word": "30",
+    "start": 2.58,
+    "end": 2.86,
+    "confidence": 0.906
+  },
+  {
+    "word": "-minute",
+    "start": 2.86,
+    "end": 3.12,
+    "confidence": 0.773
+  },
+  {
+    "word": "documentary.",
+    "start": 3.12,
+    "end": 3.56,
+    "confidence": 0.996
+  },
+  {
+    "word": "We",
+    "start": 4.14,
+    "end": 4.24,
+    "confidence": 0.993
+  },
+  {
+    "word": "do",
+    "start": 4.24,
+    "end": 4.38,
+    "confidence": 0.998
+  },
+  {
+    "word": "it",
+    "start": 4.38,
+    "end": 4.48,
+    "confidence": 0.997
+  },
+  {
+    "word": "in",
+    "start": 4.48,
+    "end": 4.6,
+    "confidence": 0.999
+  },
+  {
+    "word": "60",
+    "start": 4.6,
+    "end": 4.9,
+    "confidence": 0.986
+  },
+  {
+    "word": "seconds",
+    "start": 4.9,
+    "end": 5.32,
+    "confidence": 0.992
+  },
+  {
+    "word": "with",
+    "start": 5.32,
+    "end": 5.6,
+    "confidence": 0.911
+  },
+  {
+    "word": "one",
+    "start": 5.6,
+    "end": 5.82,
+    "confidence": 0.991
+  },
+  {
+    "word": "open",
+    "start": 5.82,
+    "end": 6.18,
+    "confidence": 0.962
+  },
+  {
+    "word": "-source",
+    "start": 6.18,
+    "end": 6.54,
+    "confidence": 0.782
+  },
+  {
+    "word": "terminal",
+    "start": 6.54,
+    "end": 6.96,
+    "confidence": 0.93
+  },
+  {
+    "word": "script.",
+    "start": 6.96,
+    "end": 7.32,
+    "confidence": 0.999
+  },
+  {
+    "word": "Here",
+    "start": 7.74,
+    "end": 7.92,
+    "confidence": 0.992
+  },
+  {
+    "word": "is",
+    "start": 7.92,
+    "end": 8.14,
+    "confidence": 0.993
+  },
+  {
+    "word": "the",
+    "start": 8.14,
+    "end": 8.26,
+    "confidence": 0.998
+  },
+  {
+    "word": "architecture.",
+    "start": 8.26,
+    "end": 8.76,
+    "confidence": 0.984
+  },
+  {
+    "word": "Step",
+    "start": 9.28,
+    "end": 9.36,
+    "confidence": 0.985
+  },
+  {
+    "word": "1.",
+    "start": 9.36,
+    "end": 9.68,
+    "confidence": 0.342
+  },
+  {
+    "word": "Deep",
+    "start": 9.94,
+    "end": 10.08,
+    "confidence": 0.962
+  },
+  {
+    "word": "Research",
+    "start": 10.08,
+    "end": 10.4,
+    "confidence": 0.616
+  },
+  {
+    "word": "pulls",
+    "start": 10.4,
+    "end": 10.66,
+    "confidence": 0.965
+  },
+  {
+    "word": "primary",
+    "start": 10.66,
+    "end": 11.04,
+    "confidence": 0.992
+  },
+  {
+    "word": "sources",
+    "start": 11.04,
+    "end": 11.46,
+    "confidence": 0.997
+  },
+  {
+    "word": "from",
+    "start": 11.46,
+    "end": 11.7,
+    "confidence": 0.999
+  },
+  {
+    "word": "Europe",
+    "start": 11.7,
+    "end": 11.94,
+    "confidence": 0.951
+  },
+  {
+    "word": "PMC",
+    "start": 11.94,
+    "end": 12.64,
+    "confidence": 0.934
+  },
+  {
+    "word": "and",
+    "start": 12.64,
+    "end": 12.86,
+    "confidence": 0.991
+  },
+  {
+    "word": "RZIV.",
+    "start": 12.86,
+    "end": 13.36,
+    "confidence": 0.722
+  },
+  {
+    "word": "Step",
+    "start": 13.6,
+    "end": 13.74,
+    "confidence": 0.998
+  },
+  {
+    "word": "2.",
+    "start": 13.74,
+    "end": 14.08,
+    "confidence": 0.998
+  },
+  {
+    "word": "Claude",
+    "start": 14.38,
+    "end": 14.58,
+    "confidence": 0.769
+  },
+  {
+    "word": "structures",
+    "start": 14.58,
+    "end": 14.96,
+    "confidence": 0.967
+  },
+  {
+    "word": "the",
+    "start": 14.96,
+    "end": 15.24,
+    "confidence": 0.998
+  },
+  {
+    "word": "narrative",
+    "start": 15.24,
+    "end": 15.58,
+    "confidence": 0.998
+  },
+  {
+    "word": "into",
+    "start": 15.58,
+    "end": 15.86,
+    "confidence": 0.998
+  },
+  {
+    "word": "three",
+    "start": 15.86,
+    "end": 16.18,
+    "confidence": 0.816
+  },
+  {
+    "word": "documentary",
+    "start": 16.18,
+    "end": 16.66,
+    "confidence": 0.994
+  },
+  {
+    "word": "acts.",
+    "start": 16.66,
+    "end": 17.18,
+    "confidence": 0.995
+  },
+  {
+    "word": "Step",
+    "start": 17.54,
+    "end": 17.64,
+    "confidence": 0.999
+  },
+  {
+    "word": "3.",
+    "start": 17.64,
+    "end": 17.98,
+    "confidence": 0.996
+  },
+  {
+    "word": "Hyperframes",
+    "start": 18.3,
+    "end": 18.86,
+    "confidence": 0.803
+  },
+  {
+    "word": "compiles",
+    "start": 18.86,
+    "end": 19.38,
+    "confidence": 0.995
+  },
+  {
+    "word": "the",
+    "start": 19.38,
+    "end": 19.54,
+    "confidence": 0.997
+  },
+  {
+    "word": "visual",
+    "start": 19.54,
+    "end": 19.78,
+    "confidence": 0.979
+  },
+  {
+    "word": "motion,",
+    "start": 19.78,
+    "end": 20.16,
+    "confidence": 0.995
+  },
+  {
+    "word": "maps,",
+    "start": 20.48,
+    "end": 20.72,
+    "confidence": 0.99
+  },
+  {
+    "word": "and",
+    "start": 21.1,
+    "end": 21.24,
+    "confidence": 0.998
+  },
+  {
+    "word": "audio",
+    "start": 21.24,
+    "end": 21.54,
+    "confidence": 0.999
+  },
+  {
+    "word": "into",
+    "start": 21.54,
+    "end": 21.8,
+    "confidence": 0.996
+  },
+  {
+    "word": "an",
+    "start": 21.8,
+    "end": 21.92,
+    "confidence": 0.995
+  },
+  {
+    "word": "ultra",
+    "start": 21.92,
+    "end": 22.2,
+    "confidence": 0.912
+  },
+  {
+    "word": "-high",
+    "start": 22.2,
+    "end": 22.48,
+    "confidence": 0.88
+  },
+  {
+    "word": "-definition",
+    "start": 22.48,
+    "end": 23.02,
+    "confidence": 0.894
+  },
+  {
+    "word": "MP4.",
+    "start": 23.02,
+    "end": 23.84,
+    "confidence": 0.902
+  },
+  {
+    "word": "Comment,",
+    "start": 23.84,
+    "end": 24.3,
+    "confidence": 0.52
+  },
+  {
+    "word": "docs,",
+    "start": 24.5,
+    "end": 24.7,
+    "confidence": 0.034
+  },
+  {
+    "word": "and",
+    "start": 25.1,
+    "end": 25.14,
+    "confidence": 0.989
+  },
+  {
+    "word": "I",
+    "start": 25.14,
+    "end": 25.24,
+    "confidence": 0.989
+  },
+  {
+    "word": "will",
+    "start": 25.24,
+    "end": 25.36,
+    "confidence": 0.935
+  },
+  {
+    "word": "DM",
+    "start": 25.36,
+    "end": 25.7,
+    "confidence": 0.982
+  },
+  {
+    "word": "you",
+    "start": 25.7,
+    "end": 26.0,
+    "confidence": 0.983
+  },
+  {
+    "word": "our",
+    "start": 26.0,
+    "end": 26.22,
+    "confidence": 0.985
+  },
+  {
+    "word": "complete",
+    "start": 26.22,
+    "end": 26.56,
+    "confidence": 0.984
+  },
+  {
+    "word": "documentary",
+    "start": 26.56,
+    "end": 27.22,
+    "confidence": 0.949
+  },
+  {
+    "word": "engine.",
+    "start": 27.22,
+    "end": 27.62,
+    "confidence": 0.992
+  }
+]

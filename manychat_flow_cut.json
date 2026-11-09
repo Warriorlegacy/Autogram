@@ -1,0 +1,226 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - OpenMontage Prompt-to-Cut Engine (Follow-Gated)",
+  "description": "Triggered by comment 'CUT' on the Day 03 Reel ('I Replaced A $5,000/Mo Video Editor With 1 Open-Source Script'). Follow-gates the open-source OpenMontage repo, silence-removal CLI commands, and qualifies high-ticket video agency leads.",
+  "triggers": [
+    {
+      "type": "instagram_comment",
+      "rule": "contains_any_words",
+      "keywords": [
+        "CUT",
+        "cut",
+        "Cut",
+        "montage",
+        "editor",
+        "script",
+        "openmontage"
+      ],
+      "post_scope": "any_post_or_reel",
+      "public_auto_replies": [
+        "Sent you a DM! Follow @signhify.studio to unlock the OpenMontage script 🚀",
+        "Dropped the prompt-to-cut repository link in your DMs! Check message requests 🔥",
+        "Check your inbox! Make sure you follow @signhify.studio to verify and get the setup guide 🎬",
+        "Sent over the auto-editing pipeline! Tap verify in DMs to unlock 🛠️",
+        "DMs sent! Get ready to turn long videos into viral shorts in 60 seconds ⚡"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_00_check_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_01_gate_unfollower"
+      }
+    },
+    {
+      "id": "node_01_gate_unfollower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Hey {{first_name}}! 🎬 I've got your **OpenMontage Prompt-to-Cut Pipeline & CLI Setup Guide** ready!\n\n🔒 **One quick step to unlock it:**\nThis production pipeline is reserved exclusively for our engineering and creator community. You must follow **@signhify.studio** to unlock the GitHub repository.\n\n1️⃣ Tap [@signhify.studio](https://instagram.com/signhify.studio) and hit **Follow**\n2️⃣ Tap the button below once you're following to verify and unlock your script instantly! 👇",
+        "quick_replies": [
+          {
+            "title": "I'm Following! ✅",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_02_verify_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_new_follower",
+        "false": "node_03_reprompt_follow"
+      }
+    },
+    {
+      "id": "node_03_reprompt_follow",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Almost there {{first_name}}! 😅 Our system shows you haven't followed [@signhify.studio](https://instagram.com/signhify.studio) yet.\n\n👉 Tap [@signhify.studio](https://instagram.com/signhify.studio), click **Follow**, and press verify below to unlock your script immediately:",
+        "quick_replies": [
+          {
+            "title": "Verify Again 🔄",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_01_welcome_follower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "follower_verified"
+        }
+      ],
+      "content": {
+        "text": "Hey {{first_name}}! 🎬 Thank you for following @signhify.studio! Here is the open-source **OpenMontage Prompt-to-Cut Engine** from my reel:\n\n📦 **Core Repository:** `github.com/calesthio/OpenMontage`\n\n⚡ **The 1-Line Execution Command:**\n```bash\npython openmontage.py --input podcast.mp4 --vad --auto-crop --subtitles\n```\n\n🎯 **What it does automatically:**\n• Removes silences and dead air with VAD\n• Tracks and centers active speaker faces for 9:16 vertical crop\n• Burns animated kinetic word-by-word subtitles via Whisper\n\nTap below to open the official repository and grab our setup guide 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "⚡ Open GitHub Repo",
+            "url": "https://github.com/calesthio/OpenMontage"
+          },
+          {
+            "type": "url",
+            "title": "📜 Setup & Config Guide",
+            "url": "https://signhify.dpdns.org/openmontage-guide"
+          }
+        ]
+      },
+      "next": "node_04_delay"
+    },
+    {
+      "id": "node_01_welcome_new_follower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "follower_converted"
+        }
+      ],
+      "content": {
+        "text": "Boom! Verified 🎉 Welcome to the community, {{first_name}}! Here is your unlocked **OpenMontage Prompt-to-Cut Engine**:\n\n📦 **Core Repository:** `github.com/calesthio/OpenMontage`\n\n⚡ **The 1-Line Execution Command:**\n```bash\npython openmontage.py --input podcast.mp4 --vad --auto-crop --subtitles\n```\n\nTap below to open the official repository and grab our setup guide 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "⚡ Open GitHub Repo",
+            "url": "https://github.com/calesthio/OpenMontage"
+          },
+          {
+            "type": "url",
+            "title": "📜 Setup & Config Guide",
+            "url": "https://signhify.dpdns.org/openmontage-guide"
+          }
+        ]
+      },
+      "next": "node_04_delay"
+    },
+    {
+      "id": "node_04_delay",
+      "type": "smart_delay",
+      "delay_seconds": 120,
+      "next": "node_05_qualification"
+    },
+    {
+      "id": "node_05_qualification",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Quick question {{first_name}} — are you looking to automate video cutting for your business/agency, or are you a solo creator streamlining your own workflow?",
+        "quick_replies": [
+          {
+            "title": "Agency / Brand Production 🏢",
+            "payload": "TYPE_AGENCY_PROD"
+          },
+          {
+            "title": "Solo Creator 💻",
+            "payload": "TYPE_SOLO_CREATOR"
+          },
+          {
+            "title": "Just Curious 💡",
+            "payload": "TYPE_CURIOUS"
+          }
+        ]
+      },
+      "branches": {
+        "TYPE_AGENCY_PROD": "node_06_agency_offer",
+        "TYPE_SOLO_CREATOR": "node_07_creator_offer",
+        "TYPE_CURIOUS": "node_08_nurture"
+      }
+    },
+    {
+      "id": "node_06_agency_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_agency_video_automation"
+        }
+      ],
+      "content": {
+        "text": "Smart move. At **Signhify Studio** (https://signhify.dpdns.org), we build enterprise automated video pipelines — hooking up cloud ingestion, automatic multi-speaker face tracking, dynamic subtitles, and scheduled publishing so agencies cut their editing overhead by 90%.\n\nLet's schedule a 15-minute pipeline walkthrough demo:",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "📅 Book Pipeline Demo",
+            "url": "https://cal.com/signhify/15min"
+          }
+        ]
+      }
+    },
+    {
+      "id": "node_07_creator_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_solo_creator"
+        }
+      ],
+      "content": {
+        "text": "Awesome! OpenMontage is a total game-changer for solo creators. If you need help tuning the Whisper diarization parameters, DM me anytime! 🚀"
+      }
+    },
+    {
+      "id": "node_08_nurture",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_curious"
+        }
+      ],
+      "content": {
+        "text": "Enjoy exploring! We are dropping Day 04 and Day 05 automated video architectures next. Turn on notifications so you don't miss them! 🔥"
+      }
+    }
+  ]
+}

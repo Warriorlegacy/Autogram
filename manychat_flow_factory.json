@@ -1,0 +1,141 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - AI Content Factory 12 Repos",
+  "description": "Triggered by comment 'FACTORY' on Instagram Reels and Carousels. Delivers 12 GitHub repos, 1-click Claude setup prompt, and qualifies inbound leads for agency/consulting deployment.",
+  "triggers": [
+    {
+      "type": "instagram_comment",
+      "rule": "contains_any_words",
+      "keywords": [
+        "FACTORY",
+        "factory",
+        "Factory",
+        "FAC",
+        "repos",
+        "cheat sheet",
+        "code"
+      ],
+      "post_scope": "any_post_or_reel",
+      "public_auto_replies": [
+        "Sent you the full 12-repo bundle! Check your DMs 🚀",
+        "Just dropped all 12 GitHub links in your DM! Let me know if you hit any setup bugs 🔥",
+        "DMs sent! Check your message requests if you don't see it immediately 📬",
+        "Sent over the repos + the 1-click Claude setup prompt! Enjoy building 🛠️",
+        "Check your DM! All 12 open-source repos are in your inbox 📂"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_01_welcome",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Hey {{first_name}}! 🚀 Here is the complete **12 Open-Source GitHub Repos AI Content Factory** bundle you requested:\n\n📂 **Phase 1: Research**\n• `social-media-research-skills` (Steal viral hooks)\n• `local-deep-research` (Factual deep dossiers)\n\n🎬 **Phase 2: Creation & Voice**\n• `VoiceStudio` (Local ElevenLabs clone + dub)\n• `FLUX.2` (4K diffusion thumbnails & post art)\n• `ACE-Step 1.5` (AI music from one text prompt)\n• `HyperFrames` (HTML + GSAP code into vertical MP4s)\n• `OpenCreator` (Scripts, images, voice in one CLI)\n• `Podcastfy` (Turn articles into 2-host audio podcasts)\n\n✂️ **Phase 3: Editing & Shorts**\n• `OpenMontage` (Prompt-to-cut AI video studio)\n• `short-video-factory` (Batch shorts with karaoke subs)\n• `AI-YouTube-Shorts-Generator` (Long video to viral clips)\n\n🚀 **Phase 4: Distribution**\n• `social-media-agent` (Autonomous multi-network posting)\n\nTap below to access the full repository directory and copy the 1-click Claude setup prompt 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "📂 Open 12 GitHub Repos",
+            "url": "https://github.com/stars/signhify/lists/ai-content-factory"
+          },
+          {
+            "type": "url",
+            "title": "⚡ 1-Click Claude Prompt",
+            "url": "https://signhify.dpdns.org/factory-setup-prompt"
+          }
+        ]
+      },
+      "next": "node_02_delay"
+    },
+    {
+      "id": "node_02_delay",
+      "type": "smart_delay",
+      "delay_seconds": 120,
+      "next": "node_03_qualification"
+    },
+    {
+      "id": "node_03_qualification",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Quick question {{first_name}} — are you looking to run this pipeline locally for your personal brand, or are you running an agency / studio for clients?",
+        "quick_replies": [
+          {
+            "title": "Personal Brand 🎯",
+            "payload": "TYPE_PERSONAL_BRAND"
+          },
+          {
+            "title": "Agency / Studio 🏢",
+            "payload": "TYPE_AGENCY"
+          },
+          {
+            "title": "Just Exploring 💡",
+            "payload": "TYPE_EXPLORING"
+          }
+        ]
+      },
+      "branches": {
+        "TYPE_PERSONAL_BRAND": "node_04_brand_offer",
+        "TYPE_AGENCY": "node_05_agency_offer",
+        "TYPE_EXPLORING": "node_06_nurture"
+      }
+    },
+    {
+      "id": "node_04_brand_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_personal_brand"
+        }
+      ],
+      "content": {
+        "text": "Awesome! Running it locally gives you 100% control with zero API subscription bleed.\n\nIf you want us to set up your custom voice clone model, automated template renderers, and daily auto-publisher on your machine so you don't have to troubleshoot dependencies, reply **'SETUP'** or grab a quick 15-min walkthrough below 👇",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "📅 Book 15-Min Walkthrough",
+            "url": "https://cal.com/signhify/15min"
+          }
+        ]
+      }
+    },
+    {
+      "id": "node_05_agency_offer",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_agency_high_ticket"
+        }
+      ],
+      "content": {
+        "text": "Love that! For agencies, we build multi-tenant autonomous content engines that churn out client reels, carousels, and scripts at 10x output with zero editor overhead.\n\nLet's jump on a quick 15-min private demo and I'll walk you through our production architecture:",
+        "buttons": [
+          {
+            "type": "url",
+            "title": "🚀 Book Agency Demo",
+            "url": "https://cal.com/signhify/agency-demo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "node_06_nurture",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "actions": [
+        {
+          "type": "add_tag",
+          "tag_name": "lead_nurture"
+        }
+      ],
+      "content": {
+        "text": "Got it! Have fun tinkering with the stack — it's seriously powerful once you get the local models wired together.\n\nFeel free to shoot me a DM here anytime if you hit an issue or want to bounce an idea around. Happy building! 🛠️"
+      }
+    }
+  ]
+}
+

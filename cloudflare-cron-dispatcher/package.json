@@ -1,0 +1,14 @@
+{
+  "name": "autogram-cron-dispatcher",
+  "version": "1.0.0",
+  "description": "Zero-jitter Cloudflare Worker cron trigger for Autogram 24/7 cloud autopilot",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^3.100.0"
+  }
+}

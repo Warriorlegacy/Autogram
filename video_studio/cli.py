@@ -111,7 +111,15 @@ def cmd_render(args) -> int:
     print("[3/7] hyperframes check ...")
     gate = check_project(proj, log)
     print(f"      gate clean={gate['clean']}")
-    if args.skip_gate and not gate["clean"]:
+    if not gate["clean"]:
+        for f in gate.get("findings", [])[:10]:
+            print(f"      FINDING: {f}")
+        # Fail closed. A gate nobody can fail is not a gate.
+        if not args.skip_gate:
+            (out / "render.log").write_text("\n\n".join(log), encoding="utf-8")
+            print("      GATE FAILED - refusing to render (pass --skip-gate to override)")
+            print(f"       see {out / 'render.log'}")
+            return 1
         print("      (--skip-gate: continuing despite gate failure)")
 
     print(f"[4/7] rendering {sb.width}x{sb.height} @{sb.fps}fps quality={args.quality} ...")

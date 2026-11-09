@@ -1,0 +1,19 @@
+name = "autogram-cron-dispatcher"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+GITHUB_REPO = "Warriorlegacy/Autogram"
+
+# Cron triggers for 4 daily publishing slots in UTC (Asia/Kolkata IST is UTC + 5:30)
+# 04:00 UTC = 09:30 AM IST (Morning Story / Breakdown)
+# 06:00 UTC = 11:30 AM IST (Midday Prime Carousel)
+# 12:00 UTC = 05:30 PM IST (Evening Story)
+# 14:00 UTC = 07:30 PM IST (Evening Prime Reel / Carousel)
+[triggers]
+crons = [
+  "0 4 * * *",
+  "0 6 * * *",
+  "0 12 * * *",
+  "0 14 * * *"
+]

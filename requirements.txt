@@ -15,3 +15,10 @@ openai>=1.30.0
 faster-whisper>=1.0.0
 supabase>=2.4.0
 gradio_client>=1.0.0
+
+# Storage & Cloud
+boto3>=1.34.0
+# Model weights (337 MB) are NOT committed; see .gitignore and the workflow.
+# Pinned to the version this pipeline was built and verified against (0.4.7);
+# a floating range risks a voice-set or API change breaking every episode.
+kokoro-onnx==0.4.7

@@ -1,0 +1,397 @@
+[
+  {
+    "word": "If",
+    "start": 0.0,
+    "end": 0.1
+  },
+  {
+    "word": "you",
+    "start": 0.1,
+    "end": 0.2
+  },
+  {
+    "word": "are",
+    "start": 0.2,
+    "end": 0.3
+  },
+  {
+    "word": "paying",
+    "start": 0.3,
+    "end": 0.52
+  },
+  {
+    "word": "monthly",
+    "start": 0.52,
+    "end": 0.86
+  },
+  {
+    "word": "subscriptions",
+    "start": 0.86,
+    "end": 1.42
+  },
+  {
+    "word": "for",
+    "start": 1.42,
+    "end": 2.04
+  },
+  {
+    "word": "AI",
+    "start": 2.04,
+    "end": 2.137
+  },
+  {
+    "word": "voice",
+    "start": 2.137,
+    "end": 2.38
+  },
+  {
+    "word": "clones",
+    "start": 2.38,
+    "end": 2.68
+  },
+  {
+    "word": "in",
+    "start": 2.68,
+    "end": 2.96
+  },
+  {
+    "word": "2026,",
+    "start": 2.96,
+    "end": 4.08
+  },
+  {
+    "word": "stop.",
+    "start": 4.52,
+    "end": 5.26
+  },
+  {
+    "word": "A",
+    "start": 5.26,
+    "end": 5.297
+  },
+  {
+    "word": "single",
+    "start": 5.297,
+    "end": 5.52
+  },
+  {
+    "word": "open-source",
+    "start": 5.52,
+    "end": 6.22
+  },
+  {
+    "word": "repository",
+    "start": 6.22,
+    "end": 6.94
+  },
+  {
+    "word": "gives",
+    "start": 7.34,
+    "end": 7.66
+  },
+  {
+    "word": "you",
+    "start": 7.66,
+    "end": 7.82
+  },
+  {
+    "word": "unlimited",
+    "start": 7.82,
+    "end": 8.22
+  },
+  {
+    "word": "studio-grade",
+    "start": 8.22,
+    "end": 9.1
+  },
+  {
+    "word": "voice",
+    "start": 9.1,
+    "end": 9.44
+  },
+  {
+    "word": "clones",
+    "start": 9.44,
+    "end": 9.8
+  },
+  {
+    "word": "running",
+    "start": 9.8,
+    "end": 10.24
+  },
+  {
+    "word": "entirely",
+    "start": 10.24,
+    "end": 10.78
+  },
+  {
+    "word": "on",
+    "start": 10.78,
+    "end": 11.12
+  },
+  {
+    "word": "your",
+    "start": 11.12,
+    "end": 11.22
+  },
+  {
+    "word": "local",
+    "start": 11.22,
+    "end": 11.44
+  },
+  {
+    "word": "machine.",
+    "start": 11.44,
+    "end": 11.86
+  },
+  {
+    "word": "It",
+    "start": 12.22,
+    "end": 12.28
+  },
+  {
+    "word": "is",
+    "start": 12.28,
+    "end": 12.4
+  },
+  {
+    "word": "called",
+    "start": 12.4,
+    "end": 12.66
+  },
+  {
+    "word": "VoiceStudio.",
+    "start": 12.66,
+    "end": 13.36
+  },
+  {
+    "word": "Zero",
+    "start": 13.7,
+    "end": 13.94
+  },
+  {
+    "word": "API",
+    "start": 13.94,
+    "end": 14.4
+  },
+  {
+    "word": "bills.",
+    "start": 14.4,
+    "end": 14.98
+  },
+  {
+    "word": "No",
+    "start": 15.42,
+    "end": 15.58
+  },
+  {
+    "word": "character",
+    "start": 15.58,
+    "end": 15.88
+  },
+  {
+    "word": "limits.",
+    "start": 15.88,
+    "end": 16.34
+  },
+  {
+    "word": "And",
+    "start": 16.68,
+    "end": 16.88
+  },
+  {
+    "word": "it",
+    "start": 16.88,
+    "end": 17.0
+  },
+  {
+    "word": "plugs",
+    "start": 17.0,
+    "end": 17.22
+  },
+  {
+    "word": "directly",
+    "start": 17.22,
+    "end": 17.72
+  },
+  {
+    "word": "into",
+    "start": 17.72,
+    "end": 17.9
+  },
+  {
+    "word": "Claude",
+    "start": 17.9,
+    "end": 18.28
+  },
+  {
+    "word": "Code",
+    "start": 18.28,
+    "end": 18.58
+  },
+  {
+    "word": "so",
+    "start": 18.58,
+    "end": 18.8
+  },
+  {
+    "word": "your",
+    "start": 18.8,
+    "end": 18.94
+  },
+  {
+    "word": "automated",
+    "start": 18.94,
+    "end": 19.42
+  },
+  {
+    "word": "video",
+    "start": 19.42,
+    "end": 19.72
+  },
+  {
+    "word": "scripts",
+    "start": 19.72,
+    "end": 20.08
+  },
+  {
+    "word": "get",
+    "start": 20.08,
+    "end": 20.38
+  },
+  {
+    "word": "voiced",
+    "start": 20.38,
+    "end": 20.7
+  },
+  {
+    "word": "instantly.",
+    "start": 20.7,
+    "end": 21.2
+  },
+  {
+    "word": "You",
+    "start": 21.54,
+    "end": 21.62
+  },
+  {
+    "word": "can",
+    "start": 21.62,
+    "end": 21.74
+  },
+  {
+    "word": "run",
+    "start": 21.74,
+    "end": 21.94
+  },
+  {
+    "word": "Kokoro",
+    "start": 21.94,
+    "end": 22.38
+  },
+  {
+    "word": "for",
+    "start": 22.38,
+    "end": 22.64
+  },
+  {
+    "word": "real-time",
+    "start": 22.64,
+    "end": 23.14
+  },
+  {
+    "word": "speed,",
+    "start": 23.14,
+    "end": 23.58
+  },
+  {
+    "word": "or",
+    "start": 23.58,
+    "end": 24.14
+  },
+  {
+    "word": "full",
+    "start": 24.14,
+    "end": 24.38
+  },
+  {
+    "word": "neural",
+    "start": 24.38,
+    "end": 24.64
+  },
+  {
+    "word": "cloning",
+    "start": 24.64,
+    "end": 25.08
+  },
+  {
+    "word": "for",
+    "start": 25.08,
+    "end": 25.32
+  },
+  {
+    "word": "studio",
+    "start": 25.32,
+    "end": 25.64
+  },
+  {
+    "word": "quality.",
+    "start": 25.64,
+    "end": 26.14
+  },
+  {
+    "word": "Comment",
+    "start": 26.14,
+    "end": 26.92
+  },
+  {
+    "word": "VOICE",
+    "start": 26.92,
+    "end": 26.94
+  },
+  {
+    "word": "and",
+    "start": 26.94,
+    "end": 27.46
+  },
+  {
+    "word": "I",
+    "start": 27.46,
+    "end": 27.492
+  },
+  {
+    "word": "will",
+    "start": 27.492,
+    "end": 27.62
+  },
+  {
+    "word": "DM",
+    "start": 27.62,
+    "end": 27.94
+  },
+  {
+    "word": "you",
+    "start": 27.94,
+    "end": 28.26
+  },
+  {
+    "word": "the",
+    "start": 28.26,
+    "end": 28.38
+  },
+  {
+    "word": "local",
+    "start": 28.38,
+    "end": 28.62
+  },
+  {
+    "word": "install",
+    "start": 28.62,
+    "end": 29.1
+  },
+  {
+    "word": "command.",
+    "start": 29.1,
+    "end": 29.46
+  }
+]

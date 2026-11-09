@@ -1,5 +1,5 @@
 {
-  "scheduler_enabled": false,
+  "scheduler_enabled": true,
   "daily_slots": [
     {
       "slot": "11:30",
@@ -57,6 +57,115 @@
   ],
   "timezone": "Asia/Kolkata",
   "queue": [
+    {
+      "id": "SCH-20261108-CAROUSEL",
+      "scheduled_time": "2026-11-08T12:30:00",
+      "topic": "12 Open-Source GitHub Repos That Run Your AI Content Factory",
+      "pillar": "Developer Power Tools & CLI",
+      "format": "carousel",
+      "mode": "live",
+      "status": "COMPLETED",
+      "asset_path": "d:/Autogram/output/carousel-factory",
+      "trigger_word": "FACTORY",
+      "created_at": "2026-11-08T09:30:00",
+      "started_at": "2026-11-08T13:18:53.878026",
+      "completed_at": "2026-11-08T13:21:34.655170"
+    },
+    {
+      "id": "SCH-20261108-REEL",
+      "scheduled_time": "2026-11-08T19:30:00",
+      "topic": "Claude. I Deleted Production (Dev Panic to Instant PR Restore)",
+      "pillar": "Local AI & Edge Compute",
+      "format": "reel",
+      "mode": "live",
+      "status": "COMPLETED",
+      "asset_path": "d:/Autogram/docs/reel-studio-kit/out/deleted-production.mp4",
+      "trigger_word": "RESTORE",
+      "created_at": "2026-11-08T09:55:00",
+      "published_at": "2026-11-08T13:43:16.259128",
+      "media_id": "18607025998064564",
+      "public_url": "https://files.catbox.moe/lygbvn.mp4"
+    },
+    {
+      "id": "SCH-20261109-REEL",
+      "scheduled_time": "2026-11-09T12:30:00",
+      "topic": "Claude > Premiere Pro? (0% Premiere, 100% Code-Rendered Motion)",
+      "pillar": "Developer Power Tools & CLI",
+      "format": "reel",
+      "mode": "live",
+      "status": "COMPLETED",
+      "asset_path": "d:/Autogram/docs/reel-studio-kit/out/claude-vs-premiere.mp4",
+      "trigger_word": "HYPER",
+      "created_at": "2026-11-08T10:15:00",
+      "published_at": "2026-11-08T14:15:20.120000",
+      "media_id": "17930093970424272",
+      "public_url": "https://files.catbox.moe/3uaysn.mp4"
+    },
+    {
+      "id": "SCH-20261109-STORY",
+      "scheduled_time": "2026-11-09T17:30:00",
+      "topic": "How We Fully Automate It (The Autonomous YouTube & Video Architecture)",
+      "pillar": "AI Tool Breakdown",
+      "format": "story",
+      "mode": "live",
+      "status": "COMPLETED",
+      "asset_path": "d:/Autogram/output/architecture-pipeline/story_automation_pipeline_1080x1920.jpg",
+      "trigger_word": "PIPELINE",
+      "created_at": "2026-11-08T10:20:00",
+      "published_at": "2026-11-08T14:16:15.300000",
+      "media_id": "18117990881278457"
+    },
+    {
+      "id": "SCH-20261108-DIWALI",
+      "scheduled_time": "2026-11-08T15:00:00",
+      "topic": "Happy Diwali to every engineer still pushing code in dark mode \ud83e\ude94\u2728",
+      "pillar": "Contrarian",
+      "format": "reel",
+      "mode": "live",
+      "status": "COMPLETED",
+      "asset_path": "d:/Autogram/docs/reel-studio-kit/out/happy-diwali.mp4",
+      "trigger_word": "DIWALI",
+      "created_at": "2026-11-08T14:38:00",
+      "published_at": "2026-11-08T14:59:20.000000",
+      "media_id": "18160165921511204",
+      "public_url": "https://files.catbox.moe/v51zqx.mp4"
+    },
+    {
+      "id": "SCH-20261110-REEL",
+      "scheduled_time": "2026-11-10T12:30:00",
+      "topic": "I Replaced A $5,000/Mo Video Editor With 1 Open-Source Script",
+      "pillar": "Developer Power Tools & CLI",
+      "format": "reel",
+      "mode": "live",
+      "status": "QUEUED",
+      "asset_path": "d:/Autogram/docs/reel-studio-kit/out/replaced-editor.mp4",
+      "trigger_word": "CUT",
+      "created_at": "2026-11-08T14:20:00"
+    },
+    {
+      "id": "SCH-20261111-REEL",
+      "scheduled_time": "2026-11-11T12:30:00",
+      "topic": "The $0 Local Voice Clone (Kokoro-82M ONNX Broadcast Mastering)",
+      "pillar": "Local AI & Edge Compute",
+      "format": "reel",
+      "mode": "live",
+      "status": "QUEUED",
+      "asset_path": "d:/Autogram/docs/reel-studio-kit/out/local-voice.mp4",
+      "trigger_word": "VOICE",
+      "created_at": "2026-11-08T14:20:00"
+    },
+    {
+      "id": "SCH-20261112-REEL",
+      "scheduled_time": "2026-11-12T12:30:00",
+      "topic": "How We Code 30-Minute AI Documentaries (React + Remotion + Whisper)",
+      "pillar": "Self-Hosted Architecture",
+      "format": "reel",
+      "mode": "live",
+      "status": "QUEUED",
+      "asset_path": "d:/Autogram/docs/reel-studio-kit/out/doc-engine.mp4",
+      "trigger_word": "DOCS",
+      "created_at": "2026-11-08T14:20:00"
+    },
     {
       "id": "STORY-1001",
       "scheduled_time": "2026-09-12T09:00:00",
@@ -169,6 +278,24 @@
       "created_at": "2026-09-10T16:30:00",
       "started_at": "2026-09-14T12:42:10.346210",
       "completed_at": "2026-09-14T12:43:35.780710"
+    },
+    {
+      "id": "SCH-20261108-DEV-DIWALI",
+      "scheduled_time": "2026-11-08T19:29:37.161053",
+      "topic": "The Developer's Diwali: How Engineers Light Up The World",
+      "pillar": "Local AI & Edge Compute",
+      "format": "reel",
+      "mode": "live",
+      "status": "COMPLETED",
+      "created_at": "2026-11-08T19:29:37.161053",
+      "started_at": "2026-11-08T19:29:37.161053",
+      "completed_at": "2026-11-08T19:29:37.161053",
+      "media_id": "18131997214881603",
+      "live_url": "https://www.instagram.com/p/18131997214881603/",
+      "trigger_words": [
+        "FESTIVE",
+        "DIWALI"
+      ]
     }
   ],
   "history": []

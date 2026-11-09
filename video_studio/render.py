@@ -24,7 +24,27 @@ class RenderError(RuntimeError):
 _NPX = shutil.which("npx") or shutil.which("npx.cmd") or shutil.which("npx.ps1")
 if _NPX is None:
     raise RenderError("npx not found on PATH")
-HF = [_NPX, "--yes", "hyperframes"]
+
+
+def installed_hyperframes_version() -> str:
+    """Exact version of the hyperframes package installed in this repo.
+
+    Fails closed. `npx --yes hyperframes` (bare) resolves whatever npm has
+    cached or finds on PATH, which silently rendered production reels on a
+    DIFFERENT version than the one installed here -- measured in
+    docs/video-studio/REMOTION_HYPERFRAMES_BENCHMARK.md (installed 0.8.58 vs
+    a global 0.7.52 on PATH). Pinning keeps renders reproducible.
+    """
+    pkg = REPO_ROOT / "node_modules" / "hyperframes" / "package.json"
+    if not pkg.exists():
+        raise RenderError(
+            "hyperframes is not installed in this repo; run `npm install` "
+            "before rendering (do not fall back to a global CLI)"
+        )
+    return json.loads(pkg.read_text(encoding="utf-8"))["version"]
+
+
+HF = [_NPX, "--yes", f"hyperframes@{installed_hyperframes_version()}"]
 
 
 def _run(cmd: list[str], cwd: Path, log: list[str], timeout: int = 1800) -> str:
@@ -39,10 +59,38 @@ def _run(cmd: list[str], cwd: Path, log: list[str], timeout: int = 1800) -> str:
 
 
 def check_project(proj: Path, log: list[str]) -> dict:
-    """Run HyperFrames' built-in gate: Runtime + Layout + Motion + Contrast."""
-    out = _run(HF + ["check"], proj, log, timeout=600)
-    return {"gate": "hyperframes check", "clean": "Check passed" in out,
-            "output": out[-2500:]}
+    """Run HyperFrames' built-in gate: Runtime + Layout + Motion + Contrast.
+
+    A failing check is a QA verdict, NOT a crash. This returns clean=False with
+    the findings so the caller can decide. It previously let `_run` raise on
+    the nonzero exit, which meant `clean` was unreachable, `--skip-gate` was
+    dead code, and every qa_report recorded gate=True regardless of reality.
+    """
+
+    cmd = HF + ["check"]
+    log.append(f"$ {' '.join(cmd)}")
+    try:
+        proc = subprocess.run(cmd, cwd=str(proj), capture_output=True, text=True,
+                              encoding="utf-8", errors="replace", timeout=600)
+    except subprocess.TimeoutExpired as exc:
+        raise RenderError(f"hyperframes check timed out in {proj}") from exc
+
+    out = proc.stdout or ""
+    log.append(f"[exit={proc.returncode}]\n{out[-6000:]}")
+    clean = proc.returncode == 0 and "Check passed" in out
+
+    # Surface the actionable lines; stderr carries npm noise, stdout carries findings.
+    findings = [
+        ln.strip() for ln in out.splitlines()
+        if ln.strip().startswith(("x ", "✗", "- ", "L ")) or " error" in ln
+    ]
+    return {
+        "gate": "hyperframes check",
+        "clean": clean,
+        "exit_code": proc.returncode,
+        "findings": findings[-20:],
+        "output": out[-2500:],
+    }
 
 
 def render_project(proj: Path, out_path: Path, log: list[str], fps: int = 30,

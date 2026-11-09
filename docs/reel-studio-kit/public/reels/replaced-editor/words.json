@@ -1,0 +1,427 @@
+[
+  {
+    "word": "A",
+    "start": 0.0,
+    "end": 0.26
+  },
+  {
+    "word": "freelance",
+    "start": 0.26,
+    "end": 0.52
+  },
+  {
+    "word": "video",
+    "start": 0.52,
+    "end": 0.92
+  },
+  {
+    "word": "editor",
+    "start": 0.92,
+    "end": 1.28
+  },
+  {
+    "word": "wanted",
+    "start": 1.28,
+    "end": 1.52
+  },
+  {
+    "word": "to",
+    "start": 1.52,
+    "end": 1.82
+  },
+  {
+    "word": "charge",
+    "start": 1.82,
+    "end": 2.0
+  },
+  {
+    "word": "my",
+    "start": 2.0,
+    "end": 2.38
+  },
+  {
+    "word": "agency",
+    "start": 2.38,
+    "end": 2.76
+  },
+  {
+    "word": "$5",
+    "start": 2.76,
+    "end": 3.4
+  },
+  {
+    "word": ",000",
+    "start": 3.4,
+    "end": 4.04
+  },
+  {
+    "word": "a",
+    "start": 4.04,
+    "end": 4.26
+  },
+  {
+    "word": "month",
+    "start": 4.26,
+    "end": 4.58
+  },
+  {
+    "word": "to",
+    "start": 4.58,
+    "end": 4.9
+  },
+  {
+    "word": "cut",
+    "start": 4.9,
+    "end": 5.16
+  },
+  {
+    "word": "long",
+    "start": 5.16,
+    "end": 5.44
+  },
+  {
+    "word": "podcasts",
+    "start": 5.44,
+    "end": 6.0
+  },
+  {
+    "word": "into",
+    "start": 6.0,
+    "end": 6.32
+  },
+  {
+    "word": "vertical",
+    "start": 6.32,
+    "end": 6.68
+  },
+  {
+    "word": "reels.",
+    "start": 6.68,
+    "end": 7.2
+  },
+  {
+    "word": "Instead,",
+    "start": 7.52,
+    "end": 7.7
+  },
+  {
+    "word": "I",
+    "start": 7.88,
+    "end": 7.98
+  },
+  {
+    "word": "ran",
+    "start": 7.98,
+    "end": 8.16
+  },
+  {
+    "word": "one",
+    "start": 8.16,
+    "end": 8.44
+  },
+  {
+    "word": "open",
+    "start": 8.44,
+    "end": 8.78
+  },
+  {
+    "word": "-source",
+    "start": 8.78,
+    "end": 9.04
+  },
+  {
+    "word": "Python",
+    "start": 9.04,
+    "end": 9.4
+  },
+  {
+    "word": "script.",
+    "start": 9.4,
+    "end": 9.82
+  },
+  {
+    "word": "It",
+    "start": 10.02,
+    "end": 10.14
+  },
+  {
+    "word": "is",
+    "start": 10.14,
+    "end": 10.34
+  },
+  {
+    "word": "called",
+    "start": 10.34,
+    "end": 10.58
+  },
+  {
+    "word": "Open",
+    "start": 10.58,
+    "end": 10.96
+  },
+  {
+    "word": "Montage.",
+    "start": 10.96,
+    "end": 11.56
+  },
+  {
+    "word": "You",
+    "start": 11.78,
+    "end": 11.9
+  },
+  {
+    "word": "feed",
+    "start": 11.9,
+    "end": 12.06
+  },
+  {
+    "word": "it",
+    "start": 12.06,
+    "end": 12.22
+  },
+  {
+    "word": "a",
+    "start": 12.22,
+    "end": 12.34
+  },
+  {
+    "word": "one",
+    "start": 12.34,
+    "end": 12.48
+  },
+  {
+    "word": "-hour",
+    "start": 12.48,
+    "end": 12.68
+  },
+  {
+    "word": "raw",
+    "start": 12.68,
+    "end": 12.96
+  },
+  {
+    "word": "video,",
+    "start": 12.96,
+    "end": 13.42
+  },
+  {
+    "word": "and",
+    "start": 13.74,
+    "end": 13.8
+  },
+  {
+    "word": "it",
+    "start": 13.8,
+    "end": 13.98
+  },
+  {
+    "word": "automatically",
+    "start": 13.98,
+    "end": 14.48
+  },
+  {
+    "word": "cuts",
+    "start": 14.48,
+    "end": 14.88
+  },
+  {
+    "word": "dead",
+    "start": 14.88,
+    "end": 15.18
+  },
+  {
+    "word": "air.",
+    "start": 15.18,
+    "end": 15.56
+  },
+  {
+    "word": "Centers",
+    "start": 16.02,
+    "end": 16.24
+  },
+  {
+    "word": "the",
+    "start": 16.24,
+    "end": 16.54
+  },
+  {
+    "word": "active",
+    "start": 16.54,
+    "end": 16.82
+  },
+  {
+    "word": "speaker",
+    "start": 16.82,
+    "end": 17.16
+  },
+  {
+    "word": "with",
+    "start": 17.16,
+    "end": 17.46
+  },
+  {
+    "word": "face",
+    "start": 17.46,
+    "end": 17.7
+  },
+  {
+    "word": "tracking",
+    "start": 17.7,
+    "end": 18.08
+  },
+  {
+    "word": "and",
+    "start": 18.08,
+    "end": 18.66
+  },
+  {
+    "word": "generates",
+    "start": 18.66,
+    "end": 18.96
+  },
+  {
+    "word": "animated",
+    "start": 18.96,
+    "end": 19.62
+  },
+  {
+    "word": "kinetic",
+    "start": 19.62,
+    "end": 20.06
+  },
+  {
+    "word": "subtitles",
+    "start": 20.06,
+    "end": 20.54
+  },
+  {
+    "word": "in",
+    "start": 20.54,
+    "end": 20.92
+  },
+  {
+    "word": "60",
+    "start": 20.92,
+    "end": 21.24
+  },
+  {
+    "word": "seconds.",
+    "start": 21.24,
+    "end": 21.74
+  },
+  {
+    "word": "Zero",
+    "start": 21.96,
+    "end": 22.26
+  },
+  {
+    "word": "human",
+    "start": 22.26,
+    "end": 22.6
+  },
+  {
+    "word": "editing,",
+    "start": 22.6,
+    "end": 22.96
+  },
+  {
+    "word": "just",
+    "start": 23.28,
+    "end": 23.52
+  },
+  {
+    "word": "open",
+    "start": 23.52,
+    "end": 23.8
+  },
+  {
+    "word": "-source",
+    "start": 23.8,
+    "end": 24.06
+  },
+  {
+    "word": "code,",
+    "start": 24.06,
+    "end": 24.52
+  },
+  {
+    "word": "comment",
+    "start": 24.8,
+    "end": 25.02
+  },
+  {
+    "word": "CUT,",
+    "start": 25.02,
+    "end": 25.6
+  },
+  {
+    "word": "and",
+    "start": 26.0,
+    "end": 26.12
+  },
+  {
+    "word": "I",
+    "start": 26.12,
+    "end": 26.22
+  },
+  {
+    "word": "will",
+    "start": 26.22,
+    "end": 26.46
+  },
+  {
+    "word": "DM",
+    "start": 26.46,
+    "end": 26.76
+  },
+  {
+    "word": "you",
+    "start": 26.76,
+    "end": 27.0
+  },
+  {
+    "word": "the",
+    "start": 27.0,
+    "end": 27.18
+  },
+  {
+    "word": "free",
+    "start": 27.18,
+    "end": 27.34
+  },
+  {
+    "word": "hit",
+    "start": 27.34,
+    "end": 27.5
+  },
+  {
+    "word": "hub",
+    "start": 27.5,
+    "end": 27.74
+  },
+  {
+    "word": "repository",
+    "start": 27.74,
+    "end": 28.28
+  },
+  {
+    "word": "and",
+    "start": 28.28,
+    "end": 28.68
+  },
+  {
+    "word": "set",
+    "start": 28.68,
+    "end": 28.8
+  },
+  {
+    "word": "up",
+    "start": 28.8,
+    "end": 29.04
+  },
+  {
+    "word": "guide.",
+    "start": 29.04,
+    "end": 29.34
+  }
+]

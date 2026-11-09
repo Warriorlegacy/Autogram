@@ -1,0 +1,155 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - VoiceStudio $0 Local Voice Clone (Follow-Gated)",
+  "description": "Triggered by comment 'VOICE' on Day 04 Reel ('The $0 Local Voice Clone'). Strictly requires user to follow @signhify.studio before unlocking VoiceStudio GitHub repository, Kokoro ONNX setup, and local CLI script.",
+  "triggers": [
+    {
+      "type": "instagram_comment",
+      "rule": "contains_any_words",
+      "keywords": [
+        "VOICE",
+        "voice",
+        "Voice",
+        "voicestudio",
+        "clone",
+        "kokoro",
+        "tts"
+      ],
+      "post_scope": "any_post_or_reel",
+      "public_auto_replies": [
+        "Sent you a DM! Follow @signhify.studio to unlock the VoiceStudio stack 🎙️",
+        "Dropped the $0 local voice clone setup in your DMs! Check message requests 🔥",
+        "Check your inbox! Make sure you follow @signhify.studio to unlock the repo 🔒",
+        "Sent over the Kokoro & VoiceStudio install guide! Tap verify in DMs 🚀",
+        "DMs sent! Stop paying voice subscriptions forever ⚡"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_00_check_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_01_gate_unfollower"
+      }
+    },
+    {
+      "id": "node_01_gate_unfollower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Hey {{first_name}}! 🎙️ I've got your **VoiceStudio $0 Local Voice Cloning Engine & Setup Guide** ready!\n\n🔒 **One quick step to unlock it:**\nThis production pipeline is reserved exclusively for our engineering and creator community. You must follow **@signhify.studio** to unlock the GitHub repository.\n\n1️⃣ Tap [@signhify.studio](https://instagram.com/signhify.studio) and hit **Follow**\n2️⃣ Tap the button below once you're following to verify and unlock your script instantly! 👇",
+        "quick_replies": [
+          {
+            "title": "I'm Following! ✅",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_02_verify_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_02_still_not_following"
+      }
+    },
+    {
+      "id": "node_02_still_not_following",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Oops, it looks like you haven't followed yet! 😅\n\nTo prevent abuse, our server only releases the open-source VoiceStudio repository & Kokoro models to verified community followers.\n\n👉 Tap [@signhify.studio](https://instagram.com/signhify.studio), click **Follow**, and then tap below:",
+        "quick_replies": [
+          {
+            "title": "Verified! Let's Go 🚀",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_01_welcome_follower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Boom! Access granted, {{first_name}}! 🎉 Here is your complete **VoiceStudio Local Voice Cloning Stack**:\n\n📦 **Open-Source Repository:**\n👉 https://github.com/VoiceStudio/VoiceStudio\n\n⚡ **Quickstart Local Install (CPU/GPU):**\n```bash\ngit clone https://github.com/VoiceStudio/VoiceStudio\ncd VoiceStudio && pip install -r requirements.txt\npython -m voicestudio.cli --model kokoro-82m\n```\n\n🎙️ **Features Included:**\n• Kokoro-82M real-time CPU synthesis (120 WPM)\n• Neural zero-shot voice cloning with 5s reference audio\n• Claude Code API bridge for auto-script voicing\n\nAre you looking to clone your own voice or build automated faceless videos?",
+        "quick_replies": [
+          {
+            "title": "Clone My Own Voice 🎙️",
+            "payload": "PATH_CLONE"
+          },
+          {
+            "title": "Automated Videos 🎬",
+            "payload": "PATH_AUTOMATION"
+          }
+        ]
+      },
+      "branches": {
+        "PATH_CLONE": "node_03_clone_advice",
+        "PATH_AUTOMATION": "node_03_automation_advice"
+      }
+    },
+    {
+      "id": "node_03_clone_advice",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Smart choice. For clean personal voice cloning:\n1. Record 15 seconds of clean speech with zero background noise\n2. Run `python -m voicestudio.clone --ref my_sample.wav`\n3. It outputs a reusable voice profile (.bin) you can call anytime!\n\nWant our custom FFmpeg broadcast mastering filter preset that makes cheap laptop mics sound like a $400 Shure SM7B?",
+        "quick_replies": [
+          {
+            "title": "Yes, send preset! 🔥",
+            "payload": "SEND_PRESET"
+          }
+        ]
+      },
+      "branches": {
+        "SEND_PRESET": "node_04_deliver_preset"
+      }
+    },
+    {
+      "id": "node_03_automation_advice",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "That's exactly what we run at Signhify Studio! We pipe Claude video scripts directly into Kokoro ONNX, generating broadcast-ready voiceovers in 4 seconds flat.\n\nWant our Claude Code prompt that formats scripts with exact pause cues and emotion tags?",
+        "quick_replies": [
+          {
+            "title": "Send Claude Prompt! 🤖",
+            "payload": "SEND_PRESET"
+          }
+        ]
+      },
+      "branches": {
+        "SEND_PRESET": "node_04_deliver_preset"
+      }
+    },
+    {
+      "id": "node_04_deliver_preset",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Here is the production audio mastering chain:\n\n```bash\nffmpeg -i input.wav -af \"highpass=f=80,equalizer=f=160:t=q:w=1.2:g=2.5,equalizer=f=3200:t=q:w=1.5:g=2.0,acompressor=threshold=-16dB:ratio=3.5:attack=15:release=120,loudnorm=I=-16:TP=-1.5:LRA=10\" -ar 44100 mastered.wav\n```\n\n📌 Save this DM. Reach out anytime if you need custom agentic video pipelines engineered for your brand!\n— Piyush Raj Singh, Signhify Studio (signhify.dpdns.org)"
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,177 @@
+{
+  "version": "2.0",
+  "flow_name": "Autogram - AI Documentary Engine (Follow-Gated)",
+  "description": "Triggered by comment 'DOCS' on Day 05 Reel ('How We Code 30-Minute AI Documentaries'). Strictly requires user to follow @signhify.studio before unlocking the 3-act narrative generator, Europe PMC research fetcher, and HyperFrames 4K documentary engine.",
+  "triggers": [
+    {
+      "type": "instagram_comment",
+      "rule": "contains_any_words",
+      "keywords": [
+        "DOCS",
+        "docs",
+        "Docs",
+        "documentary",
+        "engine",
+        "hyperframes",
+        "longform"
+      ],
+      "post_scope": "any_post_or_reel",
+      "public_auto_replies": [
+        "Sent you a DM! Follow @signhify.studio to unlock the documentary engine 🎬",
+        "Dropped the 30-min AI documentary architecture in your DMs! Check requests 🔥",
+        "Check your inbox! Make sure you follow @signhify.studio to unlock the pipeline 🔒",
+        "Sent over the 3-act documentary generator! Tap verify in DMs 🚀",
+        "DMs sent! Build 30-min YouTube documentaries with 1 terminal command ⚡"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_00_check_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_01_gate_unfollower"
+      }
+    },
+    {
+      "id": "node_01_gate_unfollower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Hey {{first_name}}! 🎬 I've got your **Autonomous 30-Min AI Documentary Engine & CLI Guide** ready!\n\n🔒 **One quick step to unlock it:**\nThis production architecture is reserved exclusively for our engineering and creator community. You must follow **@signhify.studio** to unlock the GitHub repository.\n\n1️⃣ Tap [@signhify.studio](https://instagram.com/signhify.studio) and hit **Follow**\n2️⃣ Tap the button below once you're following to verify and unlock your script instantly! 👇",
+        "quick_replies": [
+          {
+            "title": "I'm Following! ✅",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_02_verify_follow",
+      "type": "condition",
+      "condition": {
+        "field": "user.is_follower",
+        "operator": "equals",
+        "value": true
+      },
+      "branches": {
+        "true": "node_01_welcome_follower",
+        "false": "node_02_still_not_following"
+      }
+    },
+    {
+      "id": "node_02_still_not_following",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Oops, it looks like you haven't followed yet! 😅\n\nTo prevent abuse, our server only releases the open-source Documentary Engine & 3-act story prompts to verified community followers.\n\n👉 Tap [@signhify.studio](https://instagram.com/signhify.studio), click **Follow**, and then tap below:",
+        "quick_replies": [
+          {
+            "title": "Verified! Let's Go 🚀",
+            "payload": "VERIFY_FOLLOW"
+          }
+        ]
+      },
+      "branches": {
+        "VERIFY_FOLLOW": "node_02_verify_follow"
+      }
+    },
+    {
+      "id": "node_01_welcome_follower",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Boom! Access granted, {{first_name}}! 🎉 Here is your complete **Autonomous AI Documentary Stack**:\n\n📦 **Open-Source Repository:**\n👉 https://github.com/signhify/doc-engine\n\n⚡ **The 3-Stage Pipeline:**\n1️⃣ **Research**: Europe PMC + ArXiv API pulls verified facts and citations\n2️⃣ **Scripting**: Claude formats into 3 narrative acts with exact timestamps\n3️⃣ **Rendering**: HyperFrames CLI compiles dynamic map animations, multi-track audio, and 4K footage\n\nWhat topic are you planning your first AI documentary on?",
+        "quick_replies": [
+          {
+            "title": "Tech & AI History 💻",
+            "payload": "TOPIC_TECH"
+          },
+          {
+            "title": "True Crime / Mystery 🕵️",
+            "payload": "TOPIC_CRIME"
+          },
+          {
+            "title": "Science & Space 🚀",
+            "payload": "TOPIC_SCIENCE"
+          }
+        ]
+      },
+      "branches": {
+        "TOPIC_TECH": "node_03_tech_guidance",
+        "TOPIC_CRIME": "node_03_crime_guidance",
+        "TOPIC_SCIENCE": "node_03_science_guidance"
+      }
+    },
+    {
+      "id": "node_03_tech_guidance",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Tech documentaries crush on YouTube right now! The secret is pacing: introduce a major corporate failure or dev panic in the first 15 seconds before explaining the code.\n\nWant our custom 3-act narrative storyboard template formatted for YouTube 1080p/4K?",
+        "quick_replies": [
+          {
+            "title": "Send Storyboard! 📑",
+            "payload": "SEND_STORYBOARD"
+          }
+        ]
+      },
+      "branches": {
+        "SEND_STORYBOARD": "node_04_deliver_storyboard"
+      }
+    },
+    {
+      "id": "node_03_crime_guidance",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "High watch-time retention! Make sure to use dark mode cartography in HyperFrames for map flyovers.\n\nWant our custom 3-act narrative storyboard template formatted for YouTube 1080p/4K?",
+        "quick_replies": [
+          {
+            "title": "Send Storyboard! 📑",
+            "payload": "SEND_STORYBOARD"
+          }
+        ]
+      },
+      "branches": {
+        "SEND_STORYBOARD": "node_04_deliver_storyboard"
+      }
+    },
+    {
+      "id": "node_03_science_guidance",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Science audiences love primary source citations! The Europe PMC API integration will auto-insert paper DOIs on screen.\n\nWant our custom 3-act narrative storyboard template formatted for YouTube 1080p/4K?",
+        "quick_replies": [
+          {
+            "title": "Send Storyboard! 📑",
+            "payload": "SEND_STORYBOARD"
+          }
+        ]
+      },
+      "branches": {
+        "SEND_STORYBOARD": "node_04_deliver_storyboard"
+      }
+    },
+    {
+      "id": "node_04_deliver_storyboard",
+      "type": "send_message",
+      "channel": "instagram_dm",
+      "content": {
+        "text": "Here is the master storyboard prompt:\n\n```markdown\nAct I: The Anomaly (00:00 - 08:30) - Hook, mystery, initial investigation\nAct II: The Breakthrough (08:30 - 22:00) - Technical mechanism, primary papers, conflict\nAct III: The Verdict (22:00 - 30:00) - Industry consequences, open-source future\n```\n\n📌 Save this DM. Reach out anytime if you want us to set up automated video rendering pipelines for your media brand!\n— Piyush Raj Singh, Signhify Studio (signhify.dpdns.org)"
+      }
+    }
+  ]
+}
+
