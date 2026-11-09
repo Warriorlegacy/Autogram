@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-11-09",
+      "slot_key": "2026-11-09-night",
+      "slot": "night",
+      "pillar": "Self-Hosted Architecture",
+      "topic": "[Reel60] PocketBase: Open Source Backend in 1 Single File with Embedded SQLite",
+      "hook": "Still configuring multiple services for your backend? PocketBase dares you to try a single standalone binary with embedded SQLite for everything: auth, realtime, files, admin. Simplify your stack.",
+      "template": "D",
+      "script_hash": "3a6a13c5cdea44b6",
+      "video_hash": "7d3ce44ff49f68de",
+      "reel_media_id": "18095288546189438",
+      "story_media_id": "18352944145267052",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-11-09",
       "pillar": "Self-Hosted Architecture",
       "topic": "Caddy 2: Automatic HTTPS and Reverse Proxy with 3-Line Config",
       "hook": "Stop paying for Cloudflare Edge. This 100% open source repo runs on your own hardware.",
