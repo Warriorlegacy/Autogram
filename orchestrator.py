@@ -880,7 +880,9 @@ def main():
     parser.add_argument("--test", action="store_true", help="Run diagnostic health check")
     parser.add_argument("--generate-image", type=str, metavar="PROMPT", help="Generate standalone conceptual tech image")
     parser.add_argument("--generate-script", action="store_true", help="Generate carousel script and caption only")
-    parser.add_argument("--generate-reel", action="store_true", help="Generate 30-45s Reels / Shorts video script")
+    parser.add_argument("--generate-reel", action="store_true", help="Generate and publish high-retention 60fps Remotion Reel")
+    parser.add_argument("--reel-id", type=str, default=None, help="Remotion reel project ID (e.g. diwali-dev-mode, replaced-editor, local-voice)")
+    parser.add_argument("--voice", type=str, default="ava", help="Voice shortcut or name for narration (default: ava - female)")
     parser.add_argument("--generate-hyperframes-reel", action="store_true", help="Generate 1080x1920 marketing promo reel via HyperFrames HTML/GSAP engine")
     parser.add_argument("--generate-promo-carousel", action="store_true", help="Generate and render 1080x1350 Signhify Studio promo carousel slides")
     parser.add_argument("--promo-carousel", action="store_true", help="Generate and publish 1080x1350 Signhify Studio promo carousel to Instagram feed")
@@ -948,13 +950,14 @@ def main():
         return
 
     if args.generate_reel:
-        sources = fetcher.acquire_sources(live_fetch=False)
-        candidates = [{"topic": s.get("source_title"), "angle": "Operational take", "pillar": "AI Tool Breakdown", "sources": [s.get("url")]} for s in sources]
-        winner = scorer.select_best_topic(candidates)["winner"]
-        carousel = generator.generate_carousel(winner, sources)
-        reel = script_writer.generate_reels_script(carousel)
+        from src.content.remotion_reel_pipeline import reel_pipeline
+        dry = args.dry_run or (not args.run_all)
+        target_id = args.reel_id or args.topic
+        print(f"\n[REMOTION REEL] Launching Autonomous Reel Pipeline (id={target_id}, voice={args.voice}, dry_run={dry})...")
+        res = reel_pipeline.run_pipeline(reel_id=target_id, voice=args.voice, dry_run=dry)
         print("\n" + "="*50)
-        print(reel["formatted_text"])
+        print("REEL PIPELINE EXECUTION COMPLETE:")
+        print(json.dumps(res, indent=2))
         print("="*50 + "\n")
         return
 

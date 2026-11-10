@@ -15,9 +15,14 @@ works offline.
 """
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
+
+# Stabilize OpenMP / MKL thread memory on CPU
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
 
 
 def build_parser() -> argparse.ArgumentParser:

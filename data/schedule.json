@@ -137,10 +137,13 @@
       "pillar": "Developer Power Tools & CLI",
       "format": "reel",
       "mode": "live",
-      "status": "QUEUED",
+      "status": "COMPLETED",
       "asset_path": "d:/Autogram/docs/reel-studio-kit/out/replaced-editor.mp4",
       "trigger_word": "CUT",
-      "created_at": "2026-11-08T14:20:00"
+      "created_at": "2026-11-08T14:20:00",
+      "media_id": "17913356547660502",
+      "live_url": "https://www.instagram.com/p/17913356547660502/",
+      "completed_at": "2026-11-10T16:34:28.909309"
     },
     {
       "id": "SCH-20261111-REEL",
@@ -292,6 +295,24 @@
       "completed_at": "2026-11-08T19:29:37.161053",
       "media_id": "18131997214881603",
       "live_url": "https://www.instagram.com/p/18131997214881603/",
+      "trigger_words": [
+        "FESTIVE",
+        "DIWALI"
+      ]
+    },
+    {
+      "id": "SCH-20261110-DEV-DIWALI",
+      "scheduled_time": "2026-11-10T13:49:49.079246",
+      "topic": "The Developer's Diwali: How Engineers Light Up The World",
+      "pillar": "Local AI & Edge Compute",
+      "format": "reel",
+      "mode": "live",
+      "status": "COMPLETED",
+      "created_at": "2026-11-10T13:49:49.079246",
+      "started_at": "2026-11-10T13:49:49.079246",
+      "completed_at": "2026-11-10T13:49:49.079246",
+      "media_id": "18092948633236297",
+      "live_url": "https://www.instagram.com/p/18092948633236297/",
       "trigger_words": [
         "FESTIVE",
         "DIWALI"

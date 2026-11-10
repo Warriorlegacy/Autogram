@@ -14,7 +14,7 @@ const id = args.find((a) => !a.startsWith("--"));
 const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 1] : d; };
 if (!id) { console.error("Usage: npm run sync -- <reel-id> [--lang hi|en|auto] [--model small]"); process.exit(1); }
 const lang = opt("lang", "auto");
-const model = opt("model", "small");
+const model = opt("model", "tiny");
 const dir = path.join(root, "public/reels", id);
 const vo = path.join(dir, "vo.wav");
 const captions = path.join(root, "projects", id, "captions.txt");
@@ -30,7 +30,10 @@ for (const [f, hint] of [[vo, "Run the voice step first."], [captions, "Write pr
   if (!fs.existsSync(f)) { console.error(`Missing ${f}. ${hint}`); process.exit(1); }
 
 const run = (script, a) => {
-  const r = spawnSync(py, [path.join(root, "tools/captions", script), ...a], { encoding: "utf8" });
+  const r = spawnSync(py, [path.join(root, "tools/captions", script), ...a], {
+    encoding: "utf8",
+    env: { ...process.env, OMP_NUM_THREADS: "1", KMP_DUPLICATE_LIB_OK: "TRUE" }
+  });
   if (r.status !== 0) { console.error(r.stdout, r.stderr); process.exit(1); }
   return r.stdout;
 };
