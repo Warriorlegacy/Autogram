@@ -19,13 +19,15 @@ const dir = path.join(root, "public/reels", id);
 const vo = path.join(dir, "vo.wav");
 const captions = path.join(root, "projects", id, "captions.txt");
 const pyCandidates = [
+  process.env.PYTHON,
   path.join(root, "tools/.venv/bin/python"),
   path.join(root, "tools/.venv/Scripts/python.exe"),
   path.resolve(root, "../../.venv/Scripts/python.exe"),
   path.resolve(root, "../../.venv/bin/python"),
+  "python3",
   "python",
-];
-const py = pyCandidates.find((p) => (p !== "python" && fs.existsSync(p))) || "python";
+].filter(Boolean);
+const py = pyCandidates.find((p) => (!["python", "python3"].includes(p) && fs.existsSync(p))) || (fs.existsSync("/usr/bin/python3") ? "/usr/bin/python3" : "python");
 for (const [f, hint] of [[vo, "Run the voice step first."], [captions, "Write projects/<id>/captions.txt (the words shown on screen)."]])
   if (!fs.existsSync(f)) { console.error(`Missing ${f}. ${hint}`); process.exit(1); }
 

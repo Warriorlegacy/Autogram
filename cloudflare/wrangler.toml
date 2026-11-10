@@ -1,0 +1,16 @@
+name = "autogram-cron-dispatcher"
+main = "worker-cron-dispatcher.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+GITHUB_REPO = "Warriorlegacy/Autogram"
+
+# Cron Triggers (UTC) mapped to India Standard Time (IST = UTC + 5:30)
+# 100% Free: Cloudflare Workers allows up to 3 cron schedules per worker on free tier
+[triggers]
+crons = [
+  "0 5 * * *",   # 10:30 AM IST — Morning Viral Reel
+  "0 6 * * *",   # 11:30 AM IST — Midday Prime Carousel
+  "0 14 * * *"   # 07:30 PM IST — Evening Prime Reel / Carousel
+]
+

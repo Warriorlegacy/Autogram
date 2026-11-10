@@ -2,11 +2,14 @@ name: Autogram 24/7 Cloud Autopilot
 
 on:
   schedule:
-    # 4 Daily Production Slots aligned to Asia/Kolkata (IST = UTC + 5:30)
-    - cron: '0 4 * * *'   # 09:30 AM IST (04:00 UTC) — Morning High-Signal Story / Breakdown
+    # 7 Daily Publishing Slots aligned to Asia/Kolkata (IST = UTC + 5:30)
+    - cron: '0 4 * * *'   # 09:30 AM IST (04:00 UTC) — Morning High-Signal Story
+    - cron: '0 5 * * *'   # 10:30 AM IST (05:00 UTC) — Morning Viral Reel (docs/reel-studio-kit)
     - cron: '0 6 * * *'   # 11:30 AM IST (06:00 UTC) — Midday Prime Carousel
+    - cron: '0 9 * * *'   # 02:30 PM IST (09:00 UTC) — Afternoon Viral Reel (docs/reel-studio-kit)
     - cron: '0 12 * * *'  # 05:30 PM IST (12:00 UTC) — Evening Tech Radar Story
-    - cron: '0 14 * * *'  # 07:30 PM IST (14:00 UTC) — Evening Prime Reel / Carousel
+    - cron: '0 14 * * *'  # 07:30 PM IST (14:00 UTC) — Evening Prime Carousel
+    - cron: '0 15 * * *'  # 08:30 PM IST (15:00 UTC) — Night Viral Reel (docs/reel-studio-kit)
   repository_dispatch:
     types: [publish-slot, trigger-autopilot, daily-post, daily-reel]
   workflow_dispatch:
@@ -21,6 +24,10 @@ on:
           - carousel
           - reel
           - story
+      reel_id:
+        description: "Target Reel ID from docs/reel-studio-kit (e.g. doc-engine, replaced-editor, local-voice, diwali-dev-mode)"
+        required: false
+        default: ""
       topic:
         description: "Custom Topic Override (leave blank for zero-repetition auto-trending)"
         required: false
@@ -41,7 +48,7 @@ on:
 jobs:
   autopilot:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     permissions:
       contents: write
 
@@ -67,7 +74,7 @@ jobs:
           playwright install --with-deps chromium
           sudo apt-get update && sudo apt-get install -y fonts-inter fonts-jetbrains-mono ffmpeg
 
-      - name: 5. Setup Node.js (For Remotion Reels)
+      - name: 5. Setup Node.js 20 (For Remotion Reels)
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -81,7 +88,7 @@ jobs:
             npm ci --prefer-offline || npm install
           fi
 
-      - name: 7. Execute Autonomous Publishing Engine
+      - name: 7. Execute Autonomous Cloud Publishing Engine
         env:
           AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -108,40 +115,32 @@ jobs:
         run: |
           echo "=================================================="
           echo "🚀 Autogram Cloud Autopilot Starting..."
-          echo "Slot: ${{ github.event.inputs.slot || 'auto' }}"
           echo "Timestamp UTC: $(date -u)"
           echo "=================================================="
 
-          SLOT="${{ github.event.inputs.slot || 'auto' }}"
-          TOPIC="${{ github.event.inputs.topic || '' }}"
-          PILLAR="${{ github.event.inputs.pillar || '' }}"
+          SLOT="${{ github.event.inputs.slot || github.event.client_payload.slot || 'auto' }}"
+          REEL_ID="${{ github.event.inputs.reel_id || github.event.client_payload.reel_id || '' }}"
+          TOPIC="${{ github.event.inputs.topic || github.event.client_payload.topic || '' }}"
+          PILLAR="${{ github.event.inputs.pillar || github.event.client_payload.pillar || '' }}"
+          DRY_FLAG="${{ github.event.inputs.dry_run || 'false' }}"
 
-          CMD_ARGS=()
+          CMD_ARGS=("--slot" "$SLOT")
+          if [ -n "$REEL_ID" ]; then
+            CMD_ARGS+=("--reel-id" "$REEL_ID")
+          fi
           if [ -n "$TOPIC" ]; then
             CMD_ARGS+=("--topic" "$TOPIC")
           fi
           if [ -n "$PILLAR" ]; then
             CMD_ARGS+=("--pillar" "$PILLAR")
           fi
+          if [ "$DRY_FLAG" = "true" ]; then
+            CMD_ARGS+=("--dry-run")
+          fi
 
           if [ -n "${IG_ACCESS_TOKEN}" ]; then
             echo "✓ Instagram Access Token detected in runner."
-            if [ "$SLOT" = "reel" ]; then
-              echo "Executing Reel Generation & Publishing..."
-              python orchestrator.py --generate-reel "${CMD_ARGS[@]}" || python orchestrator.py --run-all "${CMD_ARGS[@]}"
-            else
-              echo "Executing Carousel Generation & Publishing..."
-              python orchestrator.py --run-all "${CMD_ARGS[@]}"
-            fi
-
-            echo "Executing Auto-DM & Follow-Gate Verification..."
-            python -c "
-          from src.instagram.dm_automator import dm_automator
-          dm_automator.dry_run = False
-          summary = dm_automator.scan_and_automate(limit_posts=5)
-          print('DM Automation Scan Summary:', summary)
-          " || echo "DM Automation pass completed with notice."
-
+            python src/scheduler/cloud_autopilot_runner.py "${CMD_ARGS[@]}"
           else
             echo "⚠️ Instagram Access Token not present in runner."
             echo "Triggering live Render cloud dashboard failover webhook..."
