@@ -9,7 +9,7 @@ services:
       - key: PORT
         value: 5050
       - key: AUTOGRAM_OWNER_KEY
-        value: autogram_owner_vip_2026
+        sync: false
       - key: IG_USER_ID
         sync: false
       - key: IG_ACCESS_TOKEN
