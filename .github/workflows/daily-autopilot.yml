@@ -2,14 +2,11 @@ name: Autogram 24/7 Cloud Autopilot
 
 on:
   schedule:
-    # 7 Daily Publishing Slots aligned to Asia/Kolkata (IST = UTC + 5:30)
+    # Optimal Growth Cadence (Asia/Kolkata IST = UTC + 5:30): 1 Carousel + 1 Reel + 2 Stories
     - cron: '0 4 * * *'   # 09:30 AM IST (04:00 UTC) — Morning High-Signal Story
-    - cron: '0 5 * * *'   # 10:30 AM IST (05:00 UTC) — Morning Viral Reel (docs/reel-studio-kit)
-    - cron: '0 6 * * *'   # 11:30 AM IST (06:00 UTC) — Midday Prime Carousel
-    - cron: '0 9 * * *'   # 02:30 PM IST (09:00 UTC) — Afternoon Viral Reel (docs/reel-studio-kit)
+    - cron: '0 7 * * *'   # 12:30 PM IST (07:00 UTC) — Midday Prime Carousel (Save & Share Engine)
     - cron: '0 12 * * *'  # 05:30 PM IST (12:00 UTC) — Evening Tech Radar Story
-    - cron: '0 14 * * *'  # 07:30 PM IST (14:00 UTC) — Evening Prime Carousel
-    - cron: '0 15 * * *'  # 08:30 PM IST (15:00 UTC) — Night Viral Reel (docs/reel-studio-kit)
+    - cron: '0 14 * * *'  # 07:30 PM IST (14:00 UTC) — Evening Prime Viral Reel (Non-Follower Reach Engine)
   repository_dispatch:
     types: [publish-slot, trigger-autopilot, daily-post, daily-reel]
   workflow_dispatch:

@@ -71,31 +71,22 @@ def detect_slot_format(explicit_slot: str = "auto") -> tuple[str, str | None]:
 
     logger.info(f"Current IST Time: {ist_now.strftime('%H:%M:%S')} (Float: {time_float:.2f})")
 
-    # Time slots:
-    # 09:00 - 10:15 -> Story (Morning High-Signal)
-    # 10:15 - 11:15 -> Reel (Morning Viral Reel)
-    # 11:15 - 13:30 -> Carousel (Midday Prime Carousel)
-    # 13:30 - 16:30 -> Reel (Afternoon Viral Reel)
-    # 16:30 - 18:30 -> Story (Evening Tech Radar)
-    # 18:30 - 20:15 -> Carousel (Evening Prime Carousel)
-    # 20:15 - 23:59 -> Reel (Night Viral Reel)
-    if 9.0 <= time_float < 10.25:
+    # Optimal Growth Cadence:
+    # 08:30 - 11:00 -> Story (Morning High-Signal Story)
+    # 11:00 - 15:30 -> Carousel (Midday Prime Carousel — Save & Share Engine)
+    # 15:30 - 18:30 -> Story (Evening Tech Radar Story)
+    # 18:30 - 23:59 -> Reel (Evening Prime Viral Reel — Non-Follower Reach Engine)
+    if 8.5 <= time_float < 11.0:
         return "story", None
-    elif 10.25 <= time_float < 11.25:
-        return "reel", None
-    elif 11.25 <= time_float < 13.5:
+    elif 11.0 <= time_float < 15.5:
         return "carousel", None
-    elif 13.5 <= time_float < 16.5:
-        return "reel", None
-    elif 16.5 <= time_float < 18.5:
+    elif 15.5 <= time_float < 18.5:
         return "story", None
-    elif 18.5 <= time_float < 20.25:
-        return "carousel", None
-    elif 20.25 <= time_float < 24.0:
+    elif 18.5 <= time_float < 24.0:
         return "reel", None
     else:
-        # Default early morning fallback: Reel
-        return "reel", None
+        # Default night/early morning fallback: Carousel
+        return "carousel", None
 
 
 def execute_reel(reel_id: str | None = None, dry_run: bool = False) -> dict:

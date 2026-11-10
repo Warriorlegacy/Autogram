@@ -2,24 +2,26 @@
   "scheduler_enabled": true,
   "daily_slots": [
     {
-      "slot": "11:30",
-      "label": "Midday Prime Carousel",
+      "slot": "12:30",
+      "label": "Midday Prime Carousel (Save & Share Engine)",
       "pillar": "FOSS SaaS Alternatives",
       "format": "carousel",
       "enabled": true
-    },
+    }
+  ],
+  "reel_slots": [
     {
       "slot": "19:30",
-      "label": "Evening Prime Carousel",
+      "label": "Evening Prime Viral Reel (Non-Follower Reach Engine)",
       "pillar": "Developer Power Tools & CLI",
-      "format": "carousel",
+      "format": "reel",
       "enabled": true
     }
   ],
   "story_slots": [
     {
       "slot": "09:30",
-      "label": "Morning High-Signal Story",
+      "label": "Morning High-Signal Story (Audience Nurturing)",
       "pillar": "AI Tool Breakdown",
       "format": "story",
       "enabled": true
@@ -29,29 +31,6 @@
       "label": "Evening Tech Radar Story",
       "pillar": "Trending GitHub Spotlight",
       "format": "story",
-      "enabled": true
-    }
-  ],
-  "reel_slots": [
-    {
-      "slot": "10:30",
-      "label": "Morning Viral Reel",
-      "pillar": "Local AI & Edge Compute",
-      "format": "reel",
-      "enabled": true
-    },
-    {
-      "slot": "14:30",
-      "label": "Afternoon Viral Reel",
-      "pillar": "Self-Hosted Architecture",
-      "format": "reel",
-      "enabled": true
-    },
-    {
-      "slot": "20:30",
-      "label": "Night Viral Reel",
-      "pillar": "Open Source Economics & Contrarian",
-      "format": "reel",
       "enabled": true
     }
   ],
@@ -337,6 +316,20 @@
       "media_id": "18110817938234871",
       "live_url": "https://www.instagram.com/p/18110817938234871/",
       "completed_at": "2026-11-10T16:58:31.654573"
+    },
+    {
+      "id": "SCH-20261110-REEL-DIWALI-DEV-MODE",
+      "scheduled_time": "2026-11-10T17:41:03.877259",
+      "topic": "The Developer's Diwali: How Engineers Light Up The World \ud83e\ude94\u2728",
+      "pillar": "Local AI & Festive Tech",
+      "format": "reel",
+      "mode": "dry-run",
+      "status": "COMPLETED",
+      "media_id": "mock_reel_1794312663",
+      "live_url": "https://www.instagram.com/p/mock_reel_1794312663/",
+      "trigger_words": [
+        "FESTIVE"
+      ]
     }
   ],
   "history": []
