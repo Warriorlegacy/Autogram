@@ -184,7 +184,7 @@ class RemotionReelPipeline:
         env = os.environ.copy()
         env["OMP_NUM_THREADS"] = "1"
         env["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-        cmd = ["npm", "run", "sync", "--", reel_id, "--model", model]
+        cmd = f"npm run sync -- {reel_id} --model {model}"
         res = subprocess.run(cmd, capture_output=True, text=True, cwd=str(REEL_KIT_DIR), env=env, shell=True)
         if res.returncode != 0:
             logger.error(f"Sync failed: {res.stderr}\n{res.stdout}")
@@ -207,7 +207,7 @@ class RemotionReelPipeline:
         logger.info(f"Rendering Remotion reel '{reel_id}' to {out_mp4}...")
         env = os.environ.copy()
         env["NODE_OPTIONS"] = "--max-old-space-size=4096"
-        cmd = ["npm", "run", "render", "--", reel_id, rel_out]
+        cmd = f"npm run render -- {reel_id} {rel_out}"
         res = subprocess.run(cmd, capture_output=True, text=True, cwd=str(REEL_KIT_DIR), env=env, shell=True)
         if res.returncode != 0:
             logger.error(f"Remotion render failed: {res.stderr}\n{res.stdout}")
