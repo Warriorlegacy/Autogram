@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-11-10",
+      "slot_key": "2026-11-10-afternoon",
+      "slot": "afternoon",
+      "pillar": "Local AI & Edge Compute",
+      "topic": "[Reel60] Skeleton-of-Thought (SoT): The Secret Prompt Framework That Accelerates LLMs by 4x",
+      "hook": "Your LLM responses are about to get 4x faster. UC Berkeley's Skeleton-of-Thought reveals the blueprint for unprecedented parallel generation.",
+      "template": "B",
+      "script_hash": "cc670d3ef1b6cfdf",
+      "video_hash": "99e35f9f6cda3bdb",
+      "reel_media_id": "18388121113228950",
+      "story_media_id": "18103227083540923",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-11-10",
       "slot_key": "2026-11-10-night",
       "slot": "night",
       "pillar": "Open Source Economics & Contrarian",
