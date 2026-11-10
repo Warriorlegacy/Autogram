@@ -317,6 +317,26 @@
         "FESTIVE",
         "DIWALI"
       ]
+    },
+    {
+      "id": "SCH-20261110-DOC-ENGINE",
+      "scheduled_time": "2026-11-10T16:55:26.622667",
+      "topic": "Reel: doc-engine",
+      "format": "reel",
+      "status": "COMPLETED",
+      "media_id": "18594465997070001",
+      "live_url": "https://www.instagram.com/reel/18594465997070001/",
+      "completed_at": "2026-11-10T16:55:26.622667"
+    },
+    {
+      "id": "SCH-20261110-EVENING-CAROUSEL",
+      "scheduled_time": "2026-11-10T16:58:31.654573",
+      "topic": "7 Open-Source CLI Tools That Replace $300/Mo In Dev Subscriptions",
+      "format": "carousel",
+      "status": "COMPLETED",
+      "media_id": "18110817938234871",
+      "live_url": "https://www.instagram.com/p/18110817938234871/",
+      "completed_at": "2026-11-10T16:58:31.654573"
     }
   ],
   "history": []
