@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-11-10",
+      "slot_key": "2026-11-10-night",
+      "slot": "night",
+      "pillar": "Open Source Economics & Contrarian",
+      "topic": "[Reel60] The Open Source Bait-and-Switch: Why Startups Relicense from MIT to BSL",
+      "hook": "Open source: built by the community, then walled off by the company. Is 'permissive' just a startup's marketing trick until they hit scale?",
+      "template": "B",
+      "script_hash": "84f81ab71bcd41fb",
+      "video_hash": "a29b30ae911f28fa",
+      "reel_media_id": "18084189863356672",
+      "story_media_id": "18653417962023604",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-11-10",
       "pillar": "Developer Power Tools & CLI",
       "topic": "7 Open-Source CLI Tools: $300/Mo SaaS Replacement Stack",
       "hook": "Stop burning $300/mo on dev subscriptions. Own the stack.",
