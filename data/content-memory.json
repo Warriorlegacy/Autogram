@@ -1,6 +1,21 @@
 {
   "recent_posts": [
     {
+      "date": "2026-11-12",
+      "slot_key": "2026-11-12-night",
+      "slot": "night",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] Cal.com: Open Source Scheduling Infrastructure Replacing Calendly",
+      "hook": "Calendly charges you for the feature you should own: team routing. Here\u2019s how to self-host Cal.com and keep the webhooks free.",
+      "template": "A",
+      "script_hash": "8ad859bcc2652d50",
+      "video_hash": "90c141f25875cd89",
+      "reel_media_id": "17964716019213449",
+      "story_media_id": "17898861000413692",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
       "date": "2026-11-11",
       "slot_key": "2026-11-11-afternoon",
       "slot": "afternoon",
