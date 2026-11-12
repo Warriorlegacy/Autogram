@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-11-12",
+      "slot_key": "2026-11-12-afternoon",
+      "slot": "afternoon",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] Plane: Open Source Project Management Tool Replacing Jira and Linear",
+      "hook": "Your Jira or Linear bill is silently skyrocketing. What if you could get all those core project management features, completely self-hosted, for free?",
+      "template": "A",
+      "script_hash": "57c579b46087d842",
+      "video_hash": "755f42d81e6a33e7",
+      "reel_media_id": "18577360054072170",
+      "story_media_id": "17925415479447441",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-11-12",
       "slot_key": "2026-11-12-night",
       "slot": "night",
       "pillar": "FOSS SaaS Alternatives",
