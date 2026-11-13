@@ -484,6 +484,20 @@
       "trigger_words": [
         "VOICE"
       ]
+    },
+    {
+      "id": "SCH-20261113-REEL-LOCAL-VOICE",
+      "scheduled_time": "2026-11-13T19:09:44.959286",
+      "topic": "Never Pay For ElevenLabs Again: $0 Local Voice Engine",
+      "pillar": "Local AI & Audio",
+      "format": "reel",
+      "mode": "live",
+      "status": "COMPLETED",
+      "media_id": "18183867967428961",
+      "live_url": "https://www.instagram.com/p/18183867967428961/",
+      "trigger_words": [
+        "VOICE"
+      ]
     }
   ],
   "history": []
