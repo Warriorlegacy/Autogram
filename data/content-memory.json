@@ -1,6 +1,21 @@
 {
   "recent_posts": [
     {
+      "date": "2026-11-13",
+      "slot_key": "2026-11-13-night",
+      "slot": "night",
+      "pillar": "FOSS SaaS Alternatives",
+      "topic": "[Reel60] Penpot: Open Source Design & Prototyping Platform Replacing Figma",
+      "hook": "Developers, imagine designing UIs that are *already* native web standards. Penpot lets you build with SVG, CSS Grid, and Flexbox, right in your browser.",
+      "template": "C",
+      "script_hash": "6998afe0786df6b8",
+      "video_hash": "b0213616eb275969",
+      "reel_media_id": "18146259412579345",
+      "story_media_id": "17945864889094195",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
       "date": "2026-11-12",
       "slot_key": "2026-11-12-afternoon",
       "slot": "afternoon",
