@@ -1,6 +1,6 @@
 name: Signhify Viral Reels — Visual Variety + Virality Gate
 
-# NEW AUTHORITATIVE pipeline for the enhanced 60s reel engine:
+# Manual-dispatch pipeline for the enhanced 60s reel engine:
 #   - virality gate (>=75/100) before rendering — concepts below the gate are
 #     rotated to a fresh topic automatically
 #   - per-script visual_seed: every new script renders a DIFFERENT animated
@@ -9,13 +9,14 @@ name: Signhify Viral Reels — Visual Variety + Virality Gate
 #   - content-aware scene templates + reusable 3D kinetic-type text system
 #   - procedural music (build to payoff) + SFX + narration ducking
 #   - post-production: thumbnail, preview.mp4, extended QC, metadata + report
-# Slots (Asia/Kolkata): 11:30 / 17:30 IST = 06:00 / 12:00 UTC (complements
-# daily-video.yml's 10:30/14:30/20:30 slots).
+# The 11:30 / 17:30 IST automatic slots are paused pending duplicate review.
 
 on:
-  schedule:
-    - cron: '0 6 * * *'
-    - cron: '0 12 * * *'
+  # Automatic Reel publishing paused on 2026-11-15 after repeated-content report.
+  # Keep workflow_dispatch available for controlled, manually started runs.
+  # schedule:
+  #   - cron: '0 6 * * *'
+  #   - cron: '0 12 * * *'
   workflow_dispatch:
     inputs:
       topic:

@@ -1,14 +1,16 @@
-name: Signhify 60s Reels Autopilot — 3x Daily (Authoritative)
+name: Signhify 60s Reels — Manual Dispatch
 
-# AUTHORITATIVE 3-slot publisher. daily_reels.yml is deprecated and must not publish.
-# Slots (Asia/Kolkata): 10:30 / 14:30 / 20:30 IST = 05:00 / 09:00 / 15:00 UTC.
+# Manual-dispatch Reel publisher. daily_reels.yml is deprecated and must not publish.
+# The 10:30 / 14:30 / 20:30 IST automatic slots are paused pending duplicate review.
 # Runs fully in GitHub Actions; PC shutdown has no impact. Zero paid services required.
 
 on:
-  schedule:
-    - cron: '0 5 * * *'
-    - cron: '0 9 * * *'
-    - cron: '0 15 * * *'
+  # Automatic Reel publishing paused on 2026-11-15 after repeated-content report.
+  # Keep workflow_dispatch available for controlled, manually started runs.
+  # schedule:
+  #   - cron: '0 5 * * *'
+  #   - cron: '0 9 * * *'
+  #   - cron: '0 15 * * *'
   workflow_dispatch:
     inputs:
       topic:

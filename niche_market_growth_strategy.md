@@ -1,93 +1,69 @@
-# 📈 @signhify.studio — Market Analysis & Viral Growth Architecture
+# Signhify Studio content strategy
 
-> [!IMPORTANT]
-> **Account Positioning**: **Piyush | Growth Systems** ([@signhify.studio](https://www.instagram.com/signhify.studio/))  
-> **Niche**: Compound Growth Systems, Production AI Architecture, Automation Stacks, and Founder Execution.  
-> **Target Audience**: Tech Founders, Indie Hackers, Growth Engineers, SaaS Operators, and Ambitious Builders.
+## Positioning
 
----
+Create practical Hindi and Hinglish content for people building software, using AI tools, and automating small businesses. Each post should teach one useful idea with a visible example and a clear limitation where it matters.
 
-## 1. Current Market Analysis: What Makes People Follow in 2025/2026?
+The account should earn a follow through repeated usefulness. Avoid claims about customer outcomes, savings, or performance unless the source and measurement are available.
 
-In the tech, AI, and startup niches on Instagram, users are severely fatigued by generic AI news, surface-level ChatGPT prompts, and motivational platitudes. 
+## Content pillars
 
-The accounts experiencing explosive organic growth (e.g., *Dan Murray-Terry, Justin Welsh, Linus Ekenstam, Tech Lead visuals*) succeed because of **Systemic Utility**.
+1. **A real workflow, shown clearly** — demonstrate a concrete task, the steps, and the result.
+2. **A system explained visually** — show how one technical mechanism works, using a small diagram or animated example.
+3. **A tool tested honestly** — explain one use case, what worked, what did not, and the relevant free-plan or privacy limits.
+4. **A builder lesson** — share a specific decision or mistake from a real project, with enough context to be useful.
 
-### The Psychology of the Follow Decision
-A user who swipes through your carousel asks one subconscious question before hitting **Follow**:
-> *"If I follow this person, will my feed make me smarter, more efficient, and more profitable every week?"*
+Keep the current audience in mind when changing topics. For a channel moving from music/status posts to Hindi technology, bridge through familiar subjects such as recommendation feeds, editing tools, and how creators use AI before moving into deeper software architecture.
 
-| Casual Impression | **High-Converting Follow Trigger** |
-|---|---|
-| "Here is some AI news I read on Twitter." | *"Here is the exact production architecture that cut our inference bill by 78%."* |
-| Generic advice ("Focus on quality"). | Exact step-by-step checklists, code schemas, and decision matrices. |
-| Asking passively for likes. | Offering an immediate tangible resource: *"Comment 'SYSTEM' for the Notion blueprint."* |
-| Inconsistent, amateur visual templates. | Dark luxury, Linear/Apple-tier aesthetic with high visual contrast. |
+## Reels and Shorts structure
 
----
+Use this as a flexible outline, not a formula:
 
-## 2. The Algorithmic Ranking Formula (Instagram 2025/2026)
+1. Open on a visible question, surprising behavior, or concrete problem.
+2. Explain the stakes in one short beat.
+3. Show the mechanism or steps. Keep one main idea in each scene.
+4. Deliver the answer or demonstration before the ending.
+5. Close with one relevant action: try the step, save the explanation, or ask a specific question.
 
-Instagram ranks carousels based on a strict hierarchy of user engagement signals:
+For motion graphics, use a small number of visual elements that change for a reason. Keep labels readable on a phone, synchronize motion with narration, and avoid decorative dashboards or metrics that do not support the explanation.
 
-```mermaid
-graph TD
-    A[User Discovers Carousel via Explore / Feed] --> B{Action Taken}
-    B -->|Highest Weight: 10x| C[💾 Saves / Bookmarks]
-    B -->|High Weight: 8x| D[↗ DM Shares to Colleagues]
-    B -->|Viral Velocity: 6x| E[💬 High Comment Density: 'SYSTEM']
-    B -->|Watch Time: 4x| F[🔄 100% Swipe-Through Rate to Slide 8]
-    B -->|Low Weight: 1x| G[❤️ Passive Likes]
-    C --> H[Algorithmic Explore Blast]
-    D --> H
-    E --> H
-```
+## Carousels
 
-1. **Saves (10x Multiplier)**: Carousels that function as **Reference Manuals** get saved at an 8–15% rate. Instagram flags high-save carousels as premium evergreen assets and continuously serves them to non-followers.
-2. **Shares via DM (8x Multiplier)**: When a tech founder DMs a slide to their CTO or co-founder ("Look at slide 4"), Instagram detects high relational relevance.
-3. **Comment-to-DM Trigger (Velocity)**: Asking users to comment a keyword (e.g. `SYSTEM`) creates rapid comment spikes within the first 60 minutes ("Golden Hour"), forcing the post into Explore feeds.
+Choose the number of slides to fit the idea. A useful sequence is: problem, context, explanation, example, steps, caveat, takeaway. Add a resource CTA only when the resource exists and the delivery path has been checked.
 
----
+Do not add a fake verification badge, invented benchmark, fabricated testimonial, or placeholder “comment a keyword” promise. Do not imply that a lead magnet is ready if it is not.
 
-## 3. The 8-Slide Viral Architecture
+## Distribution and measurement
 
-Every carousel generated by Autogram is engineered around this psychological progression:
+There is no reliable universal engagement-weight formula to copy. Meta describes ranking as a set of systems using many signals, and its public material does not establish fixed multipliers for saves, shares, comments, or likes. Treat creative choices as hypotheses and compare outcomes with the account’s own baseline.
 
-```
-Slide 1 (Hook)        → Stop the scroll with an expensive mistake or bold counter-intuitive claim.
-Slide 2 (Context)     → Expose why naive/standard approaches fail in production.
-Slide 3 (Comparison)  → Side-by-side: Naive Approach vs Compound Growth System.
-Slide 4 (Blueprint)   → Visual architecture diagram / pipeline flow (highest screenshot rate).
-Slide 5 (Checklist)   → 3 actionable implementation rules for immediate execution.
-Slide 6 (Benchmark)   → Concrete metrics, token savings, or speed improvements.
-Slide 7 (Rule)        → The executive takeaway: "Architecture beats model selection."
-Slide 8 (Terminal)    → The Follow Terminal with verified badge, Follow button, and Comment Lead Magnet.
-```
+When available to the account, use Trial Reels to show a new format to non-followers first. Review the metrics Instagram exposes after roughly 24 hours; automatic sharing can use performance during the first 72 hours. Trial Reels are an experiment, not a guaranteed reach boost. Check Instagram’s Professional Dashboard for account-specific Best Practices.
 
----
+For each post, record:
 
-## 4. Visual Transformation (Before vs After)
+- Topic, format, hook, length, and publication date.
+- Reach or views, follower/non-follower split when available, watch time or retention when available.
+- Shares, saves, comments, profile visits, and follows when available.
+- Whether the result is above or below the account’s recent comparable posts.
+- One change to test next time.
 
-### Slide 8: Upgraded Follow Conversion Terminal
-Autogram has been upgraded with a dedicated **Profile Follow Terminal** that directly converts readers into followers:
+Do not infer causation from a single post or a public view count. Compare similar formats over multiple posts and label small samples as directional.
 
-![New CTA Slide](C:\Users\Piyush\.gemini\antigravity-ide\brain\d4386c53-c2b4-4445-b033-e0451552f67b\new_cta_preview.jpg)
+## Editorial quality checks
 
-### Slide 1: High-Contrast Technical Hook
-![New Hook Slide](C:\Users\Piyush\.gemini\antigravity-ide\brain\d4386c53-c2b4-4445-b033-e0451552f67b\new_hook_preview.jpg)
+- Can the claim be supported by the source shown or linked?
+- Does the opening match what the video actually delivers?
+- Is every number sourced and accurately scoped?
+- Is the free-plan, access, or product limitation clear when it affects the advice?
+- Is the caption useful in plain text, with natural search terms rather than keyword stuffing?
+- Are subtitles legible, accurate, and synchronized closely enough to understand?
+- Does the CTA describe an action that works today?
 
----
+## Research references
 
-## 5. Technical Improvements Implemented in Autogram
+- Meta, [How AI influences what you see on Facebook and Instagram](https://about.fb.com/news/2023/06/how-ai-ranks-content-on-facebook-and-instagram/).
+- Meta, [Trial Reels: test content with non-followers](https://about.fb.com/news/2024/12/trial-reels-try-content-non-followers-first-see-what-perfoms-best/).
+- Meta, [Instagram Best Practices for creators](https://about.fb.com/news/2024/10/best-practices-education-hub-creators-instagram/).
+- YouTube Help, [Understand your YouTube Shorts analytics](https://support.google.com/youtube/answer/12942217?hl=en-IN).
 
-1. **Brand Profile Sync ([`data/brand.json`](file:///d:/Autogram/data/brand.json))**:
-   - Synced with your real Instagram identity: `Piyush | Growth Systems` ([@signhify.studio](https://www.instagram.com/signhify.studio/)).
-   - Dynamic avatar badge (`S`) configured across all slide templates.
-2. **Template Modernization ([`renderer/templates/cta.html`](file:///d:/Autogram/renderer/templates/cta.html))**:
-   - Replaced generic placeholder button with a high-contrast **"Follow @signhify.studio ↗"** action terminal.
-   - Added verified badge, profile card, and interactive engagement pills (`💾 Save`, `💬 Comment "SYSTEM"`, `↗ Share`).
-   - Cleaned all 8 slide templates to dynamically pull `{{ brand.avatar_letter }}`.
-3. **Caption & Growth Loop Engine ([`src/content/script_writer.py`](file:///d:/Autogram/src/content/script_writer.py))**:
-   - Integrated the viral **Comment-to-DM hook**: *"Want the full architecture blueprint? Comment 'SYSTEM' below."*
-   - Embedded the clear Follow value proposition: *"Follow @signhify.studio for battle-tested growth systems & AI architecture every week."*
-   - Upgraded hashtag clusters with high-intent keywords (`#GrowthSystems`, `#SignhifyStudio`, `#AIWorkflows`, `#SystemDesign`, `#SaaSGrowth`).
+These references describe platform features and available metrics. They do not promise a particular reach, follower count, or business result.
