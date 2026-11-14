@@ -2,6 +2,21 @@
   "recent_posts": [
     {
       "date": "2026-11-14",
+      "slot_key": "2026-11-14-afternoon",
+      "slot": "afternoon",
+      "pillar": "Developer Power Tools & CLI",
+      "topic": "[Reel60] Meilisearch: Lightning Fast Open Source Search Engine Outperforming Algolia",
+      "hook": "Algolia bill shock hitting hard? This Rust-powered open-source engine delivers sub-50ms search with zero surprise costs.",
+      "template": "E",
+      "script_hash": "797ba056364f337c",
+      "video_hash": "8bb3680702b8d3fc",
+      "reel_media_id": "18179379433443302",
+      "story_media_id": "18114234874896202",
+      "status": "PUBLISHED",
+      "score": 95.0
+    },
+    {
+      "date": "2026-11-14",
       "slot_key": "2026-11-14-night",
       "slot": "night",
       "pillar": "Trending GitHub Spotlight",
