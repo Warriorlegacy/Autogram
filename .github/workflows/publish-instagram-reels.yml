@@ -1,0 +1,189 @@
+name: Publish Signhify Instagram Reels
+
+run-name: Publish Signhify Reels by ${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      posts_json:
+        description: "JSON array of the eight project, video_url, and caption records"
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: signhify-instagram-sequential-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN || secrets.META_GRAPH_ACCESS_TOKEN }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID || secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+      META_API_VERSION: ${{ secrets.META_API_VERSION || 'v27.0' }}
+      POSTS_JSON: ${{ inputs.posts_json }}
+    steps:
+      - name: Verify account, video URLs, quota, and publish sequentially
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import time
+          from urllib.error import HTTPError, URLError
+          from urllib.parse import urlencode, urlparse
+          from urllib.request import Request, urlopen
+
+          token = os.environ.get("IG_ACCESS_TOKEN", "")
+          ig_id = os.environ.get("IG_USER_ID", "")
+          version = os.environ.get("META_API_VERSION", "v27.0")
+          if not version.startswith("v"):
+              version = "v" + version
+          if not token or not ig_id:
+              raise SystemExit("Instagram publishing secrets are not configured.")
+
+          expected = ["localrank-studio", "quoteflow", "appointmentflow", "coachingos",
+                      "creativeops", "docudesk", "hireflow-lite", "leadpulse"]
+          try:
+              posts = json.loads(os.environ["POSTS_JSON"])
+          except Exception:
+              raise SystemExit("The post batch is not valid JSON.")
+          if not isinstance(posts, list) or len(posts) != len(expected):
+              raise SystemExit("Refusing to publish: the batch must contain exactly eight posts.")
+          if [p.get("project") for p in posts if isinstance(p, dict)] != expected:
+              raise SystemExit("Refusing to publish: projects must be unique and in the supplied order.")
+
+          for post in posts:
+              if not isinstance(post, dict):
+                  raise SystemExit("Refusing to publish: malformed post record.")
+              parsed = urlparse(post.get("video_url", ""))
+              caption = post.get("caption", "")
+              if parsed.scheme != "https" or not parsed.hostname or parsed.hostname in {"localhost", "127.0.0.1", "::1"} or not parsed.path.lower().endswith(".mp4"):
+                  raise SystemExit(f"Refusing {post.get('project')}: video must be a public HTTPS MP4 URL.")
+              if not isinstance(caption, str) or not caption.strip() or len(caption) > 2200 or "#" not in caption:
+                  raise SystemExit(f"Refusing {post.get('project')}: caption is missing, too long, or has no hashtags.")
+
+          def public_video_check(url, project):
+              request = Request(url, headers={"Range": "bytes=0-0", "User-Agent": "Signhify-ReelPublisher/1.0"})
+              try:
+                  with urlopen(request, timeout=30) as response:
+                      if response.status not in (200, 206):
+                          raise RuntimeError(f"{project}: video host returned HTTP {response.status}.")
+                      media_type = response.headers.get("Content-Type", "").lower()
+                      if not media_type.startswith(("video/mp4", "application/octet-stream")) or not response.read(1):
+                          raise RuntimeError(f"{project}: video host returned an empty or unsupported file.")
+              except HTTPError as error:
+                  raise RuntimeError(f"{project}: video host returned HTTP {error.code}.") from None
+              except (URLError, TimeoutError, OSError):
+                  raise RuntimeError(f"{project}: video host could not be reached.") from None
+
+          def graph(method, path, params):
+              fields = dict(params)
+              fields["access_token"] = token
+              url = f"https://graph.facebook.com/{version}/{path.lstrip('/')}"
+              headers = {"User-Agent": "Signhify-ReelPublisher/1.0"}
+              data = None
+              if method == "GET":
+                  url += "?" + urlencode(fields)
+              else:
+                  data = urlencode(fields).encode("utf-8")
+                  headers["Content-Type"] = "application/x-www-form-urlencoded"
+              request = Request(url, data=data, headers=headers, method=method)
+              try:
+                  with urlopen(request, timeout=45) as response:
+                      raw, status = response.read(), 200
+              except HTTPError as error:
+                  raw, status = error.read(), error.code
+              except (URLError, TimeoutError, OSError):
+                  raise RuntimeError("Meta API network error; request details withheld.") from None
+              try:
+                  payload = json.loads(raw)
+              except Exception:
+                  raise RuntimeError(f"Meta API returned HTTP {status} with an unreadable response.") from None
+              if status != 200 or "error" in payload:
+                  error = payload.get("error") or {}
+                  message = str(error.get("message") or "request failed").replace(token, "[redacted]")[:240]
+                  raise RuntimeError(f"Meta API error {error.get('code', 'unknown')}: {message}")
+              return payload
+
+          account = graph("GET", ig_id, {"fields": "username,media_count"})
+          if account.get("username") != "signhify.studio":
+              raise SystemExit("Refusing to publish: the connected account is not @signhify.studio.")
+          print(f"Verified target account: @{account['username']}.")
+
+          for post in posts:
+              public_video_check(post["video_url"], post["project"])
+          print("All eight public MP4 URLs are reachable.")
+
+          result = graph("GET", f"{ig_id}/content_publishing_limit", {"fields": "quota_usage,config"})
+          rows = result.get("data") or []
+          try:
+              used = int(rows[0]["quota_usage"])
+              total = int(rows[0]["config"]["quota_total"])
+          except (IndexError, KeyError, TypeError, ValueError):
+              raise SystemExit("Could not verify Instagram's current publishing quota; no posts were sent.")
+          remaining = total - used
+          print(f"Publishing quota: {used}/{total} used; {remaining} slots available.")
+          if remaining < len(posts):
+              raise SystemExit(f"Need eight slots; only {remaining} are available. No posts were sent.")
+
+          published = []
+          for index, post in enumerate(posts, 1):
+              project = post["project"]
+              print(f"[{index}/8] Creating Reel for {project}.")
+              container = graph("POST", f"{ig_id}/media", {
+                  "media_type": "REELS", "video_url": post["video_url"],
+                  "caption": post["caption"], "share_to_feed": "true"
+              }).get("id")
+              if not container:
+                  raise SystemExit(f"{project}: no container ID returned; item was not published.")
+              print(f"[{index}/8] Waiting for Meta to process {project}.")
+              deadline, last_status = time.monotonic() + 600, None
+              while True:
+                  state = graph("GET", container, {"fields": "status_code,status"})
+                  status = state.get("status_code", "UNKNOWN")
+                  if status != last_status:
+                      print(f"[{index}/8] {project} status: {status}.")
+                      last_status = status
+                  if status == "FINISHED":
+                      break
+                  if status in {"ERROR", "EXPIRED"}:
+                      raise SystemExit(f"{project}: Meta processing failed; no publish call was made.")
+                  if time.monotonic() >= deadline:
+                      raise SystemExit(f"{project}: processing timed out; inspect container {container} before retrying.")
+                  time.sleep(10)
+
+              print(f"[{index}/8] Publishing {project}.")
+              # This non-idempotent call is never retried automatically.
+              media_id = graph("POST", f"{ig_id}/media_publish", {"creation_id": container}).get("id")
+              if not media_id:
+                  raise SystemExit(f"{project}: no media ID returned; inspect Instagram before retrying.")
+              permalink = ""
+              try:
+                  media = graph("GET", media_id, {"fields": "id,permalink"})
+                  link = media.get("permalink", "")
+                  if link.startswith("https://www.instagram.com/"):
+                      permalink = link
+              except Exception:
+                  pass
+              published.append((project, media_id, permalink))
+              print(f"[{index}/8] Published {project}; media ID {media_id}.")
+              if permalink:
+                  print(f"[{index}/8] {permalink}")
+              if index < len(posts):
+                  time.sleep(90)
+
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path:
+              with open(summary_path, "a", encoding="utf-8") as summary:
+                  summary.write("# Instagram Reel batch\n\n")
+                  for project, media_id, permalink in published:
+                      line = f"- {project} — media ID {media_id}"
+                      if permalink:
+                          line += f" — {permalink}"
+                      summary.write(line + "\n")
+          print("All eight Reels published sequentially.")
+          PY
