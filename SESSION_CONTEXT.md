@@ -197,7 +197,7 @@ npm run check -- claude-vs-premiere
   - HireFlow Lite: https://www.instagram.com/reel/DfuOWL3pYpk/
   - LeadPulse: https://www.instagram.com/reel/DfuOqI-nCOf/
 - The manual-only publisher is .github/workflows/publish-instagram-reels.yml (commit 07e52cc). It validates the target account, public MP4 URLs, and full-batch quota before publishing; it does not retry media_publish.
-- Autogram 24/7 Cloud Autopilot (daily-autopilot.yml, workflow ID 412504937) was disabled in GitHub Actions on 2026-11-14 to stop its scheduled Reel slot. The separate daily-video.yml and viral-reels.yml workflows remain enabled.
+- Autogram 24/7 Cloud Autopilot (daily-autopilot.yml, workflow ID 412504937) was disabled in GitHub Actions on 2026-11-14. Its repository workflow now has no schedule or repository_dispatch trigger; manual dispatch is retained with dry-run enabled by default. Hardcoded credential fallbacks and the remote publishing failover were removed. The separate daily-video.yml and viral-reels.yml workflows remain enabled.
 - Instagram credential values remain in GitHub Actions secrets (IG_ACCESS_TOKEN, IG_USER_ID, INSTAGRAM_BUSINESS_ACCOUNT_ID, META_API_VERSION, and META_GRAPH_ACCESS_TOKEN). Values were not extracted to local files or printed.
 - The videos were temporarily hosted by Uguu for Meta ingestion; those upload links expire after three hours. The published Instagram permalinks remain the durable references.
 - The AppointmentFlow caption accurately describes ICS calendar export and says the video does not provide live two-way calendar sync.
