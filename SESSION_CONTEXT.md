@@ -1,7 +1,7 @@
 # 🛰️ AUTOGRAM — MASTER SESSION CONTEXT & AGENT HANDOVER (HERMES AGENT READY)
 
 > **Document Version:** 3.0  
-> **Timestamp:** 2026-11-08  
+> **Timestamp:** 2026-11-14
 > **Target Audience:** Hermes Agent / Autonomous AI Coding Agents / Claude Code  
 > **Primary Workspace:** `D:\Autogram`  
 > **Host Operating System:** Windows 11 (64-bit)  
@@ -29,7 +29,7 @@ d:\Autogram/
 ├── dashboard_api.py                # Flask Web Dashboard + background scheduler daemon (Port 5050)
 ├── autopilot.db                    # SQLite primary database (runs, metrics, publications)
 ├── requirements.txt                # Python dependencies (no setup.py / pyproject.toml)
-├── .env                            # Environment variables & API keys (Owner bypass enabled)
+├── .env (optional, local and git-ignored) # Runtime credentials stay out of documentation and source control
 │
 ├── src/                            # Engine Core
 │   ├── auth/licensing.py           # HMAC-SHA256 license gate (AUTOGRAM_OWNER_KEY bypass)
@@ -81,7 +81,7 @@ d:\Autogram/
 
 1. **License Gate Bypass (Mandatory):**
    * All execution is blocked by `src/auth/licensing.py`.
-   * **Bypass:** Ensure `AUTOGRAM_OWNER_KEY=autogram_owner_vip_2026` is present in `.env`. The system runs with unlimited free owner privileges.
+   * **Owner access:** Provide AUTOGRAM_OWNER_KEY only through an authorized local ignored environment file or GitHub Actions secret. Never hardcode or document its value; if the key is unavailable, do not bypass the license gate.
 2. **Fail-Closed Banned Phrase Guard:**
    * `data/brand.json` defines forbidden words under `avoid` (e.g. *robust, seamless, game-changer, dive in, leverage*).
    * Any script or brief containing these phrases will exit with code `3` or fail the quality gate. Never delete or bypass this check.
@@ -183,3 +183,22 @@ npm run check -- claude-vs-premiere
 * **Hook:** *"A video editor wanted to charge my agency five thousand dollars a month to cut long podcasts into shorts. Instead, I ran one open-source Python script."*
 * **The Stack:** Whisper diarization + silence removal + auto face-tracking + kinetic captions in 90 seconds.
 * **ManyChat Trigger:** `CUT`
+
+## 8. Instagram publishing and workflow state (2026-11-14)
+
+- Target account was verified as @signhify.studio through the Autogram GitHub Actions secret-backed Graph API check.
+- The eight supplied portfolio Reels were published sequentially by workflow run [43594589661](https://github.com/Warriorlegacy/Autogram/actions/runs/43594589661). Instagram reported 10/100 publishing quota used before the batch; all eight finished processing and returned media permalinks.
+  - LocalRank Studio: https://www.instagram.com/reel/DfuMrhqpWvf/
+  - QuoteFlow: https://www.instagram.com/reel/DfuM75ajX9U/
+  - AppointmentFlow: https://www.instagram.com/reel/DfuNMIojvpl/
+  - CoachingOS: https://www.instagram.com/reel/DfuNcRijzcq/
+  - CreativeOps: https://www.instagram.com/reel/DfuNxdUjCev/
+  - DocuDesk: https://www.instagram.com/reel/DfuODP3oUNH/
+  - HireFlow Lite: https://www.instagram.com/reel/DfuOWL3pYpk/
+  - LeadPulse: https://www.instagram.com/reel/DfuOqI-nCOf/
+- The manual-only publisher is .github/workflows/publish-instagram-reels.yml (commit 07e52cc). It validates the target account, public MP4 URLs, and full-batch quota before publishing; it does not retry media_publish.
+- Autogram 24/7 Cloud Autopilot (daily-autopilot.yml, workflow ID 412504937) was disabled in GitHub Actions on 2026-11-14 to stop its scheduled Reel slot. The separate daily-video.yml and viral-reels.yml workflows remain enabled.
+- Instagram credential values remain in GitHub Actions secrets (IG_ACCESS_TOKEN, IG_USER_ID, INSTAGRAM_BUSINESS_ACCOUNT_ID, META_API_VERSION, and META_GRAPH_ACCESS_TOKEN). Values were not extracted to local files or printed.
+- The videos were temporarily hosted by Uguu for Meta ingestion; those upload links expire after three hours. The published Instagram permalinks remain the durable references.
+- The AppointmentFlow caption accurately describes ICS calendar export and says the video does not provide live two-way calendar sync.
+- Credentials pasted into chat must be treated as exposed. Rotate any valid GitHub, Cloudflare, and Autogram owner credentials; none of their values belong in this file.
