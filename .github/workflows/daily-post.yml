@@ -91,7 +91,7 @@ jobs:
             fi
           fi
         env:
-          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_COPILOT_TOKEN: ${{ secrets.GH_COPILOT_TOKEN || secrets.COPILOT_TOKEN || secrets.GITHUB_TOKEN }}
           GH_COPILOT_TOKEN: ${{ secrets.GH_COPILOT_TOKEN || secrets.COPILOT_TOKEN }}
@@ -109,7 +109,7 @@ jobs:
           META_APP_ID: ${{ secrets.META_APP_ID }}
           META_APP_SECRET: ${{ secrets.META_APP_SECRET }}
           PUBLIC_CDN_BASE: ${{ secrets.PUBLIC_CDN_BASE || 'https://autogram-dashboard.onrender.com' }}
-          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY || 'f0ee2a304a71d5b2da983153c2284b73' }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           DRY_RUN: 'false'

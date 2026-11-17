@@ -34,7 +34,7 @@ jobs:
           echo "Starting Autonomous Comment & DM Scan for @signhify.studio..."
           python orchestrator.py --auto-dm
         env:
-          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY || 'autogram_owner_vip_2026' }}
+          AUTOGRAM_OWNER_KEY: ${{ secrets.AUTOGRAM_OWNER_KEY}}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           META_API_VERSION: ${{ secrets.META_API_VERSION || 'v23.0' }}
