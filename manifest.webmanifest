@@ -1,0 +1,24 @@
+{
+  "name": "Autogram AI",
+  "short_name": "Autogram",
+  "description": "Autonomous B2B Instagram content engine — research, render and publish via Meta's official API.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#04060A",
+  "theme_color": "#04060A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
