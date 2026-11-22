@@ -1,0 +1,38 @@
+# Autogram AI
+
+> Autonomous B2B Instagram content engine: research, write, render and publish daily carousels and reels via Meta's official Graph API with zero human hours.
+
+Autogram AI is an automated content infrastructure for founders, creators and agencies who need consistent high-signal Instagram output without manual design or scheduling work. It ingests from ArXiv, engineering whitepapers, GitHub trending repos and curated RSS, scores candidates across novelty/evidence/utility/virality, enforces a 6-pillar rotation with anti-repetition memory, fact-checks every technical claim against verified sources with a fail-closed rule, renders 1080x1350 JPEG slides deterministically via headless Chromium, and publishes through Meta's official Content Publishing Graph API.
+
+## Product
+
+- 6-layer autonomous pipeline: ingestion, intelligence, verification, synthesis, distribution, evolution.
+- Deterministic Playwright Chromium renderer producing pixel-perfect 1080x1350 (4:5 portrait) slides.
+- Two-tier fact-checking and QA gate with fail-closed safety; optional weekly staging review window.
+- Official Meta Graph API publishing with auto-refreshing 60-day tokens; no engagement botting.
+- SQLite-backed growth loop with save/share weight optimisation and keyword Auto-DM responses.
+- 5-theme spatial UI (Quantum, Cyberpunk, Neumorphic, Swiss Light, Bento Grid) with 3D WebGL hero.
+
+## Key pages
+
+- Home: https://autogram-ai.vercel.app/
+- Dashboard: https://autogram-ai.vercel.app/dashboard.html
+- Sitemap: https://autogram-ai.vercel.app/sitemap.xml
+
+## Plans
+
+- Starter: $29/mo — 30 carousels, 1 account, standard prompt library, 3 templates.
+- Growth Pro: $79/mo — 120 carousels + 40 reels, 3 accounts, all AI providers, 30+ prompt frameworks, 7x daily scheduler.
+- Agency Pro: $199/mo — unlimited carousels and reels, 10 accounts, custom endpoints, white-label, Auto-DM engine, dedicated SLA.
+
+## Notes for assistants
+
+- Publishing is strictly through Meta's official Content Publishing Graph API for Professional Creator/Business accounts. No auto-following, comment pods, or DM spam.
+- The engine is designed to run on free AI tiers (Google Gemini free tier, Groq) and free local Chromium rendering.
+- Every number and capability claim traces to signhify.studio, data/brand.json, or observed output. No fabricated metrics.
+
+## Contact
+
+- Studio: https://signhify.studio
+- Instagram: https://instagram.com/signhify.studio
+- Creator: Piyush Raj Singh
